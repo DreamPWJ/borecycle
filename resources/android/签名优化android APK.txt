@@ -1,0 +1,16 @@
+#keystore安全存储签名密匙文件生成配置  密钥库密码短语:borecycle$0323~4000180033      密钥口令:borecycle~4000180033$0323
+keytool -genkey -v -keystore borecycle.keystore -alias borecycle -keyalg RSA -keysize 2048 -validity 10000
+#查看应用签名信息命令  SHA1信息是应用签名
+keytool -list -v -keystore borecycle.keystore
+
+#签名优化android APK  命令
+
+#签名应用文件命令
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore  borecycle.keystore android-release-unsigned.apk borecycle
+
+#优化已签名APK文件 减少占用空间和内存
+zipalign -v 4 android-release-unsigned.apk borecycle.apk
+
+
+#启动全屏显示白色背景
+Theme.Light.NoTitleBar.Fullscreen

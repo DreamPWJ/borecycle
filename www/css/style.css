@@ -1,0 +1,267 @@
+/* Empty. Add your own CSS if you like */
+
+/* 网格布局row水平方向居中*/
+.row-horizontal-center {
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  justify-content: center;
+}
+
+/* 网格布局row水平方向均匀分布左右留有距离*/
+.row-horizontal-around {
+  -webkit-justify-content: space-around;
+  -moz-justify-content: space-around;
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+}
+
+.row-horizontal-start {
+  -webkit-justify-content: flex-start;
+  -moz-justify-content: flex-start;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+}
+
+.row-horizontal-end {
+  -webkit-justify-content: flex-end;
+  -moz-justify-content: flex-end;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+}
+
+.row-horizontal-between {
+  -webkit-justify-content: space-between;
+  -moz-justify-content: space-between;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.center-block {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.border-radius-50 {
+  border-radius: 50%;
+}
+
+.no-border {
+  border: none;
+}
+
+.float-left {
+  float: left;
+}
+
+/* 修改android平台默认样式*/
+.popover {
+  width: 10rem;
+}
+
+.platform-android .popover {
+  margin-top: 0 !important;
+  background-color: #ffffff !important;
+}
+
+.platform-android .popover .item {
+  background-color: #ffffff !important;
+}
+
+.platform-android .popover-backdrop,
+.platform-android .popover-backdrop.active {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.grey {
+  color: #aaa;
+}
+
+.grey-bg {
+  background-color: #aaa;
+}
+
+.bottom-0 {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  box-shadow: 0px 0px 20px #ddd
+}
+
+.has-button-footer {
+  bottom: 67px;
+}
+
+/*修改覆盖弹出框默认样式*/
+.show-alert .popup, .show-confirm .popup {
+  text-align: center;
+  background-color: #fff !important;
+}
+
+.show-alert .popup .popup-head, .show-confirm .popup .popup-head {
+  border: none;
+}
+
+.show-alert .popup .popup-body p, .show-confirm .popup .popup-body p {
+  margin: 0;
+  padding: 0;
+}
+
+
+/*修改覆盖ActionSheet框默认样式*/
+.action-s .button {
+  color: #11c1f3;
+}
+
+.list .item:first-child {
+  border: none;
+}
+
+.list .item:last-child {
+  border-bottom: none;
+}
+
+.item {
+  border-color: rgba(221, 221, 221, 0.5) !important;
+}
+
+.fixed-bottom {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+/*loading加载框去掉背景*/
+.loading-container .loading {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.item-image:not(img) {
+  text-align: left !important;
+}
+
+.isNotDataHint {
+  width: 100%;
+  height: 100%;
+  color: rgba(128, 128, 128, 0.6);
+  padding-top: 40%;
+  text-align: center;
+}
+
+.isNotDataHint i {
+  font-size: 5rem;
+}
+
+.isNotDataHint p {
+  margin-top: 1rem;
+}
+
+.buttons.buttons-left .ion-ios-arrow-left:before{
+/*  font-size: 1.8rem!important;*/
+}
+
+.button.back-button {
+  border: none;
+}
+
+/* 去掉时候点击按钮灰色边框颜色*/
+.button.active, .button.activated {
+  border-color: transparent !important;
+  background-color: #e5e5e5;
+}
+
+/* modal显示非全屏 显示模态背景*/
+.active .modal-backdrop-bg {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+/*modal 动画效果*/
+.slide-in-right {
+  -webkit-transform: translateX(100%);
+  transform: translateX(100%);
+}
+
+.slide-in-right.ng-enter, .slide-in-right > .ng-enter {
+  -webkit-transition: all cubic-bezier(0.1, 0.7, 0.1, 1) 400ms;
+  transition: all cubic-bezier(0.1, 0.7, 0.1, 1) 400ms;
+}
+
+.slide-in-right.ng-enter-active, .slide-in-right > .ng-enter-active {
+  -webkit-transform: translateX(0);
+  transform: translateX(0);
+}
+
+.slide-in-right.ng-leave, .slide-in-right > .ng-leave {
+  -webkit-transition: all ease-in-out 250ms;
+  transition: all ease-in-out 250ms;
+}
+
+.slide-in-left {
+  -webkit-transform: translateX(-100%);
+  transform: translateX(-100%);
+}
+
+.slide-in-left.ng-enter, .slide-in-left > .ng-enter {
+  -webkit-transition: all cubic-bezier(0.1, 0.7, 0.1, 1) 400ms;
+  transition: all cubic-bezier(0.1, 0.7, 0.1, 1) 400ms;
+}
+
+.slide-in-left.ng-enter-active, .slide-in-left > .ng-enter-active {
+  -webkit-transform: translateX(0);
+  transform: translateX(0);
+}
+
+.slide-in-left.ng-leave, .slide-in-left > .ng-leave {
+  -webkit-transition: all ease-in-out 250ms;
+  transition: all ease-in-out 250ms;
+}
+
+.input-label {
+  width: 28% !important;
+}
+
+.nowrap {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-wrap {
+  white-space: normal !important;
+}
+
+/*  ios没有导航bar状态栏兼容处理*/
+.platform-ios.platform-cordova  .no-nav-header{
+  margin-top: 20px;
+}
+
+.item-thumbnail-left {
+  padding-bottom: 0
+}
+
+.tab-item  .iconfont {
+  padding-top: 0.5rem;
+  font-size: 1.5rem;
+}
+.platform-android .action-sheet .button {
+  text-align: center;
+  border-color: transparent;
+  font-size: 16px;
+  color: inherit;
+}
+
+.platform-android .action-sheet .action-sheet-title {
+  text-align: center;
+  font-size: 12px;
+  color: #8f8f8f;
+}
+
+.nomarginpadding {
+  margin: 0 !important;
+  padding: 0 !important;
+}

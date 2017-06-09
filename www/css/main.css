@@ -1,0 +1,87 @@
+
+.border-rb {
+  border-right: 1px solid rgba(221, 221, 221, 0.3);
+  border-bottom: 1px solid rgba(221, 221, 221, 0.3);
+}
+
+.border-r {
+  border-right: 1px solid rgba(221, 221, 221, 0.3);
+}
+
+.border-b {
+  border-bottom: 1px solid rgba(221, 221, 221, 0.3);
+}
+
+.tool-tip {
+  position: fixed;
+  z-index: 10000;
+  top: 55px;
+  width: 100%;
+  text-align: center;
+  animation: tooltipmessage 3s;
+  -moz-animation: tooltipmessage 3s; /* Firefox */
+  -webkit-animation: tooltipmessage 3s; /* Safari 和 Chrome */
+  animation-fill-mode: forwards;
+  -webkit-animation-fill-mode: forwards;
+
+}
+
+.tool-tip-message{
+  background-color: #ef473a;
+  color: #ffffff;
+  text-align: center;
+  padding: 0.3rem 1.2rem;
+  border-radius: 0.8rem;
+}
+
+.tool-tip-message-success{
+  background-color: #33cd5f ;
+  color: #ffffff;
+  text-align: center;
+  padding: 0.3rem 1.2rem;
+  border-radius: 0.8rem;
+}
+
+@-webkit-keyframes tooltipmessage {
+  0% {
+    -webkit-transform: translate(0, -1em);
+    transform: translate(0, -1em);
+  }
+  10% {
+    -webkit-transform: translate(0, 0em);
+    transform: translate(0, 0em);
+    opacity: 1;
+  }
+  90% {
+    -webkit-transform: translate(0, 0em);
+    transform: translate(0, 0em);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translate(0, -1em);
+    transform: translate(0, -1em);
+    opacity: 0;
+  }
+}
+
+@keyframes tooltipmessage {
+  0% {
+    -webkit-transform: translate(0, -1em);
+    transform: translate(0, -1em);
+  }
+  10% {
+    -webkit-transform: translate(0, 0em);
+    transform: translate(0, 0em);
+    opacity: 1;
+  }
+  90% {
+    -webkit-transform: translate(0, 0em);
+    transform: translate(0, 0em);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translate(0, -1em);
+    transform: translate(0, -1em);
+    opacity: 0;
+  }
+}

@@ -1,0 +1,30 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-console": {
+            "PACKAGE_NAME": "com.boolv.borecycle"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.boolv.borecycle"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "com.boolv.borecycle"
+        },
+        "cordova-plugin-statusbar": {
+            "PACKAGE_NAME": "com.boolv.borecycle"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.boolv.borecycle"
+        },
+        "ionic-plugin-keyboard": {
+            "PACKAGE_NAME": "com.boolv.borecycle"
+        }
+    },
+    "dependent_plugins": {}
+}

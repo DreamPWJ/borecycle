@@ -1,0 +1,78 @@
+/*
+To customize the look and feel of Ionic, you can override the variables
+in ionic's _variables.scss file.
+
+For example, you might change some of the default colors:
+
+$light:                           #fff !default;
+$stable:                          #f8f8f8 !default;
+$positive:                        #387ef5 !default;
+$calm:                            #11c1f3 !default;
+$balanced:                        #33cd5f !default;
+$energized:                       #ffc900 !default;
+$assertive:                       #ef473a !default;
+$royal:                           #886aea !default;
+$dark:                            #444 !default;
+*/
+/*任何在@import之前设置的编码都会被默认的变量复写掉  再重新编译Sass生成css文件 根据需要修改覆盖默认值*/
+
+$positive:#FF93BC !default;
+$energized:#f26604 !default;
+
+@mixin flex($fg: 1, $fs: null, $fb: null) {
+  -webkit-box-flex: $fg;
+  -webkit-flex: $fg $fs $fb;
+  -moz-box-flex: $fg;
+  -moz-flex: $fg $fs $fb;
+  -ms-flex: $fg $fs $fb;
+  flex: $fg $fs $fb;
+}
+.col-5 {
+  @include flex(0, 0, 5%);
+  max-width: 5%;
+}
+.col-15 {
+  @include flex(0, 0, 15%);
+  max-width: 15%;
+}
+
+.col-30 {
+  @include flex(0, 0, 30%);
+  max-width: 30%;
+}
+.col-35 {
+  @include flex(0, 0, 35%);
+  max-width: 35%;
+}
+
+.col-45 {
+  @include flex(0, 0, 45%);
+  max-width: 45%;
+}
+.col-55 {
+  @include flex(0, 0, 55%);
+  max-width: 55%;
+}
+.col-65 {
+  @include flex(0, 0, 65%);
+  max-width: 65%;
+}
+.col-70 {
+  @include flex(0, 0, 70%);
+  max-width: 70%;
+}
+.col-85 {
+  @include flex(0, 0, 85%);
+  max-width: 85%;
+}
+.col-95 {
+  @include flex(0, 0, 95%);
+  max-width: 95%;
+}
+
+// The path for our ionicons font files, relative to the built CSS in www/css
+$ionicons-font-path: "../lib/ionic/fonts" !default;
+
+// Include all of Ionic
+@import "www/lib/ionic/scss/ionic";
+
