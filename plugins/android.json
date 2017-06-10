@@ -13,6 +13,15 @@
         "cordova-plugin-device": {
             "PACKAGE_NAME": "com.boolv.borecycle"
         },
+        "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "com.boolv.borecycle"
+        },
+        "cordova-plugin-inappbrowser": {
+            "PACKAGE_NAME": "com.boolv.borecycle"
+        },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "com.boolv.borecycle"
+        },
         "cordova-plugin-splashscreen": {
             "PACKAGE_NAME": "com.boolv.borecycle"
         },
@@ -22,9 +31,16 @@
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.boolv.borecycle"
         },
+        "cordova-plugin-x-toast": {
+            "PACKAGE_NAME": "com.boolv.borecycle"
+        },
         "ionic-plugin-keyboard": {
             "PACKAGE_NAME": "com.boolv.borecycle"
         }
     },
-    "dependent_plugins": {}
+    "dependent_plugins": {
+        "cordova-plugin-compat": {
+            "PACKAGE_NAME": "com.boolv.borecycle"
+        }
+    }
 }
