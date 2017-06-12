@@ -13,17 +13,52 @@
 
   <ion-content overflow-scroll="false" class="stable-bg" id="register">
     <form name="registerForm">
-      <div class="list">
+      <ion-list>
         <label class="item item-input">
           <span class="input-label icon ion-ios-person-outline"> 账号</span>
-          <input type="text" name="username" ng-model="user.username" placeholder="账号/手机号码/邮箱" required/>
+          <input type="text" name="username" ng-model="user.username" placeholder="手机号码/邮箱" required/>
         </label>
 
         <label class="item item-input">
-          <span class="input-label icon ion-ios-locked-outline "> 密码</span>
-          <input type="text" ng-model="user.password" required/>
+          <span class="input-label icon ion-ios-locked-outline "> 设置密码</span>
+          <input type="text" ng-model="user.password" placeholder="请输入6~18位字母、数字和特殊符号" required/>
         </label>
 
+        <label class="item item-input">
+          <span class="input-label icon ion-ios-locked-outline "> 确认密码</span>
+          <input type="text" ng-model="user.password" placeholder="请确保和上面密码一致" required/>
+        </label>
+        <div class="item item-input">
+          <span class="input-label icon ion-ios-locked-outline"> 验证码 </span>
+          <span class="row row-no-padding">
+          <input type="number" class="col-55" placeholder="请输入验证码" ng-model="user.verify" required/>
+            <button class="button button-small button-calm  col-33 " ng-class="{false:'button-outline'}[paraclass]"
+                    ng-click="getVerifyCode()">{{paracont}}</button>
+          </span>
+        </div>
+
+        <ion-item class="item-divider calm-bg light"> 用户类型</ion-item>
+        <ion-list>
+          <ion-radio ng-model="choice" icon="ion-android-done" ng-value="1" ng-change="">销售员
+          </ion-radio>
+          <ion-radio ng-model="choice" icon="ion-android-done" ng-value="2" ng-change="">上门回收者
+          </ion-radio>
+          <ion-radio ng-model="choice" icon="ion-android-done"  ng-value="3" ng-change="">货场
+          </ion-radio>
+        </ion-list>
+
+        <!--        <div class=" row row-no-padding row-wrap ">
+                  <ion-checkbox class="item-borderless checkbox-calm" ng-model="a">
+                    销售员
+                  </ion-checkbox>
+                  <ion-checkbox class="item-borderless checkbox-calm" ng-model="b">
+                    上门回收者
+                  </ion-checkbox>
+                  <ion-checkbox class="item-borderless checkbox-calm" ng-model="c">
+                    货场
+                  </ion-checkbox>
+                </div>-->
+         <p class="light-bg padding-top"></p>
         <ion-checkbox class=" stable-bg item-borderless checkbox-calm" ng-model="agreedeal" ng-checked="true">
           同意注册协议
         </ion-checkbox>
@@ -32,9 +67,13 @@
                   ng-disabled="!(registerForm.$valid&&agreedeal)">注册
           </button>
           <p class="padding-top"></p>
-          <a class="button full-image button-energized button-outline energized ">已有账号 立即登录</a>
+          <a ng-href="#/login" class="button full-image button-energized button-outline energized ">已有账号 立即登录</a>
         </div>
-      </div>
+        <div class="padding">
+          <p class="text-right"><a class="light calm icon ion-ios-help-outline" ng-href=""
+                                   nav-direction=forward> 什么是用户类型</a></p>
+        </div>
+      </ion-list>
     </form>
 
   </ion-content>

@@ -1,4 +1,9 @@
 #login {
   padding-top: 1.5rem;
 }
-
+#register .radio-content{
+  line-height: 0.6rem;
+}
+.radio-icon  {
+  color: #11c1f3;
+}

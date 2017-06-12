@@ -45,7 +45,28 @@ angular.module('starter.controllers', [])
   })
   //登录页面
   .controller('RegisterCtrl', function ($scope, $rootScope, CommonService, AccountService) {
+    $scope.user = {};//定义用户对象
+    $scope.paracont = "获取验证码"; //初始发送按钮中的文字
+    $scope.paraclass = true; //控制验证码的disable
+    $scope.getVerifyCode = function () {
+      event.preventDefault();
+      event.stopPropagation();
+      if ($scope.paraclass) { //按钮可用
+        //60s倒计时
+        AccountService.countDown($scope);
+        AccountService.getVerifyCode({
+          mobile: localStorage.getItem("login_name"),
+          isFindPwd: "2"
+        }).success(function (data) {
+          if (data.status == 1) {
+            $scope.verify = data.data.info.verify;
+          } else {
+            CommonService.platformPrompt(data.info, 'close');
+          }
 
+        })
+      }
+    }
   })
   //我的设置页面
   .controller('AccountCtrl', function ($scope, $rootScope, CommonService) {
