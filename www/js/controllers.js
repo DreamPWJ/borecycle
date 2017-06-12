@@ -33,7 +33,7 @@ angular.module('starter.controllers', [])
   })
 
   //登录页面
-  .controller('LoginCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
+  .controller('LoginCtrl', function ($scope, $rootScope, CommonService, AccountService) {
     $scope.user = {};//提前定义用户对象
     $scope.loginSubmit = function () {
       AccountService.login($scope.user).success(function (data) {
@@ -42,6 +42,10 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt("登录失败!", 'close');
       })
     }
+  })
+  //登录页面
+  .controller('RegisterCtrl', function ($scope, $rootScope, CommonService, AccountService) {
+
   })
   //我的设置页面
   .controller('AccountCtrl', function ($scope, $rootScope, CommonService) {

@@ -692,7 +692,7 @@ angular.module('starter.services', [])
         if (config.url.toString().indexOf('http://') === 0) {
           //http请求Loading加载动画
           $injector.get('$ionicLoading').show({
-            template: '<ion-spinner icon="bubbles" class="spinner-positive"></ion-spinner><p>'
+            template: '<ion-spinner icon="bubbles" class="spinner-calm"></ion-spinner><p>'
           });
         }
         //授权

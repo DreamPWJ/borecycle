@@ -1,54 +1,54 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="format-detection" content="telephone=no" />
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <title></title>
-    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon"/>
-    <!--  HTML5 引入了应用程序缓存，这意味着 web 应用可进行缓存，并可在没有因特网连接时进行访问1.离线浏览 - 用户可在应用离线时使用它们2. 速度 - 已缓存资源加载得更快3.减少服务器负载 - 浏览器将只从服务器下载更新过或更改过的资源。--><!--    HTML5 引入了应用程序缓存，这意味着 web 应用可进行缓存，并可在没有因特网连接时进行访问1.离线浏览 - 用户可在应用离线时使用它们2. 速度 - 已缓存资源加载得更快3.减少服务器负载 - 浏览器将只从服务器下载更新过或更改过的资源。-->
-    <link rel="manifest" href="manifest.json">
-<!--    web worker 是运行在后台的 JavaScript，独立于其他脚本，不会影响页面的性能。您可以继续做任何愿意做的事情：点击、选取内容等等，而此时 web worker 在后台运行-->
-    <!-- un-comment this code to enable service worker
-    <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('service-worker.js')
-          .then(() => console.log('service worker installed'))
-          .catch(err => console.log('Error', err));
-      }
-    </script>-->
+<head>
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no"/>
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+  <title></title>
+  <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon"/>
+  <!--  HTML5 引入了应用程序缓存，这意味着 web 应用可进行缓存，并可在没有因特网连接时进行访问1.离线浏览 - 用户可在应用离线时使用它们2. 速度 - 已缓存资源加载得更快3.减少服务器负载 - 浏览器将只从服务器下载更新过或更改过的资源。-->
+  <!--    HTML5 引入了应用程序缓存，这意味着 web 应用可进行缓存，并可在没有因特网连接时进行访问1.离线浏览 - 用户可在应用离线时使用它们2. 速度 - 已缓存资源加载得更快3.减少服务器负载 - 浏览器将只从服务器下载更新过或更改过的资源。-->
+  <link rel="manifest" href="manifest.json">
+  <!--    web worker 是运行在后台的 JavaScript，独立于其他脚本，不会影响页面的性能。您可以继续做任何愿意做的事情：点击、选取内容等等，而此时 web worker 在后台运行-->
+  <!-- un-comment this code to enable service worker
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('service worker installed'))
+        .catch(err => console.log('Error', err));
+    }
+  </script>-->
 
-    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
-    <!-- build:css css/all.css -->
-    <link href="fonts/iconfont.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-    <link href="css/main.css" rel="stylesheet">
-    <link href="css/account.css" rel="stylesheet">
-    <!-- endbuild -->
-    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
-    <link href="css/ionic.app.css" rel="stylesheet">
-    -->
+  <!--    <link href="lib/ionic/css/ionic.css" rel="stylesheet">-->
+  <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above-->
+  <link href="css/ionic.app.min.css" rel="stylesheet">
+  <!-- build:css css/all.css -->
+  <link href="fonts/iconfont.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+  <link href="css/main.css" rel="stylesheet">
+  <link href="css/account.css" rel="stylesheet">
+  <!-- endbuild -->
 
 
-    <script src="js/services.js"></script>
-  </head>
-  <body ng-app="starter">
-  <!--全局提示框tooltip-->
-  <tool-tip   message="commonService.message" type="commonService.type"></tool-tip>
-    <!--
-      The nav bar that will be updated as we navigate between views.
-    -->
-    <ion-nav-bar class="bar-calm" scroll-top  ng-click="scrollTop()">
-<!--      <ion-nav-back-button>
-      </ion-nav-back-button>-->
-    </ion-nav-bar>
-    <!--
-      The views will be rendered in the <ion-nav-view> directive below
-      Templates are in the /templates folder (but you could also
-      have templates inline in this html file if you'd like).
-    -->
-    <ion-nav-view></ion-nav-view>
-  </body>
+  <script src="js/services.js"></script>
+</head>
+<body ng-app="starter">
+<!--全局提示框tooltip-->
+<tool-tip message="commonService.message" type="commonService.type"></tool-tip>
+<!--
+  The nav bar that will be updated as we navigate between views.
+-->
+<ion-nav-bar class="bar-calm" scroll-top ng-click="scrollTop()">
+  <!--      <ion-nav-back-button>
+        </ion-nav-back-button>-->
+</ion-nav-bar>
+<!--
+  The views will be rendered in the <ion-nav-view> directive below
+  Templates are in the /templates folder (but you could also
+  have templates inline in this html file if you'd like).
+-->
+<ion-nav-view></ion-nav-view>
+</body>
 </html>
 
 <!-- ionic/angularjs js -->

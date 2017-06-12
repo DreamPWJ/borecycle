@@ -75,7 +75,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           CommonService.platformPrompt("网络异常 无法连接服务器", 'close');
         })
         //添加JS 屏幕监听事件 禁止APP 横屏
-        if(screenOrientation){
+        if (screenOrientation) {
           screenOrientation.setOrientation('portrait');
         }
 
@@ -206,6 +206,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'LoginCtrl'
       })
 
+      //注册页面
+      .state('register', {
+        url: '/register',
+        templateUrl: 'templates/account/register.html',
+        controller: 'RegisterCtrl'
+      })
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/tab/main');
 

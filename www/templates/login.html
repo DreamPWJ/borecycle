@@ -1,14 +1,51 @@
 <ion-view>
   <ion-nav-buttons side="left">
-    <button class="button button-clear icon ion-ios-arrow-left"  nav-direction=back native-ui-sref="tab.main" native-options="{type: 'slide',direction: 'right'}" ng-click="$ionicGoBack()"></button>
+    <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back native-ui-sref="tab.main"
+            native-options="{type: 'slide',direction: 'right'}" ng-click="$ionicGoBack()"></button>
   </ion-nav-buttons>
   <ion-nav-title>
-    <h1 class="title"> 登录</h1>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 登录</h1>
   </ion-nav-title>
-  <ion-content overflow-scroll="false" id="userlogin">
+  <ion-nav-buttons side="right">
+    <a class="button button-clear" ng-href="#/register"
+       nav-direction=forward>注册</a>
+  </ion-nav-buttons>
+
+  <ion-content overflow-scroll="false" class="stable-bg" id="login">
+    <form name="loginForm">
+      <div class="list">
+        <label class="item item-input">
+          <span class="input-label icon ion-ios-person-outline"> 账号</span>
+          <input type="text" name="username" ng-model="user.username" placeholder="账号/手机号码/邮箱" required/>
+        </label>
+
+        <label class="item item-input">
+          <span class="input-label icon ion-ios-locked-outline "> 密码</span>
+          <input type="text" ng-model="user.password" required/>
+        </label>
+
+        <ion-checkbox class=" stable-bg item-borderless checkbox-calm" ng-model="agreedeal" ng-checked="true">
+          同意登录协议
+        </ion-checkbox>
+        <div class="padding-horizontal">
+          <button class="button full-image button-calm " ng-click="loginSubmit()"
+                  ng-disabled="!(loginForm.$valid&&agreedeal)">登录
+          </button>
+        </div>
+        <div class="padding">
+          <p class="text-right padding-top" style="font-size: 1rem"><a class="calm" ng-href=""
+                                   nav-direction=forward><i class="iconfont icon-xiangyou  "></i> 手机验证登录</a></p>
+
+          <p class="text-right"><a class="light assertive icon ion-ios-help-outline" ng-href=""
+                                   nav-direction=forward> 忘记密码</a></p>
+        </div>
+      </div>
+
+
+    </form>
 
 
   </ion-content>
-
+  <p class="fixed-bottom text-center">你还没有账号，请点击<a class="calm" g-href="#/register" nav-direction=forward> 立即注册</a></p>
 </ion-view>
 
