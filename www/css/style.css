@@ -112,7 +112,6 @@
   padding: 0;
 }
 
-
 /*修改覆盖ActionSheet框默认样式*/
 .action-s .button {
   color: #11c1f3;
@@ -161,12 +160,16 @@
   margin-top: 1rem;
 }
 
-.buttons.buttons-left .ion-ios-arrow-left:before{
-/*  font-size: 1.8rem!important;*/
+.buttons.buttons-left .ion-ios-arrow-left:before {
+  /*  font-size: 1.8rem!important;*/
 }
 
 .button.back-button {
   border: none;
+}
+
+.bar-header .button:not(.ion-ios-arrow-left):before {
+  font-size: 1.5rem !important;
 }
 
 /* 去掉时候点击按钮灰色边框颜色*/
@@ -236,7 +239,7 @@
 }
 
 /*  ios没有导航bar状态栏兼容处理*/
-.platform-ios.platform-cordova  .no-nav-header{
+.platform-ios.platform-cordova .no-nav-header {
   margin-top: 20px;
 }
 
@@ -244,10 +247,11 @@
   padding-bottom: 0
 }
 
-.tab-item  .iconfont {
+.tab-item .iconfont {
   padding-top: 0.5rem;
   font-size: 1.5rem;
 }
+
 .platform-android .action-sheet .button {
   text-align: center;
   border-color: transparent;
@@ -266,6 +270,6 @@
   padding: 0 !important;
 }
 
-.iconfont{
-  font-size: 1.5rem!important;
+.iconfont {
+  font-size: 1.5rem !important;
 }

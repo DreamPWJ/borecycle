@@ -1,10 +1,10 @@
 
 @font-face {font-family: "iconfont";
-  src: url('iconfont.eot?t=1497067870734'); /* IE9*/
-  src: url('iconfont.eot?t=1497067870734#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('iconfont.woff?t=1497067870734') format('woff'), /* chrome, firefox */
-  url('iconfont.ttf?t=1497067870734') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('iconfont.svg?t=1497067870734#iconfont') format('svg'); /* iOS 4.1- */
+  src: url('iconfont.eot?t=1497233446554'); /* IE9*/
+  src: url('iconfont.eot?t=1497233446554#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('iconfont.woff?t=1497233446554') format('woff'), /* chrome, firefox */
+  url('iconfont.ttf?t=1497233446554') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('iconfont.svg?t=1497233446554#iconfont') format('svg'); /* iOS 4.1- */
 }
 
 .iconfont {
@@ -100,6 +100,10 @@
 .icon-cartfill:before { content: "\e6b9"; }
 
 .icon-homefill:before { content: "\e6bb"; }
+
+.icon-add:before { content: "\e6da"; }
+
+.icon-share:before { content: "\e6f3"; }
 
 .icon-markfill:before { content: "\e730"; }
 

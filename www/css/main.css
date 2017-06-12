@@ -1,3 +1,38 @@
+#logo {
+  position: relative;
+  top: 0.4rem;
+  width: 1.8rem;
+  height: 1.8rem;
+
+}
+
+#main-slide.slider {
+  height: 9rem !important;
+}
+
+#main-slide.slider img {
+  height: 8.6rem !important;
+}
+
+.slider-pager-page.active {
+  color: #11c1f3;
+}
+
+.main-list a {
+  margin-top: 0.5rem;
+}
+
+.main-list a > span {
+  display: inline-block;
+  margin-bottom: 0.2rem;
+  width: 3rem;
+  height: 3rem;
+  line-height: 3rem;
+}
+
+.main-list a > span > i {
+  font-size: 1.5rem;
+}
 
 .border-rb {
   border-right: 1px solid rgba(221, 221, 221, 0.3);
@@ -26,7 +61,7 @@
 
 }
 
-.tool-tip-message{
+.tool-tip-message {
   background-color: #ef473a;
   color: #ffffff;
   text-align: center;
@@ -34,8 +69,8 @@
   border-radius: 0.8rem;
 }
 
-.tool-tip-message-success{
-  background-color: #33cd5f ;
+.tool-tip-message-success {
+  background-color: #33cd5f;
   color: #ffffff;
   text-align: center;
   padding: 0.3rem 1.2rem;

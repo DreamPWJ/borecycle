@@ -8,12 +8,24 @@ angular.module('starter.controllers', [])
 
 
   //APP首页面
-  .controller('MainCtrl', function ($scope, $rootScope, CommonService, $ionicHistory) {
+  .controller('MainCtrl', function ($scope, $rootScope, CommonService, $ionicHistory, $ionicSlideBoxDelegate) {
     $scope.imgsPicAddr = [];//图片信息数组
     $scope.imageList = [];  //上传图片数组集合
     $scope.uploadActionSheet = function () {
       CommonService.uploadActionSheet($scope, "upload", true);
     }
+    //获取广告图
+    /*    MainService.getAdMsg().success(function (data) {
+     $scope.adImg = data.Values;
+     //ng-repeat遍历生成一个个slide块的时候，执行完成页面是空白的 手动在渲染之后更新一下，在控制器注入$ionicSlideBoxDelegate，然后渲染数据之后
+     $timeout(function () {
+     $ionicSlideBoxDelegate.$getByHandle("slideboximgs").update();
+     //上面这句就是实现无限循环的关键，绑定了滑动框，
+     $ionicSlideBoxDelegate.$getByHandle("slideboximgs").loop(true);
+     /!*            console.log($ionicSlideBoxDelegate.$getByHandle("slideboximgs").slidesCount());*!/
+     }, 100)
+     })*/
+
     //在首页中清除导航历史退栈
     $scope.$on('$ionicView.afterEnter', function () {
       $ionicHistory.clearHistory();
