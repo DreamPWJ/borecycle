@@ -45,7 +45,7 @@ angular.module('starter.controllers', [])
   })
 
   //注册页面
-  .controller('RegisterCtrl', function ($scope, $rootScope, CommonService, AccountService) {
+  .controller('RegisterCtrl', function ($scope, CommonService, AccountService) {
     $scope.user = {};//定义用户对象
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = true; //控制验证码的disable
@@ -69,8 +69,25 @@ angular.module('starter.controllers', [])
       }
     }
   })
+
+  //我的订单页面
+  .controller('OrderCtrl', function ($scope, CommonService, $ionicSlideBoxDelegate) {
+    $scope.tabIndex = 0;//当前tabs页
+    //左右滑动列表
+    $scope.slideChanged = function (index) {
+      $scope.tabIndex = index;
+      // $scope.getOrdersList(0); //获取订单数据
+    };
+    //点击选项卡
+    $scope.selectedTab = function (index) {
+      $scope.tabIndex = index;
+      //滑动的索引和速度
+      $ionicSlideBoxDelegate.$getByHandle("slidebox-myorderlist").slide(index)
+    }
+  })
+
   //通知消息列表
-  .controller('NewsCtrl', function ($scope, $rootScope, $state, CommonService, NewsService, $ionicScrollDelegate) {
+  .controller('NewsCtrl', function ($scope, CommonService, NewsService, $ionicScrollDelegate) {
     $scope.newsList = [];
     $scope.page = 0;
     $scope.total = 1;
@@ -114,7 +131,7 @@ angular.module('starter.controllers', [])
     }
   })
   //我的设置页面
-  .controller('AccountCtrl', function ($scope, $rootScope, CommonService) {
+  .controller('AccountCtrl', function ($scope, CommonService) {
     //是否登录
     /*    if (!CommonService.isLogin(true)) {
      return;

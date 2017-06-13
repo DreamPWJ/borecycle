@@ -186,6 +186,19 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
       })
 
+      //我的订单页面
+      .state('tab.order', {
+        url: '/order',
+        cache: false,
+        nativeTransitions: null,
+        views: {
+          'tab-order': {
+            templateUrl: 'templates/order.html',
+            controller: 'OrderCtrl'
+          }
+        }
+      })
+
       //通知消息列表
       .state('tab.news', {
         url: '/news',

@@ -1,0 +1,62 @@
+<ion-view>
+  <ion-nav-buttons side="left">
+    <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back
+            native-options="{type: 'slide',direction: 'right'}" ng-click="$ionicGoBack()"></button>
+  </ion-nav-buttons>
+  <ion-nav-title>
+    <h1 class="title"><img id="logo" src="img/logo.png" alt=""/> 我的订单</h1>
+  </ion-nav-title>
+  <ion-tabs id="myorderlist-tab" class="tabs-light tabs-top" delegate-handle="my-handle-myorderlistlist">
+    <div class="row row-horizontal-around text-center">
+      <span class="col-33 {{tabIndex==0?'active':''}}" ng-click="selectedTab(0)">待接单 </span>
+      <span class="col-33 {{tabIndex==1?'active':''}}" ng-click="selectedTab(1)">待处理</span>
+      <span class="col-33 {{tabIndex==2?'active':''}}" ng-click="selectedTab(2)">所有订单</span>
+    </div>
+  </ion-tabs>
+  <ion-slide-box show-pager="false" on-slide-changed="slideChanged($index)" delegate-handle="slidebox-myorderlist"
+                 id="myorderlist">
+    <ion-slide>
+      <ion-content overflow-scroll="false" class="has-tabs-top stable-bg" has-bouncing="true">
+        <ion-refresher on-refresh="getOrdersList(0)" pulling-text="下拉刷新"></ion-refresher>
+        <p></p>
+        <div ng-if="isNotDataApayed" class="isNotDataHint">
+          <i class="icon ion-sad"></i>
+          <p>暂无待接单</p>
+        </div>
+        <ion-list>
+
+        </ion-list>
+        <ion-infinite-scroll on-infinite="getOrdersList()" ng-if="totalpayed > pagepayed" immediate-check="false">
+      </ion-content>
+    </ion-slide>
+
+    <ion-slide>
+      <ion-content overflow-scroll="false" class="has-tabs-top stable-bg" has-bouncing="true">
+        <ion-refresher on-refresh="getOrdersList(0)" pulling-text="下拉刷新"></ion-refresher>
+        <p></p>
+        <div ng-if="true" class="isNotDataHint">
+          <i class="icon ion-sad"></i>
+          <p>暂无待处理单</p>
+        </div>
+        <ion-list>
+
+        </ion-list>
+        <ion-infinite-scroll on-infinite="getOrdersList()" ng-if="totalcomplete > pagecomplete" immediate-check="false">
+      </ion-content>
+    </ion-slide>
+    <ion-slide>
+      <ion-content overflow-scroll="false" class="has-tabs-top stable-bg" has-bouncing="true">
+        <ion-refresher on-refresh="getOrdersList(0)" pulling-text="下拉刷新"></ion-refresher>
+        <p></p>
+        <div ng-if="isNotDataRightsin" class="isNotDataHint">
+          <i class="icon ion-sad"></i>
+          <p>暂无所有订单</p>
+        </div>
+        <ion-list>
+
+        </ion-list>
+        <ion-infinite-scroll on-infinite="getOrdersList()" ng-if="totalrightsin > pagerightsin" immediate-check="false">
+      </ion-content>
+    </ion-slide>
+  </ion-slide-box>
+</ion-view>
