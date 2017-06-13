@@ -11,7 +11,7 @@
        nav-direction=forward>登录</a>
   </ion-nav-buttons>
 
-  <ion-content overflow-scroll="false" class="stable-bg" id="register">
+  <ion-content overflow-scroll="false" class="stable-bg" id="register" has-bouncing="true">
     <form name="registerForm">
       <ion-list>
         <label class="item item-input">
@@ -37,13 +37,19 @@
           </span>
         </div>
 
-        <ion-item class="item-divider calm-bg light"> 用户类型</ion-item>
+        <ion-item class="item-divider calm-bg light">
+          用户类型
+          <p class="text-right item-note"><a class="light  icon ion-ios-help-outline" ng-href=""
+                                             nav-direction=forward> 什么是用户类型</a></p>
+
+
+        </ion-item>
         <ion-list>
           <ion-radio ng-model="choice" icon="ion-android-done" ng-value="1" ng-change="">销售员
           </ion-radio>
           <ion-radio ng-model="choice" icon="ion-android-done" ng-value="2" ng-change="">上门回收者
           </ion-radio>
-          <ion-radio ng-model="choice" icon="ion-android-done"  ng-value="3" ng-change="">货场
+          <ion-radio ng-model="choice" icon="ion-android-done" ng-value="3" ng-change="">货场
           </ion-radio>
         </ion-list>
 
@@ -58,7 +64,7 @@
                     货场
                   </ion-checkbox>
                 </div>-->
-         <p class="light-bg padding-top"></p>
+        <!--        <p class="light-bg padding-top"></p>-->
         <ion-checkbox class=" stable-bg item-borderless checkbox-calm" ng-model="agreedeal" ng-checked="true">
           同意注册协议
         </ion-checkbox>
@@ -69,13 +75,10 @@
           <p class="padding-top"></p>
           <a ng-href="#/login" class="button full-image button-energized button-outline energized ">已有账号 立即登录</a>
         </div>
-        <div class="padding">
-          <p class="text-right"><a class="light calm icon ion-ios-help-outline" ng-href=""
-                                   nav-direction=forward> 什么是用户类型</a></p>
-        </div>
+
       </ion-list>
     </form>
-
+    <p class="padding-top"></p>
   </ion-content>
 </ion-view>
 

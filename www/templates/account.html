@@ -3,10 +3,58 @@
     <button class="button button-clear iconfont icon-homefill"  nav-direction=back native-ui-sref="tab.main" native-options="{type: 'slide',direction: 'right'}"></button>
   </ion-nav-buttons>
   <ion-nav-title>
-    <h1 class="title"> 我的</h1>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 我的</h1>
   </ion-nav-title>
 
   <ion-content overflow-scroll="false" class="stable-bg account " has-bouncing="true">
+    <div class="list padding-top list-borderless">
+      <a nav-direction=forward  ng-href="#/accountinfo" class="item item-avatar ">
+        <img ng-src="img/head.jpg" class="border-radius-50" alt="" onerror="this.src='img/head.jpg'">
+        <h2>张三丰</h2>
+        <p>13666666666</p>
+      </a>
+    </div>
+    <div class="list">
+      <a nav-direction=forward  ng-href="#/searchorder" class="item item-icon-left item-icon-right ">
+        <i class="icon iconfont icon-form"></i>
+        <h2>我的订单</h2>
+        <i class="icon ion-ios-arrow-right"></i>
+      </a>
+      <a nav-direction=forward  ng-href="#/myadvance" class="item item-icon-left item-icon-right">
+        <i class="icon iconfont icon-mark"></i>
+        <h2>消息</h2>
+        <i class="icon ion-ios-arrow-right"></i>
+      </a>
 
+      <a nav-direction=forward  ng-href="#/dealaddress" class="item item-icon-left item-icon-right">
+        <i class="icon iconfont icon-location"></i>
+        <h2>我的地址</h2>
+        <i class="icon ion-ios-arrow-right"></i>
+      </a>
+      <a nav-direction=forward ng-href="#/collectionaccount" class="item item-icon-left item-icon-right ">
+        <i class="icon iconfont icon-zizhanghao"></i>
+        <h2>子账号</h2>
+        <i class="icon ion-ios-arrow-right"></i>
+      </a>
+
+    </div>
+    <div class="list">
+      <a nav-direction=forward class="item item-icon-left item-icon-right " ng-href="#/help/13">
+        <i class="icon iconfont icon-guanyuwomen"></i>
+        <h2>关于我们</h2>
+        <i class="icon ion-ios-arrow-right"></i>
+      </a>
+      <a nav-direction=forward class="item item-icon-left item-icon-right" ng-click="shareActionSheet()">
+        <i class="icon iconfont icon-share"></i>
+        <h2>分享给我的朋友</h2>
+        <i class="icon ion-ios-arrow-right"></i>
+      </a>
+      <a nav-direction=forward  ng-href="#/setting" class="item item-icon-left item-icon-right ">
+        <i class="icon iconfont icon-settings"></i>
+        <h2>设置</h2>
+        <i class="icon ion-ios-arrow-right"></i>
+      </a>
+    </div>
+    <p></p>
   </ion-content>
 </ion-view>

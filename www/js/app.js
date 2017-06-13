@@ -186,6 +186,19 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
       })
 
+      //通知消息列表
+      .state('tab.news', {
+        url: '/news',
+        cache: false,
+        nativeTransitions: null,
+        views: {
+          'tab-news': {
+            templateUrl: 'templates/news.html',
+            controller: 'NewsCtrl'
+          }
+        }
+      })
+
       //我的账号
       .state('tab.account', {
         url: '/account',

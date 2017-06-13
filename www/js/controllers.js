@@ -43,7 +43,8 @@ angular.module('starter.controllers', [])
       })
     }
   })
-  //登录页面
+
+  //注册页面
   .controller('RegisterCtrl', function ($scope, $rootScope, CommonService, AccountService) {
     $scope.user = {};//定义用户对象
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
@@ -68,9 +69,54 @@ angular.module('starter.controllers', [])
       }
     }
   })
+  //通知消息列表
+  .controller('NewsCtrl', function ($scope, $rootScope, $state, CommonService, NewsService, $ionicScrollDelegate) {
+    $scope.newsList = [];
+    $scope.page = 0;
+    $scope.total = 1;
+    $scope.newslist = function () {
+      if (arguments != [] && arguments[0] == 0) {
+        $scope.page = 0;
+        $scope.newsList = [];
+      }
+      $scope.page++;
+      $scope.params = {
+        page: $scope.page,//页码
+        size: 5,//条数
+        userid: localStorage.getItem("usertoken")//用户id
+      }
+      NewsService.getNewsList($scope.params).success(function (data) {
+        $scope.isNotData = false;
+        if (data.Values == null || data.Values.data_list == 0) {
+          $scope.isNotData = true;
+          return
+        }
+        angular.forEach(data.Values.data_list, function (item) {
+          $scope.newsList.push(item);
+        })
+        $scope.total = data.Values.page_count;
+        $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
+      }).finally(function () {
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+      })
+    }
+
+    $scope.newslist(0);//新闻加载刷新
+    $scope.updateNewsLook = function (look, id) { //设置已读未读
+      $scope.lookparams = {
+        look: look,
+        ids: id
+      }
+      NewsService.updateNewsLook($scope.lookparams).success(function (data) {
+        $scope.newslist(0);
+      })
+    }
+  })
   //我的设置页面
   .controller('AccountCtrl', function ($scope, $rootScope, CommonService) {
-    $scope.settings = {
-      enableFriends: true
-    };
+    //是否登录
+    /*    if (!CommonService.isLogin(true)) {
+     return;
+     }*/
   });

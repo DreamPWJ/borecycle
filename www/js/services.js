@@ -468,6 +468,51 @@ angular.module('starter.services', [])
       }
     }
   })
+  .service('NewsService', function ($q, $http, BoRecycle) {//通知消息服务
+    return {
+      setDeviceInfo: function (datas) { //提交设备信息到服务器
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'POST',
+          url: BoRecycle.api + "/push/set",
+          data: datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getNewsList: function (params) { //获取通知数据
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/push/get/" + params.page + '/' + params.size + '/' + params.userid,
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      updateNewsLook: function (params) { //新闻设置已读未读
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'POST',
+          url: BoRecycle.api + "/push/look/" + params.look,
+          params: {ids: params.ids}
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      }
+    }
+  })
   .service('WeiXinService', function ($q, $http, BoRecycle) { //微信 JS SDK 接口服务定义
     return {
       //获取微信签名

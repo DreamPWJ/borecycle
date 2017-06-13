@@ -7,3 +7,10 @@
 .radio-icon  {
   color: #11c1f3;
 }
+.account .item h2{
+  color: #585858;
+}
+.account .icon,account .iconfont{
+  color: #585858;
+  font-size: 1.5rem;
+}
