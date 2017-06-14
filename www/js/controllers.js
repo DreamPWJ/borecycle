@@ -70,6 +70,11 @@ angular.module('starter.controllers', [])
     }
   })
 
+  //参考价页面
+  .controller('ReferencePriceCtrl', function ($scope, CommonService) {
+
+  })
+
   //我的订单页面
   .controller('OrderCtrl', function ($scope, CommonService, $ionicSlideBoxDelegate) {
     $scope.tabIndex = 0;//当前tabs页

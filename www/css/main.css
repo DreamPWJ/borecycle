@@ -60,6 +60,30 @@
   border-bottom: 2px solid #11c1f3;
 }
 
+#myorderlist .jiedan i, #myorderlist .pending i {
+  vertical-align: text-bottom;
+}
+
+#myorderlist .pending a {
+  display: inline-block !important;
+}
+
+.tab-largen {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background-color: #11c1f3;
+  color: #ffffff !important;
+  border-radius: 50%;
+  top: -0.1rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tab-largen.tab-item-active, ion-tabs.tabs-color-active-calm tab-largen.tab-item {
+  color: #ffffff !important;
+}
+
 .border-rb {
   border-right: 1px solid rgba(221, 221, 221, 0.3);
   border-bottom: 1px solid rgba(221, 221, 221, 0.3);
@@ -70,7 +94,7 @@
 }
 
 .border-b {
-  border-bottom: 1px solid rgba(221, 221, 221, 0.3)!important;
+  border-bottom: 1px solid rgba(221, 221, 221, 0.3) !important;
 }
 
 .tool-tip {

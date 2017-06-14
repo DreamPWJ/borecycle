@@ -186,6 +186,19 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
       })
 
+      //参考价页面
+      .state('tab.referenceprice', {
+        url: '/referenceprice',
+        cache: false,
+        nativeTransitions: null,
+        views: {
+          'tab-referenceprice': {
+            templateUrl: 'templates/referenceprice.html',
+            controller: 'ReferencePriceCtrl'
+          }
+        }
+      })
+
       //我的订单页面
       .state('tab.order', {
         url: '/order',

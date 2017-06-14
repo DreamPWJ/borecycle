@@ -24,12 +24,12 @@
 }
 
 .account .order-item a {
-  margin-top: 0.1rem;
+  margin-top: 1px;
   padding: 0.3rem 0;
 }
 
 .account .order-item a:first-of-type {
-  margin-right: 0.1rem;
+  margin-right: 1px;
   border-right: 1px solid rgba(221, 221, 221, 0.5) !important;
 }
 
