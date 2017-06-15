@@ -36,6 +36,25 @@
         },
         "ionic-plugin-keyboard": {
             "PACKAGE_NAME": "com.boolv.borecycle"
+        },
+        "cordova-plugin-wechat": {
+            "WECHATAPPID": "wx3a43052a36e31c53",
+            "PACKAGE_NAME": "com.boolv.borecycle"
+        },
+        "cordova-plugin-file": {
+            "PACKAGE_NAME": "com.boolv.borecycle"
+        },
+        "cordova-plugin-file-transfer": {
+            "PACKAGE_NAME": "com.boolv.borecycle"
+        },
+        "cordova-plugin-file-opener2": {
+            "PACKAGE_NAME": "com.boolv.borecycle"
+        },
+        "cordova-plugin-imagepicker": {
+            "PACKAGE_NAME": "com.boolv.borecycle"
+        },
+        "cordova-plugin-camera": {
+            "PACKAGE_NAME": "com.boolv.borecycle"
         }
     },
     "dependent_plugins": {

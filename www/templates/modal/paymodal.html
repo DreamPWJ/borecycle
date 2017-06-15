@@ -1,0 +1,21 @@
+<ion-modal-view id="paymodal">
+  <ion-header-bar class="bar bar-header bar-light">
+    <button class="button button-clear ion-ios-arrow-left " ng-click="modal.hide()"></button>
+    <h1 class="title"> 支付方式</h1>
+
+  </ion-header-bar>
+  <ion-content overflow-scroll="false">
+    <ion-list>
+      <ion-radio ng-model="pay.choice" icon="ion-android-done" ng-change="" ng-value="'A'"><i
+        class="iconfont icon-weixin1 balanced padding-right"></i> 微信支付
+      </ion-radio>
+      <ion-radio ng-model="pay.choice" icon="ion-android-done" ng-change="" ng-value="'B'"><i
+        class="iconfont icon-zhifubao1 calm padding-right"></i> 支付宝支付
+      </ion-radio>
+
+    </ion-list>
+  </ion-content>
+  <ion-footer-bar class="nomarginpadding">
+    <button ng-click="affirmPay()" class="button button-balanced  full-image">确认支付</button>
+  </ion-footer-bar>
+</ion-modal-view>

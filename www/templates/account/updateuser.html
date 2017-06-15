@@ -1,0 +1,42 @@
+<ion-view>
+  <ion-nav-buttons side="left">
+    <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back
+            native-options="{type: 'slide',direction: 'right'}" ng-click="$ionicGoBack()"></button>
+  </ion-nav-buttons>
+  <ion-nav-title>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/>{{type=='nickname'?"昵称设置":"性别设置"}} </h1>
+  </ion-nav-title>
+  <form name="updateuser">
+    <ion-content overflow-scroll="false" class="stable-bg " has-bouncing="true">
+      <div class="list  padding-top">
+        <label ng-if="type=='nickname'" class="item item-input">
+          <input type="text" ng-model="user.nickname" placeholder="{{value}}" maxlength="20" required>
+          <!--          <i class="icon  ion-close-circled padding-right"></i>-->
+        </label>
+        <!--      <label  class="item item-input item-select" >
+                <div class="input-label">
+                  性别
+                </div>
+                <select  ng-model="user.sex" required>
+                  <option value="0">保密</option>
+                  <option value="1">男</option>
+                  <option value="2">女</option>
+                </select>
+              </label>-->
+        <ion-list ng-if="type=='sex'">
+          <ion-radio ng-model="choice" icon="ion-android-done" ng-value="0" ng-change="">保密
+          </ion-radio>
+          <ion-radio ng-model="choice" icon="ion-android-done" ng-value="1" ng-change="">男
+          </ion-radio>
+          <ion-radio ng-model="choice" icon="ion-android-done" ng-value="2" ng-change="">女
+          </ion-radio>
+        </ion-list>
+      </div>
+
+    </ion-content>
+    <div class="padding light-bg  bottom-0" keyboard-attach>
+      <button ng-disabled="!updateuser.$valid" class="button button-calm full-image " ng-click="updateUser()">保存
+      </button>
+    </div>
+  </form>
+</ion-view>

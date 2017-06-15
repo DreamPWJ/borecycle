@@ -1,0 +1,50 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-calm" scroll-top ng-click="scrollTop()">
+    <button class="button button-clear icon ion-ios-arrow-left" ng-click="modal.hide()"></button>
+    <h1 class="title"><img id="logo" src="img/logo.png" alt=""/> 地区设置</h1>
+
+  </ion-header-bar>
+  <ion-content overflow-scroll="false" class="stable-bg bar-hasheader" delegate-handle="cityScroll">
+
+    <div class="bar-light  item-input-inset ">
+      <label class="item-input-wrapper">
+        <i class="iconfont icon-seach placeholder-icon"></i>
+        <input type="search" class="full-image" ng-model="city.cityText"  placeholder="请输入城市中文名称或拼音">
+      </label>
+    </div>
+    <div class="list city">
+      <ion-item class="item" ng-repeat="city in filterCities" ng-click="citySelected(city)" ng-bind="city.name">
+      </ion-item>
+      <ion-item class="item-divider">
+        当前城市
+      </ion-item>
+      <ion-item class="item">
+        {{currentCity.name||cityName}}
+      </ion-item>
+      <div>
+        <ion-item class="item-divider">
+          <h2>热门城市</h2>
+        </ion-item>
+        <ion-item class="item-body">
+          <a ng-click="citySelected(c)" class="cityItem" ng-repeat="c in hotCities" ng-bind="c.name"></a>
+        </ion-item>
+      </div>
+
+      <div ng-repeat="city in cities">
+        <ion-item class="item-divider">
+          <h2 id="{{city.index}}" ng-bind="city.index"></h2>
+        </ion-item>
+        <ion-item class="item-body">
+          <a ng-click="citySelected(c)" class="cityItem" ng-repeat="c in city.cities" ng-bind="c.name"></a>
+        </ion-item>
+      </div>
+    </div>
+
+
+  </ion-content>
+  <div id="indexs-bar" class="has-header">
+    <div class="index-bar" ng-repeat="city in cities" ng-bind="city.index"></div>
+  </div>
+  <div id="indexs-title">
+  </div>
+</ion-modal-view>

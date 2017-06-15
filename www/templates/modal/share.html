@@ -1,0 +1,22 @@
+<ion-modal-view id="share">
+  <ion-header-bar class="bar bar-header bar-light">
+    <h1 class="title"> 分享方式</h1>
+  </ion-header-bar>
+
+  <ion-content overflow-scroll="false">
+    <div class="row row-center text-center">
+      <span class="col iconfont icon-weixin2 balanced" ng-click="weixinShare(0)"></span>
+      <span class="col iconfont icon-friends royal" ng-click="weixinShare(1)"></span>
+      <span class="col iconfont icon-QQ calm"></span>
+      <span class="col iconfont icon-qq1 energized"></span>
+    </div>
+    <div class="row text-center">
+      <span class="col">微信好友</span>
+      <span class="col">微信朋友圈</span>
+      <span class="col">QQ好友</span>
+      <span class="col">QQ空间</span></div>
+  </ion-content>
+  <ion-footer-bar class="nomarginpadding">
+    <button ng-click="modal.hide()" class="button button-calm  full-image">取消</button>
+  </ion-footer-bar>
+</ion-modal-view>

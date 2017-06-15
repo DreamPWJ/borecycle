@@ -135,10 +135,76 @@ angular.module('starter.controllers', [])
       })
     }
   })
+
   //我的设置页面
   .controller('AccountCtrl', function ($scope, CommonService) {
     //是否登录
     /*    if (!CommonService.isLogin(true)) {
      return;
      }*/
-  });
+    CommonService.customModal($scope, 'templates/modal/share.html');
+
+    //微信分享
+    $scope.weixinShare = function (type) {
+      Wechat.share({
+        text: "博绿固废回收分享",
+        scene: type == 0 ? Wechat.Scene.SESSION : Wechat.Scene.TIMELINE
+      }, function () {
+        CommonService.platformPrompt("微信分享成功", 'close');
+      }, function (reason) {
+        CommonService.platformPrompt("微信分享失败:" + reason, 'close');
+      });
+    }
+  })
+
+  //账号信息
+  .controller('AccountInfoCtrl', function ($scope, CommonService,AccountService) {
+    /*    $scope.isprovider = JSON.parse(localStorage.getItem("user")).grade == 5 ? true : false*/
+
+    //城市选择modal
+    CommonService.customModal($scope, 'templates/modal/citymodal.html');
+    //点击选择城市
+    $scope.openCustomModal = function () {
+      $scope.city = {};//城市相关json数据
+      $scope.modal.show();
+      AccountService.selectCity($scope);
+    }
+  })
+
+  //修改用户头像图片
+  .controller('UploadHeadCtrl', function ($scope, $rootScope, $stateParams, $state, CommonService) {
+    //上传图片数组集合
+    $scope.imageList = [];
+    $scope.ImgsPicAddr = [];//图片信息数组
+    $scope.uploadName = 'uploadhead';//上传图片的类别 用于区分
+    $scope.figureurl = $stateParams.figure;
+    $scope.uploadtype = 5;//上传媒体操作类型 1.卖货单 2 供货单 3 买货单 4身份证 5 头像
+    $scope.uploadActionSheet = function () {
+      CommonService.uploadActionSheet($scope, 'User');
+    }
+  })
+
+  //修改用户信息
+  .controller('UpdateUserCtrl', function ($scope, $rootScope, $stateParams, $state, CommonService, AccountService) {
+    $scope.type = $stateParams.type;
+    $scope.value = $stateParams.value;
+
+    $scope.user = {};
+    $scope.updateUser = function () {
+      $scope.params = {
+        userid: localStorage.getItem("usertoken"),
+        sex: $scope.user.sex,
+        nickname: $scope.user.nickname
+      }
+      if ($scope.type == 'nickname') { //修改昵称
+        AccountService.modifyNickname($scope.params).success(function (data) {
+          $state.go('tab.account');
+        })
+      } else if ($scope.type == 'sex') {//修改性别
+        AccountService.modifySex($scope.params).success(function (data) {
+          $state.go('tab.account');
+        })
+      }
+    }
+
+  })

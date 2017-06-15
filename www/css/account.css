@@ -55,3 +55,56 @@
   right: 0;
   bottom: 0;
 }
+
+
+.city .item, .city .item-divider {
+  font-size: 12px;
+  font-family: "Microsoft YaHei";
+  width: 95%;
+}
+
+.cityItem {
+  border: 1px solid rgba(204, 204, 204, 0.2);
+  margin: 5px;
+  padding: 5px;
+  float: left;
+  color: #333;
+  border-radius: 5px;
+  min-width: 29%;
+  text-align: center;
+}
+
+.cityItem:active, cityItem:hover {
+  color: #ffffff;
+  background-color: #FF93BC !important;
+}
+
+#indexs-title {
+  position: fixed;
+  margin: auto;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  height: 60px;
+  width: 60px;
+  line-height: 60px;
+  text-align: center;
+  color: #FFF;
+  font-size: 300%;
+  display: none;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+#indexs-bar {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  padding-top: 15px;
+  width: 20px;
+  height: 464px;
+  z-index: 2;
+  text-align: center;
+  color: #545454;
+
+}

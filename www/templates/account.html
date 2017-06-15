@@ -9,10 +9,11 @@
 
   <ion-content overflow-scroll="false" class="stable-bg account " has-bouncing="true">
     <div class="list padding-top list-borderless">
-      <a nav-direction=forward ng-href="#/accountinfo" class="item item-avatar ">
+      <a nav-direction=forward ng-href="#/accountinfo" class="item item-avatar item-icon-right">
         <img ng-src="img/head.jpg" class="border-radius-50" alt="" onerror="this.src='img/head.jpg'">
         <h2>张三丰</h2>
         <p>13666666666</p>
+        <i class="icon ion-ios-arrow-right"></i>
       </a>
     </div>
     <div class="list">
@@ -22,12 +23,12 @@
         <!--        <i class="icon ion-ios-arrow-right"></i>-->
       </a>
       <div class="row row-no-padding light-bg  row-center text-center order-item">
-        <a nav-direction=forward  ng-href="#/tab/order"  class="item item-icon-right col ">
+        <a nav-direction=forward ng-href="#/tab/order" class="item item-icon-right col ">
           <p>待处理订单</p>
           <h2>8个</h2>
           <i class="icon iconfont icon-time " style="color: #11c1f3"></i></span>
         </a>
-        <a nav-direction=forward  ng-href="#/tab/order"  class="item  col expiring item-borderless">
+        <a nav-direction=forward ng-href="#/tab/order" class="item  col expiring item-borderless">
           <p>订单预警</p>
           <h2>2个</h2>
         </a>
@@ -61,7 +62,7 @@
         <h2>关于我们</h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
-      <a nav-direction=forward class="item item-icon-left item-icon-right" ng-click="shareActionSheet()">
+      <a nav-direction=forward class="item item-icon-left item-icon-right" ng-click="modal.show()">
         <i class="icon iconfont icon-share"></i>
         <h2>分享给我的朋友</h2>
         <i class="icon ion-ios-arrow-right"></i>

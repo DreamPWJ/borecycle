@@ -200,16 +200,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       })
 
       //我的订单页面
-      .state('tab.order', {
+      .state('order', {
         url: '/order',
         cache: false,
         nativeTransitions: null,
-        views: {
-          'tab-order': {
-            templateUrl: 'templates/order.html',
-            controller: 'OrderCtrl'
-          }
-        }
+        templateUrl: 'templates/order.html',
+        controller: 'OrderCtrl'
+
       })
 
       //通知消息列表
@@ -236,6 +233,28 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             controller: 'AccountCtrl'
           }
         }
+      })
+
+      //账号信息
+      .state('accountinfo', {
+        url: '/accountinfo',
+        cache: false,
+        templateUrl: 'templates/account/accountinfo.html',
+        controller: 'AccountInfoCtrl'
+      })
+
+      //修改用户头像图片
+      .state('uploadhead', {
+        url: '/uploadhead/:figure',
+        templateUrl: 'templates/account/uploadhead.html',
+        controller: 'UploadHeadCtrl'
+      })
+
+      //修改用户信息
+      .state('updateuser', {
+        url: '/updateuser/:type/:value',
+        templateUrl: 'templates/account/updateuser.html',
+        controller: 'UpdateUserCtrl'
       })
 
       //登录页面

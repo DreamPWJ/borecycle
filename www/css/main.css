@@ -22,7 +22,7 @@
 }
 
 .slider-pager-page.active {
-  color: #11c1f3;
+  color: #ffffff;
 }
 
 .main-list {
@@ -73,8 +73,37 @@
   background-color: #11c1f3 !important;
   color: #ffffff !important;
   border-radius: 50%;
+  box-shadow: 0px 0px 5px #888888;
   top: -0.6rem;
   opacity: 1 !important;
+}
+
+#paymodal {
+  min-height: 50% !important;
+  height: 50%;
+  top: 50%;
+  bottom: 0;
+}
+
+#paymodal .ion-ios-arrow-left {
+  font-size: 1.6rem;
+  margin-left: 0.6rem;
+}
+
+#share {
+  min-height: 40% !important;
+  height: 40%!important;
+  top: 60%!important;
+  bottom: 0;
+}
+
+#share .row  {
+  height: 5rem;!important;
+}
+
+
+#share .row .iconfont {
+  font-size: 2rem!important;
 }
 
 .border-rb {

@@ -17,19 +17,19 @@
     <ion-list>
       <ion-item ng-href="">
         <h2><i class="icon ion-ios-circle-filled calm "></i> 发货提醒 <span class="item-note right-1">10:50</span></h2>
-        <h4> <i class="icon ion-email  padding-right calm"></i>提示信息：已读 </h4>
+        <h4> <i class="icon iconfont icon-tishi   calm" style="font-size: 1rem!important;"></i>提示信息：已读 </h4>
         <p style="padding-left: 0.8rem; white-space: normal;">您的收货单SL2016050110111231已经发货，交易方式是送货上门，将在两天之内到货。</p>
         <ion-option-button class="button-balanced">未读</ion-option-button>
       </ion-item>
       <ion-item ng-href="">
-        <h2><i class="icon ion-ios-circle-filled calm "></i> 发货提醒 <span class="item-note ">10:50</span></h2>
-        <h4> <i class="icon ion-email  padding-right calm"></i>提示信息：已读 </h4>
+        <h2><i class="icon ion-ios-circle-filled calm "></i> 发货提醒 <span class="item-note right-1">10:50</span></h2>
+        <h4> <i class="icon iconfont icon-tishi   calm" style="font-size: 1rem!important;"></i>提示信息：已读 </h4>
         <p style="padding-left: 0.8rem; white-space: normal;">您的收货单SL2016050110111231已经发货，交易方式是送货上门，将在两天之内到货。</p>
         <ion-option-button class="button-balanced">未读</ion-option-button>
       </ion-item>
       <ion-item ng-href="">
-        <h2><i class="icon ion-ios-circle-filled calm "></i> 发货提醒 <span class="item-note ">10:50</span></h2>
-        <h4> <i class="icon ion-email  padding-right calm"></i>提示信息：已读 </h4>
+        <h2><i class="icon ion-ios-circle-filled calm "></i> 发货提醒 <span class="item-note right-1">10:50</span></h2>
+        <h4> <i class="icon iconfont icon-tishi   calm" style="font-size: 1rem!important;"></i>提示信息：已读 </h4>
         <p style="padding-left: 0.8rem; white-space: normal;">您的收货单SL2016050110111231已经发货，交易方式是送货上门，将在两天之内到货。</p>
         <ion-option-button class="button-balanced">未读</ion-option-button>
       </ion-item>
@@ -39,7 +39,7 @@
       <ion-item ng-href="" ng-repeat="item in newsList | orderBy : item.createdate ">
         <h2><i class="icon ion-ios-circle-filled " ng-class="{true:'calm',false:'grey'}[item.look==0]"></i>
           {{item.title}} <span class="item-note right-1">{{item.createdate | date:'yyyy-MM-dd HH:mm'}}</span></h2>
-        <h4><i class="icon ion-email  padding-right" ng-class="{true:'calm',false:'grey'}[item.look==0]"></i>提示信息：{{item.look==0?'未读':'已读'}}
+        <h4><i class="icon iconfont icon-tishi  " style="font-size: 1rem!important;" ng-class="{true:'calm',false:'grey'}[item.look==0]"></i>提示信息：{{item.look==0?'未读':'已读'}}
         </h4>
         <p style="padding-left: 0.8rem; white-space: normal;">{{item.content}}</p>
         <ion-option-button class="button-balanced" ng-click="updateNewsLook(item.look==0?1:0,item.id)">
