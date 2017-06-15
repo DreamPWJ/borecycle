@@ -1,0 +1,20 @@
+<ion-view>
+  <ion-nav-buttons side="left">
+    <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back
+            native-options="{type: 'slide',direction: 'right'}" ng-click="$ionicGoBack()"></button>
+  </ion-nav-buttons>
+  <ion-nav-title>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> {{title}}</h1>
+  </ion-nav-title>
+  <ion-nav-buttons  side="right">
+    <button ng-if="!isWeiXin" class="button icon ion-more no-border" ng-click="shareActionSheet()"></button>
+  </ion-nav-buttons>
+  <ion-content overflow-scroll="false" has-bouncing="true">
+    <h2 class="item  item-borderless text-center item-text-wrap">{{helpdata.Title}}</h2>
+
+    <div class="item item-body item-image">
+      <div ng-bind-html="helpdata.Content"></div>
+    </div>
+  </ion-content>
+
+</ion-view>

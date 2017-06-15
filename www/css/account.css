@@ -1,3 +1,12 @@
+.account .item h2 {
+  color: #585858;
+}
+
+.account .icon, account .iconfont {
+  color: #585858;
+  font-size: 1.5rem;
+}
+
 #login {
   padding-top: 1.5rem;
 }
@@ -10,14 +19,7 @@
   color: #11c1f3;
 }
 
-.account .item h2 {
-  color: #585858;
-}
 
-.account .icon, account .iconfont {
-  color: #585858;
-  font-size: 1.5rem;
-}
 
 .account .order {
   border-bottom: 1px solid rgba(221, 221, 221, 0.5) !important;
@@ -54,6 +56,28 @@
   border-left: 2.2rem solid transparent;
   right: 0;
   bottom: 0;
+}
+
+.authcode {
+  position: absolute;
+  top: 3.3rem;
+  right: 0.5rem;
+  height: 35px;
+  line-height: 35px;
+  background-color: #11c1f3;
+  border: none;
+  border-radius: 0.2rem;
+  color: #ffffff;
+  z-index: 1000;
+}
+
+.disabledauthcode {
+  background-color: rgba(17, 193, 243, 0.6);
+
+}
+
+.authcode:active {
+  background-color:#139EF3 ;
 }
 
 

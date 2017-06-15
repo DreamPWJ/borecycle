@@ -257,6 +257,83 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'UpdateUserCtrl'
       })
 
+      //地址详细列表
+      .state('myaddress', {
+        url: '/myaddress',
+        cache: false,
+        templateUrl: 'templates/account/myaddress.html',
+        controller: 'MyAddressCtrl'
+
+      })
+
+      //添加地址
+      .state('addaddress', {
+        url: '/addaddress',
+        cache: false,
+        templateUrl: 'templates/account/addaddress.html',
+        controller: 'AddAddressCtrl'
+
+      })
+
+      //我的设置
+      .state('setting', {
+        url: '/setting',
+        cache: false,
+        templateUrl: 'templates/account/setting.html',
+        controller: 'SettingCtrl'
+      })
+
+      //设置安全
+      .state('accountsecurity', {
+        url: '/accountsecurity',
+        cache: false,
+        templateUrl: 'templates/account/accountsecurity.html',
+        controller: 'AccountSecurityCtrl'
+      })
+
+      //解绑手机
+      .state('cancelmobile', {
+        url: '/cancelmobile',
+        templateUrl: 'templates/account/cancelmobile.html',
+        controller: 'CancelMobileCtrl'
+      })
+
+      //绑定手机
+      .state('bindingmobile', {
+        url: '/bindingmobile/:oldphone',
+        templateUrl: 'templates/account/bindingmobile.html',
+        controller: 'BindingMobileCtrl'
+      })
+
+      //实名认证
+      .state('realname', {
+        url: '/realname',
+        cache: false,
+        templateUrl: 'templates/account/realname.html',
+        controller: 'RealNameCtrl'
+      })
+
+      //绑定邮箱
+      .state('bindingemail', {
+        url: '/bindingemail',
+        templateUrl: 'templates/account/bindingemail.html',
+        controller: 'BindingEmailCtrl'
+      })
+
+      //认证邮箱
+      .state('authenticationemail', {
+        url: '/authenticationemail',
+        templateUrl: 'templates/account/authenticationemail.html',
+        controller: 'AuthenticationEmailCtrl'
+      })
+
+      //帮助信息共用模板
+      .state('help', {
+        url: '/help/:ID',
+        templateUrl: 'templates/account/help.html',
+        controller: 'HelpCtrl'
+      })
+
       //登录页面
       .state('login', {
         url: '/login',

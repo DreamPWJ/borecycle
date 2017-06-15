@@ -412,6 +412,58 @@ angular.module('starter.services', [])
             // constant progress updates
           });
       },
+      getCurrentCityName: function (params) { //获取首页地理位置城市名称 高德web API
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'GET',
+          url: " http://restapi.amap.com/v3/geocode/regeo",
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (data) {
+          deferred.reject(data);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getDistrict: function (params) { //行政区域查询高德web API
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'GET',
+          url: "http://restapi.amap.com/v3/config/district",
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (data) {
+          deferred.reject(data);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      countDown: function ($scope) {//60s倒计时
+        var second = 60,
+          timePromise = undefined;
+        timePromise = $interval(function () {
+          if (second <= 0) {
+            $interval.cancel(timePromise);
+            $scope.paracont = "重发验证码";
+            $scope.paraclass = true;
+          } else {
+            $scope.paraclass = false;
+            $scope.paracont = second + "s后重试";
+            second--;
+          }
+        }, 1000, 100);
+      },
+      checkMobilePhone: function ($scope, mobilephone) {  //检查手机号
+        if (/^1(3|4|5|7|8)\d{9}$/.test(mobilephone)) {
+          $scope.paraclass = true;
+          return true;
+        } else {
+          $scope.paraclass = false;
+          return false;
+        }
+      },
       showUpdateConfirm: function (updatecontent, appurl, version) {    // 显示是否更新对话框
         var confirmPopup = $ionicPopup.confirm({
           cssClass: "show-updateconfirm",

@@ -1,0 +1,27 @@
+<ion-view>
+  <ion-nav-buttons side="left">
+    <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back
+            native-options="{type: 'slide',direction: 'right'}" ng-click="$ionicGoBack()"></button>
+  </ion-nav-buttons>
+  <ion-nav-title>
+    <h1 class="title"> <img id="logo" src="img/logo.png" alt=""/> 账号安全</h1>
+  </ion-nav-title>
+
+  <ion-content overflow-scroll="false" class="stable-bg account">
+      <p></p>
+      <ion-list>
+        <ion-item ng-href="#/cancelmobile" class="item-icon-right">
+          <h2>绑定手机 <span class="item-note " ng-class="{true:'balanced',false:'assertive'}[phonestatus==1||phonestatus==2]">{{certstatestatus[phonestatus]}}</span></h2>
+          <i class="icon ion-ios-arrow-right grey-arrow-right"></i>
+        </ion-item>
+        <ion-item ng-href="#/bindingemail" class="item-icon-right">
+          <h2>绑定邮箱 <span class="item-note " ng-class="{true:'balanced',false:'assertive'}[emailstatus==1||emailstatus==2]">{{certstatestatus[emailstatus]}}</span></h2>
+          <i class="icon ion-ios-arrow-right grey-arrow-right"></i>
+        </ion-item>
+        <ion-item ng-href="#/realname" class="item-icon-right">
+          <h2>实名认证 <span class="item-note " ng-class="{true:'balanced',false:'assertive'}[identitystatus==1||identitystatus==2]">{{certstatestatus[identitystatus]}}</span></h2>
+          <i class="icon ion-ios-arrow-right grey-arrow-right"></i>
+        </ion-item>
+      </ion-list>
+  </ion-content>
+</ion-view>

@@ -1,11 +1,12 @@
 <ion-modal-view>
-  <ion-header-bar class="bar bar-header bar-positive">
-    <h1 class="title"> 我的地址</h1>
-    <button class="button button-clear" ng-click="modal.hide()">关闭</button>
+  <ion-header-bar class="bar bar-header bar-calm">
+    <button class="button button-clear icon ion-ios-arrow-left" ng-click="modal.hide()"></button>
+    <h1 class="title"><img id="logo" src="img/logo.png" alt=""/> 地址选择</h1>
   </ion-header-bar>
-  <ion-content overflow-scroll="false" >
+  <ion-content overflow-scroll="false">
     <ion-list>
-      <ion-item ng-click="getAddressPCCList(item.level=='street'?item.name:item.adcode)" ng-repeat="item in addressinfo">
+      <ion-item ng-click="getAddressPCCList(item.level=='street'?item.name:item.adcode)"
+                ng-repeat="item in addressinfo">
         {{item.name}}
       </ion-item>
     </ion-list>
