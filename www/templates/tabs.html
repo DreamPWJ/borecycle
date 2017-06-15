@@ -3,31 +3,30 @@ Create tabs with an icon and label, using the tabs-positive style.
 Each tab's child <ion-nav-view> directive will have its own
 navigation history that also transitions its views in and out.
 -->
-<ion-tabs class="tabs-icon-top tabs-color-active-calm tabs-light">
+<ion-tabs class="tabs-icon-top tabs-color-active-calm tabs-light main-footer-bar" delegate-handle="main-tabs">
   <!-- 主页 Tab -->
 
-  <ion-tab  title="主页"   icon-off="iconfont icon-home" icon-on="iconfont icon-homefill" href="#/tab/main">
+  <ion-tab title="主页" icon-off="iconfont icon-home" icon-on="iconfont icon-homefill" href="#/tab/main">
     <ion-nav-view name="tab-main"></ion-nav-view>
   </ion-tab>
 
   <!-- 参考价 Tab -->
-  <ion-tab    title="参考价"    icon-off="iconfont  icon-recharge" icon-on="iconfont icon-rechargefill"   href="#/tab/referenceprice">
-    <ion-nav-view  name="tab-referenceprice"></ion-nav-view>
+  <ion-tab title="参考价" icon-off="iconfont  icon-recharge" icon-on="iconfont icon-rechargefill"
+           href="#/tab/referenceprice">
+    <ion-nav-view name="tab-referenceprice"></ion-nav-view>
   </ion-tab>
 
   <!-- 订单 Tab -->
-  <ion-tab    title="订单"  class="tab-largen" icon-off="iconfont  icon-formfill" icon-on="iconfont icon-form"   href="#/tab/order">
-    <ion-nav-view  name="tab-order"></ion-nav-view>
+  <ion-tab title="订单" class="tab-largen" icon-off="iconfont  icon-formfill" icon-on="iconfont icon-formfill"
+           href="#/tab/order">
+    <ion-nav-view name="tab-order"></ion-nav-view>
   </ion-tab>
 
-  <!-- 订单 Tab -->
-  <ion-tab    title=""   icon-off="" icon-on=""   href="#/tab/order">
-    <ion-nav-view  name="tab-order"></ion-nav-view>
-  </ion-tab>
 
   <!-- 消息Tab -->
-  <ion-tab    title="消息"    icon-off="iconfont  icon-mark " icon-on="iconfont  icon-markfill" badge-style="badge-assertive"  badge="0"  href="#/tab/news">
-    <ion-nav-view  name="tab-news"></ion-nav-view>
+  <ion-tab title="消息" icon-off="iconfont  icon-mark " icon-on="iconfont  icon-markfill" badge-style="badge-assertive"
+           badge="0" href="#/tab/news">
+    <ion-nav-view name="tab-news"></ion-nav-view>
   </ion-tab>
 
   <!--我的 Tab -->

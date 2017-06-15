@@ -64,24 +64,17 @@
   vertical-align: text-bottom;
 }
 
-#myorderlist .pending a {
-  display: inline-block !important;
-}
-
-.tab-largen {
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  background-color: #11c1f3;
+.tab-largen.tab-item {
+  position: relative;
+  display: inline-block;
+  max-width: 56px !important;
+  height: 56px !important;
+  line-height: 22px !important;
+  background-color: #11c1f3 !important;
   color: #ffffff !important;
   border-radius: 50%;
-  top: -0.1rem;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.tab-largen.tab-item-active, ion-tabs.tabs-color-active-calm tab-largen.tab-item {
-  color: #ffffff !important;
+  top: -0.6rem;
+  opacity: 1 !important;
 }
 
 .border-rb {
