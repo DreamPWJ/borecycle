@@ -16,7 +16,8 @@ $dark:                            #444 !default;
 */
 /*任何在@import之前设置的编码都会被默认的变量复写掉  再重新编译Sass生成css文件 根据需要修改覆盖默认值*/
 
-$positive:#1983D1 !default;
+$positive:#00ACFF !default;
+$calm:#11c1f3 !default;
 $energized:#f26604 !default;
 
 @mixin flex($fg: 1, $fs: null, $fb: null) {

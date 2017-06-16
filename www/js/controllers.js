@@ -8,24 +8,16 @@ angular.module('starter.controllers', [])
 
 
   //APP首页面
-  .controller('MainCtrl', function ($scope, $rootScope, CommonService, $ionicHistory, $ionicSlideBoxDelegate) {
+  .controller('MainCtrl', function ($scope, $rootScope, CommonService, $ionicHistory) {
 
-    //获取广告图
-    /*    MainService.getAdMsg().success(function (data) {
-     $scope.adImg = data.Values;
-     //ng-repeat遍历生成一个个slide块的时候，执行完成页面是空白的 手动在渲染之后更新一下，在控制器注入$ionicSlideBoxDelegate，然后渲染数据之后
-     $timeout(function () {
-     $ionicSlideBoxDelegate.$getByHandle("slideboximgs").update();
-     //上面这句就是实现无限循环的关键，绑定了滑动框，
-     $ionicSlideBoxDelegate.$getByHandle("slideboximgs").loop(true);
-     /!*            console.log($ionicSlideBoxDelegate.$getByHandle("slideboximgs").slidesCount());*!/
-     }, 100)
-     })*/
+
 
     //在首页中清除导航历史退栈
     $scope.$on('$ionicView.afterEnter', function () {
       $ionicHistory.clearHistory();
+
     })
+
   })
 
   //登录页面
@@ -191,7 +183,7 @@ angular.module('starter.controllers', [])
     $scope.figureurl = $stateParams.figure;
     $scope.uploadtype = 5;//上传媒体操作类型 1.卖货单 2 供货单 3 买货单 4身份证 5 头像
     $scope.uploadActionSheet = function () {
-      CommonService.uploadActionSheet($scope, 'User',true);
+      CommonService.uploadActionSheet($scope, 'User', true);
     }
   })
 
@@ -425,46 +417,46 @@ angular.module('starter.controllers', [])
   .controller('SettingCtrl', function ($scope, $rootScope, $state, BoRecycle, CommonService) {
     $scope.version = BoRecycle.version;
     $scope.securitylevel = '未知';
-   /* var certstate = JSON.parse(localStorage.getItem("user")).certstate;
-    if (certstate.indexOf('2') == -1) {
-      $scope.securitylevel = '极低';
-    }
-    if ((certstate.substr(0, 1) == 2 || certstate.substr(1, 1) == 2) || (certstate.substr(3, 1) == 2 || certstate.substr(4, 1) == 2)) {
-      $scope.securitylevel = '中等';
-    }
-    if ((certstate.substr(0, 1) == 2 || certstate.substr(1, 1) == 2) && (certstate.substr(3, 1) == 2 || certstate.substr(4, 1) == 2)) {
-      $scope.securitylevel = '高';
-    }
-    if ((certstate.substr(0, 1) == 2 && certstate.substr(1, 1) == 2) && (certstate.substr(3, 1) == 2 || certstate.substr(4, 1) == 2)) {
-      $scope.securitylevel = '较高';
-    }
-    if ((certstate.substr(0, 1) == 2 && certstate.substr(1, 1) == 2) && (certstate.substr(3, 1) == 2 && certstate.substr(4, 1) == 2)) {
-      $scope.securitylevel = '极高';
-    }*/
+    /* var certstate = JSON.parse(localStorage.getItem("user")).certstate;
+     if (certstate.indexOf('2') == -1) {
+     $scope.securitylevel = '极低';
+     }
+     if ((certstate.substr(0, 1) == 2 || certstate.substr(1, 1) == 2) || (certstate.substr(3, 1) == 2 || certstate.substr(4, 1) == 2)) {
+     $scope.securitylevel = '中等';
+     }
+     if ((certstate.substr(0, 1) == 2 || certstate.substr(1, 1) == 2) && (certstate.substr(3, 1) == 2 || certstate.substr(4, 1) == 2)) {
+     $scope.securitylevel = '高';
+     }
+     if ((certstate.substr(0, 1) == 2 && certstate.substr(1, 1) == 2) && (certstate.substr(3, 1) == 2 || certstate.substr(4, 1) == 2)) {
+     $scope.securitylevel = '较高';
+     }
+     if ((certstate.substr(0, 1) == 2 && certstate.substr(1, 1) == 2) && (certstate.substr(3, 1) == 2 && certstate.substr(4, 1) == 2)) {
+     $scope.securitylevel = '极高';
+     }*/
   })
 
   //设置安全
   .controller('AccountSecurityCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
-/*    $scope.userid = localStorage.getItem("usertoken");
-    AccountService.getUserInfo($scope.userid).success(function (data) {
-      if (data.Key == 200) {
-        localStorage.setItem('user', JSON.stringify(data.Values));
-        $rootScope.userinfo = data.Values;
-        var certstate = data.Values.certstate;//获取认证状态参数
-        $scope.certstatestatus = ['未认证', '认证中', '已认证', '未通过'];
-        //ubstr(start,length)表示从start位置开始，截取length长度的字符串
-        $scope.phonestatus = certstate.substr(0, 1);//手机认证状态码
-        $scope.emailstatus = certstate.substr(1, 1);//邮箱认证状态码
-        $scope.secrecystatus = certstate.substr(2, 1);//保密认证状态码
-        $scope.identitystatus = certstate.substr(3, 1);//身份认证状态码
-        $scope.companystatus = certstate.substr(4, 1);//企业认证状态码
-        $scope.bankstatus = certstate.substr(5, 1);//银行账号状态码
+    /*    $scope.userid = localStorage.getItem("usertoken");
+     AccountService.getUserInfo($scope.userid).success(function (data) {
+     if (data.Key == 200) {
+     localStorage.setItem('user', JSON.stringify(data.Values));
+     $rootScope.userinfo = data.Values;
+     var certstate = data.Values.certstate;//获取认证状态参数
+     $scope.certstatestatus = ['未认证', '认证中', '已认证', '未通过'];
+     //ubstr(start,length)表示从start位置开始，截取length长度的字符串
+     $scope.phonestatus = certstate.substr(0, 1);//手机认证状态码
+     $scope.emailstatus = certstate.substr(1, 1);//邮箱认证状态码
+     $scope.secrecystatus = certstate.substr(2, 1);//保密认证状态码
+     $scope.identitystatus = certstate.substr(3, 1);//身份认证状态码
+     $scope.companystatus = certstate.substr(4, 1);//企业认证状态码
+     $scope.bankstatus = certstate.substr(5, 1);//银行账号状态码
 
-      } else {
-        CommonService.platformPrompt('获取用户信息失败', 'close');
-      }
+     } else {
+     CommonService.platformPrompt('获取用户信息失败', 'close');
+     }
 
-    })*/
+     })*/
   })
 
   //解绑手机
@@ -561,10 +553,10 @@ angular.module('starter.controllers', [])
     $scope.params = {
       userid: localStorage.getItem("usertoken"),
     }
-/*    AccountService.getCertification($scope.params).success(function (data) {
-      $scope.certificationinfo = data.Values;
-      console.log($scope.certificationinfo);
-    })*/
+    /*    AccountService.getCertification($scope.params).success(function (data) {
+     $scope.certificationinfo = data.Values;
+     console.log($scope.certificationinfo);
+     })*/
     //申请实名认证
     $scope.addCertificationName = function () {
       if ($scope.ImgsPicAddr.length == 0) {

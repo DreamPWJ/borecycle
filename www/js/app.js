@@ -17,7 +17,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           StatusBar.styleLightContent();
         }
         if ($ionicPlatform.is('android')) {
-          StatusBar.backgroundColorByHexString("#11c1f3");
+          StatusBar.backgroundColorByHexString("#00ACFF");
         }
 
       }

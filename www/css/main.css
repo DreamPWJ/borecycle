@@ -56,8 +56,8 @@
 }
 
 #myorderlist-tab .active {
-  color: #11c1f3;
-  border-bottom: 2px solid #11c1f3;
+  color: #00ACFF;
+  border-bottom: 2px solid #00ACFF;
 }
 
 #myorderlist .jiedan i, #myorderlist .pending i {
@@ -67,14 +67,15 @@
 .tab-largen.tab-item {
   position: relative;
   display: inline-block;
-  max-width: 56px !important;
-  height: 56px !important;
+  max-width: 58px !important;
+  height: 58px !important;
   line-height: 22px !important;
-  background-color: #11c1f3 !important;
+  background-color: #00ACFF !important;
   color: #ffffff !important;
   border-radius: 50%;
-  box-shadow: 0px 0px 5px #888888;
-  top: -0.6rem;
+  border: 2px solid #ffffff;
+  box-shadow: 0px -1px 2px rgba(136, 136, 136, 0.5);
+  top: -0.7rem;
   opacity: 1 !important;
 }
 
@@ -92,18 +93,27 @@
 
 #share {
   min-height: 40% !important;
-  height: 40%!important;
-  top: 60%!important;
+  height: 40% !important;
+  top: 60% !important;
   bottom: 0;
 }
 
-#share .row  {
-  height: 5rem;!important;
+#share .row {
+  height: 5rem !important;
+}
+#main .bar-positive{
+  background-color: transparent;
+  background-image: none !important;
 }
 
+#main .topbj {
+  background-image: url(../img/main/topbj.jpg);
+  background-size: cover;
+  height: 15rem;
+}
 
 #share .row .iconfont {
-  font-size: 2rem!important;
+  font-size: 2rem !important;
 }
 
 .border-rb {
