@@ -123,17 +123,6 @@ angular.module('starter.services', [])
         });
       },
 
-      ionicLoadingShow: function (content) {
-        $ionicLoading.show({
-          template: '<ion-spinner icon="bubbles" class="spinner-calm"></ion-spinner><p>' + (content ? content : '') + '</p>',
-          animation: 'fade-in',
-          showBackdrop: false
-
-        });
-      },
-      ionicLoadingHide: function () {
-        $ionicLoading.hide();
-      },
 
       //扫一扫
       barcodeScanner: function ($scope) {
@@ -235,12 +224,12 @@ angular.module('starter.services', [])
           return;
         }
         if (type == 0 && !isSingle) {//图库
-          var options = {
+/*          var options = {
             maximumImagesCount: 6 - $scope.imageList.length,//需要显示的图片的数量
             width: 800,
             height: 800,
             quality: 80
-          };
+          };*/
           $cordovaImagePicker.getPictures(options).then(function (results) {
             $scope.imageUploadCount = results.length;
             for (var i = 0, len = results.length; i < len; i++) {
@@ -251,6 +240,22 @@ angular.module('starter.services', [])
           }, function (error) {
             $cordovaToast.showLongCenter('获取图片失败');
           });
+
+          window.imagePicker.getPictures(
+            function(results) {
+              $scope.imageUploadCount = results.length;
+              for (var i = 0, len = results.length; i < len; i++) {
+                $scope.imageList.push(results[i]);
+                AccountService.addFilenames($scope, {filenames: filenames}, results[i]);
+                console.log('图片URI: ' + results[i]);
+              }
+            }, function (error) {
+              $cordovaToast.showLongCenter('获取图片失败');
+            }, {
+              maximumImagesCount: 6,
+              width: 800
+            }
+          );
         }
         if (type == 1 || (type == 0 && isSingle)) {  //拍照
           //$cordovaCamera.cleanup();
@@ -1370,7 +1375,8 @@ angular.module('starter.services', [])
         if (config.url.toString().indexOf('http://') === 0) {
           //http请求Loading加载动画
           $injector.get('$ionicLoading').show({
-            template: '<ion-spinner icon="bubbles" class="spinner-calm"></ion-spinner><p>'
+            template: '<ion-spinner icon="bubbles" class="spinner-light"></ion-spinner><p>',
+            noBackdrop:true
           });
         }
         //授权

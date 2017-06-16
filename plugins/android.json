@@ -50,10 +50,10 @@
         "cordova-plugin-file-opener2": {
             "PACKAGE_NAME": "com.boolv.borecycle"
         },
-        "cordova-plugin-imagepicker": {
+        "cordova-plugin-camera": {
             "PACKAGE_NAME": "com.boolv.borecycle"
         },
-        "cordova-plugin-camera": {
+        "com.synconset.imagepicker": {
             "PACKAGE_NAME": "com.boolv.borecycle"
         }
     },

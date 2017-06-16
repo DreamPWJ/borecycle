@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="multi_app_name">图片多选</string>
+    <string name="free_version_label">剩余图片: %d</string>
+    <string name="error_database">打开相册出现错误</string>
+    <string name="requesting_thumbnails">请稍后...</string>
+    <string name="multi_image_picker_processing_images_title">最多限制</string>
+    <string name="multi_image_picker_processing_images_message">您只能同时选择 %d 张图片</string>
+    <string name="discard" translatable="false">取消</string>
+    <string name="done" translatable="false">确定</string>
+ </resources>

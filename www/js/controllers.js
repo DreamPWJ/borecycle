@@ -9,11 +9,7 @@ angular.module('starter.controllers', [])
 
   //APP首页面
   .controller('MainCtrl', function ($scope, $rootScope, CommonService, $ionicHistory, $ionicSlideBoxDelegate) {
-    $scope.imgsPicAddr = [];//图片信息数组
-    $scope.imageList = [];  //上传图片数组集合
-    $scope.uploadActionSheet = function () {
-      CommonService.uploadActionSheet($scope, "upload", true);
-    }
+
     //获取广告图
     /*    MainService.getAdMsg().success(function (data) {
      $scope.adImg = data.Values;
@@ -195,7 +191,7 @@ angular.module('starter.controllers', [])
     $scope.figureurl = $stateParams.figure;
     $scope.uploadtype = 5;//上传媒体操作类型 1.卖货单 2 供货单 3 买货单 4身份证 5 头像
     $scope.uploadActionSheet = function () {
-      CommonService.uploadActionSheet($scope, 'User');
+      CommonService.uploadActionSheet($scope, 'User',true);
     }
   })
 
