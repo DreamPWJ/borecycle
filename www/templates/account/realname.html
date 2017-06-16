@@ -31,7 +31,7 @@
         </label>
         <label class="item item-input item-icon-right " ng-click="uploadActionSheet()">
           <span class="input-label"> 上传身份证  <span class="padding-left grey">  必须上传 请参看示例</span></span>
-          <i class="icon ion-android-add calm"></i>
+          <i class="icon iconfont icon-add positive"></i>
         </label>
         <div class="row  row-wrap row-horizontal-around">
           <img ng-repeat="item in imageList" ng-click="shouBigImage(item)" ng-src="{{item}}" alt="实名认证图片"
@@ -48,7 +48,7 @@
       </div>
     </ion-content>
     <div class="padding light-bg bottom-0" keyboard-attach>
-      <button ng-disabled="!(realname.$valid&&verify)" class="button button-calm full-image "
+      <button ng-disabled="!(realname.$valid&&verify)" class="button button-positive full-image "
               ng-click="addCertificationName()">
         提交认证
       </button>

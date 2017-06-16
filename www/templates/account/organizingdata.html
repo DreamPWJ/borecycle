@@ -1,0 +1,70 @@
+<ion-view>
+  <ion-nav-buttons side="left">
+    <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back ng-click="$ionicGoBack()"
+            native-options="{type: 'slide',direction: 'right'}"></button>
+  </ion-nav-buttons>
+  <ion-nav-title>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 完善资料</h1>
+  </ion-nav-title>
+
+
+  <ion-content overflow-scroll="false" class="stable-bg" id="organizingdata">
+    <form name="loginForm">
+      <div class="list">
+        <label class="item item-input">
+          <span class="input-label icon ion-ios-person-outline"> 姓名</span>
+          <input type="text" name="username" ng-model="user.username" placeholder="请输入真实姓名" required/>
+        </label>
+        <label class="item item-input">
+          <span class="input-label icon ion-ios-telephone-outline"> 手机号码</span>
+          <input type="number" name="username" ng-model="user.username" ng-keyup="checkphone(user.username)"
+                 maxlength="11" placeholder="请输入真实的手机号码" required/>
+        </label>
+
+        <label class="item item-input">
+          <span class="input-label icon ion-ios-locked-outline "> 验证码</span>
+          <input type="number" ng-model="user.password" placeholder="请输入短信验证码" required/>
+        </label>
+        <button class="authcode" ng-class="{false:'disabledauthcode'}[paraclass]" ng-click="sendCode()">{{paracont}}
+        </button>
+        <label class="item item-input">
+          <span class="input-label icon ion-ios-calculator-outline"> 月回收量</span>
+          <input type="number" name="username" ng-model="user.username" placeholder="请输入月回收量" required/>
+        </label>
+        <label class="item ">
+          <span class="input-label icon ion-ios-trash-outline " > 回收品类</span>
+          <ion-checkbox class="item-borderless checkbox-calm" ng-model="a">
+            手机
+          </ion-checkbox>
+          <ion-checkbox class="item-borderless checkbox-calm" ng-model="b">
+            电视机
+          </ion-checkbox>
+          <ion-checkbox class="item-borderless checkbox-calm" ng-model="c">
+            洗衣机
+          </ion-checkbox>
+
+        </label>
+        <label class="item item-input " ng-click="openModal()">
+          <span class="input-label icon ion-ios-location-outline"> 回收区域 </span>
+          <p class="{{addresspcd?'dark':'grey'}}">{{addresspcd?addresspcd:"请选择回收区域"}}</p>
+        </label>
+
+        <p></p>
+        <div class="padding-horizontal">
+          <button class="button full-image button-positive " ng-click="loginSubmit()"
+                  ng-disabled="!(loginForm.$valid&&agreedeal)">提交
+          </button>
+          <p></p>
+          <a ng-href="#/login" class="button full-image button-energized button-outline energized ">跳过,下次再完善</a>
+        </div>
+
+      </div>
+
+
+    </form>
+
+
+  </ion-content>
+
+</ion-view>
+

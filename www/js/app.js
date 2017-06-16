@@ -333,19 +333,47 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'HelpCtrl'
       })
 
-      //登录页面
+      //用户密码登录页面
       .state('login', {
         url: '/login',
         templateUrl: 'templates/login.html',
         controller: 'LoginCtrl'
       })
 
+      //手机验证登录页面
+      .state('mobilelogin', {
+        url: '/mobilelogin',
+        templateUrl: 'templates/account/mobilelogin.html',
+        controller: 'MobileLoginCtrl'
+      })
       //注册页面
       .state('register', {
         url: '/register',
         templateUrl: 'templates/account/register.html',
         controller: 'RegisterCtrl'
       })
+
+      //完善资料页面
+      .state('organizingdata', {
+        url: '/organizingdata',
+        templateUrl: 'templates/account/organizingdata.html',
+        controller: 'OrganizingDataCtrl'
+      })
+
+      //登记信息
+      .state('information', {
+        url: '/information',
+        templateUrl: 'templates/checkin/information.html',
+        controller: 'InformationCtrl'
+      })
+
+      //登记货源
+      .state('supplyofgoods', {
+        url: '/supplyofgoods',
+        templateUrl: 'templates/checkin/supplyofgoods.html',
+        controller: 'SupplyOfGoodsCtrl'
+      })
+
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/tab/main');
 

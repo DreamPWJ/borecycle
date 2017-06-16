@@ -32,47 +32,34 @@
           <span class="input-label icon ion-ios-locked-outline"> 验证码 </span>
           <span class="row row-no-padding">
           <input type="number" class="col-55" placeholder="请输入验证码" ng-model="user.verify" required/>
-            <button class="button button-small button-calm  col-33 " ng-class="{false:'button-outline'}[paraclass]"
+            <button class="button button-small button-positive  col-33 " ng-class="{false:'button-outline'}[paraclass]"
                     ng-click="getVerifyCode()">{{paracont}}</button>
           </span>
         </div>
 
         <ion-item class="item-divider ">
           用户类型
-          <p class="text-right item-note"><a class="calm  icon ion-ios-help-outline" ng-href=""
+          <p class="text-right item-note"><a class="positive  icon ion-ios-help-outline" ng-href=""
                                              nav-direction=forward> 什么是用户类型</a></p>
-
-
         </ion-item>
+
         <ion-list>
-          <ion-radio ng-model="choice" icon="ion-android-done" ng-value="1" ng-change="">销售员
+          <ion-radio ng-model="choice" icon="ion-android-done" ng-value="1" ng-change="">上门回收者
           </ion-radio>
-          <ion-radio ng-model="choice" icon="ion-android-done" ng-value="2" ng-change="">上门回收者
+          <ion-radio ng-model="choice" icon="ion-android-done" ng-value="2" ng-change="">货场
           </ion-radio>
-          <ion-radio ng-model="choice" icon="ion-android-done" ng-value="3" ng-change="">货场
+          <ion-radio ng-model="choice" icon="ion-android-done" ng-value="3" ng-change="">二手商家
           </ion-radio>
         </ion-list>
 
-        <!--        <div class=" row row-no-padding row-wrap ">
-                  <ion-checkbox class="item-borderless checkbox-calm" ng-model="a">
-                    销售员
-                  </ion-checkbox>
-                  <ion-checkbox class="item-borderless checkbox-calm" ng-model="b">
-                    上门回收者
-                  </ion-checkbox>
-                  <ion-checkbox class="item-borderless checkbox-calm" ng-model="c">
-                    货场
-                  </ion-checkbox>
-                </div>-->
-        <!--        <p class="light-bg padding-top"></p>-->
-        <ion-checkbox class=" stable-bg item-borderless checkbox-calm" ng-model="agreedeal" ng-checked="true">
+        <ion-checkbox class=" stable-bg item-borderless checkbox-positive" ng-model="agreedeal" ng-checked="true">
           同意注册协议
         </ion-checkbox>
         <div class="padding-horizontal">
-          <button class="button full-image button-calm " ng-click="register()"
+          <button class="button full-image button-positive " ng-click="register()"
                   ng-disabled="!(registerForm.$valid&&agreedeal)">注册
           </button>
-          <p class="padding-top"></p>
+          <p ></p>
           <a ng-href="#/login" class="button full-image button-energized button-outline energized ">已有账号 立即登录</a>
         </div>
 

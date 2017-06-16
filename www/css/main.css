@@ -1,7 +1,6 @@
 #logo {
-  position: absolute;
+  position: relative;
   top: 0.4rem;
-  left: 3rem;
   width: 1.8rem;
   height: 1.8rem;
 
@@ -39,6 +38,10 @@
 #myorderlist-tab .active {
   color: #00ACFF;
   border-bottom: 2px solid #00ACFF;
+}
+
+#myorderlist .jiedan, #myorderlist .pending {
+  margin-top: 0.1rem !important;
 }
 
 #myorderlist .jiedan i, #myorderlist .pending i {
@@ -109,10 +112,12 @@
   font-size: 1.8rem;
   font-weight: bold;
 }
-#main .sub-total h3{
+
+#main .sub-total h3 {
   color: #FFFFFF;
   margin: 0;
 }
+
 #main .main-list a {
   padding: 1rem 1.2rem;
 }

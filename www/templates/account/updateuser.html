@@ -7,7 +7,7 @@
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/>{{type=='nickname'?"昵称设置":"性别设置"}} </h1>
   </ion-nav-title>
   <form name="updateuser">
-    <ion-content overflow-scroll="false" class="stable-bg " has-bouncing="true">
+    <ion-content overflow-scroll="false" class="stable-bg has-button-footer" has-bouncing="true">
       <div class="list  padding-top">
         <label ng-if="type=='nickname'" class="item item-input">
           <input type="text" ng-model="user.nickname" placeholder="{{value}}" maxlength="20" required>
@@ -35,7 +35,7 @@
 
     </ion-content>
     <div class="padding light-bg  bottom-0" keyboard-attach>
-      <button ng-disabled="!updateuser.$valid" class="button button-calm full-image " ng-click="updateUser()">保存
+      <button ng-disabled="!updateuser.$valid" class="button button-positive full-image " ng-click="updateUser()">保存
       </button>
     </div>
   </form>

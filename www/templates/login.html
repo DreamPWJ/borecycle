@@ -4,7 +4,7 @@
             native-options="{type: 'slide',direction: 'right'}" ></button>
   </ion-nav-buttons>
   <ion-nav-title>
-    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 登录</h1>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 账号密码登录</h1>
   </ion-nav-title>
   <ion-nav-buttons side="right">
     <a class="button button-clear" ng-href="#/register"
@@ -24,16 +24,16 @@
           <input type="text" ng-model="user.password" required/>
         </label>
 
-        <ion-checkbox class=" stable-bg item-borderless checkbox-calm" ng-model="agreedeal" ng-checked="true">
+        <ion-checkbox class=" stable-bg item-borderless checkbox-positive" ng-model="agreedeal" ng-checked="true">
           同意登录协议
         </ion-checkbox>
         <div class="padding-horizontal">
-          <button class="button full-image button-calm " ng-click="loginSubmit()"
+          <button class="button full-image button-positive " ng-click="loginSubmit()"
                   ng-disabled="!(loginForm.$valid&&agreedeal)">登录
           </button>
         </div>
         <div class="padding">
-          <p class="text-right padding-top" style="font-size: 1rem"><a class="calm" ng-href=""
+          <p class="text-right padding-top" style="font-size: 1rem"><a class="positive subdued" ng-href="#/mobilelogin"
                                    nav-direction=forward><i class="iconfont icon-xiangyou  "></i> 手机验证登录</a></p>
 
           <p class="text-right"><a class="light assertive icon ion-ios-help-outline" ng-href=""
@@ -46,6 +46,6 @@
 
 
   </ion-content>
-  <p class="fixed-bottom text-center">你还没有账号，请点击<a class="calm subdued" ng-href="#/register" nav-direction=forward> 立即注册</a></p>
+  <p class="fixed-bottom text-center hide-on-keyboard-open">你还没有账号，请点击<a class="positive subdued" ng-href="#/register" nav-direction=forward> 立即注册</a></p>
 </ion-view>
 

@@ -18,10 +18,66 @@ angular.module('starter.controllers', [])
 
   })
 
-  //登录页面
+  //用户密码登录页面
   .controller('LoginCtrl', function ($scope, $rootScope, CommonService, AccountService) {
     $scope.user = {};//提前定义用户对象
+    $scope.paracont = "获取验证码"; //初始发送按钮中的文字
+    $scope.agreedeal = true;//同意用户协议
+    $scope.paraclass = false; //控制验证码的disable
+    $scope.checkphone = function (mobilephone) {//检查手机号
+      AccountService.checkMobilePhone($scope, mobilephone);
+    }
+    $scope.sendCode = function () {
+      event.preventDefault();
+      if ($scope.paraclass) { //按钮可用
+        //60s倒计时
+        AccountService.countDown($scope);
+        AccountService.sendCode($scope.user.username).success(function (data) {
+          $scope.user.passwordcode = data.Values;
+        }).error(function () {
+          CommonService.platformPrompt("验证码获取失败!", 'close');
+        })
+      }
+    }
     $scope.loginSubmit = function () {
+      if ($scope.user.passwordcode != $scope.user.password) {
+        CommonService.platformPrompt("输入验证码不正确", 'close');
+        return;
+      }
+      AccountService.login($scope.user).success(function (data) {
+        CommonService.getStateName();   //跳转页面
+      }).error(function () {
+        CommonService.platformPrompt("登录失败!", 'close');
+      })
+    }
+  })
+
+  //手机验证登录页面
+  .controller('MobileLoginCtrl', function ($scope, $rootScope, CommonService, AccountService) {
+    $scope.user = {};//提前定义用户对象
+    $scope.agreedeal = true;//同意用户协议
+    $scope.paracont = "获取验证码"; //初始发送按钮中的文字
+    $scope.paraclass = false; //控制验证码的disable
+    $scope.checkphone = function (mobilephone) {//检查手机号
+      AccountService.checkMobilePhone($scope, mobilephone);
+    }
+    $scope.sendCode = function () {
+      event.preventDefault();
+      if ($scope.paraclass) { //按钮可用
+        //60s倒计时
+        AccountService.countDown($scope);
+        AccountService.sendCode($scope.user.username).success(function (data) {
+          $scope.user.passwordcode = data.Values;
+        }).error(function () {
+          CommonService.platformPrompt("验证码获取失败!", 'close');
+        })
+      }
+    }
+    $scope.loginSubmit = function () {
+      if ($scope.user.passwordcode != $scope.user.password) {
+        CommonService.platformPrompt("输入验证码不正确", 'close');
+        return;
+      }
       AccountService.login($scope.user).success(function (data) {
         CommonService.getStateName();   //跳转页面
       }).error(function () {
@@ -31,10 +87,79 @@ angular.module('starter.controllers', [])
   })
 
   //注册页面
-  .controller('RegisterCtrl', function ($scope, CommonService, AccountService) {
+  .controller('RegisterCtrl', function ($scope, $state, CommonService, AccountService) {
+    $scope.user = {};//定义用户对象
+    $scope.agreedeal = true;//同意用户协议
+    $scope.paracont = "获取验证码"; //初始发送按钮中的文字
+    $scope.paraclass = true; //控制验证码的disable
+    $scope.getVerifyCode = function () {
+      event.preventDefault();
+      event.stopPropagation();
+      if ($scope.paraclass) { //按钮可用
+        //60s倒计时
+        AccountService.countDown($scope);
+        AccountService.getVerifyCode({
+          mobile: localStorage.getItem("login_name"),
+          isFindPwd: "2"
+        }).success(function (data) {
+          if (data.status == 1) {
+            $scope.verify = data.data.info.verify;
+          } else {
+            CommonService.platformPrompt(data.info, 'close');
+          }
+
+        })
+      }
+
+    }
+    //注册
+    $scope.register = function () {
+      $state.go('organizingdata');
+    }
+  })
+
+  //完善资料页面
+  .controller('OrganizingDataCtrl', function ($scope, BoRecycle,CommonService, AccountService, $ionicScrollDelegate) {
+    CommonService.customModal($scope, 'templates/modal/addressmodal.html');
     $scope.user = {};//定义用户对象
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = true; //控制验证码的disable
+    $scope.addrinfo = {};//地址信息
+    //获取省市县
+    $scope.getAddressPCCList = function (adcode) {
+      if (isNaN(adcode) && adcode) {
+        $scope.addresspcd = $scope.addrinfo.province + $scope.addrinfo.city + $scope.addrinfo.area;
+        $scope.addrinfo.address = adcode;
+        $scope.modal.hide();
+        return;
+      }
+      AccountService.getDistrict({
+        key: BoRecycle.gaoDeKey,
+        keywords: adcode || "",
+        showbiz: false
+      }).success(function (data) {
+        $scope.addressinfo = data.districts[0].districts;
+        $scope.level = data.districts[0].level;
+        if ($scope.level == "province") {
+          $scope.addrinfo.province = data.districts[0].name;
+        } else if ($scope.level == "city") {
+          $scope.addrinfo.city = data.districts[0].name;
+        } else if ($scope.level == "district") {
+          $scope.addrinfo.area = data.districts[0].name;
+        }
+        $ionicScrollDelegate.scrollTop()
+      }).error(function () {
+        CommonService.platformPrompt("获取添加地址省市县失败", 'close');
+      })
+    }
+
+    //打开选择省市县modal
+    $scope.openModal = function () {
+      $scope.modal.show();
+      $scope.getAddressPCCList();
+    }
+
+
     $scope.getVerifyCode = function () {
       event.preventDefault();
       event.stopPropagation();
@@ -680,5 +805,49 @@ angular.module('starter.controllers', [])
       $scope.getHelpDetails();
     }
 
+
+  })
+
+  //登记信息
+  .controller('InformationCtrl', function ($scope,BoRecycle,CommonService,AccountService,$ionicScrollDelegate) {
+    CommonService.customModal($scope, 'templates/modal/addressmodal.html');
+    $scope.addrinfo = {};
+    //获取省市县
+    $scope.getAddressPCCList = function (adcode) {
+      if (isNaN(adcode) && adcode) {
+        $scope.addresspcd = $scope.addrinfo.province + $scope.addrinfo.city + $scope.addrinfo.area;
+        $scope.addrinfo.address = adcode;
+        $scope.modal.hide();
+        return;
+      }
+      AccountService.getDistrict({
+        key: BoRecycle.gaoDeKey,
+        keywords: adcode || "",
+        showbiz: false
+      }).success(function (data) {
+        $scope.addressinfo = data.districts[0].districts;
+        $scope.level = data.districts[0].level;
+        if ($scope.level == "province") {
+          $scope.addrinfo.province = data.districts[0].name;
+        } else if ($scope.level == "city") {
+          $scope.addrinfo.city = data.districts[0].name;
+        } else if ($scope.level == "district") {
+          $scope.addrinfo.area = data.districts[0].name;
+        }
+        $ionicScrollDelegate.scrollTop()
+      }).error(function () {
+        CommonService.platformPrompt("获取添加地址省市县失败", 'close');
+      })
+    }
+
+    //打开选择省市县modal
+    $scope.openModal = function () {
+      $scope.modal.show();
+      $scope.getAddressPCCList();
+    }
+  })
+
+  //登记货源
+  .controller('SupplyOfGoodsCtrl', function ($scope,CommonService) {
 
   })
