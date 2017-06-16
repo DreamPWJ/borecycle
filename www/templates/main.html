@@ -1,13 +1,13 @@
-<ion-view id="main" >
-<!--  <ion-header-bar align-title="center" class="bar-positive">
-    <div class="buttons">
-      <button class="button icon iconfont icon-people  button-clear" nav-direction=forward native-ui-sref="login"></button>
-    </div>
-    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 博回收</h1>
-    <div class="buttons">
-      <button class="button icon iconfont icon-add button-clear"></button>
-    </div>
-  </ion-header-bar>-->
+<ion-view id="main">
+  <!--  <ion-header-bar align-title="center" class="bar-positive">
+      <div class="buttons">
+        <button class="button icon iconfont icon-people  button-clear" nav-direction=forward native-ui-sref="login"></button>
+      </div>
+      <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 博回收</h1>
+      <div class="buttons">
+        <button class="button icon iconfont icon-add button-clear"></button>
+      </div>
+    </ion-header-bar>-->
   <ion-nav-buttons side="left">
     <a class="button icon iconfont icon-people  button-clear" nav-direction=forward native-ui-sref="login"
     ></a>
@@ -19,10 +19,69 @@
     <button class="button icon iconfont icon-add button-clear" ng-click=""></button>
   </ion-nav-buttons>
   <ion-content overflow-scroll="false" class="stable-bg" has-bouncing="true">
+    <div class="topbj light text-center">
+      <div class="total ">
+        <p class="num">7980000</p>
+        <p>总回收量(台)</p>
+      </div>
+      <div class="row sub-total row-no-padding">
+        <span class="col">
+          <h3>68990</h3>
+          <p>信息总量(单)</p>
+        </span>
+        <span class="col">
+          <h3>88990</h3>
+          <p>总货源量(单)</p>
+        </span>
+      </div>
+    </div>
+    <p></p>
 
-
-    <div class="topbj"></div>
-
+    <div class="row   light-bg row-center  main-list">
+      <a class="col border-rb" nav-direction=forward ng-href="">
+        <i class="icon iconfont icon-xinxidengji energized"></i>
+        <div class="inline">
+          <h5>信息登记</h5>
+          <p>海量信息随时录入</p></div>
+      </a>
+      </a>
+      <a class="col border-b" nav-direction=forward ng-href="">
+        <i class="icon iconfont icon-fabuhuoyuan"></i>
+        <div class="inline">
+          <h5>货源登记</h5>
+          <p>真实货源轻松录入</p></div>
+      </a>
+    </div>
+    <div class="row   light-bg row-center main-list">
+      <a nav-direction=forward ng-href="" class="col border-r ">
+        <i class="icon iconfont icon-jiedanjilu"></i>
+        <div class="inline">
+          <h5>接单回收</h5>
+          <p>一键抢单 轻松回收</p></div>
+      </a>
+      </a>
+      <a nav-direction=forward ng-href="" class="col">
+        <i class="icon iconfont icon-shouhuo balanced"></i>
+        <div class="inline">
+          <h5>跟单收货</h5>
+          <p>随时随地简单快捷</p></div>
+      </a>
+      </a>
+    </div>
+    <p></p>
+    <div class="row   light-bg row-center sub-menu">
+      <a nav-direction=forward ng-href="" class="col border-r ">
+        <i class="icon iconfont icon-wenti"></i>
+        <p class="inline"> 我能做什么?</p></a>
+      </a>
+      <a nav-direction=forward ng-href="" class="col">
+        <i class="icon iconfont icon-question1 "></i>
+        <p class="inline"> 我要做什么?</p>
+      </a>
+    </div>
+    <a href="tel:400-013-0088">
+      <img ng-src="img/main/kefu.jpg" class="full-image" alt="客服电话">
+    </a>
   </ion-content>
 </ion-view>
 

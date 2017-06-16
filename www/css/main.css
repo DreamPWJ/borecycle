@@ -1,6 +1,7 @@
 #logo {
-  position: relative;
+  position: absolute;
   top: 0.4rem;
+  left: 3rem;
   width: 1.8rem;
   height: 1.8rem;
 
@@ -23,26 +24,6 @@
 
 .slider-pager-page.active {
   color: #ffffff;
-}
-
-.main-list {
-  margin: 0 !important;
-}
-
-.main-list a {
-  margin-top: 0.5rem;
-}
-
-.main-list a > span {
-  display: inline-block;
-  margin-bottom: 0.3rem;
-  width: 3rem;
-  height: 3rem;
-  line-height: 3rem;
-}
-
-.main-list a > span > i {
-  font-size: 1.5rem;
 }
 
 #myorderlist {
@@ -101,19 +82,67 @@
 #share .row {
   height: 5rem !important;
 }
-#main .bar-positive{
-  background-color: transparent;
+
+.bar-positive {
+  /*  background-color: transparent;*/
   background-image: none !important;
 }
 
 #main .topbj {
-  background-image: url(../img/main/topbj.jpg);
+  background: url(../img/main/topbj.jpg) 100% 100%;
   background-size: cover;
-  height: 15rem;
+  height: 14rem;
+  padding-top: 1.2rem;
+}
+
+#main .total {
+  margin: auto;
+  width: 8.5rem;
+  height: 8.5rem;
+  border-radius: 50%;
+  padding-top: 2.8rem;
+  border: 3px solid rgba(255, 255, 255, 0.6);
+
+}
+
+#main .total .num {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+#main .sub-total h3{
+  color: #FFFFFF;
+  margin: 0;
+}
+#main .main-list a {
+  padding: 1rem 1.2rem;
+}
+
+#main .main-list a h5, #main .main-list a p {
+  margin: 0;
+}
+
+#main .main-list a p {
+  font-size: 0.7rem !important;
+  color: #888888;
+}
+
+#main .main-list a .iconfont {
+  font-size: 2.2rem !important;
+}
+
+#main .sub-menu a {
+  padding: 0.8rem 0 0 1.2rem;
+  color: #585858;
+
+}
+
+#main .sub-menu a .iconfont {
+  vertical-align: middle;
 }
 
 #share .row .iconfont {
   font-size: 2rem !important;
+
 }
 
 .border-rb {
