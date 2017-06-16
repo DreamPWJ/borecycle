@@ -9,9 +9,8 @@ angular.module('starter.controllers', [])
 
   //APP首页面
   .controller('MainCtrl', function ($scope, $rootScope, CommonService, $ionicHistory) {
-
-
-
+    //屏蔽事件冒泡和事件捕获
+    event.preventDefault();
     //在首页中清除导航历史退栈
     $scope.$on('$ionicView.afterEnter', function () {
       $ionicHistory.clearHistory();

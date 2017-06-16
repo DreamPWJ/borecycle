@@ -203,7 +203,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       .state('order', {
         url: '/order',
         cache: false,
-        nativeTransitions: null,
         templateUrl: 'templates/order.html',
         controller: 'OrderCtrl'
 

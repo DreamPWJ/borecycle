@@ -55,6 +55,9 @@
         },
         "com.synconset.imagepicker": {
             "PACKAGE_NAME": "com.boolv.borecycle"
+        },
+        "com.telerik.plugins.nativepagetransitions": {
+            "PACKAGE_NAME": "com.boolv.borecycle"
         }
     },
     "dependent_plugins": {
