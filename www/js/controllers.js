@@ -8,8 +8,13 @@ angular.module('starter.controllers', [])
 
 
     //APP首页面
-    .controller('MainCtrl', function ($scope, $rootScope, CommonService, $ionicHistory) {
-
+    .controller('MainCtrl', function ($scope, $rootScope, CommonService, MainService, $ionicHistory) {
+        //获取公共接口授权token
+        MainService.authLogin().success(function (data) {
+            console.log(data);
+        }).error(function () {
+            CommonService.platformPrompt("获取公共接口授权token失败!", 'close');
+        })
         //在首页中清除导航历史退栈
         $scope.$on('$ionicView.afterEnter', function () {
             $ionicHistory.clearHistory();
