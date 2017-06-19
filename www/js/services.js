@@ -361,7 +361,7 @@ angular.module('starter.services', [])
       //获取公共接口授权token
       authLogin: function () {
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-        var promise = deferred.promise
+        var promise = deferred.promise;
         promise = $http({
           method: 'POST',
           url: BoRecycle.api + "/token",
@@ -369,7 +369,13 @@ angular.module('starter.services', [])
             'Authorization': 'Basic ' + EncodingService.base64_encode("1706140001:379bb9c6-d560-4325-a412-32b224e28747"),
             'Content-Type': 'application/x-www-form-urlencoded'
           },
-          data: {'grant_type': 'client_credentials'}
+          transformRequest: function (obj) {
+            var str = [];
+            for (var p in obj)
+              str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+            return str.join("&");
+          },
+          data: {grant_type: 'client_credentials'}
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -491,6 +497,33 @@ angular.module('starter.services', [])
           $scope.paraclass = false;
           return false;
         }
+      },
+      sendCode: function (params) { //发送短信验证码
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/util/send_sms_validcode/" + params.mobile,
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (data) {
+          deferred.reject(data);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      sendEmailCode: function (params) { //发送邮箱验证码
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/util/send_sms_validcode",
+          params: {email: params.email}
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (data) {
+          deferred.reject(data);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       },
       showUpdateConfirm: function (updatecontent, appurl, version) {    // 显示是否更新对话框
         var confirmPopup = $ionicPopup.confirm({
@@ -1406,7 +1439,7 @@ angular.module('starter.services', [])
         config.headers = config.headers || {};
         var token = localStorage.getItem('token');
         if (token) {
-          config.headers.authorization = token;
+          config.headers.authorization ="Bearer "+token;
         }
         return config;
       },

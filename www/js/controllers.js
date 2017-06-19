@@ -8,14 +8,17 @@ angular.module('starter.controllers', [])
 
 
   //APP首页面
-  .controller('MainCtrl', function ($scope, $rootScope, CommonService, MainService, EncodingService, $ionicHistory) {
-    console.log(EncodingService.base64_encode("1706140001:379bb9c6-d560-4325-a412-32b224e28747"));
-    //获取公共接口授权token
-    MainService.authLogin().success(function (data) {
-      console.log(data);
-    }).error(function () {
-      CommonService.platformPrompt("获取公共接口授权token失败!", 'close');
-    })
+  .controller('MainCtrl', function ($scope, $rootScope, CommonService, MainService, $ionicHistory) {
+
+    if (!localStorage.getItem("token")) {
+      //获取公共接口授权token
+      MainService.authLogin().success(function (data) {
+        localStorage.setItem("token", data.access_token);
+      }).error(function () {
+        CommonService.platformPrompt("获取公共接口授权token失败!", 'close');
+      })
+    }
+
     //在首页中清除导航历史退栈
     $scope.$on('$ionicView.afterEnter', function () {
       $ionicHistory.clearHistory();
@@ -29,7 +32,6 @@ angular.module('starter.controllers', [])
     $scope.user = {};//提前定义用户对象
     $scope.agreedeal = true;//同意用户协议
     $scope.loginSubmit = function () {
-
       AccountService.login($scope.user).success(function (data) {
         CommonService.getStateName();   //跳转页面
       }).error(function () {
@@ -52,8 +54,8 @@ angular.module('starter.controllers', [])
       if ($scope.paraclass) { //按钮可用
         //60s倒计时
         AccountService.countDown($scope);
-        AccountService.sendCode($scope.user.username).success(function (data) {
-          $scope.user.passwordcode = data.Values;
+        AccountService.sendCode({mobile: $scope.user.username}).success(function (data) {
+          $scope.user.passwordcode = data.data;
         }).error(function () {
           CommonService.platformPrompt("验证码获取失败!", 'close');
         })
@@ -829,32 +831,34 @@ angular.module('starter.controllers', [])
       $scope.params = {
         ID: id
       }
-      MainService.getHelpDetails($scope.params).success(function (data) {
-        $scope.helpdata = data.Values;
-        if (!$scope.title) {
-          $scope.title = data.Values.Title;
-        }
-      }).then(function () {
-        if (WeiXinService.isWeiXin()) { //如果是微信
-          $scope.isWeiXin = true;
-          CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract, BoRecycle.moblileApi + '/#/help/' + id, '');
-        }
-        //调用分享面板
-        $scope.shareActionSheet = function () {
-          umeng.share($scope.helpdata.Title, $scope.helpdata.Abstract, '', BoRecycle.moblileApi + '/#/help/' + id);
-        }
-      })
+      /*      MainService.getHelpDetails($scope.params).success(function (data) {
+       $scope.helpdata = data.Values;
+       if (!$scope.title) {
+       $scope.title = data.Values.Title;
+       }
+       }).then(function () {
+       if (WeiXinService.isWeiXin()) { //如果是微信
+       $scope.isWeiXin = true;
+       CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract, BoRecycle.moblileApi + '/#/help/' + id, '');
+       }
+       //调用分享面板
+       $scope.shareActionSheet = function () {
+       umeng.share($scope.helpdata.Title, $scope.helpdata.Abstract, '', BoRecycle.moblileApi + '/#/help/' + id);
+       }
+       })*/
     }
-    if (!localStorage.getItem("token")) {//如果没有授权先授权
-      //接口授权
-      MainService.authLogin().success(function (data) {
-        localStorage.setItem('token', data.Values)
-      }).then(function () {
-        $scope.getHelpDetails();
-      })
-    } else {
-      $scope.getHelpDetails();
-    }
+    /*
+     if (!localStorage.getItem("token")) {//如果没有授权先授权
+     //接口授权
+     MainService.authLogin().success(function (data) {
+     localStorage.setItem('token', data.Values)
+     }).then(function () {
+     $scope.getHelpDetails();
+     })
+     } else {
+     $scope.getHelpDetails();
+     }
+     */
 
 
   })

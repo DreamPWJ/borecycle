@@ -8,40 +8,40 @@
     },
     "installed_plugins": {
         "cordova-plugin-console": {
-            "PACKAGE_NAME": "com.boolv.borecycle"
+            "PACKAGE_NAME": "com.boolv.recycle"
         },
         "cordova-plugin-device": {
-            "PACKAGE_NAME": "com.boolv.borecycle"
+            "PACKAGE_NAME": "com.boolv.recycle"
         },
         "cordova-plugin-geolocation": {
             "GEOLOCATION_USAGE_DESCRIPTION": " ",
-            "PACKAGE_NAME": "com.boolv.borecycle"
+            "PACKAGE_NAME": "com.boolv.recycle"
         },
         "cordova-plugin-inappbrowser": {
-            "PACKAGE_NAME": "com.boolv.borecycle"
+            "PACKAGE_NAME": "com.boolv.recycle"
         },
         "cordova-plugin-network-information": {
-            "PACKAGE_NAME": "com.boolv.borecycle"
+            "PACKAGE_NAME": "com.boolv.recycle"
         },
         "cordova-plugin-splashscreen": {
-            "PACKAGE_NAME": "com.boolv.borecycle"
+            "PACKAGE_NAME": "com.boolv.recycle"
         },
         "cordova-plugin-statusbar": {
-            "PACKAGE_NAME": "com.boolv.borecycle"
+            "PACKAGE_NAME": "com.boolv.recycle"
         },
         "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.boolv.borecycle"
+            "PACKAGE_NAME": "com.boolv.recycle"
         },
         "cordova-plugin-x-toast": {
-            "PACKAGE_NAME": "com.boolv.borecycle"
+            "PACKAGE_NAME": "com.boolv.recycle"
         },
         "ionic-plugin-keyboard": {
-            "PACKAGE_NAME": "com.boolv.borecycle"
+            "PACKAGE_NAME": "com.boolv.recycle"
         }
     },
     "dependent_plugins": {
         "cordova-plugin-compat": {
-            "PACKAGE_NAME": "com.boolv.borecycle"
+            "PACKAGE_NAME": "com.boolv.recycle"
         }
     }
 }
