@@ -1,283 +1,296 @@
 #logo {
-    position: relative;
-    top: 0.4rem;
-    width: 1.8rem;
-    height: 1.8rem;
+  position: relative;
+  top: 0.4rem;
+  width: 1.8rem;
+  height: 1.8rem;
 
 }
 
 #main-slide.slider {
-    height: 9rem !important;
+  height: 9rem !important;
 }
 
 #main-slide.slider img {
-    height: 9rem !important;
+  height: 9rem !important;
 }
 
 .slider-pager-page {
-    position: relative;
-    z-index: 1000;
-    bottom: -0.8rem;
-    font-size: 0.6rem !important;
+  position: relative;
+  z-index: 1000;
+  bottom: -0.8rem;
+  font-size: 0.6rem !important;
 }
 
 .slider-pager-page.active {
-    color: #ffffff;
+  color: #ffffff;
 }
 
 #myorderlist {
-    height: 100%;
+  height: 100%;
 }
 
 #myorderlist-tab .row {
-    border-top: 1px solid rgba(221, 221, 221, 0.3);
-    margin-bottom: 0;
-    padding-bottom: 0;
+  border-top: 1px solid rgba(221, 221, 221, 0.3);
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 #myorderlist-tab .active {
-    color: #00ACFF;
-    border-bottom: 2px solid #00ACFF;
+  color: #00ACFF;
+  border-bottom: 2px solid #00ACFF;
 }
 
 #myorderlist .jiedan, #myorderlist .pending {
-    margin-top: 0.1rem !important;
+  margin-top: 0.1rem !important;
 }
 
 #myorderlist .jiedan i, #myorderlist .pending i {
-    vertical-align: text-bottom;
+  vertical-align: text-bottom;
 }
 
 .tab-largen.tab-item {
-    position: relative;
-    display: inline-block;
-    max-width: 58px !important;
-    height: 58px !important;
-    line-height: 22px !important;
-    background-color: #00ACFF !important;
-    color: #ffffff !important;
-    border-radius: 50%;
-    border: 2px solid #ffffff;
-    box-shadow: 0px -1px 2px rgba(136, 136, 136, 0.5);
-    top: -0.7rem;
-    opacity: 1 !important;
+  position: relative;
+  display: inline-block;
+  max-width: 58px !important;
+  height: 58px !important;
+  line-height: 22px !important;
+  background-color: #00ACFF !important;
+  color: #ffffff !important;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  box-shadow: 0px -1px 2px rgba(136, 136, 136, 0.5);
+  top: -0.7rem;
+  opacity: 1 !important;
 }
 
 #paymodal {
-    min-height: 50% !important;
-    height: 50%;
-    top: 50%;
-    bottom: 0;
+  min-height: 50% !important;
+  height: 50%;
+  top: 50%;
+  bottom: 0;
 }
 
 #paymodal .ion-ios-arrow-left {
-    font-size: 1.6rem;
-    margin-left: 0.6rem;
+  font-size: 1.6rem;
+  margin-left: 0.6rem;
 }
 
 #share {
-    min-height: 40% !important;
-    height: 40% !important;
-    top: 60% !important;
-    bottom: 0;
+  min-height: 40% !important;
+  height: 40% !important;
+  top: 60% !important;
+  bottom: 0;
 }
 
 #share .row {
-    height: 5rem !important;
+  height: 5rem !important;
 }
 
 .bar-positive {
-    /*  background-color: transparent;*/
-    background-image: none !important;
+  /*  background-color: transparent;*/
+  background-image: none !important;
 }
 
 #main .topbj {
-    background: url(../img/main/topbj.jpg) 100% 100%;
-    background-size: cover;
-    height: 14rem;
-    padding-top: 1.2rem;
+  background: url(../img/main/topbj.jpg) 100% 100%;
+  background-size: cover;
+  height: 14rem;
+  padding-top: 1.2rem;
 }
 
 #main .total {
-    margin: auto;
-    width: 8.5rem;
-    height: 8.5rem;
-    border-radius: 50%;
-    padding-top: 2.8rem;
-    border: 3px solid rgba(255, 255, 255, 0.6);
+  margin: auto;
+  width: 8.5rem;
+  height: 8.5rem;
+  border-radius: 50%;
+  padding-top: 2.8rem;
+  border: 3px solid rgba(255, 255, 255, 0.6);
 
 }
 
 #main .total .num {
-    font-size: 1.8rem;
-    font-weight: bold;
+  font-size: 1.8rem;
+  font-weight: bold;
 }
 
 #main .sub-total h3 {
-    color: #FFFFFF;
-    margin: 0;
+  color: #FFFFFF;
+  margin: 0;
 }
 
 #main .main-list a {
-    padding: 1rem 1.2rem;
+  padding: 1rem 1.2rem;
 }
 
 #main .main-list a h5, #main .main-list a p {
-    margin: 0;
+  margin: 0;
 }
 
 #main .main-list a p {
-    font-size: 0.7rem !important;
-    color: #888888;
+  font-size: 0.7rem !important;
+  color: #888888;
 }
 
 #main .main-list a .iconfont {
-    font-size: 2.2rem !important;
+  font-size: 2.2rem !important;
 }
 
 #main .sub-menu a {
-    padding: 0.8rem 0 0 1.2rem;
-    color: #585858;
+  padding: 0.8rem 0 0 1.2rem;
+  color: #585858;
 
 }
 
 #main .sub-menu a .iconfont {
-    vertical-align: middle;
+  vertical-align: middle;
 }
 
 #share .row .iconfont {
-    font-size: 2rem !important;
+  font-size: 2rem !important;
 
 }
 
-#supplyofgoods .select-category label, #supplyofgoods .select-category div {
-    position: relative;
-    margin-top: 0.6rem;
+#supplyofgoods .select-category label, #recycleorder .select-category label {
+  position: relative;
+  margin-top: 0.6rem;
 }
 
-#supplyofgoods .select-category .iconfont {
-    font-size: 1.8rem !important;
+#supplyofgoods .select-category .iconfont, #recycleorder .select-category .iconfont {
+  font-size: 1.8rem !important;
 }
 
-#supplyofgoods .select-category label span {
-    opacity: 0;
+#supplyofgoods .select-category label span, #recycleorder .select-category label span {
+  opacity: 0;
 }
 
-#supplyofgoods .select-category label span:before {
-    content: '已选';
-    position: absolute;
-    color: #ffffff;
-    font-size: 9px;
-    -webkit-transform: rotate(-45deg);
-    transform: rotate(-45deg);
-    right: 0;
-    bottom: 0.9rem;
-    z-index: 2000;
+#supplyofgoods .select-category label span:before, #recycleorder .select-category label span:before {
+  content: '已选';
+  position: absolute;
+  color: #ffffff;
+  font-size: 9px;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  right: 0;
+  bottom: 0.9rem;
+  z-index: 2000;
 }
 
-#supplyofgoods .select-category label span:after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-bottom: 1.8rem solid #00ACFF;
-    border-left: 1.8rem solid transparent;
-    right: 0;
-    bottom: 0.8rem;
+#supplyofgoods .select-category label span:after, #recycleorder .select-category label span:after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-bottom: 1.8rem solid #00ACFF;
+  border-left: 1.8rem solid transparent;
+  right: 0;
+  bottom: 0.8rem;
 }
 
-#supplyofgoods .select-category input {
-    display: none;
+#supplyofgoods .select-category input, #recycleorder .select-category input {
+  display: none;
 }
 
-#supplyofgoods .select-category input:checked + span {
-    opacity: 1;
+#supplyofgoods .select-category input:checked + span, #recycleorder .select-category input:checked + span {
+  opacity: 1;
 }
+
+#orderdetails .orderdetails .item {
+  font-size: 0.9rem;
+  color: #666;
+  padding: 10px 16px;
+}
+
+#gaode-map {
+  width: 100%;
+  height: calc(100% + 1rem);
+}
+
+
 
 /*-------------------------------------------------------*/
 .border-rb {
-    border-right: 1px solid rgba(221, 221, 221, 0.3);
-    border-bottom: 1px solid rgba(221, 221, 221, 0.3);
+  border-right: 1px solid rgba(221, 221, 221, 0.3);
+  border-bottom: 1px solid rgba(221, 221, 221, 0.3);
 }
 
 .border-r {
-    border-right: 1px solid rgba(221, 221, 221, 0.3);
+  border-right: 1px solid rgba(221, 221, 221, 0.3);
 }
 
 .border-b {
-    border-bottom: 1px solid rgba(221, 221, 221, 0.3) !important;
+  border-bottom: 1px solid rgba(221, 221, 221, 0.3) !important;
 }
 
 .tool-tip {
-    position: fixed;
-    z-index: 10000;
-    top: 55px;
-    width: 100%;
-    text-align: center;
-    animation: tooltipmessage 3s;
-    -moz-animation: tooltipmessage 3s; /* Firefox */
-    -webkit-animation: tooltipmessage 3s; /* Safari 和 Chrome */
-    animation-fill-mode: forwards;
-    -webkit-animation-fill-mode: forwards;
+  position: fixed;
+  z-index: 10000;
+  top: 55px;
+  width: 100%;
+  text-align: center;
+  animation: tooltipmessage 3s;
+  -moz-animation: tooltipmessage 3s; /* Firefox */
+  -webkit-animation: tooltipmessage 3s; /* Safari 和 Chrome */
+  animation-fill-mode: forwards;
+  -webkit-animation-fill-mode: forwards;
 
 }
 
 .tool-tip-message {
-    background-color: #ef473a;
-    color: #ffffff;
-    text-align: center;
-    padding: 0.3rem 1.2rem;
-    border-radius: 0.8rem;
+  background-color: #ef473a;
+  color: #ffffff;
+  text-align: center;
+  padding: 0.3rem 1.2rem;
+  border-radius: 0.8rem;
 }
 
 .tool-tip-message-success {
-    background-color: #33cd5f;
-    color: #ffffff;
-    text-align: center;
-    padding: 0.3rem 1.2rem;
-    border-radius: 0.8rem;
+  background-color: #33cd5f;
+  color: #ffffff;
+  text-align: center;
+  padding: 0.3rem 1.2rem;
+  border-radius: 0.8rem;
 }
 
 @-webkit-keyframes tooltipmessage {
-    0% {
-        -webkit-transform: translate(0, -1em);
-        transform: translate(0, -1em);
-    }
-    10% {
-        -webkit-transform: translate(0, 0em);
-        transform: translate(0, 0em);
-        opacity: 1;
-    }
-    90% {
-        -webkit-transform: translate(0, 0em);
-        transform: translate(0, 0em);
-        opacity: 1;
-    }
-    100% {
-        -webkit-transform: translate(0, -1em);
-        transform: translate(0, -1em);
-        opacity: 0;
-    }
+  0% {
+    -webkit-transform: translate(0, -1em);
+    transform: translate(0, -1em);
+  }
+  10% {
+    -webkit-transform: translate(0, 0em);
+    transform: translate(0, 0em);
+    opacity: 1;
+  }
+  90% {
+    -webkit-transform: translate(0, 0em);
+    transform: translate(0, 0em);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translate(0, -1em);
+    transform: translate(0, -1em);
+    opacity: 0;
+  }
 }
 
 @keyframes tooltipmessage {
-    0% {
-        -webkit-transform: translate(0, -1em);
-        transform: translate(0, -1em);
-    }
-    10% {
-        -webkit-transform: translate(0, 0em);
-        transform: translate(0, 0em);
-        opacity: 1;
-    }
-    90% {
-        -webkit-transform: translate(0, 0em);
-        transform: translate(0, 0em);
-        opacity: 1;
-    }
-    100% {
-        -webkit-transform: translate(0, -1em);
-        transform: translate(0, -1em);
-        opacity: 0;
-    }
+  0% {
+    -webkit-transform: translate(0, -1em);
+    transform: translate(0, -1em);
+  }
+  10% {
+    -webkit-transform: translate(0, 0em);
+    transform: translate(0, 0em);
+    opacity: 1;
+  }
+  90% {
+    -webkit-transform: translate(0, 0em);
+    transform: translate(0, 0em);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translate(0, -1em);
+    transform: translate(0, -1em);
+    opacity: 0;
+  }
 }

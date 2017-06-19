@@ -6,7 +6,7 @@
   <author email="service@boolv.com" href="http://m.boolv.com/">博绿网Team</author>
   <content src="index.html"/>
   <access origin="*"/>
-  <allow-navigation href="http://ionic.local/*"/>
+  <allow-navigation href="http://m.amap.com/*"/>
   <allow-intent href="http://*/*"/>
   <allow-intent href="https://*/*"/>
   <allow-intent href="tel:*"/>
