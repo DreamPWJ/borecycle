@@ -62,7 +62,6 @@ angular.module('starter.services', [])
           }
         });
       },
-
       customModal: function ($scope, templateurl, index, animation) { //自定义modal ndex页面出现多个模态框的情况 进行命名区别 index 可以为1.2.3.   animation动画slide-in-left slide-in-right
         index = index == undefined ? "" : index;
         $ionicModal.fromTemplateUrl(templateurl, {
@@ -89,8 +88,7 @@ angular.module('starter.services', [])
         $scope.$on('modal' + index + '.removed', function () {
           // 执行动作
         });
-      }
-      ,
+      },
       ionicPopover: function ($scope, templateUrl, index) {//页面出现多个Popover框的情况 进行命名区别 index 可以为1.2.3
         index = index == undefined ? "" : index;
         $ionicPopover.fromTemplateUrl('templates/popover/' + templateUrl, {
@@ -122,8 +120,6 @@ angular.module('starter.services', [])
           // Execute action
         });
       },
-
-
       //扫一扫
       barcodeScanner: function ($scope) {
         //是否是微信
@@ -163,8 +159,7 @@ angular.module('starter.services', [])
               // An error occurred
             });
         }, false);
-      }
-      ,
+      },
       shareActionSheet: function (title, desc, link, imgUrl) {
         //通过config接口注入权限验证配置
         WeiXinService.weichatConfig(localStorage.getItem("timestamp"), localStorage.getItem("noncestr"), localStorage.getItem("signature"));
@@ -332,7 +327,6 @@ angular.module('starter.services', [])
           $state.go("tab.main", {}, {reload: true});
         }
       },
-
       windowOpen: function (url) {        //通过默认浏览器打开
         if (ionic.Platform.isWebView()) {  // Check if we are running within a WebView (such as Cordova)
           window.open(url, '_system', 'location=yes');
@@ -341,7 +335,6 @@ angular.module('starter.services', [])
         }
 
       },
-
       toolTip: function (msg, type) { //全局tooltip提示
         this.message = msg;
         this.type = type;
@@ -352,8 +345,6 @@ angular.module('starter.services', [])
           _self.type = null;
         }, 3000);
       },
-
-
     }
   })
   .service('MainService', function ($q, $http, BoRecycle, EncodingService) { //主页服务定义
@@ -385,7 +376,8 @@ angular.module('starter.services', [])
       },
     }
   })
-  .service('OrderService', function ($q, $http, BoRecycle) { //订单服务定义
+
+  .service('OrderService', function ($q, $http, BoRecycle) { //订单 接单收货/货源归集及回收 登记信息/货源接口服务定义
     return {
       navigation: function (params) { //导航路线规划
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
@@ -398,6 +390,386 @@ angular.module('starter.services', [])
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (data) {
           deferred.reject(data);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      addOrderReceipt: function (datas) { //添加接单收货/货源归集(添加回收时明细不能为空，接单时明细为空)
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'POST',
+          url: BoRecycle.api + "/api/orderreceipt/create",
+          data: datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      cancelOrderReceipt: function (params) { //取消(关闭)接单
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/orderreceipt/cancel/" + params.orno
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getOrderReceiptList: function (params) { //查询接单收货/货源归集分页列
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/orderreceipt/getlist",
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getOrderReceiptDetail: function (params) { //查询接单收货/货源归集详情
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/orderreceipt/getdetail/" + params.orno
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      payOrderReceipt: function (datas) { //回收付款
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'POST',
+          url: BoRecycle.api + "/api/orderreceipt/pay",
+          data: datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getListManufacte: function (params) { //查询厂商列表
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/dengji/getlistmanufacte",
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      addDengJi: function (datas) { //添加登记信息/货源信息(添加登记货源时明细不能为空，添加登记信息时明细为空)
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'POST',
+          url: BoRecycle.api + "/api/dengji/create",
+          data: datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getCargoQuantity: function (params) { //统计货量
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/dengji/getsum",
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      cancelDengJiOrder: function (params) { //取消(关闭)登记订单
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/dengji/cancel/" + params.djno
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getDengJiList: function (params) { //查询登记信息/货源信息分页列
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/dengji/getlist",
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getDengJiDetail: function (params) { //查询登记信息/货源信息详情
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/dengji/getdetail/" + params.djno
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      addComment: function (datas) { //提交评价
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'POST',
+          url: BoRecycle.api + "/api/dengji/comment",
+          data: datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getComment: function (params) { //查询评论内容
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/dengji",
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      }
+    }
+  })
+  .service('NewsService', function ($q, $http, BoRecycle) {//通知消息服务
+    return {
+      setDeviceInfo: function (datas) { //提交设备信息到服务器
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'POST',
+          url: BoRecycle.api + "/api/MessagePush/set",
+          data: datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getNewsList: function (params) { //获取通知数据
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/MessagePush/getlist",
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      updateNewsLook: function (params) { //新闻设置已读未读
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'POST',
+          url: BoRecycle.api + "/api/MessagePush/setlook",
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      }
+    }
+  })
+  .service('AddressService', function ($q, $http, BoRecycle) {//地址服务
+    return {
+      addAddress: function (datas) { //添加地址
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'POST',
+          url: BoRecycle.api + "/api/addr/add",
+          data: datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getPList: function () { //获取省份信息
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/addr/getplist",
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getCList: function (params) { //根据省份ID 取市的信息
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/addr/getclist",
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getDList: function (params) { //根据市ID 取县的信息
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/addr/getdlist",
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getAddrList: function (params) { //根据会员ID,取客户交易地址列表
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/addr/getlist",
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getDefualtAddr: function (params) { //获取默认地址
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/addr/get_defualt/" + params.userid
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      setDefualtAddr: function (params) { //设置默认地址
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/addr/setdefaultaddr",
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getDefualtAddr: function (params) { //根据ID获取默认交易地址
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/addr/getdefualtaddrbyid",
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getAreaInfo: function (params) { //根据Id获取会员地址信息
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/addr/getareainfo",
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getProductList: function (params) { //获取产品品类
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/product/getgrplist",
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getProductListIsth: function (params) { //根据产品品类及是否统货取产品列表
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/product/getprolist/" + params.grpid + "/" + params.isth,
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
         });
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       }
@@ -425,6 +797,117 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'POST',
           url: BoRecycle.api + "/api/user/login",
+          data: datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      loginMobile: function (datas) { //用户手机验证码登录
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'POST',
+          url: BoRecycle.api + "/api/user/login_mobile",
+          data: datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getUser: function (params) { //根据会员ID获取会员账号基本信息
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/user/get/" + params.userid,
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      findPassword: function (datas) { //使用手机或者邮箱找回密码
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'POST',
+          url: BoRecycle.api + "/api/user/find_password",
+          data: datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      setUserInfo: function (datas) { //修改和设置用户信息
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'POST',
+          url: BoRecycle.api + "/api/user/set_info",
+          data: datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      authenticateMobile: function (params) { //手机号码认证
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/user/authenticate_mobile/" + params.userid,
+          params: {mobile: params.mobile}
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      authenticateEmail: function (params) { //邮箱认证
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/user/authenticate_email/" + params.userid,
+          params: {email: params.email}
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      authenticateSign: function (datas) { //发送实名认证码，返回实名认证服务id,提交实名认证时需填写
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'POST',
+          url: BoRecycle.api + "/api/user/authenticate_sign",
+          data: datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      realNameAuthenticate: function (datas) { //提交实名认证，需要带入authenticate_sign 实名认证服务id
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'POST',
+          url: BoRecycle.api + "/api/user/authenticate",
           data: datas
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
@@ -536,6 +1019,34 @@ angular.module('starter.services', [])
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (data) {
           deferred.reject(data);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getHelpContent: function (params) { //根据ID获取帮助内容：关于我们的内容ID=22 /我能做什么？ID=23 /我要如何做呢？=24
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/AboutUs/getaboutus",
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (data) {
+          deferred.reject(data);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      addHelpFeedback: function (datas) { //添加帮助与反馈
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'POST',
+          url: BoRecycle.api + "/api/AboutUs/addincollect",
+          data: datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
         });
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       },
@@ -1176,54 +1687,37 @@ angular.module('starter.services', [])
 
     }
   })
-  .service('NewsService', function ($q, $http, BoRecycle) {//通知消息服务
-    return {
-      setDeviceInfo: function (datas) { //提交设备信息到服务器
-        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-        var promise = deferred.promise;
-        promise = $http({
-          method: 'POST',
-          url: BoRecycle.api + "/api/MessagePush/set",
-          data: datas
-        }).success(function (data) {
-          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
-        }).error(function (err) {
-          deferred.reject(err);// 声明执行失败，即服务器返回错误
-        });
-        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
-      },
-      getNewsList: function (params) { //获取通知数据
-        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-        var promise = deferred.promise;
-        promise = $http({
-          method: 'GET',
-          url: BoRecycle.api + "/api/MessagePush/getlist",
-          params: params
-        }).success(function (data) {
-          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
-        }).error(function (err) {
-          deferred.reject(err);// 声明执行失败，即服务器返回错误
-        });
-        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
-      },
-      updateNewsLook: function (params) { //新闻设置已读未读
-        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-        var promise = deferred.promise;
-        promise = $http({
-          method: 'POST',
-          url: BoRecycle.api + "/api/MessagePush/setlook",
-          params: params
-        }).success(function (data) {
-          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
-        }).error(function (err) {
-          deferred.reject(err);// 声明执行失败，即服务器返回错误
-        });
-        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
-      }
-    }
-  })
   .service('WeiXinService', function ($q, $http, BoRecycle) { //微信 JS SDK 接口服务定义
     return {
+      //获取微信access_token
+      getWCtoken: function () {
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/wc/token"
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      //获取微信openid获取会员账号
+      getWCOpenId: function (params) {
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/wc/GetOpenid",
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
       //获取微信签名
       getWCSignature: function (params) {
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
