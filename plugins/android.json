@@ -58,10 +58,26 @@
         },
         "com.telerik.plugins.nativepagetransitions": {
             "PACKAGE_NAME": "com.boolv.recycle"
+        },
+        "jpush-phonegap-plugin": {
+            "APP_KEY": "f4369f588d55c5cee044b822",
+            "PACKAGE_NAME": "com.boolv.recycle"
+        },
+        "phonegap-plugin-barcodescanner": {
+            "PACKAGE_NAME": "com.boolv.recycle"
+        },
+        "cordova-plugin-screen-orientation": {
+            "PACKAGE_NAME": "com.boolv.recycle"
         }
     },
     "dependent_plugins": {
         "cordova-plugin-compat": {
+            "PACKAGE_NAME": "com.boolv.recycle"
+        },
+        "cordova-plugin-jcore": {
+            "PACKAGE_NAME": "com.boolv.recycle"
+        },
+        "es6-promise-plugin": {
             "PACKAGE_NAME": "com.boolv.recycle"
         }
     }

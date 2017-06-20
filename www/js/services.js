@@ -20,7 +20,7 @@ angular.module('starter.services', [])
           title: title,
           template: template,
           okText: '确定',
-          okType: 'button-calm'
+          okType: 'button-positive'
         });
         alertPopup.then(function (res) {
           if (stateurl == null || stateurl == '') {
@@ -40,7 +40,7 @@ angular.module('starter.services', [])
           template: template,
           okText: okText,
           cancelText: cancelText,
-          okType: 'button-calm',
+          okType: 'button-positive',
           cancelType: 'button-assertive'
         });
 
@@ -309,7 +309,7 @@ angular.module('starter.services', [])
           });
       },
       isLogin: function (flag) {//判断是否登录
-        if (!localStorage.getItem("usertoken")) {
+        if (!localStorage.getItem("userid")) {
           if (flag) {
             $state.go('login');
           } else {
@@ -403,14 +403,28 @@ angular.module('starter.services', [])
       }
     }
   })
-  .service('AccountService', function ($q, $http, BoRecycle, $cordovaFileTransfer, $state, $ionicScrollDelegate, $cordovaToast, $interval, $timeout, $ionicPopup, $ionicLoading, $cordovaFile, $cordovaFileOpener2) {
+  .service('AccountService', function ($q, $http, BoRecycle, $cordovaFileTransfer, $state, $ionicScrollDelegate, $cordovaToast, $interval, $timeout, $ionicPopup, $ionicLoading, $cordovaFile, $cordovaFileOpener2) { //我的服务
     return {
+      register: function (datas) { //用户注册
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'POST',
+          url: BoRecycle.api + "/api/user/reg",
+          data: datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
       login: function (datas) { //登录
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise
         promise = $http({
           method: 'POST',
-          url: BoRecycle.api + "/user/login",
+          url: BoRecycle.api + "/api/user/login",
           data: datas
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
@@ -532,7 +546,7 @@ angular.module('starter.services', [])
           template: updatecontent, //从服务端获取更新的内容
           cancelText: '稍后再说',
           okText: '立刻更新',
-          okType: 'button-calm',
+          okType: 'button-positive',
           cancelType: 'button-assertive'
         });
         confirmPopup.then(function (res) {
@@ -1169,7 +1183,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise;
         promise = $http({
           method: 'POST',
-          url: BoRecycle.api + "/push/set",
+          url: BoRecycle.api + "/api/MessagePush/set",
           data: datas
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
@@ -1183,7 +1197,8 @@ angular.module('starter.services', [])
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
-          url: BoRecycle.api + "/push/get/" + params.page + '/' + params.size + '/' + params.userid,
+          url: BoRecycle.api + "/api/MessagePush/getlist",
+          params: params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -1196,8 +1211,8 @@ angular.module('starter.services', [])
         var promise = deferred.promise;
         promise = $http({
           method: 'POST',
-          url: BoRecycle.api + "/push/look/" + params.look,
-          params: {ids: params.ids}
+          url: BoRecycle.api + "/api/MessagePush/setlook",
+          params: params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -1439,7 +1454,7 @@ angular.module('starter.services', [])
         config.headers = config.headers || {};
         var token = localStorage.getItem('token');
         if (token) {
-          config.headers.authorization ="Bearer "+token;
+          config.headers.authorization = "Bearer " + token;
         }
         return config;
       },

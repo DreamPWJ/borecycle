@@ -8,7 +8,7 @@ angular.module('starter.controllers', [])
 
 
   //APP首页面
-  .controller('MainCtrl', function ($scope, $rootScope, CommonService, MainService, $ionicHistory) {
+  .controller('MainCtrl', function ($scope, $rootScope, CommonService, MainService, BoRecycle, $ionicHistory, NewsService, $ionicPlatform, WeiXinService) {
 
     if (!localStorage.getItem("token")) {
       //获取公共接口授权token
@@ -17,6 +17,27 @@ angular.module('starter.controllers', [])
       }).error(function () {
         CommonService.platformPrompt("获取公共接口授权token失败!", 'close');
       })
+    }
+    try {
+      //极光推送设置
+      window.plugins.jPushPlugin.getRegistrationID(function (data) {
+        $scope.jPushRegistrationID = data;
+        //提交设备信息到服务器
+        $scope.datas = {
+          registration_id: $scope.jPushRegistrationID,	//极光注册id
+          user: localStorage.getItem("usertoken"),	//用户id,没登录为空
+          mobile: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).mobile : '',	//手机号码 获取不到为空
+          alias: "",	//设备别名
+          device: $ionicPlatform.is('android') ? 0 : 1	//设备类型:0-android,1-ios
+        }
+        NewsService.setDeviceInfo($scope.datas).success(function (data) {
+          if (data.code != 1001) {
+            CommonService.platformPrompt(data.message, 'close');
+          }
+        })
+      })
+    } catch (e) {
+      console.log(e);
     }
 
     //在首页中清除导航历史退栈
@@ -67,7 +88,13 @@ angular.module('starter.controllers', [])
         return;
       }
       AccountService.login($scope.user).success(function (data) {
-        CommonService.getStateName();   //跳转页面
+        if (data.code == 1001) {
+          CommonService.getStateName();   //跳转页面
+        } else {
+          CommonService.platformPrompt(data.message, 'close');
+        }
+
+
       }).error(function () {
         CommonService.platformPrompt("登录失败!", 'close');
       })
@@ -90,10 +117,10 @@ angular.module('starter.controllers', [])
           mobile: localStorage.getItem("login_name"),
           isFindPwd: "2"
         }).success(function (data) {
-          if (data.status == 1) {
-            $scope.verify = data.data.info.verify;
+          if (data.code == 1001) {
+            $scope.verify = "";
           } else {
-            CommonService.platformPrompt(data.info, 'close');
+            CommonService.platformPrompt(data.message, 'close');
           }
 
         })
@@ -150,7 +177,6 @@ angular.module('starter.controllers', [])
 
     $scope.getVerifyCode = function () {
       event.preventDefault();
-      event.stopPropagation();
       if ($scope.paraclass) { //按钮可用
         //60s倒计时
         AccountService.countDown($scope);
@@ -158,10 +184,10 @@ angular.module('starter.controllers', [])
           mobile: localStorage.getItem("login_name"),
           isFindPwd: "2"
         }).success(function (data) {
-          if (data.status == 1) {
-            $scope.verify = data.data.info.verify;
+          if (data.code == 1001) {
+            $scope.verify = "";
           } else {
-            CommonService.platformPrompt(data.info, 'close');
+            CommonService.platformPrompt(data.message, 'close');
           }
 
         })
@@ -269,7 +295,7 @@ angular.module('starter.controllers', [])
       $scope.params = {
         page: $scope.page,//页码
         size: 5,//条数
-        userid: localStorage.getItem("usertoken")//用户id
+        userid: localStorage.getItem("userid")//用户id
       }
       NewsService.getNewsList($scope.params).success(function (data) {
         $scope.isNotData = false;
@@ -332,7 +358,7 @@ angular.module('starter.controllers', [])
         key: BoRecycle.gaoDeKey,
         location: Number(localStorage.getItem("longitude")).toFixed(6) + "," + Number(localStorage.getItem("latitude")).toFixed(6)
       }).success(function (data) {
-        if (data.status == 1) {
+        if (data.code == 1001) {
           var addressComponent = data.regeocode.addressComponent;
           $scope.cityName = addressComponent.city ? addressComponent.city.replace("市", "") : addressComponent.province.replace("市", "");
         }
@@ -371,7 +397,7 @@ angular.module('starter.controllers', [])
     $scope.user = {};
     $scope.updateUser = function () {
       $scope.params = {
-        userid: localStorage.getItem("usertoken"),
+        userid: localStorage.getItem("userid"),
         sex: $scope.user.sex,
         nickname: $scope.user.nickname
       }
@@ -409,7 +435,7 @@ angular.module('starter.controllers', [])
      $scope.params = {
      page: $scope.page,
      size: 5,
-     userid: localStorage.getItem("usertoken")
+     userid: localStorage.getItem("userid")
      }
      //获取用户常用地址
      AccountService.getAddrlist($scope.params).success(function (data) {
@@ -438,7 +464,7 @@ angular.module('starter.controllers', [])
      }
      $scope.delparams = {
      id: addrid,
-     userid: localStorage.getItem("usertoken")
+     userid: localStorage.getItem("userid")
      }
      AccountService.deleteAddr($scope.delparams).success(function (data) {
      $scope.getAddrlist(0);//重新加载列表
@@ -566,7 +592,7 @@ angular.module('starter.controllers', [])
      }
      })
      $scope.addrinfo.id = $scope.addressiteminfo ? $scope.addressiteminfo.id : 0;//传入id 则是修改地址
-     $scope.addrinfo.userid = localStorage.getItem("usertoken");//用户id
+     $scope.addrinfo.userid = localStorage.getItem("userid");//用户id
      $scope.addrinfo.tel = $scope.addrinfo.mobile;//固定电话
      $scope.addrinfo.addrcode = $scope.addrareacountyone.code;	//地区编码
      $scope.addrinfo.areaname = $scope.addrareacountyone.mergername; // 地区全称
@@ -577,7 +603,7 @@ angular.module('starter.controllers', [])
      $scope.addrinfo.addrtype = 0;//地址类型0-	交易地址（默认）1-	家庭住址2-公司地址
      $scope.addrinfo.addr = $scope.addrinfo.addr;
      AccountService.setAddr($scope.addrinfo).success(function (data) {
-     if (data.Key == 200) {
+     if (data.code == 1001) {
      CommonService.showAlert('', '<p>恭喜您！</p><p>地址信息' + $scope.buttonText + '成功！</p>', '');
      } else {
      CommonService.platformPrompt('地址信息' + $scope.buttonText + '失败', 'close');
@@ -613,9 +639,9 @@ angular.module('starter.controllers', [])
 
   //设置安全
   .controller('AccountSecurityCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
-    /*    $scope.userid = localStorage.getItem("usertoken");
+    /*    $scope.userid = localStorage.getItem("userid");
      AccountService.getUserInfo($scope.userid).success(function (data) {
-     if (data.Key == 200) {
+     if (data.code == 1001) {
      localStorage.setItem('user', JSON.stringify(data.Values));
      $rootScope.userinfo = data.Values;
      var certstate = data.Values.certstate;//获取认证状态参数
@@ -696,13 +722,13 @@ angular.module('starter.controllers', [])
         }
         //修改手机号码
         $scope.datas = {
-          userid: localStorage.getItem("usertoken"),		//用户id
+          userid: localStorage.getItem("userid"),		//用户id
           old_mobile: $scope.oldphone,		//旧用户手机号码
           new_mobile: $scope.user.username,	//新用户号码
           new_code: $scope.user.password	//短信验证码
         }
         AccountService.modifyMobile($scope.datas).success(function (data) {
-          if (data.Key == 200) {
+          if (data.code == 1001) {
             CommonService.platformPrompt('修改手机号成功', 'tab.account');
           } else {
             CommonService.platformPrompt('修改手机号失败', 'close');
@@ -727,7 +753,7 @@ angular.module('starter.controllers', [])
     }
     //获取实名认证信息
     $scope.params = {
-      userid: localStorage.getItem("usertoken"),
+      userid: localStorage.getItem("userid"),
     }
     /*    AccountService.getCertification($scope.params).success(function (data) {
      $scope.certificationinfo = data.Values;
@@ -741,13 +767,13 @@ angular.module('starter.controllers', [])
       }
 
       $scope.datas = {
-        userid: localStorage.getItem("usertoken"),	//当前用户userid
+        userid: localStorage.getItem("userid"),	//当前用户userid
         name: $scope.realname.name,	    //姓名
         no: $scope.realname.no,	//身份证号码
         frontpic: $scope.ImgsPicAddr[0]	//身份证照片地址。必须上传、上传使用公用上传图片接口
       }
       AccountService.certificationName($scope.datas).success(function (data) {
-        if (data.Key == 200) {
+        if (data.code == 1001) {
           CommonService.showAlert('', '<p>温馨提示:您的认证信息已经</p><p>提交成功,我们会尽快处理！</p>', '')
         } else {
           CommonService.platformPrompt('实名认证失败', 'close');
@@ -775,7 +801,7 @@ angular.module('starter.controllers', [])
       }
 
       AccountService.sendEmailCode($scope.params).success(function (data) {
-        if (data.Key == 200) {
+        if (data.code == 1001) {
           $rootScope.email.rescode = data.Values;
           CommonService.showAlert('', '<p>温馨提示:验证邮件已经发送到您的</p><p>邮箱,请尽快去您的邮箱进行验证！</p>', 'authenticationemail')
         } else {
@@ -795,12 +821,12 @@ angular.module('starter.controllers', [])
         return;
       }
       $scope.datas = {
-        userid: localStorage.getItem("usertoken"),		//用户id
+        userid: localStorage.getItem("userid"),		//用户id
         email: $rootScope.email.No,//邮箱号
         code: $rootScope.email.code //邮箱验证码
       }
       AccountService.authEmail($scope.datas).success(function (data) {
-        if (data.Key == 200) {
+        if (data.code == 1001) {
           CommonService.platformPrompt('认证邮箱成功');
           $scope.verify = false;
         } else {
