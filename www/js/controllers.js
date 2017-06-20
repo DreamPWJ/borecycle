@@ -8,38 +8,87 @@ angular.module('starter.controllers', [])
 
 
   //APP首页面
-  .controller('MainCtrl', function ($scope, $rootScope, CommonService, MainService, BoRecycle, $ionicHistory, NewsService, $ionicPlatform, WeiXinService) {
+  .controller('MainCtrl', function ($scope, $rootScope, CommonService, MainService, BoRecycle, $ionicHistory, NewsService, AccountService, $ionicPlatform, WeiXinService) {
 
+
+    //获取公共接口授权token
     if (!localStorage.getItem("token")) {
-      //获取公共接口授权token
       MainService.authLogin().success(function (data) {
         localStorage.setItem("token", data.access_token);
       }).error(function () {
         CommonService.platformPrompt("获取公共接口授权token失败!", 'close');
       })
     }
-    try {
-      //极光推送设置
-      window.plugins.jPushPlugin.getRegistrationID(function (data) {
+    //获取极光推送registrationID
+    var getRegistrationID = function () {
+      window.plugins.jPushPlugin.getRegistrationID(onGetRegistrationID);
+    };
+
+    var onGetRegistrationID = function (data) {
+      try {
         $scope.jPushRegistrationID = data;
         //提交设备信息到服务器
         $scope.datas = {
           registration_id: $scope.jPushRegistrationID,	//极光注册id
-          user: localStorage.getItem("usertoken"),	//用户id,没登录为空
+          user: localStorage.getItem("userid"),	//用户id,没登录为空
           mobile: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).mobile : '',	//手机号码 获取不到为空
           alias: "",	//设备别名
-          device: $ionicPlatform.is('android') ? 0 : 1	//设备类型:0-android,1-ios
+          device: $ionicPlatform.is('android') ? 0 : 1,	//设备类型:0-android,1-ios
+          Lat: localStorage.getItem("latitude") || 22.5224500,
+          Lon: localStorage.getItem("longitude") || 114.0557100
         }
         NewsService.setDeviceInfo($scope.datas).success(function (data) {
           if (data.code != 1001) {
             CommonService.platformPrompt(data.message, 'close');
           }
         })
+        console.log("JPushPlugin:registrationID is " + data);
+
+        if (data.length == 0) {
+          var t1 = window.setTimeout(getRegistrationID, 1000);
+        }
+        localStorage.setItem("jPushRegistrationID", data)
+      } catch (exception) {
+        console.log(exception);
+      }
+    };
+    window.setTimeout(getRegistrationID, 1000);
+
+    if ($ionicPlatform.is('android')) {//android系统自动更新软件版本
+      $scope.versionparams = {
+        page: 1,//当前页码
+        size: 1,//每页条数
+        ID: '',//编码 ,等于空时取所有
+        Name: '博回收',//软件名称（中文）
+        NameE: '',//软件名称（英文）
+        Enable: 1 //是否启用 1启用 2禁用
+      }
+      AccountService.getVersionsList($scope.versionparams).success(function (data) {
+        $scope.versions = data.data.data_list[0];
+        if (BoRecycle.version < $scope.versions.vercode) {
+          AccountService.showUpdateConfirm($scope.versions.remark, $scope.versions.attached, $scope.versions.vercode);
+        }
       })
-    } catch (e) {
-      console.log(e);
     }
 
+    //是否是微信 初次获取签名 获取微信签名
+    if (WeiXinService.isWeiXin()) {
+      // 获取微信签名
+      $scope.wxparams = {
+        url: location.href.split('#')[0] //当前网页的URL，不包含#及其后面部分
+      }
+      WeiXinService.getWCSignature($scope.wxparams).success(function (data) {
+        if (data.code == 1001) {
+          localStorage.setItem("timestamp", data.timestamp);//生成签名的时间戳
+          localStorage.setItem("noncestr", data.noncestr);//生成签名的随机串
+          localStorage.setItem("signature", data.signature);//生成签名
+          //通过config接口注入权限验证配置
+          WeiXinService.weichatConfig(data.timestamp, data.noncestr, data.signature);
+        } else {
+          CommonService.platformPrompt("获取微信签名失败!", 'close');
+        }
+      })
+    }
     //在首页中清除导航历史退栈
     $scope.$on('$ionicView.afterEnter', function () {
       $ionicHistory.clearHistory();
@@ -254,7 +303,7 @@ angular.module('starter.controllers', [])
     var map = new AMap.Map('gaode-map', {
         resizeEnable: true,
         zoom: 16,
-        center: [116.397428, 39.90923]
+        center: [localStorage.getItem("longitude") || 114.0557100, localStorage.getItem("latitude") || 22.5224500,]
       })
       ;
     AMap.plugin(['AMap.ToolBar', 'AMap.Scale', 'AMap.OverView'],
@@ -299,14 +348,14 @@ angular.module('starter.controllers', [])
       }
       NewsService.getNewsList($scope.params).success(function (data) {
         $scope.isNotData = false;
-        if (data.Values == null || data.Values.data_list == 0) {
+        if (data == null || data.data.data_list == 0) {
           $scope.isNotData = true;
           return
         }
-        angular.forEach(data.Values.data_list, function (item) {
+        angular.forEach(data.data.data_list, function (item) {
           $scope.newsList.push(item);
         })
-        $scope.total = data.Values.page_count;
+        $scope.total = data.page_count;
         $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
@@ -440,15 +489,15 @@ angular.module('starter.controllers', [])
      //获取用户常用地址
      AccountService.getAddrlist($scope.params).success(function (data) {
      $scope.isNotData = false;
-     if (data.Values.data_list == null) {
+     if (data.data.data_list == null) {
      $scope.isNotData = true;
      $rootScope.addrlistFirst = [];//无交易地址的时候清除数据
      return;
      }
-     angular.forEach(data.Values.data_list, function (item) {
+     angular.forEach(data.data.data_list, function (item) {
      $scope.addrlist.push(item);
      })
-     $scope.total = data.Values.page_count;
+     $scope.total = data.page_count;
      }).finally(function () {
      $scope.$broadcast('scroll.refreshComplete');
      $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -528,12 +577,12 @@ angular.module('starter.controllers', [])
     }
     /*
      AccountService.getArea($scope.addrcode).success(function (data) {
-     $scope.addrareaprovince = data.Values;
+     $scope.addrareaprovince = data;
      })
      //选择省级联查询市
      $scope.selectProvince = function (addrcode) {
      AccountService.getArea(addrcode).success(function (data) {
-     $scope.addrareacity = data.Values;
+     $scope.addrareacity = data;
      $scope.addrinfoother.city = '';//清空市的选择项
      $scope.addrareacounty = {};//选择省的时候同时情况县
      $scope.addrinfo.addr = '';//清空详细地址
@@ -542,7 +591,7 @@ angular.module('starter.controllers', [])
      //选择市级联查询县级
      $scope.selectCity = function (addrcode) {
      AccountService.getArea(addrcode).success(function (data) {
-     $scope.addrareacounty = data.Values;
+     $scope.addrareacounty = data;
      $scope.addrinfoother.county = '';//清空县的选择项
      $scope.addrinfo.addr = '';//清空详细地址
      })
@@ -564,18 +613,18 @@ angular.module('starter.controllers', [])
      //获取省市县信息赋值
      $scope.$on('$ionicView.beforeEnter', function () {
      AccountService.getAddrPCC({code: $scope.addressiteminfo.addrcode}).success(function (data) {
-     $scope.pccinfo = data.Values;
+     $scope.pccinfo = data;
      $scope.addrinfoother.province = $scope.pccinfo.province.toString();
      $scope.addrinfoother.city = $scope.pccinfo.city.toString();
      $scope.addrinfoother.county = $scope.pccinfo.county.toString();
      }).then(function () {
      //市级信息
      AccountService.getArea($scope.pccinfo.province).success(function (data) {
-     $scope.addrareacity = data.Values;
+     $scope.addrareacity = data;
      })
      //县级信息
      AccountService.getArea($scope.pccinfo.city).success(function (data) {
-     $scope.addrareacounty = data.Values;
+     $scope.addrareacounty = data;
      })
 
      })
@@ -642,9 +691,9 @@ angular.module('starter.controllers', [])
     /*    $scope.userid = localStorage.getItem("userid");
      AccountService.getUserInfo($scope.userid).success(function (data) {
      if (data.code == 1001) {
-     localStorage.setItem('user', JSON.stringify(data.Values));
-     $rootScope.userinfo = data.Values;
-     var certstate = data.Values.certstate;//获取认证状态参数
+     localStorage.setItem('user', JSON.stringify(data));
+     $rootScope.userinfo = data;
+     var certstate = data.certstate;//获取认证状态参数
      $scope.certstatestatus = ['未认证', '认证中', '已认证', '未通过'];
      //ubstr(start,length)表示从start位置开始，截取length长度的字符串
      $scope.phonestatus = certstate.substr(0, 1);//手机认证状态码
@@ -679,7 +728,7 @@ angular.module('starter.controllers', [])
         //60s倒计时
         AccountService.countDown($scope);
         AccountService.sendCode($scope.user.username).success(function (data) {
-          $scope.user.passwordcode = data.Values;
+          $scope.user.passwordcode = data;
         }).error(function () {
           CommonService.platformPrompt("验证码获取失败!", "close");
         })
@@ -710,7 +759,7 @@ angular.module('starter.controllers', [])
         //60s倒计时
         AccountService.countDown($scope);
         AccountService.sendCode($scope.user.username).success(function (data) {
-          $scope.user.passwordcode = data.Values;
+          $scope.user.passwordcode = data;
         }).error(function () {
           CommonService.platformPrompt("验证码获取失败!", 'close');
         })
@@ -756,7 +805,7 @@ angular.module('starter.controllers', [])
       userid: localStorage.getItem("userid"),
     }
     /*    AccountService.getCertification($scope.params).success(function (data) {
-     $scope.certificationinfo = data.Values;
+     $scope.certificationinfo = data;
      console.log($scope.certificationinfo);
      })*/
     //申请实名认证
@@ -802,7 +851,7 @@ angular.module('starter.controllers', [])
 
       AccountService.sendEmailCode($scope.params).success(function (data) {
         if (data.code == 1001) {
-          $rootScope.email.rescode = data.Values;
+          $rootScope.email.rescode = data;
           CommonService.showAlert('', '<p>温馨提示:验证邮件已经发送到您的</p><p>邮箱,请尽快去您的邮箱进行验证！</p>', 'authenticationemail')
         } else {
           CommonService.platformPrompt('发送邮件失败', 'close');
@@ -858,9 +907,9 @@ angular.module('starter.controllers', [])
         ID: id
       }
       /*      MainService.getHelpDetails($scope.params).success(function (data) {
-       $scope.helpdata = data.Values;
+       $scope.helpdata = data;
        if (!$scope.title) {
-       $scope.title = data.Values.Title;
+       $scope.title = data.Title;
        }
        }).then(function () {
        if (WeiXinService.isWeiXin()) { //如果是微信
@@ -877,7 +926,7 @@ angular.module('starter.controllers', [])
      if (!localStorage.getItem("token")) {//如果没有授权先授权
      //接口授权
      MainService.authLogin().success(function (data) {
-     localStorage.setItem('token', data.Values)
+     localStorage.setItem('token', data)
      }).then(function () {
      $scope.getHelpDetails();
      })

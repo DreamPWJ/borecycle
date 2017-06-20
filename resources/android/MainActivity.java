@@ -17,7 +17,7 @@
        under the License.
  */
 
-package com.ionicframework.juhua896755;
+package com.boolv.recycle;
 
 import android.os.Bundle;
 import org.apache.cordova.*;

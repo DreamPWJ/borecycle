@@ -7,10 +7,28 @@
         "files": {}
     },
     "installed_plugins": {
+        "com.synconset.imagepicker": {
+            "PACKAGE_NAME": "com.boolv.recycle"
+        },
+        "com.telerik.plugins.nativepagetransitions": {
+            "PACKAGE_NAME": "com.boolv.recycle"
+        },
+        "cordova-plugin-camera": {
+            "PACKAGE_NAME": "com.boolv.recycle"
+        },
         "cordova-plugin-console": {
             "PACKAGE_NAME": "com.boolv.recycle"
         },
         "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.boolv.recycle"
+        },
+        "cordova-plugin-file": {
+            "PACKAGE_NAME": "com.boolv.recycle"
+        },
+        "cordova-plugin-file-opener2": {
+            "PACKAGE_NAME": "com.boolv.recycle"
+        },
+        "cordova-plugin-file-transfer": {
             "PACKAGE_NAME": "com.boolv.recycle"
         },
         "cordova-plugin-geolocation": {
@@ -22,10 +40,17 @@
         "cordova-plugin-network-information": {
             "PACKAGE_NAME": "com.boolv.recycle"
         },
+        "cordova-plugin-screen-orientation": {
+            "PACKAGE_NAME": "com.boolv.recycle"
+        },
         "cordova-plugin-splashscreen": {
             "PACKAGE_NAME": "com.boolv.recycle"
         },
         "cordova-plugin-statusbar": {
+            "PACKAGE_NAME": "com.boolv.recycle"
+        },
+        "cordova-plugin-wechat": {
+            "WECHATAPPID": "wx3a43052a36e31c53",
             "PACKAGE_NAME": "com.boolv.recycle"
         },
         "cordova-plugin-whitelist": {
@@ -37,36 +62,11 @@
         "ionic-plugin-keyboard": {
             "PACKAGE_NAME": "com.boolv.recycle"
         },
-        "cordova-plugin-wechat": {
-            "WECHATAPPID": "wx3a43052a36e31c53",
-            "PACKAGE_NAME": "com.boolv.recycle"
-        },
-        "cordova-plugin-file": {
-            "PACKAGE_NAME": "com.boolv.recycle"
-        },
-        "cordova-plugin-file-transfer": {
-            "PACKAGE_NAME": "com.boolv.recycle"
-        },
-        "cordova-plugin-file-opener2": {
-            "PACKAGE_NAME": "com.boolv.recycle"
-        },
-        "cordova-plugin-camera": {
-            "PACKAGE_NAME": "com.boolv.recycle"
-        },
-        "com.synconset.imagepicker": {
-            "PACKAGE_NAME": "com.boolv.recycle"
-        },
-        "com.telerik.plugins.nativepagetransitions": {
-            "PACKAGE_NAME": "com.boolv.recycle"
-        },
         "jpush-phonegap-plugin": {
             "APP_KEY": "f4369f588d55c5cee044b822",
             "PACKAGE_NAME": "com.boolv.recycle"
         },
         "phonegap-plugin-barcodescanner": {
-            "PACKAGE_NAME": "com.boolv.recycle"
-        },
-        "cordova-plugin-screen-orientation": {
             "PACKAGE_NAME": "com.boolv.recycle"
         }
     },

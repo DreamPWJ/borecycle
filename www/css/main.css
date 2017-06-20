@@ -205,7 +205,9 @@
   height: calc(100% + 1rem);
 }
 
-
+.show-updateconfirm .popup .popup-head {
+  border-bottom: 1px solid #dddddd;
+}
 
 /*-------------------------------------------------------*/
 .border-rb {
