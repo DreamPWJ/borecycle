@@ -10,10 +10,12 @@
     <button ng-if="!isWeiXin" class="button  button-clear icon iconfont icon-more " ng-click="modal.show()"></button>
   </ion-nav-buttons>
   <ion-content overflow-scroll="false" has-bouncing="true">
-    <h2 class="item  item-borderless text-center item-text-wrap">{{helpdata.Title}}</h2>
+    <div class="list">
+      <h2 class="item  item-borderless text-center item-text-wrap">{{helpdata.Title}}</h2>
 
-    <div class="item item-body item-image">
-      <div ng-bind-html="helpdata.Content"></div>
+      <div class="item item-body item-image ">
+        <div ng-bind-html="helpdata.Content"></div>
+      </div>
     </div>
   </ion-content>
 

@@ -10,7 +10,6 @@ angular.module('starter.controllers', [])
   //APP首页面
   .controller('MainCtrl', function ($scope, $rootScope, CommonService, MainService, BoRecycle, $ionicHistory, NewsService, AccountService, $ionicPlatform, WeiXinService) {
 
-
     //获取公共接口授权token
     if (!localStorage.getItem("token")) {
       MainService.authLogin().success(function (data) {
@@ -103,7 +102,12 @@ angular.module('starter.controllers', [])
     $scope.agreedeal = true;//同意用户协议
     $scope.loginSubmit = function () {
       AccountService.login($scope.user).success(function (data) {
-        CommonService.getStateName();   //跳转页面
+        if (data.code == 1001) {
+          CommonService.getStateName();   //跳转页面
+        } else {
+          CommonService.platformPrompt(data.message, 'close');
+        }
+
       }).error(function () {
         CommonService.platformPrompt("登录失败!", 'close');
       })
@@ -158,26 +162,20 @@ angular.module('starter.controllers', [])
     $scope.paraclass = true; //控制验证码的disable
     $scope.getVerifyCode = function () {
       event.preventDefault();
-      event.stopPropagation();
       if ($scope.paraclass) { //按钮可用
         //60s倒计时
         AccountService.countDown($scope);
-        AccountService.getVerifyCode({
-          mobile: localStorage.getItem("login_name"),
-          isFindPwd: "2"
-        }).success(function (data) {
-          if (data.code == 1001) {
-            $scope.verify = "";
-          } else {
-            CommonService.platformPrompt(data.message, 'close');
-          }
-
+        AccountService.sendCode({mobile: $scope.user.username}).success(function (data) {
+          $scope.user.passwordcode = data.data;
+        }).error(function () {
+          CommonService.platformPrompt("验证码获取失败!", 'close');
         })
       }
 
     }
     //注册
     $scope.register = function () {
+
       $state.go('organizingdata');
     }
   })
@@ -229,16 +227,10 @@ angular.module('starter.controllers', [])
       if ($scope.paraclass) { //按钮可用
         //60s倒计时
         AccountService.countDown($scope);
-        AccountService.getVerifyCode({
-          mobile: localStorage.getItem("login_name"),
-          isFindPwd: "2"
-        }).success(function (data) {
-          if (data.code == 1001) {
-            $scope.verify = "";
-          } else {
-            CommonService.platformPrompt(data.message, 'close');
-          }
-
+        AccountService.sendCode({mobile: $scope.user.username}).success(function (data) {
+          $scope.user.passwordcode = data.data;
+        }).error(function () {
+          CommonService.platformPrompt("验证码获取失败!", 'close');
         })
       }
     }
@@ -886,7 +878,7 @@ angular.module('starter.controllers', [])
   })
 
   //帮助信息共用模板
-  .controller('HelpCtrl', function ($scope, $rootScope, $stateParams, $state, BoRecycle, CommonService, MainService, WeiXinService) {
+  .controller('HelpCtrl', function ($scope, $rootScope, $stateParams, $state, BoRecycle, CommonService, AccountService, WeiXinService) {
     CommonService.customModal($scope, 'templates/modal/share.html');
     $scope.getHelpDetails = function () {
       var id = $stateParams.ID;
@@ -896,44 +888,46 @@ angular.module('starter.controllers', [])
       if (id == 12) {
         $scope.title = '提升额度';
       }
-      if (id == 13) {
+      if (id == 22) {
         $scope.title = '关于我们';
       }
-      if (id == 14) {
-        $scope.title = '信用分解读';
+      if (id == 23) {
+        $scope.title = '我能做什么';
+      }
+      if (id == 24) {
+        $scope.title = '我要如何做';
       }
       //获取帮助中心详情
       $scope.params = {
         ID: id
       }
-      /*      MainService.getHelpDetails($scope.params).success(function (data) {
-       $scope.helpdata = data;
-       if (!$scope.title) {
-       $scope.title = data.Title;
-       }
-       }).then(function () {
-       if (WeiXinService.isWeiXin()) { //如果是微信
-       $scope.isWeiXin = true;
-       CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract, BoRecycle.moblileApi + '/#/help/' + id, '');
-       }
-       //调用分享面板
-       $scope.shareActionSheet = function () {
-       umeng.share($scope.helpdata.Title, $scope.helpdata.Abstract, '', BoRecycle.moblileApi + '/#/help/' + id);
-       }
-       })*/
+      AccountService.getHelpContent($scope.params).success(function (data) {
+        $scope.helpdata = data.data;
+        if (!$scope.title) {
+          $scope.title = data.Title;
+        }
+      }).then(function () {
+        if (WeiXinService.isWeiXin()) { //如果是微信
+          $scope.isWeiXin = true;
+          CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract, BoRecycle.moblileApi + '/#/help/' + id, '');
+        }
+        //调用分享面板
+        $scope.shareActionSheet = function () {
+          //   umeng.share($scope.helpdata.Title, $scope.helpdata.Abstract, '', BoRecycle.moblileApi + '/#/help/' + id);
+        }
+      })
     }
-    /*
-     if (!localStorage.getItem("token")) {//如果没有授权先授权
-     //接口授权
-     MainService.authLogin().success(function (data) {
-     localStorage.setItem('token', data)
-     }).then(function () {
-     $scope.getHelpDetails();
-     })
-     } else {
-     $scope.getHelpDetails();
-     }
-     */
+
+    if (!localStorage.getItem("token")) {//如果没有授权先授权
+      //接口授权
+      MainService.authLogin().success(function (data) {
+        localStorage.setItem('token', data.access_token)
+      }).then(function () {
+        $scope.getHelpDetails();
+      })
+    } else {
+      $scope.getHelpDetails();
+    }
 
 
   })
