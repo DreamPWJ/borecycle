@@ -1,6 +1,6 @@
 angular.module('starter.services', [])
 //service在使用this指针，而factory直接返回一个对象
-  .service('CommonService', function ($ionicPopup, $ionicPopover, $rootScope, $state, $ionicModal, $cordovaCamera, $cordovaImagePicker, $ionicPlatform, $ionicActionSheet, $ionicHistory, $timeout, $cordovaToast, $cordovaGeolocation, $cordovaBarcodeScanner, $ionicViewSwitcher, $ionicLoading, AccountService, WeiXinService) {
+  .service('CommonService', function ($ionicPopup, $ionicPopover, $rootScope, $state, $ionicModal, $cordovaCamera, $cordovaImagePicker, $ionicPlatform, $ionicActionSheet, $ionicHistory, $timeout, $cordovaToast, $cordovaGeolocation, $cordovaBarcodeScanner, $ionicViewSwitcher, $interval, $ionicLoading, AccountService, WeiXinService) {
     return {
       platformPrompt: function (msg, stateurl) {
         if ($ionicPlatform.is('android') || $ionicPlatform.is('ios')) {
@@ -345,6 +345,45 @@ angular.module('starter.services', [])
           _self.type = null;
         }, 3000);
       },
+      countDown: function ($scope) {//60s倒计时
+        var second = 60,
+          timePromise = undefined;
+        timePromise = $interval(function () {
+          if (second <= 0) {
+            $interval.cancel(timePromise);
+            $scope.paracont = "重发验证码";
+            $scope.paraclass = true;
+          } else {
+            $scope.paraclass = false;
+            $scope.paracont = second + "s后重试";
+            second--;
+          }
+        }, 1000, 100);
+      },
+      getVerifyCode: function ($scope, account) {//获取验证码
+        event.preventDefault();
+        CommonService = this;
+        if ($scope.paraclass) { //按钮可用
+          //60s倒计时
+          this.countDown($scope);
+          if (/^1(3|4|5|7|8)\d{9}$/.test(account)) {
+            AccountService.sendCode({mobile: account}).success(function (data) {
+              $scope.verifycode = data.data;
+              if (data.code != 1001) {
+                CommonService.platformPrompt("手机验证码获取失败!", 'close');
+              }
+            })
+          } else if (/^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(account)) {
+            AccountService.sendEmailCode({email: account}).success(function (data) {
+              $scope.verifycode = data.data;
+              if (data.code != 1001) {
+                CommonService.platformPrompt("邮箱验证码获取失败!", 'close');
+              }
+            })
+          }
+
+        }
+      },
     }
   })
   .service('MainService', function ($q, $http, BoRecycle, EncodingService) { //主页服务定义
@@ -376,7 +415,6 @@ angular.module('starter.services', [])
       },
     }
   })
-
   .service('OrderService', function ($q, $http, BoRecycle) { //订单 接单收货/货源归集及回收 登记信息/货源接口服务定义
     return {
       navigation: function (params) { //导航路线规划
@@ -970,44 +1008,6 @@ angular.module('starter.services', [])
           deferred.reject(data);// 声明执行失败，即服务器返回错误
         });
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
-      },
-      countDown: function ($scope) {//60s倒计时
-        var second = 60,
-          timePromise = undefined;
-        timePromise = $interval(function () {
-          if (second <= 0) {
-            $interval.cancel(timePromise);
-            $scope.paracont = "重发验证码";
-            $scope.paraclass = true;
-          } else {
-            $scope.paraclass = false;
-            $scope.paracont = second + "s后重试";
-            second--;
-          }
-        }, 1000, 100);
-      },
-      getVerifyCode: function ($scope, account) {//获取验证码
-        event.preventDefault();
-        if ($scope.paraclass) { //按钮可用
-          //60s倒计时
-          this.countDown($scope);
-          if (/^1(3|4|5|7|8)\d{9}$/.test(account)) {
-            this.sendCode({mobile: account}).success(function (data) {
-              $scope.verifycode = data.data;
-              if (data.code != 1001) {
-                CommonService.platformPrompt("手机验证码获取失败!", 'close');
-              }
-            })
-          } else if (/^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(account)) {
-            this.sendEmailCode({email: account}).success(function (data) {
-              $scope.verifycode = data.data;
-              if (data.code != 1001) {
-                CommonService.platformPrompt("邮箱验证码获取失败!", 'close');
-              }
-            })
-          }
-
-        }
       },
       checkMobilePhone: function ($scope, mobilephone) {  //检查手机号
         if (/^1(3|4|5|7|8)\d{9}$/.test(mobilephone)) {

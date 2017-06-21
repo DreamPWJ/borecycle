@@ -25,7 +25,14 @@ angular.module('starter.controllers', [])
 
     var onGetRegistrationID = function (data) {
       try {
+        if (data.length == 0) {
+          var t1 = window.setTimeout(getRegistrationID, 1000);
+          return;
+        }
         $scope.jPushRegistrationID = data;
+        localStorage.setItem("jPushRegistrationID", data)
+        console.log("JPushPlugin:registrationID is " + data);
+
         //提交设备信息到服务器
         $scope.datas = {
           registration_id: $scope.jPushRegistrationID,	//极光注册id
@@ -38,20 +45,18 @@ angular.module('starter.controllers', [])
         }
         NewsService.setDeviceInfo($scope.datas).success(function (data) {
           if (data.code != 1001) {
-            CommonService.platformPrompt(data.message, 'close');
+            CommonService.platformPrompt("提交设备信息到服务器失败", 'close');
           }
         })
-        console.log("JPushPlugin:registrationID is " + data);
 
-        if (data.length == 0) {
-          var t1 = window.setTimeout(getRegistrationID, 1000);
-        }
-        localStorage.setItem("jPushRegistrationID", data)
       } catch (exception) {
         console.log(exception);
       }
     };
-    window.setTimeout(getRegistrationID, 1000);
+    if (ionic.Platform.isWebView()) { //包含cordova插件的应用
+      window.setTimeout(getRegistrationID, 1000);
+    }
+
 
     if ($ionicPlatform.is('android')) {//android系统自动更新软件版本
       $scope.versionparams = {
@@ -125,7 +130,7 @@ angular.module('starter.controllers', [])
     }
     //获取验证码
     $scope.getVerifyCode = function () {
-      AccountService.getVerifyCode($scope, $scope.user.mobile);
+      CommonService.getVerifyCode($scope, $scope.user.mobile);
     }
 
     $scope.loginSubmit = function () {
@@ -159,7 +164,7 @@ angular.module('starter.controllers', [])
 
     //获取验证码
     $scope.getVerifyCode = function () {
-      AccountService.getVerifyCode($scope, $scope.user.account);
+      CommonService.getVerifyCode($scope, $scope.user.account);
     }
     //注册
     $scope.register = function () {
@@ -178,7 +183,7 @@ angular.module('starter.controllers', [])
 
     //获取验证码
     $scope.getVerifyCode = function () {
-      AccountService.getVerifyCode($scope, $scope.user.account);
+      CommonService.getVerifyCode($scope, $scope.user.account);
     }
 
     //获取省市县
@@ -279,7 +284,7 @@ angular.module('starter.controllers', [])
         zoom: 16,
         center: [localStorage.getItem("longitude") || 114.0557100, localStorage.getItem("latitude") || 22.5224500,]
       })
-      ;
+    ;
     AMap.plugin(['AMap.ToolBar', 'AMap.Scale', 'AMap.OverView'],
       function () {
         map.addControl(new AMap.ToolBar());
@@ -699,7 +704,7 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt("输入手机号与原手机号不一致", 'cancelmobile');
         return;
       }
-      AccountService.getVerifyCode($scope, $scope.user.account);
+      CommonService.getVerifyCode($scope, $scope.user.account);
     }
     $scope.cancelMobileSubmit = function () {
       if ($scope.verifycode != $scope.user.password) {
@@ -723,7 +728,7 @@ angular.module('starter.controllers', [])
 
     //获取验证码
     $scope.getVerifyCode = function () {
-      AccountService.getVerifyCode($scope, $scope.user.account);
+      CommonService.getVerifyCode($scope, $scope.user.account);
     }
 
     $scope.bindingMobileSubmit = function () {
@@ -746,63 +751,62 @@ angular.module('starter.controllers', [])
         }
 
       })
-  }
-})
-
-//实名认证
-.
-controller('RealNameCtrl', function ($scope, $rootScope, CommonService, AccountService) {
-  $scope.realname = {};//实名认证数据
-  //上传图片数组集合
-  $scope.imageList = [];
-  $scope.ImgsPicAddr = [];//图片信息数组
-  $scope.uploadName = 'realname';//上传图片的类别 用于区分
-  $scope.uploadtype = 4;//上传媒体操作类型 1.卖货单 2 供货单 3 买货单 4身份证 5 头像
-  //上传照片
-  $scope.uploadActionSheet = function () {
-    CommonService.uploadActionSheet($scope, 'User');
-  }
-  //获取实名认证信息
-  $scope.params = {
-    userid: localStorage.getItem("userid"),
-  }
-  /*    AccountService.getCertification($scope.params).success(function (data) {
-   $scope.certificationinfo = data;
-   console.log($scope.certificationinfo);
-   })*/
-  //申请实名认证
-  $scope.addCertificationName = function () {
-    if ($scope.ImgsPicAddr.length == 0) {
-      CommonService.platformPrompt("请先上传认证照片后再提交!", 'close');
-      return;
     }
+  })
 
-    $scope.datas = {
-      userid: localStorage.getItem("userid"),	//当前用户userid
-      name: $scope.realname.name,	    //姓名
-      no: $scope.realname.no,	//身份证号码
-      frontpic: $scope.ImgsPicAddr[0]	//身份证照片地址。必须上传、上传使用公用上传图片接口
+  //实名认证
+  .controller('RealNameCtrl', function ($scope, $rootScope, CommonService, AccountService) {
+    $scope.realname = {};//实名认证数据
+    //上传图片数组集合
+    $scope.imageList = [];
+    $scope.ImgsPicAddr = [];//图片信息数组
+    $scope.uploadName = 'realname';//上传图片的类别 用于区分
+    $scope.uploadtype = 4;//上传媒体操作类型 1.卖货单 2 供货单 3 买货单 4身份证 5 头像
+    //上传照片
+    $scope.uploadActionSheet = function () {
+      CommonService.uploadActionSheet($scope, 'User');
     }
-    AccountService.certificationName($scope.datas).success(function (data) {
-      if (data.code == 1001) {
-        CommonService.showAlert('', '<p>温馨提示:您的认证信息已经</p><p>提交成功,我们会尽快处理！</p>', '')
-      } else {
-        CommonService.platformPrompt('实名认证失败', 'close');
+    //获取实名认证信息
+    $scope.params = {
+      userid: localStorage.getItem("userid"),
+    }
+    /*    AccountService.getCertification($scope.params).success(function (data) {
+     $scope.certificationinfo = data;
+     console.log($scope.certificationinfo);
+     })*/
+    //申请实名认证
+    $scope.addCertificationName = function () {
+      if ($scope.ImgsPicAddr.length == 0) {
+        CommonService.platformPrompt("请先上传认证照片后再提交!", 'close');
+        return;
       }
-    })
-  }
-  $scope.bigImage = false;    //初始默认大图是隐藏的
-  $scope.hideBigImage = function () {
-    $scope.bigImage = false;
-  };
-  //点击图片放大
-  $scope.shouBigImage = function (imageName) {  //传递一个参数（图片的URl）
-    $scope.Url = imageName;                   //$scope定义一个变量Url，这里会在大图出现后再次点击隐藏大图使用
-    $scope.bigImage = true;                   //显示大图
-  };
-})
 
-//绑定邮箱
+      $scope.datas = {
+        userid: localStorage.getItem("userid"),	//当前用户userid
+        name: $scope.realname.name,	    //姓名
+        no: $scope.realname.no,	//身份证号码
+        frontpic: $scope.ImgsPicAddr[0]	//身份证照片地址。必须上传、上传使用公用上传图片接口
+      }
+      AccountService.certificationName($scope.datas).success(function (data) {
+        if (data.code == 1001) {
+          CommonService.showAlert('', '<p>温馨提示:您的认证信息已经</p><p>提交成功,我们会尽快处理！</p>', '')
+        } else {
+          CommonService.platformPrompt('实名认证失败', 'close');
+        }
+      })
+    }
+    $scope.bigImage = false;    //初始默认大图是隐藏的
+    $scope.hideBigImage = function () {
+      $scope.bigImage = false;
+    };
+    //点击图片放大
+    $scope.shouBigImage = function (imageName) {  //传递一个参数（图片的URl）
+      $scope.Url = imageName;                   //$scope定义一个变量Url，这里会在大图出现后再次点击隐藏大图使用
+      $scope.bigImage = true;                   //显示大图
+    };
+  })
+
+  //绑定邮箱
   .controller('BindingEmailCtrl', function ($scope, $rootScope, CommonService, AccountService) {
     $rootScope.email = {};//邮箱
     //发送验证邮件
