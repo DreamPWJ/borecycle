@@ -10,8 +10,9 @@ angular.module('starter.controllers', [])
   //APP首页面
   .controller('MainCtrl', function ($scope, $rootScope, CommonService, MainService, BoRecycle, $ionicHistory, NewsService, AccountService, $ionicPlatform, WeiXinService) {
     //获取公共接口授权token  公共接口授权token两个小时失效  超过两个小时重新请求
-    if (!localStorage.getItem("token") && ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
+    if (!localStorage.getItem("token") || localStorage.getItem("token") == "undefined" || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
       MainService.authLogin().success(function (data) {
+        console.log(data);
         localStorage.setItem("token", data.access_token);//公共接口授权token
         localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
       }).error(function () {
@@ -26,7 +27,7 @@ angular.module('starter.controllers', [])
     var onGetRegistrationID = function (data) {
       try {
         if (data.length == 0) {
-          var t1 = window.setTimeout(getRegistrationID, 1000);
+          window.setTimeout(getRegistrationID, 1000);
           return;
         }
         $scope.jPushRegistrationID = data;
@@ -157,7 +158,8 @@ angular.module('starter.controllers', [])
     $scope.user = {};//定义用户对象
     $scope.agreedeal = true;//同意用户协议
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
-    $scope.paraclass = false; //控制验证码的disable
+    $scope.paraclass = false; //控制验证码的disable;
+    $scope.user.services = 2;//默认选中
     $scope.checkphoneandemail = function (account) {//检查手机号和邮箱
       AccountService.checkMobilePhoneAndEmail($scope, account);
     }
@@ -169,7 +171,23 @@ angular.module('starter.controllers', [])
     //注册
     $scope.register = function () {
       console.log($scope.user);
-      $state.go('organizingdata');
+      if ($scope.user.password != $scope.user.confirmpassword) {
+        CommonService.platformPrompt("两次输入的密码不一致", 'close');
+        return;
+      }
+      if ($scope.verifycode != $scope.user.code) {
+        CommonService.platformPrompt("输入验证码不正确", 'close');
+        return;
+      }
+      $scope.user.client = ionic.Platform.isWebView() ? 0 : (ionic.Platform.is('android') ? 1 : 2);
+      console.log($scope.user);
+      AccountService.register($scope.user).success(function (data) {
+        if (data.code == 1001) {
+          $state.go('organizingdata');
+        }
+        CommonService.platformPrompt(data.message, 'close');
+      })
+
     }
   })
 

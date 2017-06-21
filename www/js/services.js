@@ -1,6 +1,6 @@
 angular.module('starter.services', [])
 //service在使用this指针，而factory直接返回一个对象
-  .service('CommonService', function ($ionicPopup, $ionicPopover, $rootScope, $state, $ionicModal, $cordovaCamera, $cordovaImagePicker, $ionicPlatform, $ionicActionSheet, $ionicHistory, $timeout, $cordovaToast, $cordovaGeolocation, $cordovaBarcodeScanner, $ionicViewSwitcher, $interval, $ionicLoading, AccountService, WeiXinService) {
+  .service('CommonService', function ($ionicPopup, $ionicPopover, $rootScope, $state, $ionicModal, $cordovaCamera, $cordovaImagePicker, $ionicPlatform, $ionicActionSheet, $ionicHistory, $timeout, $cordovaToast, $cordovaGeolocation, $cordovaBarcodeScanner, $ionicViewSwitcher, $interval, AccountService, WeiXinService) {
     return {
       platformPrompt: function (msg, stateurl) {
         if ($ionicPlatform.is('android') || $ionicPlatform.is('ios')) {
@@ -870,6 +870,47 @@ angular.module('starter.services', [])
         });
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       },
+      setPassword: function (datas) { //修改密码
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'POST',
+          url: BoRecycle.api + "/api/user/set_password",
+          data: datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      modifyNickname: function (params) { //修改昵称
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'POST',
+          url: BoRecycle.api + "/api/user/modify_nickname/" + params.userid,
+          params: {nickname: params.nickname}
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      modifySex: function (params) { //修改性别
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'POST',
+          url: BoRecycle.api + "/api/user/modify_sex/" + params.userid + "/" + params.sex
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
       findPassword: function (datas) { //使用手机或者邮箱找回密码
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise
@@ -891,6 +932,20 @@ angular.module('starter.services', [])
           method: 'POST',
           url: BoRecycle.api + "/api/user/set_info",
           data: datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      setFigure: function (params) { //修改会员头像
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/user/set_figure/" + params.userid,
+          params: {figure: params.figure}
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -1109,11 +1164,12 @@ angular.module('starter.services', [])
         confirmPopup.then(function (res) {
           if (res) {
             $ionicLoading.show({
-              template: "已经下载：0%"
+              template: "已经下载：0%",
+              noBackdrop: true
             });
             var url = appurl; //可以从服务端获取更新APP的路径
             try {
-              var targetPath = cordova.file.externalRootDirectory + "/boolv/boolv.apk"; //APP下载存放的路径，可以使用cordova file插件进行相关配置
+              var targetPath = cordova.file.externalRootDirectory + "/borecycle/borecycle.apk"; //APP下载存放的路径，可以使用cordova file插件进行相关配置
             } catch (e) {
               $ionicLoading.hide();
             }
@@ -1130,7 +1186,7 @@ angular.module('starter.services', [])
               });
               $ionicLoading.hide();
             }, function (err) {
-              $cordovaToast.showLongCenter("APP下载失败," + err);
+              $cordovaToast.showLongCenter("博回收APP下载失败," + err);
               $ionicLoading.hide();
               return;
             }, function (progress) {
@@ -1138,7 +1194,8 @@ angular.module('starter.services', [])
               $timeout(function () {
                 var downloadProgress = (progress.loaded / progress.total) * 100;
                 $ionicLoading.show({
-                  template: "已经下载：" + Math.floor(downloadProgress) + "%"
+                  template: "已经下载：" + Math.floor(downloadProgress) + "%",
+                  noBackdrop: true
                 });
                 if (downloadProgress > 99) {
                   $ionicLoading.hide();
@@ -1993,7 +2050,7 @@ angular.module('starter.services', [])
         //授权
         config.headers = config.headers || {};
         var token = localStorage.getItem('token');
-        if (token) {
+        if (token && token != "undefined") {
           config.headers.authorization = "Bearer " + token;
         }
         return config;
