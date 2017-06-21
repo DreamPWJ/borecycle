@@ -16,7 +16,7 @@
       <ion-list>
         <label class="item item-input">
           <span class="input-label icon ion-ios-person-outline"> 账号</span>
-          <input type="text" name="username" ng-model="user.account" placeholder="手机号码/邮箱" required/>
+          <input type="text" name="username" ng-model="user.account" placeholder="手机号码/邮箱"  ng-keyup="checkphoneandemail(user.account)" required/>
         </label>
 
         <label class="item item-input">
@@ -44,7 +44,7 @@
         </ion-item>
 
         <ion-list>
-          <ion-radio ng-model="user.services" icon="ion-android-done" ng-value="1" ng-change="">销售员
+          <ion-radio ng-model="user.services" ng-show="false" icon="ion-android-done" ng-value="1" ng-change="">销售员
           </ion-radio>
           <ion-radio ng-model="user.services" icon="ion-android-done" ng-value="2" ng-change="">上门回收者
           </ion-radio>

@@ -56,27 +56,7 @@
     bottom: 0;
 }
 
-.authcode {
-    position: absolute;
-    top: 3.3rem;
-    right: 0.5rem;
-    height: 35px;
-    line-height: 35px;
-    background-color: #00ACFF;
-    border: none;
-    border-radius: 0.2rem;
-    color: #ffffff;
-    z-index: 1000;
-}
 
-.disabledauthcode {
-    background-color: rgba(17, 193, 243, 0.6);
-
-}
-
-.authcode:active {
-    background-color: #139EF3;
-}
 
 .city .item, .city .item-divider {
     font-size: 12px;

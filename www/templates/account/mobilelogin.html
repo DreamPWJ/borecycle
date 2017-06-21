@@ -19,11 +19,15 @@
           <input type="number" name="username" ng-model="user.username" ng-keyup="checkphone(user.username)"  maxlength="11" placeholder="手机号码" required/>
         </label>
 
-        <label class="item item-input">
-          <span class="input-label icon ion-ios-locked-outline "> 验证码</span>
-          <input type="number" ng-model="user.password" required/>
-        </label>
-        <button class="authcode" ng-class="{false:'disabledauthcode'}[paraclass]"  ng-click="sendCode()" >{{paracont}}</button>
+        <div class="item item-input">
+        <span class="input-label icon ion-ios-locked-outline"> 验证码 </span>
+        <span class="row row-no-padding">
+          <input type="number" class="col-55" placeholder="请输入验证码" ng-model="user.code" required/>
+            <button class="button button-small button-positive  col-33 " ng-class="{false:'button-outline'}[paraclass]"
+                    ng-click="getVerifyCode()">{{paracont}}</button>
+          </span>
+      </div>
+
         <ion-checkbox class=" stable-bg item-borderless checkbox-positive" ng-model="agreedeal" ng-checked="true">
           同意登录协议
         </ion-checkbox>

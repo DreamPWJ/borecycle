@@ -986,8 +986,40 @@ angular.module('starter.services', [])
           }
         }, 1000, 100);
       },
+      getVerifyCode: function ($scope, account) {//获取验证码
+        event.preventDefault();
+        if ($scope.paraclass) { //按钮可用
+          //60s倒计时
+          this.countDown($scope);
+          if (/^1(3|4|5|7|8)\d{9}$/.test(account)) {
+            this.sendCode({mobile: account}).success(function (data) {
+              $scope.verifycode = data.data;
+              if (data.code != 1001) {
+                CommonService.platformPrompt("手机验证码获取失败!", 'close');
+              }
+            })
+          } else if (/^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(account)) {
+            this.sendEmailCode({email: account}).success(function (data) {
+              $scope.verifycode = data.data;
+              if (data.code != 1001) {
+                CommonService.platformPrompt("邮箱验证码获取失败!", 'close');
+              }
+            })
+          }
+
+        }
+      },
       checkMobilePhone: function ($scope, mobilephone) {  //检查手机号
         if (/^1(3|4|5|7|8)\d{9}$/.test(mobilephone)) {
+          $scope.paraclass = true;
+          return true;
+        } else {
+          $scope.paraclass = false;
+          return false;
+        }
+      },
+      checkMobilePhoneAndEmail: function ($scope, account) {  //检查手机号和邮箱
+        if (/^1(3|4|5|7|8)\d{9}$/.test(account) || /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(account)) {
           $scope.paraclass = true;
           return true;
         } else {
@@ -1013,7 +1045,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise
         promise = $http({
           method: 'GET',
-          url: BoRecycle.api + "/api/util/send_sms_validcode",
+          url: BoRecycle.api + "/api/util/send_email_validcode",
           params: {email: params.email}
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
@@ -1819,7 +1851,7 @@ angular.module('starter.services', [])
               optId: uploadtype //上传媒体操作类型 1.卖货单 2 供货单 3 买货单 4身份证 5 头像
             }
             WeiXinService.getWCMedia($scope.mediaparams).success(function (data) {
-              $scope.imageList.push(data.Values.url);//客户端显示的url
+              $scope.imageList.push(data.data.url);//客户端显示的url
             })
           }
         });

@@ -14,10 +14,15 @@
           <input type="number" ng-model="user.username" placeholder="新手机号" ng-keyup="checkphone(user.username)"  maxlength="11"  required>
 
         </label>
-        <label class="item item-input">
-          <input type="number" ng-model="user.password"  placeholder="验证码" required>
-        </label>
-        <button class="authcode" ng-class="{false:'disabledauthcode'}[paraclass]"  ng-click="sendCode()" >{{paracont}}</button>
+
+        <div class="item item-input">
+          <span class="input-label icon ion-ios-locked-outline"> 验证码 </span>
+          <span class="row row-no-padding">
+          <input type="number" class="col-55" placeholder="请输入验证码" ng-model="user.code" required/>
+            <button class="button button-small button-positive  col-33 " ng-class="{false:'button-outline'}[paraclass]"
+                    ng-click="getVerifyCode()">{{paracont}}</button>
+          </span>
+        </div>
       </div>
  </ion-content>
   <div class="padding light-bg  bottom-0" keyboard-attach>
