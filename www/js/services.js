@@ -318,7 +318,7 @@ angular.module('starter.services', [])
       },
       getStateName: function () {    //得到上一个路由名称方法
         var stateName = "";
-        if ($ionicHistory.backView() && $ionicHistory.backView().stateName != "tab.account") {
+        if ($ionicHistory.backView() && $ionicHistory.backView().stateName != "tab.account" && $ionicHistory.backView().stateName != "setting") {
           stateName = $ionicHistory.backView().stateName;
         }
         if (stateName) {
@@ -1041,6 +1041,15 @@ angular.module('starter.services', [])
         };
         $cordovaFileTransfer.upload(url, imageUrl, options)
           .then(function (result) {
+            if (params.filenames == 'User') {
+              if ($scope.uploadName == 'uploadhead') {//上传头像单独处理
+                var figurparams = {
+                  userid: localStorage.getItem("usertoken"),
+                  figure: JSON.parse(result.response).Des
+                }
+                AccountService.setFigure(figurparams);
+              }
+            }
             $scope.ImgsPicAddr.push(JSON.parse(result.response).Des);
             $scope.imageSuccessCount++;
             if ($scope.imageSuccessCount == $scope.imageUploadCount) {

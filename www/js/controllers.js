@@ -31,6 +31,26 @@ angular.module('starter.controllers', [])
         authLogin();
       } else {
         $interval.cancel($rootScope.publicAuth);
+        var authLogin = function () {
+          MainService.authLogin(
+            {
+              grant_type: 'password',
+              username: localStorage.getItem("userid"),
+              password: localStorage.getItem("usersecret")
+            }).success(function (data) {
+            console.log(data);
+            if (data.access_token) {
+              localStorage.setItem("token", data.access_token);//登录接口授权token
+              localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
+            }
+          }).error(function () {
+            CommonService.platformPrompt("获取登录接口授权token失败!", 'close');
+          })
+        }
+        $rootScope.loginAuth = $interval(function () {
+          authLogin();
+        }, 7199000);
+        authLogin();
       }
 
       //获取极光推送registrationID
@@ -123,6 +143,11 @@ angular.module('starter.controllers', [])
 
   //用户密码登录页面
   .controller('LoginCtrl', function ($scope, $rootScope, $interval, CommonService, MainService, AccountService) {
+    //删除记住用户信息
+    localStorage.removeItem("userid");
+    localStorage.removeItem("usersecret");
+    localStorage.removeItem("user");
+
     $scope.user = {};//提前定义用户对象
     $scope.agreedeal = true;//同意用户协议
     $scope.loginSubmit = function () {
@@ -132,6 +157,7 @@ angular.module('starter.controllers', [])
         $scope.userdata = data.data;
         if (data.code == 1001) {
           localStorage.setItem("userid", data.data.userid);
+          localStorage.setItem("usersecret", data.data.secret);
           CommonService.getStateName();   //跳转页面
         } else {
           CommonService.platformPrompt(data.message, 'close');
@@ -143,7 +169,7 @@ angular.module('starter.controllers', [])
             {
               grant_type: 'password',
               username: $scope.userdata.userid,
-              "password": $scope.userdata.secret
+              password: $scope.userdata.secret
             }).success(function (data) {
             console.log(data);
             if (data.access_token) {
@@ -159,12 +185,22 @@ angular.module('starter.controllers', [])
           authLogin();
         }, 7199000);
         authLogin();
+        //根据会员ID获取会员账号基本信息
+        if (localStorage.getItem("userid")) {
+          AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
+            if (data.code == 1001) {
+              localStorage.setItem("user", JSON.stringify(data.data));
+            } else {
+              CommonService.platformPrompt(data.message, 'close');
+            }
+          })
+        }
       })
     }
   })
 
   //手机验证登录页面
-  .controller('MobileLoginCtrl', function ($scope, $rootScope, CommonService, AccountService) {
+  .controller('MobileLoginCtrl', function ($scope, $rootScope, CommonService, MainService, AccountService) {
     $scope.user = {};//提前定义用户对象
     $scope.agreedeal = true;//同意用户协议
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
@@ -182,17 +218,51 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt("输入验证码不正确", 'close');
         return;
       }
+      $scope.user.client = ionic.Platform.isWebView() ? 0 : (ionic.Platform.is('android') ? 1 : 2);
       AccountService.login($scope.user).success(function (data) {
+        console.log(data);
+        $scope.userdata = data.data;
         if (data.code == 1001) {
+          localStorage.setItem("userid", data.data.userid);
+          localStorage.setItem("usersecret", data.data.secret);
           CommonService.getStateName();   //跳转页面
         } else {
           CommonService.platformPrompt(data.message, 'close');
         }
 
+      }).then(function () {
+        var authLogin = function () {
+          MainService.authLogin(
+            {
+              grant_type: 'password',
+              username: $scope.userdata.userid,
+              password: $scope.userdata.secret
+            }).success(function (data) {
+            console.log(data);
+            if (data.access_token) {
+              localStorage.setItem("token", data.access_token);//登录接口授权token
+              localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
+            }
 
-      }).error(function () {
-        CommonService.platformPrompt("登录失败!", 'close');
+          }).error(function () {
+            CommonService.platformPrompt("获取登录接口授权token失败!", 'close');
+          })
+        }
+        $rootScope.loginAuth = $interval(function () {
+          authLogin();
+        }, 7199000);
+        authLogin();
       })
+      //根据会员ID获取会员账号基本信息
+      if (localStorage.getItem("userid")) {
+        AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
+          if (data.code == 1001) {
+            localStorage.setItem("user", JSON.stringify(data.data));
+          } else {
+            CommonService.platformPrompt(data.message, 'close');
+          }
+        })
+      }
     }
   })
 
@@ -387,6 +457,10 @@ angular.module('starter.controllers', [])
 
   //通知消息列表
   .controller('NewsCtrl', function ($scope, CommonService, NewsService, $ionicScrollDelegate) {
+    //是否登录
+    if (!CommonService.isLogin(true)) {
+      return;
+    }
     $scope.newsList = [];
     $scope.page = 0;
     $scope.total = 1;
@@ -402,6 +476,7 @@ angular.module('starter.controllers', [])
         userid: localStorage.getItem("userid")//用户id
       }
       NewsService.getNewsList($scope.params).success(function (data) {
+        console.log(data);
         $scope.isNotData = false;
         if (data == null || data.data.data_list == 0) {
           $scope.isNotData = true;
@@ -431,12 +506,22 @@ angular.module('starter.controllers', [])
   })
 
   //我的设置页面
-  .controller('AccountCtrl', function ($scope, CommonService) {
+  .controller('AccountCtrl', function ($scope, $rootScope, CommonService, AccountService) {
     //是否登录
-    /*    if (!CommonService.isLogin(true)) {
-     return;
-     }*/
+    if (!CommonService.isLogin(true)) {
+      return;
+    }
     CommonService.customModal($scope, 'templates/modal/share.html');
+    //根据会员ID获取会员账号基本信息
+
+    AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
+      if (data.code == 1001) {
+        $rootScope.userdata = data.data;
+        localStorage.setItem("user", JSON.stringify(data.data));
+      } else {
+        CommonService.platformPrompt(data.message, 'close');
+      }
+    })
 
     //微信分享
     $scope.weixinShare = function (type) {
@@ -487,7 +572,6 @@ angular.module('starter.controllers', [])
     $scope.ImgsPicAddr = [];//图片信息数组
     $scope.uploadName = 'uploadhead';//上传图片的类别 用于区分
     $scope.figureurl = $stateParams.figure;
-    $scope.uploadtype = 5;//上传媒体操作类型 1.卖货单 2 供货单 3 买货单 4身份证 5 头像
     $scope.uploadActionSheet = function () {
       CommonService.uploadActionSheet($scope, 'User', true);
     }
