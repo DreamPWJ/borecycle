@@ -16,17 +16,22 @@
       <ion-list>
         <label class="item item-input">
           <span class="input-label icon ion-ios-person-outline"> 账号</span>
-          <input type="text" name="username" ng-model="user.account" placeholder="手机号码/邮箱"  ng-keyup="checkphoneandemail(user.account)" required/>
+          <input type="text" name="username" ng-model="user.account" placeholder="手机号码/邮箱"
+                 ng-keyup="checkphoneandemail(user.account)" required/>
         </label>
 
         <label class="item item-input">
           <span class="input-label icon ion-ios-locked-outline "> 设置密码</span>
-          <input type="text" ng-model="user.password" check-form ng-blur="checkForm(user.password,'请输入6~18位字母、数字和特殊符号','regular','/^[a-zA-Z0-9]{6,18}$/')"  placeholder="请输入6~18位字母、数字和特殊符号" required/>
+          <input type="text" ng-model="user.password" check-form
+                 ng-blur="checkForm(user.password,'请输入6~18位字母、数字和特殊符号','regular','/^[a-zA-Z0-9]{6,18}$/')"
+                 placeholder="请输入6~18位字母、数字和特殊符号" required/>
         </label>
 
         <label class="item item-input">
           <span class="input-label icon ion-ios-locked-outline "> 确认密码</span>
-          <input type="text" ng-model="user.confirmpassword" check-form ng-blur="checkForm(user.confirmpassword,'请输入6~18位字母、数字和特殊符号','regular','/^[a-zA-Z0-9]{6,18}$/')"  placeholder="请确保和上面密码一致" required/>
+          <input type="text" ng-model="user.confirmpassword" check-form
+                 ng-blur="checkForm(user.confirmpassword,'请输入6~18位字母、数字和特殊符号','regular','/^[a-zA-Z0-9]{6,18}$/')"
+                 placeholder="请确保和上面密码一致" required/>
         </label>
         <div class="item item-input">
           <span class="input-label icon ion-ios-locked-outline"> 验证码 </span>
@@ -43,23 +48,28 @@
                                              nav-direction=forward> 什么是用户类型</a></p>
         </ion-item>
 
-        <ion-list>
-          <ion-radio ng-model="user.services" ng-show="false" icon="ion-android-done" ng-value="1" ng-change="">销售员
-          </ion-radio>
-          <ion-radio ng-model="user.services" icon="ion-android-done" ng-value="2" ng-change="">上门回收者
-          </ion-radio>
-          <ion-radio ng-model="user.services" icon="ion-android-done" ng-value="3" ng-change="">货场
-          </ion-radio>
-          <ion-radio ng-model="user.services" icon="ion-android-done" ng-value="4" ng-change="">二手商家
-          </ion-radio>
-        </ion-list>
 
-        <ion-checkbox class=" stable-bg item-borderless checkbox-positive" ng-model="agreedeal" ng-checked="true">
+        <!--          <ion-radio ng-model="user.services" ng-show="false" icon="ion-android-done" ng-value="1" ng-change="">销售员
+                  </ion-radio>
+                  <ion-radio ng-model="user.services" icon="ion-android-done" ng-value="2" ng-change="">上门回收者
+                  </ion-radio>
+                  <ion-radio ng-model="user.services" icon="ion-android-done" ng-value="3" ng-change="">货场
+                  </ion-radio>
+                  <ion-radio ng-model="user.services" icon="ion-android-done" ng-value="4" ng-change="">二手商家
+                  </ion-radio>-->
+        <div class="services padding-vertical light-bg">
+          <ion-checkbox class="item-borderless checkbox-positive " ng-click="checkChecded()"
+                        ng-repeat="item in services" ng-model="item.checked">
+            {{item.value}}
+          </ion-checkbox>
+        </div>
+
+        <ion-checkbox class=" stable-bg item-borderless  checkbox-positive" ng-model="agreedeal" ng-checked="true">
           同意注册协议
         </ion-checkbox>
         <div class="padding-horizontal">
           <button class="button full-image button-positive " ng-click="register()"
-                  ng-disabled="!(registerForm.$valid&&agreedeal&&verify)">注册
+                  ng-disabled="!(registerForm.$valid&&agreedeal&&verify&&ischecked)">注册
           </button>
           <p></p>
           <a ng-href="#/login" class="button full-image button-energized button-outline energized ">已有账号 立即登录</a>

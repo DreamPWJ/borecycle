@@ -7,10 +7,10 @@ angular.module('starter.services', [])
           try {
             $cordovaToast.showLongCenter(msg);
           } catch (e) {
-            this.showAlert("标题", msg, stateurl);
+            this.showAlert("博回收", msg, stateurl);
           }
         } else {
-          this.showAlert("标题", msg, stateurl);
+          this.showAlert("博回收", msg, stateurl);
         }
       },
       showAlert: function (title, template, stateurl) {
@@ -308,7 +308,7 @@ angular.module('starter.services', [])
           if (flag) {
             $state.go('login');
           } else {
-            this.showConfirm('标题', '温馨提示:此功能需要登录才能使用,请先登录', '登录', '关闭', 'login');
+            this.showConfirm('博回收', '温馨提示:此功能需要登录才能使用,请先登录', '登录', '关闭', 'login');
             return;
           }
           return false;
@@ -384,19 +384,37 @@ angular.module('starter.services', [])
 
         }
       },
+      removeEmptyArray: function (array) { //去除数组空值 重新组织数组
+        for (var i = 0; i < array.length; i++) {
+          if (array[i] == "" || typeof(array[i]) == "undefined" || array[i] == false) {
+            array.splice(i, 1);
+            i = i - 1;
+          }
+        }
+        return array;
+      },
+      checkChecded: function ($scope, array) { //检查是否复选框选中
+        $scope.ischecked = false;
+        angular.forEach(array, function (item) {
+          if (item.checked) {
+            $scope.ischecked = true;
+          }
+        })
+      }
     }
+
   })
   .service('MainService', function ($q, $http, BoRecycle, EncodingService) { //主页服务定义
     return {
       //获取公共接口授权token
-      authLogin: function () {
+      authLogin: function (grantType,authorization) {
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise;
         promise = $http({
           method: 'POST',
           url: BoRecycle.api + "/token",
           headers: {
-            'Authorization': 'Basic ' + EncodingService.base64_encode("1706140001:379bb9c6-d560-4325-a412-32b224e28747"),
+            'Authorization': 'Basic ' + EncodingService.base64_encode(authorization),
             'Content-Type': 'application/x-www-form-urlencoded'
           },
           transformRequest: function (obj) {
@@ -405,7 +423,7 @@ angular.module('starter.services', [])
               str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
             return str.join("&");
           },
-          data: {grant_type: 'client_credentials'}
+          data: {grant_type: grantType}
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -813,7 +831,7 @@ angular.module('starter.services', [])
       }
     }
   })
-  .service('AccountService', function ($q, $http, BoRecycle, $cordovaFileTransfer, $state, $ionicScrollDelegate, $cordovaToast, $interval, $timeout, $ionicPopup, $ionicLoading, $cordovaFile, $cordovaFileOpener2) { //我的服务
+  .service('AccountService', function ($q, $http, BoRecycle, $cordovaFileTransfer, $state, $ionicScrollDelegate, $cordovaToast, $timeout, $ionicPopup, $ionicLoading, $cordovaFile, $cordovaFileOpener2) { //我的服务
     return {
       register: function (datas) { //用户注册
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行

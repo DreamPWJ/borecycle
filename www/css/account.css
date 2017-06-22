@@ -1,118 +1,119 @@
 .account .item h2 {
-    color: #585858;
+  color: #585858;
 }
 
 .account .icon, account .iconfont {
-    color: #585858;
-    font-size: 1.5rem;
+  color: #585858;
+  font-size: 1.5rem;
 }
 
 #login {
-    padding-top: 1.5rem;
+  padding-top: 1.5rem;
 }
 
 #register .radio-content {
-    line-height: 0.6rem;
+  line-height: 0.6rem;
 }
 
 .radio-icon {
-    color: #00ACFF;
+  color: #00ACFF;
 }
 
 .account .order {
-    border-bottom: 1px solid rgba(221, 221, 221, 0.5) !important;
+  border-bottom: 1px solid rgba(221, 221, 221, 0.5) !important;
 }
 
 .account .order-item a {
-    margin-top: 1px;
-    padding: 0.3rem 0;
+  margin-top: 1px;
+  padding: 0.3rem 0;
 }
 
 .account .order-item a:first-of-type {
-    margin-right: 1px;
-    border-right: 1px solid rgba(221, 221, 221, 0.5) !important;
+  margin-right: 1px;
+  border-right: 1px solid rgba(221, 221, 221, 0.5) !important;
 }
 
 .account .expiring:before {
-    content: '快过期';
-    position: absolute;
-    color: #ffffff;
-    font-size: 9px;
-    -webkit-transform: rotate(-45deg);
-    transform: rotate(-45deg);
-    right: -3px;
-    bottom: 5px;
-    z-index: 2000;
+  content: '快过期';
+  position: absolute;
+  color: #ffffff;
+  font-size: 9px;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  right: -3px;
+  bottom: 5px;
+  z-index: 2000;
 }
 
 .account .expiring:after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-bottom: 2.2rem solid #ef473a;
-    border-left: 2.2rem solid transparent;
-    right: 0;
-    bottom: 0;
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-bottom: 2.2rem solid #ef473a;
+  border-left: 2.2rem solid transparent;
+  right: 0;
+  bottom: 0;
 }
 
-
-
 .city .item, .city .item-divider {
-    font-size: 12px;
-    font-family: "Microsoft YaHei";
-    width: 95%;
+  font-size: 12px;
+  font-family: "Microsoft YaHei";
+  width: 95%;
 }
 
 .cityItem {
-    border: 1px solid rgba(204, 204, 204, 0.2);
-    margin: 5px;
-    padding: 5px;
-    float: left;
-    color: #333;
-    border-radius: 5px;
-    min-width: 29%;
-    text-align: center;
+  border: 1px solid rgba(204, 204, 204, 0.2);
+  margin: 5px;
+  padding: 5px;
+  float: left;
+  color: #333;
+  border-radius: 5px;
+  min-width: 29%;
+  text-align: center;
 }
 
 .cityItem:active, cityItem:hover {
-    color: #ffffff;
-    background-color: #FF93BC !important;
+  color: #ffffff;
+  background-color: #FF93BC !important;
 }
 
 #indexs-title {
-    position: fixed;
-    margin: auto;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    height: 60px;
-    width: 60px;
-    line-height: 60px;
-    text-align: center;
-    color: #FFF;
-    font-size: 300%;
-    display: none;
-    background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  margin: auto;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  height: 60px;
+  width: 60px;
+  line-height: 60px;
+  text-align: center;
+  color: #FFF;
+  font-size: 300%;
+  display: none;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 #indexs-bar {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    padding-top: 15px;
-    width: 20px;
-    height: 464px;
-    z-index: 2;
-    text-align: center;
-    color: #545454;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  padding-top: 15px;
+  width: 20px;
+  height: 464px;
+  z-index: 2;
+  text-align: center;
+  color: #545454;
 
 }
 
-#organizingdata .item-checkbox, #information .item-checkbox {
-    display: inline-block;
-    padding: 0 0 0 48px;
-    height: 1.8rem;
-    line-height: 2rem;
+#organizingdata .item-checkbox, #information .item-checkbox, #register .services .item-checkbox {
+  display: inline-block;
+  margin-left: 0.1rem;
+  padding: 0 0 0 48px;
+  height: 1.8rem;
+  line-height: 2rem;
 }
+
+

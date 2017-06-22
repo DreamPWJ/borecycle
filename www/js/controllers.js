@@ -8,92 +8,105 @@ angular.module('starter.controllers', [])
 
 
   //APP首页面
-  .controller('MainCtrl', function ($scope, $rootScope, CommonService, MainService, BoRecycle, $ionicHistory, NewsService, AccountService, $ionicPlatform, WeiXinService) {
-    //获取公共接口授权token  公共接口授权token两个小时失效  超过两个小时重新请求
-    if (!localStorage.getItem("token") || localStorage.getItem("token") == "undefined" || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
-      MainService.authLogin().success(function (data) {
-        console.log(data);
-        localStorage.setItem("token", data.access_token);//公共接口授权token
-        localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
-      }).error(function () {
-        CommonService.platformPrompt("获取公共接口授权token失败!", 'close');
-      })
-    }
-    //获取极光推送registrationID
-    var getRegistrationID = function () {
-      window.plugins.jPushPlugin.getRegistrationID(onGetRegistrationID);
-    };
+  .controller('MainCtrl', function ($scope, $rootScope, CommonService, MainService, BoRecycle, $ionicHistory, $interval, NewsService, AccountService, $ionicPlatform, WeiXinService) {
+    $scope.getMainData = function () {
+      if (!localStorage.getItem("userid")) {
+        $rootScope.publicAuth = $interval(function () {
+          //获取公共接口授权token  公共接口授权token两个小时失效  超过两个小时重新请求
+          if (!localStorage.getItem("token") || localStorage.getItem("token") == "undefined") {
+            MainService.authLogin("client_credentials", "1706140001:379bb9c6-d560-4325-a412-32b224e28747").success(function (data) {
+              console.log(data);
+              localStorage.setItem("token", data.access_token);//公共接口授权token
+              localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
+            }).error(function () {
+              CommonService.platformPrompt("获取公共接口授权token失败!", 'close');
+            })
+          }
+        }, 7199000);
+      } else {
+        $interval.cancel($rootScope.publicAuth);
+      }
 
-    var onGetRegistrationID = function (data) {
-      try {
-        if (data.length == 0) {
-          window.setTimeout(getRegistrationID, 1000);
-          return;
-        }
-        $scope.jPushRegistrationID = data;
-        localStorage.setItem("jPushRegistrationID", data)
-        console.log("JPushPlugin:registrationID is " + data);
+      //获取极光推送registrationID
+      var getRegistrationID = function () {
+        window.plugins.jPushPlugin.getRegistrationID(onGetRegistrationID);
+      };
 
-        //提交设备信息到服务器
-        $scope.datas = {
-          registration_id: $scope.jPushRegistrationID,	//极光注册id
-          user: localStorage.getItem("userid"),	//用户id,没登录为空
-          mobile: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).mobile : '',	//手机号码 获取不到为空
-          alias: "",	//设备别名
-          device: $ionicPlatform.is('android') ? 0 : 1,	//设备类型:0-android,1-ios
-          Lat: localStorage.getItem("latitude") || 22.5224500,
-          Lon: localStorage.getItem("longitude") || 114.0557100
+      var onGetRegistrationID = function (data) {
+        try {
+          if (data.length == 0) {
+            window.setTimeout(getRegistrationID, 1000);
+            return;
+          }
+          $scope.jPushRegistrationID = data;
+          localStorage.setItem("jPushRegistrationID", data)
+          console.log("JPushPlugin:registrationID is " + data);
+
+          //提交设备信息到服务器
+          $scope.datas = {
+            registration_id: $scope.jPushRegistrationID,	//极光注册id
+            user: localStorage.getItem("userid"),	//用户id,没登录为空
+            mobile: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).mobile : '',	//手机号码 获取不到为空
+            alias: "",	//设备别名
+            device: $ionicPlatform.is('android') ? 0 : 1,	//设备类型:0-android,1-ios
+            Lat: localStorage.getItem("latitude") || 22.5224500,
+            Lon: localStorage.getItem("longitude") || 114.0557100
+          }
+          NewsService.setDeviceInfo($scope.datas).success(function (data) {
+            if (data.code != 1001) {
+              CommonService.platformPrompt("提交设备信息到服务器失败", 'close');
+            }
+          })
+
+        } catch (exception) {
+          console.log(exception);
         }
-        NewsService.setDeviceInfo($scope.datas).success(function (data) {
-          if (data.code != 1001) {
-            CommonService.platformPrompt("提交设备信息到服务器失败", 'close');
+      };
+      if (ionic.Platform.isWebView()) { //包含cordova插件的应用
+        window.setTimeout(getRegistrationID, 1000);
+      }
+
+
+      if ($ionicPlatform.is('android')) {//android系统自动更新软件版本
+        $scope.versionparams = {
+          page: 1,//当前页码
+          size: 1,//每页条数
+          ID: '',//编码 ,等于空时取所有
+          Name: '博回收',//软件名称（中文）
+          NameE: '',//软件名称（英文）
+          Enable: 1 //是否启用 1启用 2禁用
+        }
+        AccountService.getVersionsList($scope.versionparams).success(function (data) {
+          $scope.versions = data.data.data_list[0];
+          if (BoRecycle.version < $scope.versions.vercode) {
+            AccountService.showUpdateConfirm($scope.versions.remark, $scope.versions.attached, $scope.versions.vercode);
           }
         })
-
-      } catch (exception) {
-        console.log(exception);
       }
-    };
-    if (ionic.Platform.isWebView()) { //包含cordova插件的应用
-      window.setTimeout(getRegistrationID, 1000);
-    }
 
-
-    if ($ionicPlatform.is('android')) {//android系统自动更新软件版本
-      $scope.versionparams = {
-        page: 1,//当前页码
-        size: 1,//每页条数
-        ID: '',//编码 ,等于空时取所有
-        Name: '博回收',//软件名称（中文）
-        NameE: '',//软件名称（英文）
-        Enable: 1 //是否启用 1启用 2禁用
-      }
-      AccountService.getVersionsList($scope.versionparams).success(function (data) {
-        $scope.versions = data.data.data_list[0];
-        if (BoRecycle.version < $scope.versions.vercode) {
-          AccountService.showUpdateConfirm($scope.versions.remark, $scope.versions.attached, $scope.versions.vercode);
+      //是否是微信 初次获取签名 获取微信签名
+      if (WeiXinService.isWeiXin()) {
+        // 获取微信签名
+        $scope.wxparams = {
+          url: location.href.split('#')[0] //当前网页的URL，不包含#及其后面部分
         }
-      })
-    }
-
-    //是否是微信 初次获取签名 获取微信签名
-    if (WeiXinService.isWeiXin()) {
-      // 获取微信签名
-      $scope.wxparams = {
-        url: location.href.split('#')[0] //当前网页的URL，不包含#及其后面部分
+        WeiXinService.getWCSignature($scope.wxparams).success(function (data) {
+          if (data.code == 1001) {
+            localStorage.setItem("timestamp", data.timestamp);//生成签名的时间戳
+            localStorage.setItem("noncestr", data.noncestr);//生成签名的随机串
+            localStorage.setItem("signature", data.signature);//生成签名
+            //通过config接口注入权限验证配置
+            WeiXinService.weichatConfig(data.timestamp, data.noncestr, data.signature);
+          } else {
+            CommonService.platformPrompt("获取微信签名失败!", 'close');
+          }
+        })
       }
-      WeiXinService.getWCSignature($scope.wxparams).success(function (data) {
-        if (data.code == 1001) {
-          localStorage.setItem("timestamp", data.timestamp);//生成签名的时间戳
-          localStorage.setItem("noncestr", data.noncestr);//生成签名的随机串
-          localStorage.setItem("signature", data.signature);//生成签名
-          //通过config接口注入权限验证配置
-          WeiXinService.weichatConfig(data.timestamp, data.noncestr, data.signature);
-        } else {
-          CommonService.platformPrompt("获取微信签名失败!", 'close');
-        }
-      })
+      $scope.$broadcast('scroll.refreshComplete');
+
     }
+    //执行方法
+    $scope.getMainData();
     //在首页中清除导航历史退栈
     $scope.$on('$ionicView.afterEnter', function () {
       $ionicHistory.clearHistory();
@@ -103,19 +116,32 @@ angular.module('starter.controllers', [])
   })
 
   //用户密码登录页面
-  .controller('LoginCtrl', function ($scope, $rootScope, CommonService, AccountService) {
+  .controller('LoginCtrl', function ($scope, $rootScope, $interval, CommonService, MainService, AccountService) {
     $scope.user = {};//提前定义用户对象
     $scope.agreedeal = true;//同意用户协议
     $scope.loginSubmit = function () {
+      $scope.user.client = ionic.Platform.isWebView() ? 0 : (ionic.Platform.is('android') ? 1 : 2);
       AccountService.login($scope.user).success(function (data) {
+        console.log(data);
+        $scope.userdata = data.data;
         if (data.code == 1001) {
+          localStorage.setItem("userid", data.data.userid);
+          localStorage.setItem("token", data.data.userid);
           CommonService.getStateName();   //跳转页面
         } else {
           CommonService.platformPrompt(data.message, 'close');
         }
 
-      }).error(function () {
-        CommonService.platformPrompt("登录失败!", 'close');
+      }).then(function () {
+        $rootScope.loginAuth = $interval(function () {
+          MainService.authLogin("password&username=" + $scope.userdata.userid + "&password=" + $scope.userdata.secret, "clientid:" + $scope.userdata.secret).success(function (data) {
+            console.log(data);
+            localStorage.setItem("token", data.access_token);//公共接口授权token
+            localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
+          }).error(function () {
+            CommonService.platformPrompt("获取登录接口授权token失败!", 'close');
+          })
+        }, 7199000);
       })
     }
   })
@@ -159,7 +185,12 @@ angular.module('starter.controllers', [])
     $scope.agreedeal = true;//同意用户协议
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable;
-    $scope.user.services = 2;//默认选中
+    $scope.user.services = [];//用户类型数组key
+    $scope.services = [{key: 1, value: "上门回收者", checked: false}, {key: 2, value: "货场", checked: false}, {
+      key: 3,
+      value: "二手商家",
+      checked: false
+    }];//用户类型数组
     $scope.checkphoneandemail = function (account) {//检查手机号和邮箱
       AccountService.checkMobilePhoneAndEmail($scope, account);
     }
@@ -168,9 +199,11 @@ angular.module('starter.controllers', [])
     $scope.getVerifyCode = function () {
       CommonService.getVerifyCode($scope, $scope.user.account);
     }
+    $scope.checkChecded = function () {
+      CommonService.checkChecded($scope, $scope.services)
+    }
     //注册
     $scope.register = function () {
-      console.log($scope.user);
       if ($scope.user.password != $scope.user.confirmpassword) {
         CommonService.platformPrompt("两次输入的密码不一致", 'close');
         return;
@@ -179,8 +212,16 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt("输入验证码不正确", 'close');
         return;
       }
+
+      angular.forEach($scope.services, function (item) {
+        if (item.checked) {
+          $scope.user.services.push(item.key)
+        }
+      })
+
       $scope.user.client = ionic.Platform.isWebView() ? 0 : (ionic.Platform.is('android') ? 1 : 2);
       console.log($scope.user);
+
       AccountService.register($scope.user).success(function (data) {
         if (data.code == 1001) {
           $state.go('organizingdata');
@@ -912,7 +953,7 @@ angular.module('starter.controllers', [])
 
     if (!localStorage.getItem("token")) {//如果没有授权先授权
       //接口授权
-      MainService.authLogin().success(function (data) {
+      MainService.authLogin("client_credentials", "1706140001:379bb9c6-d560-4325-a412-32b224e28747").success(function (data) {
         localStorage.setItem('token', data.access_token)
       }).then(function () {
         $scope.getHelpDetails();

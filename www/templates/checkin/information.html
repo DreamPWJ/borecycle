@@ -10,19 +10,19 @@
         <ion-content overflow-scroll="false" class="stable-bg has-button-footer" id="information">
 
             <div class="list">
-                <label class="item ">
+                <div class="item ">
                     <span class="input-label icon ion-ios-color-filter-outline "> 货物品类</span>
-                    <ion-checkbox class="item-borderless checkbox-calm" ng-model="a">
+                    <ion-checkbox class="item-borderless checkbox-positive" ng-model="a">
                         手机
                     </ion-checkbox>
-                    <ion-checkbox class="item-borderless checkbox-calm" ng-model="b">
+                    <ion-checkbox class="item-borderless checkbox-positive" ng-model="b">
                         电视机
                     </ion-checkbox>
-                    <ion-checkbox class="item-borderless checkbox-calm" ng-model="c">
+                    <ion-checkbox class="item-borderless checkbox-positive" ng-model="c">
                         洗衣机
                     </ion-checkbox>
 
-                </label>
+                </div>
                 <label class="item item-input">
                     <span class="input-label icon ion-ios-person-outline"> 联系人</span>
                     <input type="text" name="username" ng-model="user.username" placeholder="请输入联系人姓名" required/>
@@ -42,23 +42,23 @@
                     <span class="input-label icon ion-ios-location-outline"> 详细地址</span>
                     <textarea class="col-50" rows="1" ng-model="addrinfo.address" placeholder="输入街道门牌号等详细地址"
                               required></textarea>
-                    <i class="icon ion-ios-location-outline calm padding-left"> 定位</i>
+                    <i class="icon ion-ios-location-outline positive padding-left"> 定位</i>
                 </label>
 
-                <label class="item ">
+                <div class="item ">
                     <span class="input-label icon iconfont icon-changshang "
                           style="font-size: 1rem!important;"> 所属厂商</span>
-                    <ion-checkbox class="item-borderless checkbox-calm" ng-model="d">
+                    <ion-checkbox class="item-borderless checkbox-positive" ng-model="d">
                         格力
                     </ion-checkbox>
-                    <ion-checkbox class="item-borderless checkbox-calm" ng-model="e">
+                    <ion-checkbox class="item-borderless checkbox-positive" ng-model="e">
                         海尔
                     </ion-checkbox>
-                    <ion-checkbox class="item-borderless checkbox-calm" ng-model="f">
+                    <ion-checkbox class="item-borderless checkbox-positive" ng-model="f">
                         海信
                     </ion-checkbox>
 
-                </label>
+                </div>
             </div>
             <p></p>
         </ion-content>
