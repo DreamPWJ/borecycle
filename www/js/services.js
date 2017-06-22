@@ -407,14 +407,15 @@ angular.module('starter.services', [])
   .service('MainService', function ($q, $http, BoRecycle, EncodingService) { //主页服务定义
     return {
       //获取公共接口授权token
-      authLogin: function (grantType,authorization) {
+      authLogin: function (grantType) {
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise;
         promise = $http({
           method: 'POST',
           url: BoRecycle.api + "/token",
+          data: grantType,
           headers: {
-            'Authorization': 'Basic ' + EncodingService.base64_encode(authorization),
+            'Authorization': 'Basic ' + EncodingService.base64_encode("1706140001:379bb9c6-d560-4325-a412-32b224e28747"),
             'Content-Type': 'application/x-www-form-urlencoded'
           },
           transformRequest: function (obj) {
@@ -423,7 +424,7 @@ angular.module('starter.services', [])
               str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
             return str.join("&");
           },
-          data: {grant_type: grantType}
+
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -2057,7 +2058,7 @@ angular.module('starter.services', [])
   .factory('MyInterceptor', function ($injector) {//设置请求头信息的地方是$httpProvider.interceptors。也就是为请求或响应注册一个拦截器。使用这种方式首先需要定义一个服务
 
     return {
-      request: function (config) {////通过实现 request 方法拦截请求: 该方法会在 $http 发送请求道后台之前执行
+      request: function (config) {//通过实现 request 方法拦截请求: 该方法会在 $http 发送请求道后台之前执行
         if (config.url.toString().indexOf('http://') === 0) {
           //http请求Loading加载动画
           $injector.get('$ionicLoading').show({
@@ -2068,7 +2069,7 @@ angular.module('starter.services', [])
         //授权
         config.headers = config.headers || {};
         var token = localStorage.getItem('token');
-        if (token && token != "undefined") {
+        if (token && token != "undefined" && config.url.toString().indexOf('//hs.api.boolv.com/token') == -1) {
           config.headers.authorization = "Bearer " + token;
         }
         return config;
@@ -2085,7 +2086,7 @@ angular.module('starter.services', [])
         }
         return response;
       },
-      responseError: function (response) {////通过实现 responseError 方法拦截响应异常:后台调用失败 响应异常拦截器可以帮助我们恢复后台调用
+      responseError: function (response) {//通过实现 responseError 方法拦截响应异常:后台调用失败 响应异常拦截器可以帮助我们恢复后台调用
         if (response.config.url.toString().indexOf('http://') === 0) {
           $injector.get('$ionicLoading').hide();
         }

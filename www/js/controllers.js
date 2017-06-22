@@ -11,18 +11,24 @@ angular.module('starter.controllers', [])
   .controller('MainCtrl', function ($scope, $rootScope, CommonService, MainService, BoRecycle, $ionicHistory, $interval, NewsService, AccountService, $ionicPlatform, WeiXinService) {
     $scope.getMainData = function () {
       if (!localStorage.getItem("userid")) {
-        $rootScope.publicAuth = $interval(function () {
+        var authLogin = function () {
           //获取公共接口授权token  公共接口授权token两个小时失效  超过两个小时重新请求
-          if (!localStorage.getItem("token") || localStorage.getItem("token") == "undefined") {
-            MainService.authLogin("client_credentials", "1706140001:379bb9c6-d560-4325-a412-32b224e28747").success(function (data) {
+          if (!localStorage.getItem("token") || localStorage.getItem("token") == "undefined" || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
+            MainService.authLogin({grant_type: 'client_credentials'}).success(function (data) {
               console.log(data);
-              localStorage.setItem("token", data.access_token);//公共接口授权token
-              localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
+              if (data.access_token) {
+                localStorage.setItem("token", data.access_token);//公共接口授权token
+                localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
+              }
             }).error(function () {
               CommonService.platformPrompt("获取公共接口授权token失败!", 'close');
             })
           }
+        }
+        $rootScope.publicAuth = $interval(function () {
+          authLogin();
         }, 7199000);
+        authLogin();
       } else {
         $interval.cancel($rootScope.publicAuth);
       }
@@ -126,22 +132,33 @@ angular.module('starter.controllers', [])
         $scope.userdata = data.data;
         if (data.code == 1001) {
           localStorage.setItem("userid", data.data.userid);
-          localStorage.setItem("token", data.data.userid);
           CommonService.getStateName();   //跳转页面
         } else {
           CommonService.platformPrompt(data.message, 'close');
         }
 
       }).then(function () {
-        $rootScope.loginAuth = $interval(function () {
-          MainService.authLogin("password&username=" + $scope.userdata.userid + "&password=" + $scope.userdata.secret, "clientid:" + $scope.userdata.secret).success(function (data) {
+        var authLogin = function () {
+          MainService.authLogin(
+            {
+              grant_type: 'password',
+              username: $scope.userdata.userid,
+              "password": $scope.userdata.secret
+            }).success(function (data) {
             console.log(data);
-            localStorage.setItem("token", data.access_token);//公共接口授权token
-            localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
+            if (data.access_token) {
+              localStorage.setItem("token", data.access_token);//登录接口授权token
+              localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
+            }
+
           }).error(function () {
             CommonService.platformPrompt("获取登录接口授权token失败!", 'close');
           })
+        }
+        $rootScope.loginAuth = $interval(function () {
+          authLogin();
         }, 7199000);
+        authLogin();
       })
     }
   })
@@ -953,8 +970,11 @@ angular.module('starter.controllers', [])
 
     if (!localStorage.getItem("token")) {//如果没有授权先授权
       //接口授权
-      MainService.authLogin("client_credentials", "1706140001:379bb9c6-d560-4325-a412-32b224e28747").success(function (data) {
-        localStorage.setItem('token', data.access_token)
+      MainService.authLogin({grant_type: 'client_credentials'}).success(function (data) {
+        if (data.access_token) {
+          localStorage.setItem("token", data.access_token);//公共接口授权token
+          localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
+        }
       }).then(function () {
         $scope.getHelpDetails();
       })
