@@ -10,8 +10,9 @@
   <ion-content overflow-scroll="false" class="stable-bg account " has-bouncing="true">
     <div class="list padding-top list-borderless">
       <a nav-direction=forward ng-href="#/accountinfo" class="item item-avatar item-icon-right">
-        <img ng-src="{{userdata.userfigure}}" class="border-radius-50" alt="" onerror="this.src='img/head.jpg'">
-        <h2>{{userdata.username}}</h2>
+        <img ng-src="{{userdata.userfigure||img/head.jpg}}" class="border-radius-50" alt=""
+             onerror="this.src='img/head.jpg'">
+        <h2 ng-class={true:'padding-top'}[userdata.username==null]>{{userdata.username}}</h2>
         <p>{{userdata.mobile}}</p>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
@@ -20,7 +21,7 @@
       <a nav-direction=forward ng-href="#/order" class="item item-icon-left item-icon-right order ">
         <i class="icon iconfont icon-form " style="color: #4cd964;"></i>
         <h2>我的订单</h2>
-        <!--        <i class="icon ion-ios-arrow-right"></i>-->
+        <!--  <i class="icon ion-ios-arrow-right"></i> -->
       </a>
       <div class="row row-no-padding light-bg  row-center text-center order-item">
         <a nav-direction=forward ng-href="#/order" class="item item-icon-right col ">

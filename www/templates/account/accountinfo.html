@@ -10,7 +10,7 @@
   <ion-content overflow-scroll="false" class="stable-bg account " has-bouncing="true">
     <div class="list  ">
       <a ui-sref="uploadhead({figure:userinfo.figure})" class="item item-avatar item-icon-right  item-borderless">
-        <img ng-src="{{userinfo.figure}}" class="border-radius-50" alt="" onerror="this.src='img/head.jpg'">
+        <img ng-src="{{userinfo.figure||img/head.jpg}}" class="border-radius-50" alt="" onerror="this.src='img/head.jpg'">
         <p class="padding-top">头像</p>
         <i class="icon ion-ios-arrow-right"></i>
       </a>

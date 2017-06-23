@@ -9,8 +9,8 @@
   <ion-nav-buttons side="right">
     <button class="button button-clear  " ng-click="uploadActionSheet()">修改</button>
   </ion-nav-buttons>
-    <ion-content overflow-scroll="false" class="stable-bg ">
-      <img ng-src="{{figureurl}}"  class="full-image" onerror="this.src='img/head.jpg'"/>
-    </ion-content>
+  <ion-content overflow-scroll="false" class="stable-bg ">
+    <img ng-src="{{figureurl||img/head.jpg}}" class="full-image" onerror="this.src='img/head.jpg'"/>
+  </ion-content>
 
 </ion-view>

@@ -51,43 +51,46 @@ angular.module('starter.controllers', [])
           authLogin();
         }, 7199000);
         authLogin();
+
+        //获取极光推送registrationID
+        var getRegistrationID = function () {
+          window.plugins.jPushPlugin.getRegistrationID(onGetRegistrationID);
+        };
+
+        var onGetRegistrationID = function (data) {
+          try {
+            if (data.length == 0) {
+              window.setTimeout(getRegistrationID, 1000);
+              return;
+            }
+            $scope.jPushRegistrationID = data;
+            localStorage.setItem("jPushRegistrationID", data)
+            console.log("JPushPlugin:registrationID is " + data);
+
+            //提交设备信息到服务器
+            $scope.datas = {
+              registration_id: $scope.jPushRegistrationID,	//极光注册id
+              user: localStorage.getItem("userid"),	//用户id,没登录为空
+              mobile: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).mobile : '',	//手机号码 获取不到为空
+              alias: "",	//设备别名
+              device: $ionicPlatform.is('android') ? 0 : 1,	//设备类型:0-android,1-ios
+              Lat: localStorage.getItem("latitude") || 22.5224500,
+              Lon: localStorage.getItem("longitude") || 114.0557100
+            }
+            console.log(JSON.stringify($scope.datas));
+            NewsService.setDeviceInfo($scope.datas).success(function (data) {
+              if (data.code != 1001) {
+                CommonService.platformPrompt("提交设备信息到服务器失败", 'close');
+              }
+            })
+
+          } catch (exception) {
+            console.log(exception);
+          }
+        };
       }
 
-      //获取极光推送registrationID
-      var getRegistrationID = function () {
-        window.plugins.jPushPlugin.getRegistrationID(onGetRegistrationID);
-      };
 
-      var onGetRegistrationID = function (data) {
-        try {
-          if (data.length == 0) {
-            window.setTimeout(getRegistrationID, 1000);
-            return;
-          }
-          $scope.jPushRegistrationID = data;
-          localStorage.setItem("jPushRegistrationID", data)
-          console.log("JPushPlugin:registrationID is " + data);
-
-          //提交设备信息到服务器
-          $scope.datas = {
-            registration_id: $scope.jPushRegistrationID,	//极光注册id
-            user: localStorage.getItem("userid"),	//用户id,没登录为空
-            mobile: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).mobile : '',	//手机号码 获取不到为空
-            alias: "",	//设备别名
-            device: $ionicPlatform.is('android') ? 0 : 1,	//设备类型:0-android,1-ios
-            Lat: localStorage.getItem("latitude") || 22.5224500,
-            Lon: localStorage.getItem("longitude") || 114.0557100
-          }
-          NewsService.setDeviceInfo($scope.datas).success(function (data) {
-            if (data.code != 1001) {
-              CommonService.platformPrompt("提交设备信息到服务器失败", 'close');
-            }
-          })
-
-        } catch (exception) {
-          console.log(exception);
-        }
-      };
       if (ionic.Platform.isWebView()) { //包含cordova插件的应用
         window.setTimeout(getRegistrationID, 1000);
       }
@@ -200,7 +203,7 @@ angular.module('starter.controllers', [])
   })
 
   //手机验证登录页面
-  .controller('MobileLoginCtrl', function ($scope, $rootScope, CommonService, MainService, AccountService) {
+  .controller('MobileLoginCtrl', function ($scope, $rootScope, $interval, CommonService, MainService, AccountService) {
     $scope.user = {};//提前定义用户对象
     $scope.agreedeal = true;//同意用户协议
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
@@ -214,12 +217,13 @@ angular.module('starter.controllers', [])
     }
 
     $scope.loginSubmit = function () {
-      if ($scope.verifycode != $scope.user.password) {
+      if ($scope.verifycode != $scope.user.code) {
         CommonService.platformPrompt("输入验证码不正确", 'close');
         return;
       }
       $scope.user.client = ionic.Platform.isWebView() ? 0 : (ionic.Platform.is('android') ? 1 : 2);
-      AccountService.login($scope.user).success(function (data) {
+      console.log($scope.user);
+      AccountService.loginMobile($scope.user).success(function (data) {
         console.log(data);
         $scope.userdata = data.data;
         if (data.code == 1001) {
@@ -867,7 +871,7 @@ angular.module('starter.controllers', [])
       CommonService.getVerifyCode($scope, $scope.user.account);
     }
     $scope.cancelMobileSubmit = function () {
-      if ($scope.verifycode != $scope.user.password) {
+      if ($scope.verifycode != $scope.user.code) {
         CommonService.platformPrompt("输入验证码不正确", "close");
         return;
       }
@@ -892,7 +896,7 @@ angular.module('starter.controllers', [])
     }
 
     $scope.bindingMobileSubmit = function () {
-      if ($scope.verifycode != $scope.user.password) {
+      if ($scope.verifycode != $scope.user.code) {
         CommonService.platformPrompt("输入验证码不正确", 'close');
         return;
       }

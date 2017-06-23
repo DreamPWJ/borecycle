@@ -293,8 +293,7 @@ angular.module('starter.services', [])
         }
         CommonService = this;
         var posOptions = {timeout: 10000, enableHighAccuracy: false};
-        $cordovaGeolocation
-          .getCurrentPosition(posOptions)
+        $cordovaGeolocation.getCurrentPosition(posOptions)
           .then(function (position) {
             localStorage.setItem("latitude", position.coords.latitude);
             localStorage.setItem("longitude", position.coords.longitude);
@@ -1037,29 +1036,31 @@ angular.module('starter.services', [])
         var options = {
           fileKey: "file",//相当于form表单项的name属性
           fileName: imageUrl.substr(imageUrl.lastIndexOf('/') + 1),
-          mimeType: "image/jpeg"
+          mimeType: "image/jpeg",
+          headers:{authorization:"Bearer " +localStorage.getItem('token')} //授权
         };
         $cordovaFileTransfer.upload(url, imageUrl, options)
           .then(function (result) {
+            console.log("success=" + result.response);
             if (params.filenames == 'User') {
               if ($scope.uploadName == 'uploadhead') {//上传头像单独处理
                 var figurparams = {
-                  userid: localStorage.getItem("usertoken"),
-                  figure: JSON.parse(result.response).Des
+                  userid: localStorage.getItem("userid"),
+                  figure:BoRecycle.api+JSON.parse(result.response).data
                 }
                 AccountService.setFigure(figurparams);
               }
             }
-            $scope.ImgsPicAddr.push(JSON.parse(result.response).Des);
+            $scope.ImgsPicAddr.push(JSON.parse(result.response).data);
             $scope.imageSuccessCount++;
             if ($scope.imageSuccessCount == $scope.imageUploadCount) {
               $cordovaToast.showLongCenter("上传成功");
             }
-            console.log("success=" + result.response);
+
           }, function (err) {
             $cordovaToast.showLongCenter("上传失败");
             $scope.imageList.splice(imageUrl, 1);//删除失败以后不显示
-            console.log("err=" + err.response);
+            console.log("err=" + JSON.stringify(err));
           }, function (progress) {
             // constant progress updates
           });
@@ -1686,7 +1687,7 @@ angular.module('starter.services', [])
         }).success(function (data) {
           d = data;
         }).error(function (data, header, config, status) {
-          console.log(status);
+
         }).then(function () {
           var cache_currentCity = "cache_currentCity";
           var newCities = []
