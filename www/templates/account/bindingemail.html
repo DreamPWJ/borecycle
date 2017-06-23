@@ -1,7 +1,6 @@
 <ion-view>
   <ion-nav-buttons side="left">
-    <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back
-            native-options="{type: 'slide',direction: 'right'}" ng-click="$ionicGoBack()"></button>
+    <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back ng-click="$ionicGoBack()"></button>
   </ion-nav-buttons>
   <ion-nav-title>
     <h1 class="title"><img id="logo" src="img/logo.png" alt=""/> 绑定邮箱</h1>
@@ -11,7 +10,7 @@
       <p></p>
       <div class="list ">
         <label class="item item-input">
-          <input type="email" ng-model="email.No"  ng-value="userinfo.email" placeholder="电子邮箱" required/>
+          <input type="email" ng-model="email.No" ng-value="userinfo.email" placeholder="电子邮箱" required/>
         </label>
       </div>
     </ion-content>

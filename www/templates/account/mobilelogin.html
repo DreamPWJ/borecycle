@@ -1,7 +1,6 @@
 <ion-view>
   <ion-nav-buttons side="left">
-    <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back ng-click="$ionicGoBack()"
-            native-options="{type: 'slide',direction: 'right'}"></button>
+    <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back ng-click="$ionicGoBack()"></button>
   </ion-nav-buttons>
   <ion-nav-title>
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 手机验证登录</h1>
@@ -16,17 +15,18 @@
       <div class="list">
         <label class="item item-input">
           <span class="input-label icon ion-ios-telephone-outline"> 手机号</span>
-          <input type="number" name="mobile" ng-model="user.mobile" ng-keyup="checkphone(user.mobile)"  maxlength="11" placeholder="手机号码" required/>
+          <input type="number" name="mobile" ng-model="user.mobile" ng-keyup="checkphone(user.mobile)" maxlength="11"
+                 placeholder="手机号码" required/>
         </label>
 
         <div class="item item-input">
-        <span class="input-label icon ion-ios-locked-outline"> 验证码 </span>
-        <span class="row row-no-padding">
+          <span class="input-label icon ion-ios-locked-outline"> 验证码 </span>
+          <span class="row row-no-padding">
           <input type="number" class="col-55" placeholder="请输入验证码" ng-model="user.code" required/>
             <button class="button button-small button-positive  col-33 " ng-class="{false:'button-outline'}[paraclass]"
                     ng-click="getVerifyCode()">{{paracont}}</button>
           </span>
-      </div>
+        </div>
 
         <ion-checkbox class=" stable-bg item-borderless checkbox-positive" ng-model="agreedeal" ng-checked="true">
           同意登录协议
@@ -51,7 +51,8 @@
 
 
   </ion-content>
-  <p class="fixed-bottom text-center hide-on-keyboard-open">你还没有账号，请点击<a class="positive subdued" ng-href="#/register" nav-direction=forward>
+  <p class="fixed-bottom text-center hide-on-keyboard-open">你还没有账号，请点击<a class="positive subdued" ng-href="#/register"
+                                                                         nav-direction=forward>
     立即注册</a></p>
 </ion-view>
 

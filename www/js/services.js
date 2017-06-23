@@ -966,6 +966,7 @@ angular.module('starter.services', [])
           params: {figure: params.figure}
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+          $state.go('tab.account');
         }).error(function (err) {
           deferred.reject(err);// 声明执行失败，即服务器返回错误
         });
@@ -1037,25 +1038,28 @@ angular.module('starter.services', [])
           fileKey: "file",//相当于form表单项的name属性
           fileName: imageUrl.substr(imageUrl.lastIndexOf('/') + 1),
           mimeType: "image/jpeg",
-          headers:{authorization:"Bearer " +localStorage.getItem('token')} //授权
+          headers: {authorization: "Bearer " + localStorage.getItem('token')} //授权
         };
         $cordovaFileTransfer.upload(url, imageUrl, options)
           .then(function (result) {
             console.log("success=" + result.response);
-            if (params.filenames == 'User') {
-              if ($scope.uploadName == 'uploadhead') {//上传头像单独处理
-                var figurparams = {
-                  userid: localStorage.getItem("userid"),
-                  figure:BoRecycle.api+JSON.parse(result.response).data
+            if (JSON.parse(result.response).code == 1001) {
+              if (params.filenames == 'User') {
+                if ($scope.uploadName == 'uploadhead') {//上传头像单独处理
+                  var figurparams = {
+                    userid: localStorage.getItem("userid"),
+                    figure: BoRecycle.imgUrl + JSON.parse(result.response).data
+                  }
+                  AccountService.setFigure(figurparams);
                 }
-                AccountService.setFigure(figurparams);
+              }
+              $scope.ImgsPicAddr.push(JSON.parse(result.response).data);
+              $scope.imageSuccessCount++;
+              if ($scope.imageSuccessCount == $scope.imageUploadCount) {
+                $cordovaToast.showLongCenter("上传成功");
               }
             }
-            $scope.ImgsPicAddr.push(JSON.parse(result.response).data);
-            $scope.imageSuccessCount++;
-            if ($scope.imageSuccessCount == $scope.imageUploadCount) {
-              $cordovaToast.showLongCenter("上传成功");
-            }
+
 
           }, function (err) {
             $cordovaToast.showLongCenter("上传失败");

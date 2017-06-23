@@ -1,72 +1,71 @@
 <ion-view>
-    <ion-nav-buttons side="left">
-        <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back ng-click="$ionicGoBack()"
-                native-options="{type: 'slide',direction: 'right'}"></button>
-    </ion-nav-buttons>
-    <ion-nav-title>
-        <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 登记信息</h1>
-    </ion-nav-title>
-    <form name="informationForm">
-        <ion-content overflow-scroll="false" class="stable-bg has-button-footer" id="information">
+  <ion-nav-buttons side="left">
+    <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back ng-click="$ionicGoBack()"></button>
+  </ion-nav-buttons>
+  <ion-nav-title>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 登记信息</h1>
+  </ion-nav-title>
+  <form name="informationForm">
+    <ion-content overflow-scroll="false" class="stable-bg has-button-footer" id="information">
 
-            <div class="list">
-                <div class="item ">
-                    <span class="input-label icon ion-ios-color-filter-outline "> 货物品类</span>
-                    <ion-checkbox class="item-borderless checkbox-positive" ng-model="a">
-                        手机
-                    </ion-checkbox>
-                    <ion-checkbox class="item-borderless checkbox-positive" ng-model="b">
-                        电视机
-                    </ion-checkbox>
-                    <ion-checkbox class="item-borderless checkbox-positive" ng-model="c">
-                        洗衣机
-                    </ion-checkbox>
+      <div class="list">
+        <div class="item ">
+          <span class="input-label icon ion-ios-color-filter-outline "> 货物品类</span>
+          <ion-checkbox class="item-borderless checkbox-positive" ng-model="a">
+            手机
+          </ion-checkbox>
+          <ion-checkbox class="item-borderless checkbox-positive" ng-model="b">
+            电视机
+          </ion-checkbox>
+          <ion-checkbox class="item-borderless checkbox-positive" ng-model="c">
+            洗衣机
+          </ion-checkbox>
 
-                </div>
-                <label class="item item-input">
-                    <span class="input-label icon ion-ios-person-outline"> 联系人</span>
-                    <input type="text" name="username" ng-model="user.username" placeholder="请输入联系人姓名" required/>
-                </label>
-                <label class="item item-input">
-                    <span class="input-label icon ion-ios-telephone-outline"> 手机号码</span>
-                    <input type="number" name="username" ng-model="user.username" ng-keyup="checkphone(user.username)"
-                           maxlength="11" placeholder="请输入联系人手机号码" required/>
-                </label>
+        </div>
+        <label class="item item-input">
+          <span class="input-label icon ion-ios-person-outline"> 联系人</span>
+          <input type="text" name="username" ng-model="user.username" placeholder="请输入联系人姓名" required/>
+        </label>
+        <label class="item item-input">
+          <span class="input-label icon ion-ios-telephone-outline"> 手机号码</span>
+          <input type="number" name="username" ng-model="user.username" ng-keyup="checkphone(user.username)"
+                 maxlength="11" placeholder="请输入联系人手机号码" required/>
+        </label>
 
 
-                <label class="item item-input " ng-click="openModal()">
-                    <span class="input-label icon ion-ios-location-outline"> 货源地址 </span>
-                    <p class="{{addresspcd?'dark':'grey'}}">{{addresspcd?addresspcd:"请选择货源地址"}}</p>
-                </label>
-                <label class="item item-input ">
-                    <span class="input-label icon ion-ios-location-outline"> 详细地址</span>
-                    <textarea class="col-50" rows="1" ng-model="addrinfo.address" placeholder="输入街道门牌号等详细地址"
-                              required></textarea>
-                    <i class="icon ion-ios-location-outline positive padding-left"> 定位</i>
-                </label>
+        <label class="item item-input " ng-click="openModal()">
+          <span class="input-label icon ion-ios-location-outline"> 货源地址 </span>
+          <p class="{{addresspcd?'dark':'grey'}}">{{addresspcd?addresspcd:"请选择货源地址"}}</p>
+        </label>
+        <label class="item item-input ">
+          <span class="input-label icon ion-ios-location-outline"> 详细地址</span>
+          <textarea class="col-50" rows="1" ng-model="addrinfo.address" placeholder="输入街道门牌号等详细地址"
+                    required></textarea>
+          <i class="icon ion-ios-location-outline positive padding-left"> 定位</i>
+        </label>
 
-                <div class="item ">
+        <div class="item ">
                     <span class="input-label icon iconfont icon-changshang "
                           style="font-size: 1rem!important;"> 所属厂商</span>
-                    <ion-checkbox class="item-borderless checkbox-positive" ng-model="d">
-                        格力
-                    </ion-checkbox>
-                    <ion-checkbox class="item-borderless checkbox-positive" ng-model="e">
-                        海尔
-                    </ion-checkbox>
-                    <ion-checkbox class="item-borderless checkbox-positive" ng-model="f">
-                        海信
-                    </ion-checkbox>
+          <ion-checkbox class="item-borderless checkbox-positive" ng-model="d">
+            格力
+          </ion-checkbox>
+          <ion-checkbox class="item-borderless checkbox-positive" ng-model="e">
+            海尔
+          </ion-checkbox>
+          <ion-checkbox class="item-borderless checkbox-positive" ng-model="f">
+            海信
+          </ion-checkbox>
 
-                </div>
-            </div>
-            <p></p>
-        </ion-content>
-        <div class="padding light-bg  bottom-0" keyboard-attach>
-            <button ng-disabled="!informationForm.$valid" class="button button-positive full-image " ng-click="">
-                提交
-            </button>
         </div>
-    </form>
+      </div>
+      <p></p>
+    </ion-content>
+    <div class="padding light-bg  bottom-0" keyboard-attach>
+      <button ng-disabled="!informationForm.$valid" class="button button-positive full-image " ng-click="">
+        提交
+      </button>
+    </div>
+  </form>
 </ion-view>
 

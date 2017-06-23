@@ -73,7 +73,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         $rootScope.$on('$cordovaNetwork:offline', function (event, networkState) {
           var offlineState = networkState;
           //提醒用户的网络异常
-          CommonService.platformPrompt("网络异常 无法连接服务器", 'close');
+          CommonService.platformPrompt("网络异常 无法连接博回收服务器", 'close');
         })
         //添加JS 屏幕监听事件 禁止APP 横屏
         if (screenOrientation) {
@@ -134,7 +134,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     //设置默认返回按钮的文字
     $ionicConfigProvider.backButton.previousTitleText(false).text('');
 
-    //ion-content to have overflow-scroll='false'
+    $ionicConfigProvider.views.maxCache(15);
+    $ionicConfigProvider.views.transition('platform');
+    $ionicConfigProvider.views.forwardCache(true); // 缓存下一页
+
+    // false 默认所有的滚动使用native，会比js的滚动快很多，并且很平滑 ; 安卓使用,ios不使用
     $ionicConfigProvider.scrolling.jsScrolling(false);
     //Checkbox style. Android defaults to square and iOS defaults to circle
     $ionicConfigProvider.form.checkbox('circle');
@@ -142,14 +146,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     $ionicConfigProvider.form.toggle('large');
     //原生动画效果统一配置
     $ionicNativeTransitionsProvider.setDefaultOptions({
-      duration: 200, // in milliseconds (ms), default 400,
-      slowdownfactor: 4, // overlap views (higher number is more) or no overlap (1), default 4
+      duration: 300, // in milliseconds (ms), default 400,
+      slowdownfactor: 10, // overlap views (higher number is more) or no overlap (1), default 4
       iosdelay: -1, // ms to wait for the iOS webview to update before animation kicks in, default -1
       androiddelay: -1, // same as above but for Android, default -1
       winphonedelay: -1, // same as above but for Windows Phone, default -1,
       fixedPixelsTop: 0, // the number of pixels of your fixed header, default 0 (iOS and Android)
       fixedPixelsBottom: 0, // the number of pixels of your fixed footer (f.i. a tab bar), default 0 (iOS and Android)
-      triggerTransitionEvent: '$ionicView.afterEnter', // internal ionic-native-transitions option
+      triggerTransitionEvent: '$ionicView.beforeEnter', // internal ionic-native-transitions option
       backInOppositeDirection: false // Takes over default back transition and state back transition to use the opposite direction transition to go back
     });
     $ionicNativeTransitionsProvider.setDefaultTransition({
@@ -378,6 +382,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/account/mobilelogin.html',
         controller: 'MobileLoginCtrl'
       })
+
       //注册页面
       .state('register', {
         url: '/register',
