@@ -160,7 +160,7 @@ angular.module('starter.controllers', [])
         $scope.userdata = data.data;
         if (data.code == 1001) {
           localStorage.setItem("userid", data.data.userid);
-          localStorage.setItem("usersecret", data.data.secret);
+          localStorage.setItem("usersecret", data.data.usersecret);
           CommonService.getStateName();   //跳转页面
         } else {
           CommonService.platformPrompt(data.message, 'close');
@@ -172,7 +172,7 @@ angular.module('starter.controllers', [])
             {
               grant_type: 'password',
               username: $scope.userdata.userid,
-              password: $scope.userdata.secret
+              password: $scope.userdata.usersecret
             }).success(function (data) {
             console.log(data);
             if (data.access_token) {
@@ -218,7 +218,7 @@ angular.module('starter.controllers', [])
 
     $scope.loginSubmit = function () {
       if ($scope.verifycode != $scope.user.code) {
-        CommonService.platformPrompt("输入验证码不正确", 'close');
+        CommonService.platformPrompt("输入的验证码不正确", 'close');
         return;
       }
       $scope.user.client = ionic.Platform.isWebView() ? 0 : (ionic.Platform.is('android') ? 1 : 2);
@@ -228,7 +228,7 @@ angular.module('starter.controllers', [])
         $scope.userdata = data.data;
         if (data.code == 1001) {
           localStorage.setItem("userid", data.data.userid);
-          localStorage.setItem("usersecret", data.data.secret);
+          localStorage.setItem("usersecret", data.data.usersecret);
           CommonService.getStateName();   //跳转页面
         } else {
           CommonService.platformPrompt(data.message, 'close');
@@ -240,7 +240,7 @@ angular.module('starter.controllers', [])
             {
               grant_type: 'password',
               username: $scope.userdata.userid,
-              password: $scope.userdata.secret
+              password: $scope.userdata.usersecret
             }).success(function (data) {
             console.log(data);
             if (data.access_token) {
@@ -300,7 +300,7 @@ angular.module('starter.controllers', [])
         return;
       }
       if ($scope.verifycode != $scope.user.code) {
-        CommonService.platformPrompt("输入验证码不正确", 'close');
+        CommonService.platformPrompt("输入的验证码不正确", 'close');
         return;
       }
 
@@ -324,13 +324,26 @@ angular.module('starter.controllers', [])
   })
 
   //完善资料页面
-  .controller('OrganizingDataCtrl', function ($scope, CommonService, AccountService, $ionicScrollDelegate) {
+  .controller('OrganizingDataCtrl', function ($scope, CommonService, BoRecycle, OrderService, AccountService, $ionicScrollDelegate) {
     CommonService.customModal($scope, 'templates/modal/addressmodal.html');
     $scope.user = {};//定义用户对象
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable
     $scope.addrinfo = {};//地址信息
 
+    //获取产品品类
+    OrderService.getProductList({ID: "", Name: ""}).success(function (data) {
+      console.log(data);
+      if (data.code == 1001) {
+        $scope.productList = data.data;
+      } else {
+        CommonService.platformPrompt("获取产品品类失败", 'close');
+      }
+    }).then(function () {
+      $scope.checkChecded = function () {
+        CommonService.checkChecded($scope, $scope.productList);
+      }
+    })
     //获取验证码
     $scope.getVerifyCode = function () {
       CommonService.getVerifyCode($scope, $scope.user.account);
@@ -370,7 +383,14 @@ angular.module('starter.controllers', [])
       $scope.getAddressPCCList();
     }
 
-
+    //完善资料提交
+    $scope.organizingdataSubmit = function () {
+      console.log($scope.user);
+      if ($scope.verifycode != $scope.user.code) {
+        CommonService.platformPrompt("输入的验证码不正确", 'close');
+        return;
+      }
+    }
   })
 
   //参考价页面
@@ -541,8 +561,9 @@ angular.module('starter.controllers', [])
   })
 
   //账号信息
-  .controller('AccountInfoCtrl', function ($scope, CommonService, AccountService, BoRecycle) {
+  .controller('AccountInfoCtrl', function ($scope, $rootScope, CommonService, AccountService, BoRecycle) {
     /*    $scope.isprovider = JSON.parse(localStorage.getItem("user")).grade == 5 ? true : false*/
+    $rootScope.userinfo = $rootScope.userdata;
     //获取定位信息
     $scope.cityName = "深圳";//默认地址
     CommonService.getLocation(function () {
@@ -872,7 +893,7 @@ angular.module('starter.controllers', [])
     }
     $scope.cancelMobileSubmit = function () {
       if ($scope.verifycode != $scope.user.code) {
-        CommonService.platformPrompt("输入验证码不正确", "close");
+        CommonService.platformPrompt("输入的验证码不正确", "close");
         return;
       }
       $state.go("bindingmobile", {'oldphone': $scope.user.username});//绑定页面
@@ -897,7 +918,7 @@ angular.module('starter.controllers', [])
 
     $scope.bindingMobileSubmit = function () {
       if ($scope.verifycode != $scope.user.code) {
-        CommonService.platformPrompt("输入验证码不正确", 'close');
+        CommonService.platformPrompt("输入的验证码不正确", 'close');
         return;
       }
       //修改手机号码

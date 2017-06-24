@@ -8,7 +8,7 @@
 
 
   <ion-content overflow-scroll="false" class="stable-bg" id="organizingdata">
-    <form name="loginForm">
+    <form name="organizingdataForm">
       <div class="list">
         <label class="item item-input">
           <span class="input-label icon ion-ios-person-outline"> 姓名</span>
@@ -33,19 +33,13 @@
           <span class="input-label icon ion-ios-calculator-outline"> 月回收量</span>
           <input type="number" name="recoveryqty" ng-model="user.recoveryqty" placeholder="请输入月回收量" required/>
         </label>
-        <label class="item ">
+        <div class="item text-wrap">
           <span class="input-label icon ion-ios-trash-outline "> 回收品类</span>
-          <ion-checkbox class="item-borderless checkbox-calm" ng-model="a">
-            手机
-          </ion-checkbox>
-          <ion-checkbox class="item-borderless checkbox-calm" ng-model="b">
-            电视机
-          </ion-checkbox>
-          <ion-checkbox class="item-borderless checkbox-calm" ng-model="c">
-            洗衣机
+          <ion-checkbox ng-repeat="item in productList" class="item-borderless checkbox-calm" ng-click="checkChecded()"  ng-model="item.checked">
+            {{item.name}}
           </ion-checkbox>
 
-        </label>
+        </div>
         <label class="item item-input " ng-click="openModal()">
           <span class="input-label icon ion-ios-location-outline"> 回收区域 </span>
           <p class="{{addresspcd?'dark':'grey'}}">{{addresspcd?addresspcd:"请选择回收区域"}}</p>
@@ -53,11 +47,11 @@
 
         <p></p>
         <div class="padding-horizontal">
-          <button class="button full-image button-positive " ng-click="loginSubmit()"
-                  ng-disabled="!(loginForm.$valid&&agreedeal)">提交
+          <button class="button button-full button-positive " ng-click="organizingdataSubmit()"
+                  ng-disabled="!(organizingdataForm.$valid&&agreedeal&&ischecked)">提交
           </button>
           <p></p>
-          <a ng-href="#/login" class="button full-image button-energized button-outline energized ">跳过,下次再完善</a>
+          <a ng-href="#/login" class="button button-full button-energized button-outline energized ">跳过,下次再完善</a>
         </div>
 
       </div>
