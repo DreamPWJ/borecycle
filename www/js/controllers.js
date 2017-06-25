@@ -563,7 +563,8 @@ angular.module('starter.controllers', [])
   //账号信息
   .controller('AccountInfoCtrl', function ($scope, $rootScope, CommonService, AccountService, BoRecycle) {
     /*    $scope.isprovider = JSON.parse(localStorage.getItem("user")).grade == 5 ? true : false*/
-    $rootScope.userinfo = $rootScope.userdata;
+    $rootScope.userinfo = JSON.parse(localStorage.getItem("user"));
+
     //获取定位信息
     $scope.cityName = "深圳";//默认地址
     CommonService.getLocation(function () {
@@ -572,10 +573,9 @@ angular.module('starter.controllers', [])
         key: BoRecycle.gaoDeKey,
         location: Number(localStorage.getItem("longitude")).toFixed(6) + "," + Number(localStorage.getItem("latitude")).toFixed(6)
       }).success(function (data) {
-        if (data.code == 1001) {
-          var addressComponent = data.regeocode.addressComponent;
-          $scope.cityName = addressComponent.city ? addressComponent.city.replace("市", "") : addressComponent.province.replace("市", "");
-        }
+        var addressComponent = data.regeocode.addressComponent;
+        $scope.cityName = addressComponent.city ? addressComponent.city.replace("市", "") : addressComponent.province.replace("市", "");
+
       }).finally(function () {
         $scope.setLocation($scope.cityName);
       })
@@ -614,13 +614,22 @@ angular.module('starter.controllers', [])
         sex: $scope.user.sex,
         nickname: $scope.user.nickname
       }
+      console.log($scope.params);
       if ($scope.type == 'nickname') { //修改昵称
         AccountService.modifyNickname($scope.params).success(function (data) {
-          $state.go('tab.account');
+          if (data.code = 1001) {
+            $state.go('tab.account');
+          }
+          CommonService.platformPrompt(data.message, 'close');
+
         })
       } else if ($scope.type == 'sex') {//修改性别
         AccountService.modifySex($scope.params).success(function (data) {
-          $state.go('tab.account');
+          if (data.code = 1001) {
+            $state.go('tab.account');
+          }
+          CommonService.platformPrompt(data.message, 'close');
+
         })
       }
     }
@@ -832,46 +841,69 @@ angular.module('starter.controllers', [])
   .controller('SettingCtrl', function ($scope, $rootScope, $state, BoRecycle, CommonService) {
     $scope.version = BoRecycle.version;
     $scope.securitylevel = '未知';
-    /* var certstate = JSON.parse(localStorage.getItem("user")).certstate;
-     if (certstate.indexOf('2') == -1) {
-     $scope.securitylevel = '极低';
-     }
-     if ((certstate.substr(0, 1) == 2 || certstate.substr(1, 1) == 2) || (certstate.substr(3, 1) == 2 || certstate.substr(4, 1) == 2)) {
-     $scope.securitylevel = '中等';
-     }
-     if ((certstate.substr(0, 1) == 2 || certstate.substr(1, 1) == 2) && (certstate.substr(3, 1) == 2 || certstate.substr(4, 1) == 2)) {
-     $scope.securitylevel = '高';
-     }
-     if ((certstate.substr(0, 1) == 2 && certstate.substr(1, 1) == 2) && (certstate.substr(3, 1) == 2 || certstate.substr(4, 1) == 2)) {
-     $scope.securitylevel = '较高';
-     }
-     if ((certstate.substr(0, 1) == 2 && certstate.substr(1, 1) == 2) && (certstate.substr(3, 1) == 2 && certstate.substr(4, 1) == 2)) {
-     $scope.securitylevel = '极高';
-     }*/
+    var certstate = JSON.parse(localStorage.getItem("user")).certstate;
+    if (certstate.indexOf('2') == -1) {
+      $scope.securitylevel = '极低';
+    }
+    if ((certstate.substr(0, 1) == 2 || certstate.substr(1, 1) == 2) || (certstate.substr(3, 1) == 2 || certstate.substr(4, 1) == 2)) {
+      $scope.securitylevel = '中等';
+    }
+    if ((certstate.substr(0, 1) == 2 || certstate.substr(1, 1) == 2) && (certstate.substr(3, 1) == 2 || certstate.substr(4, 1) == 2)) {
+      $scope.securitylevel = '高';
+    }
+    if ((certstate.substr(0, 1) == 2 && certstate.substr(1, 1) == 2) && (certstate.substr(3, 1) == 2 || certstate.substr(4, 1) == 2)) {
+      $scope.securitylevel = '较高';
+    }
+    if ((certstate.substr(0, 1) == 2 && certstate.substr(1, 1) == 2) && (certstate.substr(3, 1) == 2 && certstate.substr(4, 1) == 2)) {
+      $scope.securitylevel = '极高';
+    }
   })
 
   //设置安全
   .controller('AccountSecurityCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
-    /*    $scope.userid = localStorage.getItem("userid");
-     AccountService.getUserInfo($scope.userid).success(function (data) {
-     if (data.code == 1001) {
-     localStorage.setItem('user', JSON.stringify(data));
-     $rootScope.userinfo = data;
-     var certstate = data.certstate;//获取认证状态参数
-     $scope.certstatestatus = ['未认证', '认证中', '已认证', '未通过'];
-     //ubstr(start,length)表示从start位置开始，截取length长度的字符串
-     $scope.phonestatus = certstate.substr(0, 1);//手机认证状态码
-     $scope.emailstatus = certstate.substr(1, 1);//邮箱认证状态码
-     $scope.secrecystatus = certstate.substr(2, 1);//保密认证状态码
-     $scope.identitystatus = certstate.substr(3, 1);//身份认证状态码
-     $scope.companystatus = certstate.substr(4, 1);//企业认证状态码
-     $scope.bankstatus = certstate.substr(5, 1);//银行账号状态码
+    AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
+      if (data.code == 1001) {
+        localStorage.setItem('user', JSON.stringify(data.data));
+        $rootScope.userinfo = data.data;
+        var certstate = data.data.certstate;//获取认证状态参数
+        $scope.certstatestatus = ['未认证', '认证中', '已认证', '未通过'];
+        //ubstr(start,length)表示从start位置开始，截取length长度的字符串
+        $scope.phonestatus = certstate.substr(0, 1);//手机认证状态码
+        $scope.emailstatus = certstate.substr(1, 1);//邮箱认证状态码
+        $scope.secrecystatus = certstate.substr(2, 1);//保密认证状态码
+        $scope.identitystatus = certstate.substr(3, 1);//身份认证状态码
+        $scope.companystatus = certstate.substr(4, 1);//企业认证状态码
+        $scope.bankstatus = certstate.substr(5, 1);//银行账号状态码
 
-     } else {
-     CommonService.platformPrompt('获取用户信息失败', 'close');
-     }
+      } else {
+        CommonService.platformPrompt('获取用户信息失败', 'close');
+      }
 
-     })*/
+    })
+  })
+
+  //帮助与反馈
+  .controller('HelpFeedBackCtrl', function ($scope, $rootScope, $state, CommonService, AccountService, MainService) {
+    $scope.helpfeedback = {};
+    //获取帮助中心列表
+    $scope.helpfeedbacklist = [];
+
+
+    //提交帮助反馈信息
+    $scope.addHelpFeedBack = function () {
+      $scope.datas = {
+        Title: $scope.helpfeedback.title,//反馈标题
+        Content: $scope.helpfeedback.content,//反馈内容
+        User: localStorage.getItem("userid") //反馈用户
+      }
+      AccountService.addHelpFeedback($scope.datas).success(function (data) {
+        if (data.code == 1001) {
+          CommonService.showAlert('', '<p>温馨提示:您的反馈我们已经接收,</p><p>我们会针对您的问题尽快做出答复,</p><p>非常感谢您对博绿网的支持！</p>', '')
+        } else {
+          CommonService.platformPrompt('提交反馈失败', 'close');
+        }
+      })
+    }
   })
 
   //解绑手机
@@ -889,7 +921,7 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt("输入手机号与原手机号不一致", 'cancelmobile');
         return;
       }
-      CommonService.getVerifyCode($scope, $scope.user.account);
+      CommonService.getVerifyCode($scope, $scope.user.mobile);
     }
     $scope.cancelMobileSubmit = function () {
       if ($scope.verifycode != $scope.user.code) {
@@ -913,7 +945,7 @@ angular.module('starter.controllers', [])
 
     //获取验证码
     $scope.getVerifyCode = function () {
-      CommonService.getVerifyCode($scope, $scope.user.account);
+      CommonService.getVerifyCode($scope, $scope.user.mobile);
     }
 
     $scope.bindingMobileSubmit = function () {
@@ -930,9 +962,9 @@ angular.module('starter.controllers', [])
       }
       AccountService.modifyMobile($scope.datas).success(function (data) {
         if (data.code == 1001) {
-          CommonService.platformPrompt('修改手机号成功', 'tab.account');
+          CommonService.platformPrompt('绑定手机号成功', 'accountsecurity');
         } else {
-          CommonService.platformPrompt('修改手机号失败', 'close');
+          CommonService.platformPrompt('绑定手机号失败', 'close');
         }
 
       })
@@ -972,9 +1004,10 @@ angular.module('starter.controllers', [])
         no: $scope.realname.no,	//身份证号码
         frontpic: $scope.ImgsPicAddr[0]	//身份证照片地址。必须上传、上传使用公用上传图片接口
       }
-      AccountService.certificationName($scope.datas).success(function (data) {
+      AccountService.realNameAuthenticate($scope.datas).success(function (data) {
         if (data.code == 1001) {
-          CommonService.showAlert('', '<p>温馨提示:您的认证信息已经</p><p>提交成功,我们会尽快处理！</p>', '')
+          CommonService.platformPrompt('实名认证提交成功,我们会尽快处理', 'accountsecurity');
+          /*          CommonService.showAlert('', '<p>温馨提示:您的认证信息已经</p><p>提交成功,我们会尽快处理！</p>', '')*/
         } else {
           CommonService.platformPrompt('实名认证失败', 'close');
         }
@@ -994,8 +1027,23 @@ angular.module('starter.controllers', [])
   //绑定邮箱
   .controller('BindingEmailCtrl', function ($scope, $rootScope, CommonService, AccountService) {
     $rootScope.email = {};//邮箱
+    $scope.paracont = "获取验证码"; //初始发送按钮中的文字
+    $scope.paraclass = false; //控制验证码的disable
+    $scope.checkEmail = function (email) {//检查邮箱
+      AccountService.checkMobilePhoneAndEmail($scope, email);
+    }
+
+    //获取验证码
+    $scope.getVerifyCode = function () {
+      CommonService.getVerifyCode($scope, $scope.email.No);
+    }
+
     //发送验证邮件
     $scope.sendEmail = function () {
+      if ($scope.verifycode != $scope.email.code) {
+        CommonService.platformPrompt("输入的验证码不正确", 'close');
+        return;
+      }
       $scope.params = {
         email: $rootScope.email.No//邮箱号
       }
@@ -1003,21 +1051,31 @@ angular.module('starter.controllers', [])
       AccountService.sendEmailCode($scope.params).success(function (data) {
         if (data.code == 1001) {
           $rootScope.email.rescode = data;
-          CommonService.showAlert('', '<p>温馨提示:验证邮件已经发送到您的</p><p>邮箱,请尽快去您的邮箱进行验证！</p>', 'authenticationemail')
+          CommonService.platformPrompt('绑定邮箱成功', 'accountsecurity');
         } else {
-          CommonService.platformPrompt('发送邮件失败', 'close');
+          CommonService.platformPrompt('绑定邮箱失败', 'close');
         }
       })
     }
   })
 
-  //认证邮箱
-  .controller('AuthenticationEmailCtrl', function ($scope, $rootScope, CommonService, AccountService) {
+  //解绑电子邮箱
+  .controller('CancelEmailCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
     $scope.verify = true;
-    //认证邮箱
+    $scope.paracont = "获取验证码"; //初始发送按钮中的文字
+    $scope.paraclass = false; //控制验证码的disable
+    $scope.checkEmail = function (email) {//检查邮箱
+      AccountService.checkMobilePhoneAndEmail($scope, email);
+    }
+
+    //获取验证码
+    $scope.getVerifyCode = function () {
+      CommonService.getVerifyCode($scope, $scope.email.No);
+    }
+    //解绑电子邮箱
     $scope.authenticationEmail = function () {
-      if ($rootScope.email.rescode != $rootScope.email.code) {
-        CommonService.platformPrompt('邮箱认证码输入错误', 'close');
+      if ($scope.verifycode != $scope.email.code) {
+        CommonService.platformPrompt("输入的验证码不正确", 'close');
         return;
       }
       $scope.datas = {
@@ -1027,10 +1085,11 @@ angular.module('starter.controllers', [])
       }
       AccountService.authEmail($scope.datas).success(function (data) {
         if (data.code == 1001) {
-          CommonService.platformPrompt('认证邮箱成功');
+          CommonService.platformPrompt('解绑电子邮箱成功');
           $scope.verify = false;
+          $state.go("bindingemail")
         } else {
-          CommonService.platformPrompt('认证邮箱失败', 'close');
+          CommonService.platformPrompt('解绑电子邮箱失败', 'close');
         }
       })
     }

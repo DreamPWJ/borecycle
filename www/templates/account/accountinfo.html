@@ -9,7 +9,8 @@
   <ion-content overflow-scroll="false" class="stable-bg account " has-bouncing="true">
     <div class="list  ">
       <a ui-sref="uploadhead({figure:userinfo.userfigure})" class="item item-avatar item-icon-right  item-borderless">
-        <img ng-src="{{userinfo.userfigure||img/head.jpg}}" class="border-radius-50" alt="" onerror="this.src='img/head.jpg'">
+        <img ng-src="{{userinfo.userfigure||img/head.jpg}}" class="border-radius-50" alt=""
+             onerror="this.src='img/head.jpg'">
         <p class="padding-top">头像</p>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
@@ -22,12 +23,13 @@
         <i class="icon ion-ios-arrow-right"></i>
       </a>
       <a ng-href="" class="item item-icon-right border-bottom-none">
-        <h2>会员类型 <span class="item-note">{{userinfo.typename}}</span></h2>
+        <h2>会员类型 <span class="item-note">{{userinfo.type==1?'销售员':(userinfo.type==2?'上门回收者':(userinfo.type==3?'货场':'二手商家'))}}</span>
+        </h2>
       </a>
 
 
       <a ng-if="!isprovider" ng-href="#/applyprovider" class="item stable-bg item-borderless">
-        <h2 class="calm text-right"><i class="iconfont icon-xiangyou"></i> 升级成为货场</h2>
+        <h2 class=" text-right"><i class="iconfont icon-xiangyou positive"></i> 升级成为货场</h2>
       </a>
 
 

@@ -326,6 +326,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'AccountSecurityCtrl'
       })
 
+      //帮助与反馈
+      .state('helpfeedback', {
+        url: '/helpfeedback',
+        cache: false,
+        templateUrl: 'templates/account/helpfeedback.html',
+        controller: 'HelpFeedBackCtrl'
+      })
+
       //解绑手机
       .state('cancelmobile', {
         url: '/cancelmobile',
@@ -355,11 +363,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'BindingEmailCtrl'
       })
 
-      //认证邮箱
-      .state('authenticationemail', {
-        url: '/authenticationemail',
-        templateUrl: 'templates/account/authenticationemail.html',
-        controller: 'AuthenticationEmailCtrl'
+      //解绑电子邮箱
+      .state('cancelemail', {
+        url: '/cancelemail',
+        templateUrl: 'templates/account/cancelemail.html',
+        controller: 'CancelEmailCtrl'
       })
 
       //帮助信息共用模板

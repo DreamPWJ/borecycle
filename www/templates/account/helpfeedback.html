@@ -1,0 +1,44 @@
+<ion-view>
+  <ion-nav-buttons side="left">
+    <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back ng-click="$ionicGoBack()"></button>
+  </ion-nav-buttons>
+  n>
+  </ion-nav-buttons>
+  <ion-nav-title>
+    <h1 class="title"><img id="logo" src="img/logo.png" alt=""/> 帮助与反馈</h1>
+  </ion-nav-title>
+  <form name="helpfeedback">
+    <ion-content overflow-scroll="false" class="stable-bg" has-bouncing="true">
+      <!--      <ion-refresher on-refresh="gethelpfeedbackList(0)" pulling-text="下拉更新"></ion-refresher>-->
+      <p></p>
+      <ion-list>
+        <ion-item class="item-input">
+          <input type="text" placeholder="请输入反馈标题" ng-model="helpfeedback.title" ng-maxlength="100" required/>
+        </ion-item>
+        <p></p>
+        <ion-item class="item-divider item-borderless">
+          问题描述
+        </ion-item>
+        <ion-item class="item-input item-borderless">
+          <textarea rows="8" ng-model="helpfeedback.content" placeholder="请输入详细反馈描述" ng-maxlength="2000"
+                    required></textarea>
+        </ion-item>
+        <p></p>
+        <!--        <ion-item class="item-divider item-borderless">
+                  热点问题
+                </ion-item>
+                <ion-item ng-href="#/help/{{item.ID}}" ng-repeat="item in helpfeedbacklist" class="item-icon-right">
+                  {{item.Title}}
+                  <i class="icon ion-ios-arrow-right grey"></i>
+                </ion-item>-->
+      </ion-list>
+      <!--      <ion-infinite-scroll on-infinite="gethelpfeedbackList()" ng-if="total > page"
+                                 immediate-check="false"></ion-infinite-scroll>-->
+    </ion-content>
+    <div class="padding light-bg bottom-0" keyboard-attach>
+      <button ng-disabled="!helpfeedback.$valid" class="button button-calm full-image" ng-click="addHelpFeedBack()">
+        提交反馈
+      </button>
+    </div>
+  </form>
+</ion-view>

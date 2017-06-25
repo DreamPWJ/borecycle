@@ -10,15 +10,15 @@
       <p></p>
       <div class="list ">
         <label class="item item-input">
-          <input type="number" ng-model="user.username" placeholder="新手机号" ng-keyup="checkphone(user.username)"
+          <input type="number" ng-model="user.mobile" placeholder="新手机号" ng-keyup="checkphone(user.mobile)"
                  maxlength="11" required>
 
         </label>
 
         <div class="item item-input">
-          <span class="input-label icon ion-ios-locked-outline"> 验证码 </span>
+          <!--    <span class="input-label icon ion-ios-locked-outline"> 验证码 </span>-->
           <span class="row row-no-padding">
-          <input type="number" class="col-55" placeholder="请输入验证码" ng-model="user.code" required/>
+          <input type="number" class="col-65" placeholder="验证码" ng-model="user.code" required/>
             <button class="button button-small button-positive  col-33 " ng-class="{false:'button-outline'}[paraclass]"
                     ng-click="getVerifyCode()">{{paracont}}</button>
           </span>
