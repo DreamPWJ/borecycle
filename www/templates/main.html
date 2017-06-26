@@ -22,16 +22,16 @@
     <ion-refresher on-refresh="getMainData()" pulling-text="下拉更新"></ion-refresher>
     <div class="topbj light text-center">
       <div class="total ">
-        <p class="num">798,000</p>
+        <p class="num">{{cargoQuantity.num | number}}</p>
         <p>总回收量(台)</p>
       </div>
       <div class="row sub-total row-no-padding">
         <span class="col">
-          <h3>68990</h3>
+          <h3>{{cargoQuantity.informatenum | number}}</h3>
           <p>信息总量(单)</p>
         </span>
         <span class="col">
-          <h3>88990</h3>
+          <h3>{{cargoQuantity.goodsnum | number}}</h3>
           <p>总货源量(单)</p>
         </span>
       </div>

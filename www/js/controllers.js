@@ -8,7 +8,7 @@ angular.module('starter.controllers', [])
 
 
   //APP首页面
-  .controller('MainCtrl', function ($scope, $rootScope, CommonService, MainService, BoRecycle, $ionicHistory, $interval, NewsService, AccountService, $ionicPlatform, WeiXinService) {
+  .controller('MainCtrl', function ($scope, $rootScope, CommonService, MainService, OrderService, BoRecycle, $ionicHistory, $interval, NewsService, AccountService, $ionicPlatform, WeiXinService) {
     $scope.getMainData = function () {
       if (!localStorage.getItem("userid")) {
         var authLogin = function () {
@@ -21,7 +21,7 @@ angular.module('starter.controllers', [])
                 localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
               }
             }).error(function () {
-              CommonService.platformPrompt("获取公共接口授权token失败!", 'close');
+              CommonService.platformPrompt("获取公共接口授权token失败", 'close');
             })
           }
         }
@@ -44,13 +44,24 @@ angular.module('starter.controllers', [])
               localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
             }
           }).error(function () {
-            CommonService.platformPrompt("获取登录接口授权token失败!", 'close');
+            CommonService.platformPrompt("获取登录接口授权token失败", 'close');
           })
         }
         $rootScope.loginAuth = $interval(function () {
           authLogin();
         }, 7199000);
         authLogin();
+
+        //首页统计货量
+        OrderService.getCargoQuantity().success(function (data) {
+          console.log(data);
+          if (data.code == 1001) {
+            $scope.cargoQuantity = data.data;
+          } else {
+            CommonService.platformPrompt("获取统计货量数据失败", 'close');
+          }
+
+        })
 
         //获取极光推送registrationID
         var getRegistrationID = function () {
@@ -128,7 +139,7 @@ angular.module('starter.controllers', [])
             //通过config接口注入权限验证配置
             WeiXinService.weichatConfig(data.timestamp, data.noncestr, data.signature);
           } else {
-            CommonService.platformPrompt("获取微信签名失败!", 'close');
+            CommonService.platformPrompt("获取微信签名失败", 'close');
           }
         })
       }
@@ -137,6 +148,10 @@ angular.module('starter.controllers', [])
     }
     //执行方法
     $scope.getMainData();
+
+    //定位
+    //CommonService.getLocation();
+
     //在首页中清除导航历史退栈
     $scope.$on('$ionicView.afterEnter', function () {
       $ionicHistory.clearHistory();
@@ -572,11 +587,10 @@ angular.module('starter.controllers', [])
         key: BoRecycle.gaoDeKey,
         location: Number(localStorage.getItem("longitude")).toFixed(6) + "," + Number(localStorage.getItem("latitude")).toFixed(6)
       }).success(function (data) {
+        console.log(data);
         var addressComponent = data.regeocode.addressComponent;
         $scope.cityName = addressComponent.city ? addressComponent.city.replace("市", "") : addressComponent.province.replace("市", "");
 
-      }).finally(function () {
-        $scope.setLocation($scope.cityName);
       })
     });
     //城市选择modal
@@ -691,7 +705,7 @@ angular.module('starter.controllers', [])
   })
 
   //添加地址
-  .controller('AddAddressCtrl', function ($scope, $rootScope, $state, CommonService, BoRecycle, AccountService, AddressService, $ionicHistory) {
+  .controller('AddAddressCtrl', function ($scope, $rootScope, $state, CommonService, AccountService, AddressService, $ionicHistory) {
       CommonService.customModal($scope, 'templates/modal/addressmodal.html');
       //去掉默认的只在下单的地方去掉，会员中心要显示
       /*
@@ -1067,10 +1081,11 @@ angular.module('starter.controllers', [])
   })
 
   //登记信息
-  .controller('InformationCtrl', function ($scope, BoRecycle, CommonService, AccountService, AddressService, OrderService) {
+  .controller('InformationCtrl', function ($scope, CommonService, BoRecycle, AccountService, AddressService, OrderService) {
     CommonService.customModal($scope, 'templates/modal/addressmodal.html');
+    $scope.dengji = {};//登记信息
     $scope.addrinfo = {};
-    $scope.recyclingCategory = [];//回收品类数组
+
     //获取产品品类
     OrderService.getProductList({ID: "", Name: ""}).success(function (data) {
       console.log(data);
@@ -1081,9 +1096,27 @@ angular.module('starter.controllers', [])
       }
     }).then(function () {
       $scope.checkChecded = function () {
+        $scope.recyclingCategory = [];//回收品类数组
         CommonService.checkChecded($scope, $scope.productList);
+        angular.forEach($scope.productList, function (item) {
+          if (item.checked) {
+            $scope.recyclingCategory.push(item.grpid);
+          }
+        })
+
+        OrderService.getListManufacte({
+          ShorteName: '',
+          Name: '',
+          GrpID: $scope.recyclingCategory.join(",")
+        }).success(function (data) {
+          console.log(data);
+          if (data.code != 1001) {
+            CommonService.platformPrompt("获取品类所属厂商失败", 'close');
+          }
+        })
       }
     })
+
     //获取省市县
     $scope.getAddressPCCList = function (item) {
       //获取省份信息
@@ -1096,14 +1129,31 @@ angular.module('starter.controllers', [])
       $scope.modal.show();
       $scope.getAddressPCCList();
     }
+    //获取当前位置 定位
+    $scope.location = function () {
+      CommonService.getLocation(function () {
+        //当前位置 定位
+        AccountService.getCurrentCityName({
+          key: BoRecycle.gaoDeKey,
+          location: Number(localStorage.getItem("longitude")).toFixed(6) + "," + Number(localStorage.getItem("latitude")).toFixed(6)
+        }).success(function (data) {
+          var addressComponent = data.regeocode.addressComponent;
+          $scope.dengji.addrdetail = addressComponent.township + addressComponent.streetNumber.street;
+        })
+      })
+
+    }
 
     //信息登记提交
     $scope.informationSubmit = function () {
-      angular.forEach($scope.productList, function (item) {
-        if (item.checked) {
-          $scope.recyclingCategory.push(item.grpid)
-        }
-      })
+
+
+      //添加登记信息/货源信息(添加登记货源时明细不能为空，添加登记信息时明细为空)
+      /*      OrderService.addDengJi().success(function (data) {
+       console.log(data);
+       CommonService.platformPrompt(data.message, 'close');
+       })*/
+
     }
   })
 

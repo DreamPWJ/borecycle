@@ -325,7 +325,7 @@ angular.module('starter.services', [])
       },
       getStateName: function () {    //得到上一个路由名称方法
         var stateName = "";
-        if ($ionicHistory.backView() && $ionicHistory.backView().stateName != "tab.account" && $ionicHistory.backView().stateName != "setting"&& $ionicHistory.backView().stateName != "organizingdata") {
+        if ($ionicHistory.backView() && $ionicHistory.backView().stateName != "tab.account" && $ionicHistory.backView().stateName != "setting" && $ionicHistory.backView().stateName != "organizingdata") {
           stateName = $ionicHistory.backView().stateName;
         }
         if (stateName) {
@@ -553,13 +553,12 @@ angular.module('starter.services', [])
         });
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       },
-      getCargoQuantity: function (params) { //统计货量
+      getCargoQuantity: function () { //统计货量
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
-          url: BoRecycle.api + "/api/dengji/getsum",
-          params: params
+          url: BoRecycle.api + "/api/dengji/getsum"
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
