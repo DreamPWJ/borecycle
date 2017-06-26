@@ -15,35 +15,24 @@
       <p>无地址信息</p>
     </div>
     <ion-list>
-      <ion-item>
-        <h2>联系人 : 张三 <span class="right-1  balanced"> ● 默认</span></h2>
-        <p>手机 : 18863302302</p>
-        <p class="text-wrap">地址 : 广东深圳市龙岗区</p>
-        <ion-option-button class="button-positive" ng-click="updateaddress(item)">编辑</ion-option-button>
-        <ion-option-button class="button-assertive" ng-click="deleteAddr(item.id,item.status)">删除</ion-option-button>
-      </ion-item>
-      <ion-item>
-        <h2>联系人 : 张三 </h2>
-        <p>手机 : 18863302302</p>
-        <p class="text-wrap">地址 : 广东深圳市龙岗区</p>
-        <ion-option-button class="button-positive" ng-click="updateaddress(item)">编辑</ion-option-button>
-        <ion-option-button class="button-assertive" ng-click="deleteAddr(item.id,item.status)">删除</ion-option-button>
-      </ion-item>
 
       <div ng-click="selectAddress(item)" ng-repeat="item in addrlist">
         <ion-item>
-          <h2>联系人 :{{item.username}} <span ng-if="item.status==1"
+          <h2>联系人 :{{item.UserName}} <span ng-if="item.Status==1"
                                            class="right-1  balanced"> ● 默认</span></h2>
-          <p>手机 : {{item.mobile}}</p>
-          <p class="text-wrap">地址 : {{item.areaname+item.addr}}</p>
+          <p>手机 : {{item.MoTel}}</p>
+          <p class="text-wrap">地址 : {{item.AddrDetailForPCC}}</p>
+
+
+          <ion-option-button class="button-assertive" ng-click="deleteAddr(item.ID,item.Status)">删除</ion-option-button>
           <ion-option-button class="button-positive" ng-click="updateaddress(item)">编辑</ion-option-button>
-          <ion-option-button class="button-assertive" ng-click="deleteAddr(item.id,item.status)">删除</ion-option-button>
+          <ion-option-button class="button-balanced" ng-click="" ng-if="item.Status==0">设置默认</ion-option-button>
         </ion-item>
         <p></p>
       </div>
     </ion-list>
     <p ng-if="addrlist.length!=0" class="text-center padding-top grey"><i class="icon ion-information-circled"></i>
       列表左滑可编辑删除我的地址</p>
-    <ion-infinite-scroll on-infinite="getAddrlist()" ng-if="total > page" immediate-check="false"></ion-infinite-scroll>
+
   </ion-content>
 </ion-view>

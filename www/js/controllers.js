@@ -100,12 +100,13 @@ angular.module('starter.controllers', [])
         $scope.versionparams = {
           page: 1,//当前页码
           size: 1,//每页条数
-          ID: '',//编码 ,等于空时取所有
+          ID: 3,//编码 ,等于空时取所有
           Name: '博回收',//软件名称（中文）
           NameE: '',//软件名称（英文）
           Enable: 1 //是否启用 1启用 2禁用
         }
         AccountService.getVersionsList($scope.versionparams).success(function (data) {
+          console.log(data);
           $scope.versions = data.data.data_list[0];
           if (BoRecycle.version < $scope.versions.vercode) {
             AccountService.showUpdateConfirm($scope.versions.remark, $scope.versions.attached, $scope.versions.vercode);
@@ -324,7 +325,7 @@ angular.module('starter.controllers', [])
   })
 
   //完善资料页面
-  .controller('OrganizingDataCtrl', function ($scope, CommonService, BoRecycle, OrderService, AccountService, $ionicScrollDelegate) {
+  .controller('OrganizingDataCtrl', function ($scope, CommonService, BoRecycle, OrderService, AccountService, AddressService, $ionicScrollDelegate) {
     CommonService.customModal($scope, 'templates/modal/addressmodal.html');
     $scope.user = {};//定义用户对象
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
@@ -350,32 +351,56 @@ angular.module('starter.controllers', [])
     }
 
     //获取省市县
-    $scope.getAddressPCCList = function (adcode) {
-      if (isNaN(adcode) && adcode) {
-        $scope.addresspcd = $scope.addrinfo.province + $scope.addrinfo.city + $scope.addrinfo.area;
-        $scope.addrinfo.address = adcode;
+    //获取省市县
+    $scope.getAddressPCCList = function (item) {
+      //获取省份信息
+      if (!item) {
+        AddressService.getPList().success(function (data) {
+          if (data.code == 1001) {
+            $scope.addressinfo = data.data;
+            $ionicScrollDelegate.scrollTop()
+          } else {
+            CommonService.platformPrompt("获取添加地址省失败", 'close');
+          }
+        })
+        return;
+      }
+
+      //获取市信息
+      if (item.Level == 1) {
+        AddressService.getCList({pid: item.ID}).success(function (data) {
+          if (data.code == 1001) {
+            $scope.addressinfo = data.data;
+            $ionicScrollDelegate.scrollTop()
+          } else {
+            CommonService.platformPrompt("获取添加地址市失败", 'close');
+          }
+        })
+      }
+
+      //获取县或地区信息
+      if (item.Level == 2) {
+        AddressService.getDList({cid: item.ID}).success(function (data) {
+          console.log(data);
+          if (data.code == 1001) {
+            $scope.addressinfo = data.data;
+            $ionicScrollDelegate.scrollTop()
+          } else {
+            CommonService.platformPrompt("获取添加地址县或区失败", 'close');
+          }
+
+        })
+      }
+      //获取最后一级地址信息 关闭modal
+      if (item.Level == 3) {
+        $scope.addresspcd = item.MergerName;
+        $scope.addrareacountyone = item;
         $scope.modal.hide();
         return;
       }
-      AccountService.getDistrict({
-        key: BoRecycle.gaoDeKey,
-        keywords: adcode || "",
-        showbiz: false
-      }).success(function (data) {
-        $scope.addressinfo = data.districts[0].districts;
-        $scope.level = data.districts[0].level;
-        if ($scope.level == "province") {
-          $scope.addrinfo.province = data.districts[0].name;
-        } else if ($scope.level == "city") {
-          $scope.addrinfo.city = data.districts[0].name;
-        } else if ($scope.level == "district") {
-          $scope.addrinfo.area = data.districts[0].name;
-        }
-        $ionicScrollDelegate.scrollTop()
-      }).error(function () {
-        CommonService.platformPrompt("获取添加地址省市县失败", 'close');
-      })
+
     }
+
 
     //打开选择省市县modal
     $scope.openModal = function () {
@@ -637,205 +662,166 @@ angular.module('starter.controllers', [])
   })
 
   //地址详细列表
-  .controller('MyAddressCtrl', function ($scope, $state, $rootScope, $ionicHistory, CommonService, AccountService) {
-    /* if ($rootScope.addrlistFirst) {
-     $scope.selectAddress = function (item) {
-     $rootScope.addrlistFirst = []
-     $rootScope.addrlistFirst.push(item);
-     $ionicHistory.goBack();
-     }
-     }
-     $scope.addrlist = [];
-     $scope.page = 0;
-     $scope.total = 1;
-     $scope.getAddrlist = function () {
-     if (arguments != [] && arguments[0] == 0) {
-     $scope.page = 0;
-     $scope.addrlist = [];
-     }
-     $scope.page++;
-     $scope.params = {
-     page: $scope.page,
-     size: 5,
-     userid: localStorage.getItem("userid")
-     }
-     //获取用户常用地址
-     AccountService.getAddrlist($scope.params).success(function (data) {
-     $scope.isNotData = false;
-     if (data.data.data_list == null) {
-     $scope.isNotData = true;
-     $rootScope.addrlistFirst = [];//无交易地址的时候清除数据
-     return;
-     }
-     angular.forEach(data.data.data_list, function (item) {
-     $scope.addrlist.push(item);
-     })
-     $scope.total = data.page_count;
-     }).finally(function () {
-     $scope.$broadcast('scroll.refreshComplete');
-     $scope.$broadcast('scroll.infiniteScrollComplete');
-     })
-     }
-     $scope.getAddrlist(0);//交易地址加载刷新
+  .controller('MyAddressCtrl', function ($scope, $state, $rootScope, $ionicHistory, CommonService, AddressService, AccountService) {
+    if ($rootScope.addrlistFirst) {
+      $scope.selectAddress = function (item) {
+        $rootScope.addrlistFirst = []
+        $rootScope.addrlistFirst.push(item);
+        $ionicHistory.goBack();
+      }
+    }
+    $scope.addrlist = [];
 
-     //删除用户常用地址
-     $scope.deleteAddr = function (addrid, status) {
-     if (JSON.parse(localStorage.getItem("user")).grade == 5 && status == 1) {//当会员是供货商（=5）时，默认地址不能删除
-     CommonService.platformPrompt('供货商会员不能删除默认地址', 'close');
-     return;
-     }
-     $scope.delparams = {
-     id: addrid,
-     userid: localStorage.getItem("userid")
-     }
-     AccountService.deleteAddr($scope.delparams).success(function (data) {
-     $scope.getAddrlist(0);//重新加载列表
-     })
-     }
-     //修改地址信息
-     $scope.updateaddress = function (item) {
-     $rootScope.addressitem = item;
-     $state.go('adddealaddress');
-     }*/
+    $scope.getAddrlist = function () {
+
+      $scope.params = {
+        userlog: localStorage.getItem("userid")
+      }
+      //获取用户常用地址
+      AddressService.getAddrList($scope.params).success(function (data) {
+        console.log(data);
+        $scope.isNotData = false;
+        if (data.data == null || data.data.length == 0) {
+          $scope.isNotData = true;
+          $rootScope.addrlistFirst = [];//无交易地址的时候清除数据
+          return;
+        }
+        $scope.addrlist = data.data;
+      }).finally(function () {
+        $scope.$broadcast('scroll.refreshComplete');
+
+      })
+    }
+    $scope.getAddrlist(0);//交易地址加载刷新
+
+    //删除用户常用地址
+    $scope.deleteAddr = function (addrid, status) {
+      /*      if (JSON.parse(localStorage.getItem("user")).grade == 5 && status == 1) {//当会员是供货商（=5）时，默认地址不能删除
+       CommonService.platformPrompt('供货商会员不能删除默认地址', 'close');
+       return;
+       }
+       $scope.delparams = {
+       id: addrid,
+       userid: localStorage.getItem("userid")
+       }
+       AddressService.deleteAddr($scope.delparams).success(function (data) {
+       $scope.getAddrlist(0);//重新加载列表
+       })*/
+    }
+    //修改地址信息
+    $scope.updateaddress = function (item) {
+      $rootScope.addressitem = item;
+      $state.go('addaddress');
+    }
 
   })
 
   //添加地址
-  .controller('AddAddressCtrl', function ($scope, $rootScope, $state, CommonService, BoRecycle, AccountService, $ionicHistory, $ionicScrollDelegate) {
-    CommonService.customModal($scope, 'templates/modal/addressmodal.html');
-    //去掉默认的只在下单的地方去掉，会员中心要显示
-    if ($ionicHistory.backView().stateName == 'address') {
+  .controller('AddAddressCtrl', function ($scope, $rootScope, $state, CommonService, BoRecycle, AccountService, AddressService, $ionicHistory, $ionicScrollDelegate) {
+      CommonService.customModal($scope, 'templates/modal/addressmodal.html');
+      //去掉默认的只在下单的地方去掉，会员中心要显示
+      /*
+       if ($ionicHistory.backView().stateName == 'address') {
+       $scope.isshowstatus = true;
+       } else {
+       $scope.isshowstatus = false;
+       }
+       */
+      $scope.addrinfo = {};
+      $scope.addrinfoother = {};
+      $scope.buttonText = '添加';
       $scope.isshowstatus = true;
-    } else {
-      $scope.isshowstatus = false;
-    }
 
-
-    $scope.addrinfo = {};
-    $scope.addrinfoother = {};
-    $scope.buttonText = '添加';
-    $scope.addrcode = '0';
-    //获取省市县
-    $scope.getAddressPCCList = function (adcode) {
-      if (isNaN(adcode) && adcode) {
-        $scope.addresspcd = $scope.addrinfo.province + $scope.addrinfo.city + $scope.addrinfo.area;
-        $scope.addrinfo.address = adcode;
-        $scope.modal.hide();
-        return;
-      }
-      AccountService.getDistrict({
-        key: BoRecycle.gaoDeKey,
-        keywords: adcode || "",
-        showbiz: false
-      }).success(function (data) {
-        $scope.addressinfo = data.districts[0].districts;
-        $scope.level = data.districts[0].level;
-        if ($scope.level == "province") {
-          $scope.addrinfo.province = data.districts[0].name;
-        } else if ($scope.level == "city") {
-          $scope.addrinfo.city = data.districts[0].name;
-        } else if ($scope.level == "district") {
-          $scope.addrinfo.area = data.districts[0].name;
+      //获取省市县
+      $scope.getAddressPCCList = function (item) {
+        //获取省份信息
+        if (!item) {
+          AddressService.getPList().success(function (data) {
+            if (data.code == 1001) {
+              $scope.addressinfo = data.data;
+              $ionicScrollDelegate.scrollTop()
+            } else {
+              CommonService.platformPrompt("获取添加地址省失败", 'close');
+            }
+          })
+          return;
         }
-        $ionicScrollDelegate.scrollTop()
-      }).error(function () {
-        CommonService.platformPrompt("获取添加地址省市县失败", 'close');
-      })
+
+        //获取市信息
+        if (item.Level == 1) {
+          AddressService.getCList({pid: item.ID}).success(function (data) {
+            if (data.code == 1001) {
+              $scope.addressinfo = data.data;
+              $ionicScrollDelegate.scrollTop()
+            } else {
+              CommonService.platformPrompt("获取添加地址市失败", 'close');
+            }
+          })
+        }
+
+        //获取县或地区信息
+        if (item.Level == 2) {
+          AddressService.getDList({cid: item.ID}).success(function (data) {
+            console.log(data);
+            if (data.code == 1001) {
+              $scope.addressinfo = data.data;
+              $ionicScrollDelegate.scrollTop()
+            } else {
+              CommonService.platformPrompt("获取添加地址县或区失败", 'close');
+            }
+
+          })
+        }
+        //获取最后一级地址信息 关闭modal
+        if (item.Level == 3) {
+          $scope.addresspcd = item.MergerName;
+          $scope.addrareacountyone = item;
+          $scope.modal.hide();
+          return;
+        }
+
+      }
+
+//打开选择省市县modal
+      $scope.openModal = function () {
+        $scope.modal.show();
+        $scope.getAddressPCCList();
+      }
+
+
+      if ($rootScope.addressitem && $rootScope.addressitem.length != 0) {//是否是修改信息
+        $scope.addressiteminfo = $rootScope.addressitem;
+        $scope.addrinfo.username = $scope.addressiteminfo.UserName;
+        $scope.addrinfo.mobile = $scope.addressiteminfo.MoTel;
+        $scope.addresspcd = $scope.addressiteminfo.MergerName;
+        $scope.addrinfo.addr = $scope.addressiteminfo.AddrDetail;
+        $scope.addrinfoother.isstatus = $scope.addressiteminfo.Status == 1 ? true : false;
+        $rootScope.addressitem = [];
+        $scope.buttonText = '修改';
+      } else {//增加自动默认地址
+        $scope.addrinfoother.isstatus = true;
+      }
+//增加地址方法
+      $scope.dealaddresssubmit = function () {
+        console.log($scope.addressiteminfo);
+        $scope.addrinfo.addrid = $scope.addressiteminfo ? $scope.addressiteminfo.ID : null;//传入id 则是修改地址
+        $scope.addrinfo.userid = localStorage.getItem("userid");//用户id
+        $scope.addrinfo.addrcode = $scope.addrareacountyone ? $scope.addrareacountyone.ID : $scope.addressiteminfo.ID;	//地区id
+        $scope.addrinfo.is_default = $scope.addrinfoother.isstatus ? 1 : 0;	//是否默认0-否，1-是
+        $scope.addrinfo.lat = $scope.addrareacountyone ? $scope.addrareacountyone.Lat : $scope.addressiteminfo.Lat;	//纬度
+        $scope.addrinfo.lng = $scope.addrareacountyone ? $scope.addrareacountyone.Lng : $scope.addressiteminfo.Lng; 	//经度
+        console.log($scope.addrinfo);
+        AddressService.addAddress($scope.addrinfo).success(function (data) {
+          if (data.code == 1001) {
+            CommonService.platformPrompt('恭喜您 地址信息' + $scope.buttonText + '成功', '');
+          } else {
+            CommonService.platformPrompt('地址信息' + $scope.buttonText + '失败', 'close');
+          }
+        })
+
+      }
     }
-
-    //打开选择省市县modal
-    $scope.openModal = function () {
-      $scope.modal.show();
-      $scope.getAddressPCCList();
-    }
-    /*
-     AccountService.getArea($scope.addrcode).success(function (data) {
-     $scope.addrareaprovince = data;
-     })
-     //选择省级联查询市
-     $scope.selectProvince = function (addrcode) {
-     AccountService.getArea(addrcode).success(function (data) {
-     $scope.addrareacity = data;
-     $scope.addrinfoother.city = '';//清空市的选择项
-     $scope.addrareacounty = {};//选择省的时候同时情况县
-     $scope.addrinfo.addr = '';//清空详细地址
-     })
-     }
-     //选择市级联查询县级
-     $scope.selectCity = function (addrcode) {
-     AccountService.getArea(addrcode).success(function (data) {
-     $scope.addrareacounty = data;
-     $scope.addrinfoother.county = '';//清空县的选择项
-     $scope.addrinfo.addr = '';//清空详细地址
-     })
-     }
-     //选择县级
-     $scope.selectAcounty = function (addrcode) {
-     $scope.addrinfo.addr = '';//清空详细地址
-     }
-
-     if ($rootScope.addressitem && $rootScope.addressitem.length != 0) {//是否是修改信息
-     $scope.addressiteminfo = $rootScope.addressitem;
-     $scope.addrinfo.username = $scope.addressiteminfo.username;
-     $scope.addrinfo.mobile = $scope.addressiteminfo.mobile;
-     $scope.addrinfo.addr = $scope.addressiteminfo.addr;
-     $scope.addrinfoother.isstatus = $scope.addressiteminfo.status == 1 ? true : false;
-     /!* $scope.selectCity($rootScope.addressitem.addrcode);*!/
-     $rootScope.addressitem = [];
-     $scope.buttonText = '修改';
-     //获取省市县信息赋值
-     $scope.$on('$ionicView.beforeEnter', function () {
-     AccountService.getAddrPCC({code: $scope.addressiteminfo.addrcode}).success(function (data) {
-     $scope.pccinfo = data;
-     $scope.addrinfoother.province = $scope.pccinfo.province.toString();
-     $scope.addrinfoother.city = $scope.pccinfo.city.toString();
-     $scope.addrinfoother.county = $scope.pccinfo.county.toString();
-     }).then(function () {
-     //市级信息
-     AccountService.getArea($scope.pccinfo.province).success(function (data) {
-     $scope.addrareacity = data;
-     })
-     //县级信息
-     AccountService.getArea($scope.pccinfo.city).success(function (data) {
-     $scope.addrareacounty = data;
-     })
-
-     })
-     })
-     } else {//查询是否有默认地址
-     $scope.addrinfoother.isstatus = true;
-     }
-     //增加地址方法
-     $scope.dealaddresssubmit = function () {
-     //选择县级查询当前记录
-     angular.forEach($scope.addrareacounty, function (item) {
-     if (item.code == $scope.addrinfoother.county) {
-     $scope.addrareacountyone = item;
-     }
-     })
-     $scope.addrinfo.id = $scope.addressiteminfo ? $scope.addressiteminfo.id : 0;//传入id 则是修改地址
-     $scope.addrinfo.userid = localStorage.getItem("userid");//用户id
-     $scope.addrinfo.tel = $scope.addrinfo.mobile;//固定电话
-     $scope.addrinfo.addrcode = $scope.addrareacountyone.code;	//地区编码
-     $scope.addrinfo.areaname = $scope.addrareacountyone.mergername; // 地区全称
-     $scope.addrinfo.status = $scope.addrinfoother.isstatus ? 1 : 0;	//是否默认0-否，1-是
-     $scope.addrinfo.postcode = $scope.addrareacountyone.zipcode;	//邮政编码
-     $scope.addrinfo.lat = $scope.addrareacountyone.lat;	//纬度
-     $scope.addrinfo.lon = $scope.addrareacountyone.lng; 	//经度
-     $scope.addrinfo.addrtype = 0;//地址类型0-	交易地址（默认）1-	家庭住址2-公司地址
-     $scope.addrinfo.addr = $scope.addrinfo.addr;
-     AccountService.setAddr($scope.addrinfo).success(function (data) {
-     if (data.code == 1001) {
-     CommonService.showAlert('', '<p>恭喜您！</p><p>地址信息' + $scope.buttonText + '成功！</p>', '');
-     } else {
-     CommonService.platformPrompt('地址信息' + $scope.buttonText + '失败', 'close');
-     }
-
-     })
-
-     }*/
-
-  })
+  )
 
   //我的设置
   .controller('SettingCtrl', function ($scope, $rootScope, $state, BoRecycle, CommonService) {
@@ -1087,7 +1073,6 @@ angular.module('starter.controllers', [])
         if (data.code == 1001) {
           CommonService.platformPrompt('解绑电子邮箱成功');
           $scope.verify = false;
-          $state.go("bindingemail")
         } else {
           CommonService.platformPrompt('解绑电子邮箱失败', 'close');
         }
@@ -1154,35 +1139,58 @@ angular.module('starter.controllers', [])
   })
 
   //登记信息
-  .controller('InformationCtrl', function ($scope, BoRecycle, CommonService, AccountService, $ionicScrollDelegate) {
+  .controller('InformationCtrl', function ($scope, BoRecycle, CommonService, AccountService, AddressService, $ionicScrollDelegate) {
     CommonService.customModal($scope, 'templates/modal/addressmodal.html');
     $scope.addrinfo = {};
     //获取省市县
-    $scope.getAddressPCCList = function (adcode) {
-      if (isNaN(adcode) && adcode) {
-        $scope.addresspcd = $scope.addrinfo.province + $scope.addrinfo.city + $scope.addrinfo.area;
-        $scope.addrinfo.address = adcode;
+    //获取省市县
+    $scope.getAddressPCCList = function (item) {
+      //获取省份信息
+      if (!item) {
+        AddressService.getPList().success(function (data) {
+          if (data.code == 1001) {
+            $scope.addressinfo = data.data;
+            $ionicScrollDelegate.scrollTop()
+          } else {
+            CommonService.platformPrompt("获取添加地址省失败", 'close');
+          }
+        })
+        return;
+      }
+
+      //获取市信息
+      if (item.Level == 1) {
+        AddressService.getCList({pid: item.ID}).success(function (data) {
+          if (data.code == 1001) {
+            $scope.addressinfo = data.data;
+            $ionicScrollDelegate.scrollTop()
+          } else {
+            CommonService.platformPrompt("获取添加地址市失败", 'close');
+          }
+        })
+      }
+
+      //获取县或地区信息
+      if (item.Level == 2) {
+        AddressService.getDList({cid: item.ID}).success(function (data) {
+          console.log(data);
+          if (data.code == 1001) {
+            $scope.addressinfo = data.data;
+            $ionicScrollDelegate.scrollTop()
+          } else {
+            CommonService.platformPrompt("获取添加地址县或区失败", 'close');
+          }
+
+        })
+      }
+      //获取最后一级地址信息 关闭modal
+      if (item.Level == 3) {
+        $scope.addresspcd = item.MergerName;
+        $scope.addrareacountyone = item;
         $scope.modal.hide();
         return;
       }
-      AccountService.getDistrict({
-        key: BoRecycle.gaoDeKey,
-        keywords: adcode || "",
-        showbiz: false
-      }).success(function (data) {
-        $scope.addressinfo = data.districts[0].districts;
-        $scope.level = data.districts[0].level;
-        if ($scope.level == "province") {
-          $scope.addrinfo.province = data.districts[0].name;
-        } else if ($scope.level == "city") {
-          $scope.addrinfo.city = data.districts[0].name;
-        } else if ($scope.level == "district") {
-          $scope.addrinfo.area = data.districts[0].name;
-        }
-        $ionicScrollDelegate.scrollTop()
-      }).error(function () {
-        CommonService.platformPrompt("获取添加地址省市县失败", 'close');
-      })
+
     }
 
     //打开选择省市县modal

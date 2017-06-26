@@ -21,32 +21,6 @@
         </label>
         <p class="padding-top"></p>
 
-        <!--        <label class="item item-input item-select">
-                  <div class="input-label">
-                    请选择省
-                  </div>
-                  <select ng-model="addrinfoother.province" required  ng-change="selectProvince(addrinfoother.province)">
-                    <option   value="{{item.code}}" ng-repeat="item in addrareaprovince">{{item.name}}</option>
-                  </select>
-                </label>
-                <p class="padding-top"></p>
-                <label class="item item-input item-select">
-                  <div class="input-label">
-                    请选择市
-                  </div>
-                  <select ng-model="addrinfoother.city" required  ng-change="selectCity(addrinfoother.city)">
-                    <option  value="{{item.code}}" ng-repeat="item in addrareacity">{{item.name}}</option>
-                  </select>
-                </label>
-                <p class="padding-top"></p>
-                <label class="item item-input item-select">
-                  <div class="input-label">
-                    请选择县
-                  </div>
-                  <select ng-model="addrinfoother.county" ng-change="selectAcounty(addrinfoother.county)"  required   >
-                    <option   value="{{item.code}}"   ng-repeat="item in addrareacounty">{{item.name}}</option>
-                  </select>
-                </label>-->
         <label class="item item-input " ng-click="openModal()">
           <span class="input-label"> 所在地区 </span>
           <p class="{{addresspcd?'dark':'grey'}}">{{addresspcd?addresspcd:"请选择地区信息"}}</p>
@@ -55,7 +29,7 @@
         <p class="padding-top"></p>
         <label class="item item-input ">
           <span class="input-label"> 详细地址</span>
-          <textarea class="col-60" rows="2" ng-model="addrinfo.address" placeholder="请输入街道门牌号等详细地址" required></textarea>
+          <textarea class="col-60" rows="2" ng-model="addrinfo.addr" placeholder="请输入街道门牌号等详细地址" required></textarea>
         </label>
 
         <p class="padding-top"></p>
@@ -69,7 +43,7 @@
 
     </ion-content>
     <div class="padding light-bg bottom-0" keyboard-attach>
-      <button ng-disabled="!(addaddress.$valid&&verify)" class="button button-positive full-image "
+      <button ng-disabled="!(addaddress.$valid&&verify&&addresspcd)" class="button button-positive full-image "
               ng-click="dealaddresssubmit()">
         {{buttonText}}
       </button>

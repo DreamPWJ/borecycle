@@ -25,10 +25,10 @@
 
     </ion-content>
     <div class="padding light-bg  bottom-0" keyboard-attach>
-      <button ng-if="type=='nickname'" ng-disabled="!updateuser.$valid" class="button button-positive button-full "
+      <button ng-if="type=='nickname'" ng-disabled="!updateuser.$valid" class="button button-positive full-image "
               ng-click="updateUser()">保存
       </button>
-      <button ng-if="type=='sex'" ng-disabled="!(user.sex>=0&&user.sex<=2)" class="button button-positive button-full "
+      <button ng-if="type=='sex'" ng-disabled="!(user.sex>=0&&user.sex<=2)" class="button button-positive full-image "
               ng-click="updateUser()">保存
       </button>
     </div>
