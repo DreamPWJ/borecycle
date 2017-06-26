@@ -6,6 +6,14 @@ angular.module('starter.services', [])
         if ($ionicPlatform.is('android') || $ionicPlatform.is('ios')) {
           try {
             $cordovaToast.showLongCenter(msg);
+            if (stateurl == null || stateurl == '') {
+              $ionicHistory.goBack();
+            } else if (stateurl == 'close') {//不处理
+
+            } else {
+              $state.go(stateurl, {}, {reload: true});
+            }
+
           } catch (e) {
             this.showAlert("博回收", msg, stateurl);
           }
@@ -317,7 +325,7 @@ angular.module('starter.services', [])
       },
       getStateName: function () {    //得到上一个路由名称方法
         var stateName = "";
-        if ($ionicHistory.backView() && $ionicHistory.backView().stateName != "tab.account" && $ionicHistory.backView().stateName != "setting") {
+        if ($ionicHistory.backView() && $ionicHistory.backView().stateName != "tab.account" && $ionicHistory.backView().stateName != "setting"&& $ionicHistory.backView().stateName != "organizingdata") {
           stateName = $ionicHistory.backView().stateName;
         }
         if (stateName) {
@@ -703,7 +711,7 @@ angular.module('starter.services', [])
       }
     }
   })
-  .service('AddressService', function ($q, $http, BoRecycle) {//地址服务
+  .service('AddressService', function ($q, $http, BoRecycle, $ionicScrollDelegate) {//地址服务
     return {
       addAddress: function (datas) { //添加地址
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
@@ -719,7 +727,48 @@ angular.module('starter.services', [])
         });
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       },
-      getPList: function () { //获取省份信息
+      getAddressPCCList: function ($scope, item) {  //获取省市县数据
+        //获取省份信息
+        if (!item) {
+          this.getPList().success(function (data) {
+            if (data.code == 1001) {
+              $scope.addressinfo = data.data;
+              $ionicScrollDelegate.scrollTop()
+            }
+          })
+          return;
+        }
+
+        //获取市信息
+        if (item.Level == 1) {
+          this.getCList({pid: item.ID}).success(function (data) {
+            if (data.code == 1001) {
+              $scope.addressinfo = data.data;
+              $ionicScrollDelegate.scrollTop()
+            }
+          })
+        }
+
+        //获取县或地区信息
+        if (item.Level == 2) {
+          this.getDList({cid: item.ID}).success(function (data) {
+            console.log(data);
+            if (data.code == 1001) {
+              $scope.addressinfo = data.data;
+              $ionicScrollDelegate.scrollTop()
+            }
+
+          })
+        }
+        //获取最后一级地址信息 关闭modal
+        if (item.Level == 3) {
+          $scope.addresspcd = item.MergerName;
+          $scope.addrareacountyone = item;
+          $scope.modal.hide();
+          return;
+        }
+      },
+      getPList: function () { //获取省信息
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise;
         promise = $http({

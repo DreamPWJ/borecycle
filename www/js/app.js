@@ -401,6 +401,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //完善资料页面
       .state('organizingdata', {
         url: '/organizingdata',
+        cache: false,
         templateUrl: 'templates/account/organizingdata.html',
         controller: 'OrganizingDataCtrl'
       })
@@ -408,6 +409,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //登记信息
       .state('information', {
         url: '/information',
+        cache: false,
         templateUrl: 'templates/checkin/information.html',
         controller: 'InformationCtrl'
       })
@@ -415,6 +417,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //登记货源
       .state('supplyofgoods', {
         url: '/supplyofgoods',
+        cache: false,
         templateUrl: 'templates/checkin/supplyofgoods.html',
         controller: 'SupplyOfGoodsCtrl'
       })

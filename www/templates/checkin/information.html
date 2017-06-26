@@ -11,16 +11,11 @@
       <div class="list">
         <div class="item text-wrap">
           <span class="input-label icon ion-ios-color-filter-outline "> 货物品类</span>
-          <ion-checkbox class="item-borderless checkbox-positive" ng-model="a">
-            手机
+          <ion-checkbox ng-repeat="item in productList" class="item-borderless checkbox-positive"
+                        ng-click="checkChecded()"
+                        ng-model="item.checked">
+            {{item.name}}
           </ion-checkbox>
-          <ion-checkbox class="item-borderless checkbox-positive" ng-model="b">
-            电视机
-          </ion-checkbox>
-          <ion-checkbox class="item-borderless checkbox-positive" ng-model="c">
-            洗衣机
-          </ion-checkbox>
-
         </div>
         <label class="item item-input">
           <span class="input-label icon ion-ios-person-outline"> 联系人</span>
@@ -62,7 +57,8 @@
       <p></p>
     </ion-content>
     <div class="padding light-bg  bottom-0" keyboard-attach>
-      <button ng-disabled="!informationForm.$valid" class="button button-positive full-image " ng-click="">
+      <button ng-disabled="!(informationForm.$valid&&ischecked&&addresspcd)" class="button button-positive full-image "
+              ng-click="informationSubmit()">
         提交
       </button>
     </div>
