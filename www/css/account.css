@@ -112,9 +112,8 @@
   width: 32%;
   display: inline-block;
   margin: 0.1rem;
-  padding: 0px 0 0 42px;
+  padding: 3px 0 0 42px;
   height: 1.8rem;
-  line-height: 1.8rem;
   font-size: 0.8rem !important;
   background-color: #ffffff !important;
 }

@@ -64,7 +64,7 @@ angular.module('starter.controllers', [])
 
 
       if (ionic.Platform.isWebView()) { //包含cordova插件的应用
-        window.setTimeout(getRegistrationID, 1000);
+        window.setTimeout(this.getRegistrationID, 3000);
       }
 
 
@@ -422,6 +422,10 @@ angular.module('starter.controllers', [])
 
   //参考价页面
   .controller('ReferencePriceCtrl', function ($scope, $stateParams, CommonService, OrderService) {
+    //是否登录
+    if (!CommonService.isLogin(true)) {
+      return;
+    }
     $scope.classifyindex = $stateParams.index || 0;//选中产品分类标示
     //获取产品分类
     $scope.getClassify = function () {
@@ -451,6 +455,10 @@ angular.module('starter.controllers', [])
 
   //我的订单页面
   .controller('OrderCtrl', function ($scope, $state, CommonService, $ionicSlideBoxDelegate) {
+    //是否登录
+    if (!CommonService.isLogin(true)) {
+      return;
+    }
     $scope.tabIndex = 0;//当前tabs页
     //左右滑动列表
     $scope.slideChanged = function (index) {
@@ -586,7 +594,9 @@ angular.module('starter.controllers', [])
     if (!CommonService.isLogin(true)) {
       return;
     }
+    //调出分享面板
     CommonService.customModal($scope, 'templates/modal/share.html');
+
     //根据会员ID获取会员账号基本信息
 
     AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
@@ -598,17 +608,7 @@ angular.module('starter.controllers', [])
       }
     })
 
-    //微信分享
-    $scope.weixinShare = function (type) {
-      Wechat.share({
-        text: "博绿固废回收分享",
-        scene: type == 0 ? Wechat.Scene.SESSION : Wechat.Scene.TIMELINE
-      }, function () {
-        CommonService.platformPrompt("微信分享成功", 'close');
-      }, function (reason) {
-        CommonService.platformPrompt("微信分享失败:" + reason, 'close');
-      });
-    }
+
   })
 
   //账号信息
@@ -860,7 +860,6 @@ angular.module('starter.controllers', [])
     })
   })
 
-
   //绑定手机
   .controller('BindingMobileCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, AccountService) {
     $scope.status = $stateParams.status;//认证状态
@@ -995,8 +994,6 @@ angular.module('starter.controllers', [])
     };
   })
 
-
-
   //帮助与反馈
   .controller('HelpFeedBackCtrl', function ($scope, $rootScope, $state, CommonService, AccountService, MainService) {
     $scope.helpfeedback = {};
@@ -1021,10 +1018,11 @@ angular.module('starter.controllers', [])
     }
   })
 
-
   //帮助信息共用模板
   .controller('HelpCtrl', function ($scope, $rootScope, $stateParams, $state, BoRecycle, CommonService, AccountService, WeiXinService) {
+    //调出分享面板
     CommonService.customModal($scope, 'templates/modal/share.html');
+
     $scope.getHelpDetails = function () {
       var id = $stateParams.ID;
       if (id == 11) {
@@ -1077,13 +1075,17 @@ angular.module('starter.controllers', [])
       $scope.getHelpDetails();
     }
 
-
   })
 
   //登记信息
   .controller('InformationCtrl', function ($scope, CommonService, BoRecycle, AccountService, AddressService, OrderService) {
+    //是否登录
+    if (!CommonService.isLogin(true)) {
+      return;
+    }
     CommonService.customModal($scope, 'templates/modal/addressmodal.html');
     $scope.dengji = {};//登记信息
+    $scope.dengji.acttype = 0;//默认活动类型是0  1以旧换新 当用户选择“以旧换新”时，先判断用户有没有“完善信息”和“实名认证”，如果没有则必须先“完善信息”和“实名认证”。
     $scope.addrinfo = {};
 
     //获取产品品类
@@ -1145,21 +1147,50 @@ angular.module('starter.controllers', [])
       })
 
     }
-
+    //实现单选
+    $scope.multipleChoice = function (array, item) {
+      angular.forEach(array, function (child) {
+        if (item != child) {
+          child.checked = false;
+        }
+      })
+    }
     //信息登记提交
     $scope.informationSubmit = function () {
+      if ($scope.dengji.acttype == 1) {//当用户选择“以旧换新”时，先判断用户有没有“完善信息”和“实名认证”，如果没有则必须先“完善信息”和“实名认证”
 
+      }
+      var manufactor = [];//货物品类 多个用逗号隔开
+      angular.forEach($scope.manufacteList, function (item) {
+        if (item.checked) {
+          manufactor.push(item.id);
+        }
+      })
+      $scope.dengji.type = 1;//类型 1.	登记信息 2.	登记货源
+      $scope.dengji.hytype = 0;//物类别 0.未区分 1废料 2二手 (登记信息时为0)
+      $scope.dengji.logid = localStorage.getItem("userid");//登记人userid
+      $scope.dengji.longitude = $scope.addrareacountyone.Lng || localStorage.getItem("longitude") || 0;//经度 默认为0   地址表里有经纬度值 如果没值现在的地区取经纬度
+      $scope.dengji.latitude = $scope.addrareacountyone.Lat || localStorage.getItem("latitude") || 0;//纬度 默认为0 地址表里有经纬度值 如果没值现在的地区取经纬度
+      $scope.dengji.category = $scope.recyclingCategory.join(",");//货物品类 多个用逗号隔开
+      $scope.dengji.manufactor = manufactor.join(",");//单选
+      $scope.dengji.details = {};//添加登记货源时明细不能为空，添加登记信息时明细为空
+
+      console.log($scope.dengji);
 
       //添加登记信息/货源信息(添加登记货源时明细不能为空，添加登记信息时明细为空)
-      /*      OrderService.addDengJi($scope.dengji).success(function (data) {
-       console.log(data);
-       CommonService.platformPrompt(data.message, 'close');
-       })*/
+      OrderService.addDengJi($scope.dengji).success(function (data) {
+        console.log(data);
+        CommonService.platformPrompt(data.message, 'order');
+      })
 
     }
   })
 
   //登记货源
   .controller('SupplyOfGoodsCtrl', function ($scope, CommonService) {
+    //是否登录
+    if (!CommonService.isLogin(true)) {
+      return;
+    }
 
   })

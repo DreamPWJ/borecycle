@@ -5,42 +5,35 @@
   <ion-nav-title>
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 参考价</h1>
   </ion-nav-title>
-
   <ion-content overflow-scroll="false" class="stable-bg" id="referenceprice" has-bouncing="true">
-    <div class="row row-no-padding">
-      <div class="col-25 stable-bg">
-        <ion-list class="list-borderless ">
-          <ion-item ng-class="{false:'stable-bg',true:'classify-selected'}[classifyindex==$index]"
-                    ng-click="getClassifyDetails($index)" ng-repeat="item in productList">
-            <h2> {{item.name}}</h2>
-          </ion-item>
-        </ion-list>
-      </div>
-      <div class="col-75">
-        <ion-scroll ng-style="{height:scrollHeight}" direction="y" overflow-scroll="false" has-bouncing="true">
-          <div id="classify-scroll-content" ng-style="{height:scrollContentHeight}">
-            <ion-list>
-              <ion-item class="item-thumbnail-left">
-                <img ng-src="img/logonew.png" alt="">
-                <h2 class="padding-top">补贴机 <span class="positive right-1">￥3.55 元/台</span></h2>
-                <p class="padding-top text-wrap">符合国家补贴标准的直板手机</p>
-              </ion-item>
-              <ion-item class="item-thumbnail-left">
-                <img ng-src="img/logonew.png" alt="">
-                <h2 class="padding-top">补贴机 <span class="positive right-1">￥3.55 元/台</span></h2>
-                <p class="padding-top text-wrap">符合国家补贴标准的直板手机</p>
-              </ion-item>
-            </ion-list>
-            <!--            <div class="row row-no-padding   text-center row-wrap ">
-                          <a ng-repeat="item in classifyDetails" ng-href="#/productlist/1/{{item.id}}" nav-direction=forward
-                             class="col-33  subdued  padding-top ">
-                            <img ng-src="{{item.image}}" alt=""/>
-                            <p class="nowrap">{{item.name}}</p>
-                          </a>
-                        </div>-->
-          </div>
-        </ion-scroll>
-      </div>
+  <div class="row row-no-padding">
+    <div class="col-25 stable-bg">
+      <ion-list class="list-borderless ">
+        <ion-item ng-class="{false:'stable-bg',true:'classify-selected'}[classifyindex==$index]"
+                  ng-click="getClassifyDetails($index)" ng-repeat="item in productList">
+          <h2 class="text-wrap"> {{item.name}}</h2>
+        </ion-item>
+      </ion-list>
     </div>
+    <div class="col-75">
+      <ion-scroll ng-style="{height:scrollHeight}" direction="y" overflow-scroll="false" has-bouncing="true">
+        <div id="classify-scroll-content" ng-style="{height:scrollContentHeight}">
+          <ion-list>
+            <ion-item class="item-thumbnail-left">
+              <img ng-src="img/logonew.png" alt="">
+              <h2 class="padding-top">补贴机 <span class="positive right-1">￥3.55 元/台</span></h2>
+              <p class="padding-top text-wrap">符合国家补贴标准的直板手机</p>
+            </ion-item>
+            <ion-item class="item-thumbnail-left">
+              <img ng-src="img/logonew.png" alt="">
+              <h2 class="padding-top">补贴机 <span class="positive right-1">￥3.55 元/台</span></h2>
+              <p class="padding-top text-wrap">符合国家补贴标准的直板手机</p>
+            </ion-item>
+          </ion-list>
+
+        </div>
+      </ion-scroll>
+    </div>
+  </div>
   </ion-content>
 </ion-view>

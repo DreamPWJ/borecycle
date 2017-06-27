@@ -168,30 +168,44 @@ angular.module('starter.services', [])
             });
         }, false);
       },
-      shareActionSheet: function (title, desc, link, imgUrl) {
-        //通过config接口注入权限验证配置
-        WeiXinService.weichatConfig(localStorage.getItem("timestamp"), localStorage.getItem("noncestr"), localStorage.getItem("signature"));
-        //通过ready接口处理成功验证
-        wx.ready(function () {
-          // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
-          //自动调用分享按钮注册和自定义分享
-          WeiXinService.wxonMenuShareTimeline(title, link, imgUrl);//微信朋友圈
-          WeiXinService.wxonMenuShareAppMessage(title, desc, link, imgUrl);//微信好友
-          WeiXinService.wxonMenuShareQQ(title, desc, link, imgUrl);//QQ好友
-          WeiXinService.wxonMenuShareQZone(title, desc, link, imgUrl);//QQ空间
+      shareActionSheet: function (title, desc, link, imgUrl, type) {
+        CommonService = this;
+        if (ionic.Platform.isWebView()) {
+          //微信分享
+          Wechat.share({
+            text: "博绿固废回收分享",
+            scene: type == 0 ? Wechat.Scene.SESSION : Wechat.Scene.TIMELINE
+          }, function () {
+            CommonService.platformPrompt("微信分享成功", 'close');
+          }, function (reason) {
+            CommonService.platformPrompt("微信分享失败:" + reason, 'close');
+          });
 
-        });
+        }
+        if (WeiXinService.isWeiXin()) {
+          //通过config接口注入权限验证配置
+          WeiXinService.weichatConfig(localStorage.getItem("timestamp"), localStorage.getItem("noncestr"), localStorage.getItem("signature"));
+          //通过ready接口处理成功验证
+          wx.ready(function () {
+            // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+            //自动调用分享按钮注册和自定义分享
+            WeiXinService.wxonMenuShareTimeline(title, link, imgUrl);//微信朋友圈
+            WeiXinService.wxonMenuShareAppMessage(title, desc, link, imgUrl);//微信好友
+            WeiXinService.wxonMenuShareQQ(title, desc, link, imgUrl);//QQ好友
+            WeiXinService.wxonMenuShareQZone(title, desc, link, imgUrl);//QQ空间
 
+          });
+        }
       },
       uploadActionSheet: function ($scope, filename, isSingle) {//上传图片  isSingle是否是单张上传
         isSingle = (isSingle == undefined) ? false : isSingle;
         CommonService = this;
         $ionicActionSheet.show({
           cssClass: 'action-s',
-          titleText: '上传照片',
+          titleText: '上传图片',
           buttons: [
-            {text: '图库'},
             {text: '拍照'},
+            {text: '从手机相册选择'},
           ],
           cancelText: '取消',
           cancel: function () {
@@ -377,14 +391,14 @@ angular.module('starter.services', [])
             AccountService.sendCode({mobile: account}).success(function (data) {
               $scope.verifycode = data.data;
               if (data.code != 1001) {
-                CommonService.platformPrompt("手机验证码获取失败!", 'close');
+                CommonService.platformPrompt("手机验证码获取失败", 'close');
               }
             })
           } else if (/^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(account)) {
             AccountService.sendEmailCode({email: account}).success(function (data) {
               $scope.verifycode = data.data;
               if (data.code != 1001) {
-                CommonService.platformPrompt("邮箱验证码获取失败!", 'close');
+                CommonService.platformPrompt("邮箱验证码获取失败", 'close');
               }
             })
           }

@@ -17,6 +17,7 @@
             {{item.name}}
           </ion-checkbox>
         </div>
+
         <label class="item item-input">
           <span class="input-label icon ion-ios-person-outline"> 联系人</span>
           <input type="text" name="name" ng-model="dengji.name" placeholder="请输入联系人姓名" required/>
@@ -36,7 +37,7 @@
         <div class="item item-input ">
           <span class="input-label icon ion-ios-location-outline"> 详细地址</span>
           <textarea class="col-50" rows="1" ng-model="dengji.addrdetail" placeholder="输入街道门牌号等详细地址"
-                    required></textarea>
+          ></textarea>
           <div class="positive padding-left" ng-click="location()"><i class="icon iconfont icon-locationfill"></i>定位
           </div>
 
@@ -46,8 +47,7 @@
                     <span class="input-label icon iconfont icon-changshang "
                           style="font-size: 0.9rem!important;"> 所属厂商</span>
           <ion-checkbox class="item-borderless checkbox-positive" ng-repeat="item in manufacteList"
-                        ng-click="checkChecded()"
-                        ng-model="item.checked">
+                        ng-model="item.checked" ng-change="multipleChoice(manufacteList,item)">
             {{item.shortename}}
           </ion-checkbox>
 
@@ -55,10 +55,12 @@
         <div class="item text-wrap">
                     <span class="input-label icon iconfont icon-xzcplx "
                           style="font-size: 0.9rem!important;"> 活动类型</span>
-          <ion-checkbox class="item-borderless checkbox-positive" ng-model="g" ng-value="0">
+          <ion-checkbox class="item-borderless checkbox-positive" ng-checked="dengji.acttype==0"
+                        ng-click="dengji.acttype=0">
             无
           </ion-checkbox>
-          <ion-checkbox class="item-borderless checkbox-positive" ng-model="h" ng-value="1">
+          <ion-checkbox class="item-borderless checkbox-positive" ng-checked="dengji.acttype==1"
+                        ng-click="dengji.acttype=1">
             以旧换新
           </ion-checkbox>
 
