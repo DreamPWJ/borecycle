@@ -28,9 +28,9 @@
       </a>
 
 
-      <a ng-if="!isprovider" ng-href="#/organizingdata" class="item stable-bg item-borderless">
-        <h2 class=" text-right"><i class="iconfont icon-xiangyou positive"></i> 升级成为货场</h2>
-      </a>
+      <div ng-if="!isprovider" class="item stable-bg item-borderless">
+        <h2 class=" text-right"> <span ui-sref="organizingdata" ><i class="iconfont icon-xiangyou positive"></i> 升级成为回收商</span></h2>
+      </div>
 
 
       <a ng-href="#/updateuser/sex/{{userinfo.sex}}" class="item item-icon-right item-borderless">

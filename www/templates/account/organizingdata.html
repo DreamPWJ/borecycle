@@ -45,7 +45,18 @@
           <span class="input-label icon ion-ios-location-outline"> 回收区域 </span>
           <p class="{{addresspcd?'dark':'grey'}}">{{addresspcd?addresspcd:"请选择回收区域"}}</p>
         </label>
+        <ion-item class="item-divider ">
+          用户类型
+          <p class="text-right item-note"><a class="positive  icon ion-ios-help-outline" ng-href=""
+                                             nav-direction=forward> 什么是用户类型</a></p>
+        </ion-item>
 
+        <div class="services padding-vertical light-bg text-wrap">
+          <ion-checkbox class="item-borderless checkbox-positive " ng-click="checkChecded()"
+                        ng-repeat="item in services" ng-model="item.checked">
+            {{item.value}}
+          </ion-checkbox>
+        </div>
         <p></p>
         <div class="padding-horizontal">
           <button class="button button-full button-positive " ng-click="organizingdataSubmit()"

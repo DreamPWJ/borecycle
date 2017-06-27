@@ -5,8 +5,10 @@ angular.module('starter.controllers', [])
     /* $httpProvider.defaults.headers.common['Authorization'] = localStorage.getItem('token');*/
     /*    $http.defaults.cache = true/false;*/
   })
-
-
+  //Tabs Ctrl
+  .controller('TabsCtrl', function ($scope) {
+    $scope.isLogin = localStorage.getItem("userid") ? true : false;//是否登录
+  })
   //APP首页面
   .controller('MainCtrl', function ($scope, $rootScope, CommonService, MainService, OrderService, BoRecycle, $ionicHistory, $interval, NewsService, AccountService, $ionicPlatform, WeiXinService) {
 
@@ -360,7 +362,12 @@ angular.module('starter.controllers', [])
     $scope.paraclass = false; //控制验证码的disable
     $scope.addrinfo = {};//地址信息
     $scope.recyclingCategory = [];//回收品类数组
-
+    $scope.user.services = [];//用户类型数组key
+    $scope.services = [{key: 1, value: "上门回收者", checked: false}, {key: 2, value: "货场", checked: false}, {
+      key: 3,
+      value: "二手商家",
+      checked: false
+    }];
     //获取产品品类
     OrderService.getProductList({ID: "", Name: ""}).success(function (data) {
       console.log(data);
@@ -402,6 +409,11 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt("输入的验证码不正确", 'close');
         return;
       }
+      angular.forEach($scope.services, function (item) {
+        if (item.checked) {
+          $scope.user.services.push(item.key)
+        }
+      })
 
       angular.forEach($scope.productList, function (item) {
         if (item.checked) {
@@ -415,7 +427,7 @@ angular.module('starter.controllers', [])
 
       AccountService.setUserInfo($scope.user).success(function (data) {
         console.log(data);
-        CommonService.platformPrompt(data.message, 'login');
+        CommonService.platformPrompt(data.message, data.code == 1001 ? (localStorage.getItem("userid") ? '' : 'login') : 'close');
       })
     }
   })
@@ -454,11 +466,46 @@ angular.module('starter.controllers', [])
   })
 
   //我的订单页面
-  .controller('OrderCtrl', function ($scope, $state, CommonService, $ionicSlideBoxDelegate) {
+  .controller('OrderCtrl', function ($scope, $state, CommonService, OrderService, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
     //是否登录
     if (!CommonService.isLogin(true)) {
       return;
     }
+
+    $scope.dengJiList = [];
+    $scope.page = 0;
+    $scope.total = 1;
+    $scope.getDengJiList = function () { ////查询登记信息/货源信息分页列
+      if (arguments != [] && arguments[0] == 0) {
+        $scope.page = 0;
+        $scope.dengJiList = [];
+      }
+      $scope.page++;
+      $scope.params = {
+        page: $scope.page,//页码
+        size: 5,//条数
+        userid: localStorage.getItem("userid")//用户id
+      }
+      OrderService.getDengJiList($scope.params).success(function (data) {
+        console.log(data);
+        $scope.isNotData = false;
+        if (data == null || data.data.data_list == null) {
+          $scope.isNotData = true;
+          return
+        }
+        angular.forEach(data.data.data_list, function (item) {
+          $scope.dengJiList.push(item);
+        })
+        $scope.total = data.total_count;
+        $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
+      }).finally(function () {
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+      })
+    }
+
+    $scope.getDengJiList(0);////查询登记信息/货源信息分页列刷新
+
     $scope.tabIndex = 0;//当前tabs页
     //左右滑动列表
     $scope.slideChanged = function (index) {
@@ -489,6 +536,7 @@ angular.module('starter.controllers', [])
       event.preventDefault();
       $state.go("navigation")
     }
+
   })
 
   //我的订单详情页面
@@ -613,9 +661,8 @@ angular.module('starter.controllers', [])
 
   //账号信息
   .controller('AccountInfoCtrl', function ($scope, $rootScope, CommonService, AccountService, BoRecycle) {
-    /*    $scope.isprovider = JSON.parse(localStorage.getItem("user")).grade == 5 ? true : false*/
+    $scope.isprovider = JSON.parse(localStorage.getItem("user")).grade == 5 ? true : false
     $rootScope.userinfo = JSON.parse(localStorage.getItem("user"));
-
     //获取定位信息
     $scope.cityName = "深圳";//默认地址
     CommonService.getLocation(function () {
@@ -943,15 +990,16 @@ angular.module('starter.controllers', [])
     $scope.uploadtype = 4;//上传媒体操作类型 1.卖货单 2 供货单 3 买货单 4身份证 5 头像
     //上传照片
     $scope.uploadActionSheet = function () {
-      CommonService.uploadActionSheet($scope, 'User');
+      CommonService.uploadActionSheet($scope, 'User', true);
     }
 
     //获取实名认证信息
-    if ($scope.status == 3) { //已认证
+    if ($scope.status == 2) { //已认证
       $scope.params = {
         userid: localStorage.getItem("userid")
       }
       AccountService.getrealNameIdentity($scope.params).success(function (data) {
+        console.log(data);
         if (data.code == 1001) {
           $scope.realname = data.data;
         } else {
@@ -963,25 +1011,49 @@ angular.module('starter.controllers', [])
 
     //申请实名认证
     $scope.addCertificationName = function () {
+
       if ($scope.ImgsPicAddr.length == 0) {
         CommonService.platformPrompt("请先上传认证照片后再提交", 'close');
         return;
       }
-
-      $scope.datas = {
-        userid: localStorage.getItem("userid"),	//当前用户userid
-        name: $scope.realname.name,	    //姓名
-        no: $scope.realname.no,	//身份证号码
-        frontpic: $scope.ImgsPicAddr[0]	//身份证照片地址。必须上传、上传使用公用上传图片接口
+//发送实名认证码，返回实名认证服务id,提交实名认证时需填写
+      $scope.params = {
+        idno: $scope.realname.idno,	//身份证号码
+        mobile: $scope.realname.mobile,//手机号码
+        name: $scope.realname.name,//真实姓名
+        cardno: $scope.realname.cardno //银行卡号
       }
-      AccountService.realNameAuthenticate($scope.datas).success(function (data) {
-        if (data.code == 1001) {
-          CommonService.platformPrompt('实名认证提交成功,我们会尽快处理', 'accountsecurity');
-          /*          CommonService.showAlert('', '<p>温馨提示:您的认证信息已经</p><p>提交成功,我们会尽快处理！</p>', '')*/
-        } else {
-          CommonService.platformPrompt('实名认证失败', 'close');
+      AccountService.authenticateSign($scope.params).success(function (data) {
+        console.log(data);
+        CommonService.platformPrompt(data.msg, 'close');
+        $scope.serviceId = data.serviceId;
+      }).then(function () {
+        //提交实名认证，需要带入authenticate_sign 实名认证服务id
+        $scope.datas = {
+          userid: localStorage.getItem("userid"),	//当前用户userid
+          name: $scope.realname.name,	    //姓名
+          idno: $scope.realname.idno,	//身份证号码
+          cardno: $scope.realname.cardno, //银行卡号
+          mobile: $scope.realname.mobile,//手机号码
+          serviceid: $scope.serviceId,//e签宝服务id
+          code: "",//e签宝验证码
+          frontpic: $scope.ImgsPicAddr[0],//身份证照片地址。必须上传、上传使用公用上传图片接口
+          state: "",//审核通过
+          createdate: "",//日期
+          remark: ""//审核备注
         }
+        console.log(JSON.stringify($scope.datas));
+        AccountService.realNameAuthenticate($scope.datas).success(function (data) {
+          console.log(JSON.stringify(data));
+          if (data.code == 1001) {
+            CommonService.platformPrompt('实名认证提交成功,我们会尽快处理', 'accountsecurity');
+            /*          CommonService.showAlert('', '<p>温馨提示:您的认证信息已经</p><p>提交成功,我们会尽快处理！</p>', '')*/
+          } else {
+            CommonService.platformPrompt('实名认证失败', 'close');
+          }
+        })
       })
+
     }
     $scope.bigImage = false;    //初始默认大图是隐藏的
     $scope.hideBigImage = function () {
@@ -1098,14 +1170,16 @@ angular.module('starter.controllers', [])
       }
     }).then(function () {
       $scope.checkChecded = function () {
-        $scope.recyclingCategory = [];//回收品类数组
+        $scope.recyclingCategory = [];//回收品类id数组
+        $scope.recyclingCategoryName = [];//回收品类名字数组
         CommonService.checkChecded($scope, $scope.productList);
         angular.forEach($scope.productList, function (item) {
           if (item.checked) {
             $scope.recyclingCategory.push(item.grpid);
+            $scope.recyclingCategoryName.push(item.name);
           }
         })
-        console.log($scope.recyclingCategory.join(","));
+        console.log($scope.recyclingCategoryName.join(","));
         OrderService.getListManufacte({
           ShorteName: '',
           Name: '',
@@ -1158,8 +1232,17 @@ angular.module('starter.controllers', [])
     //信息登记提交
     $scope.informationSubmit = function () {
       if ($scope.dengji.acttype == 1) {//当用户选择“以旧换新”时，先判断用户有没有“完善信息”和“实名认证”，如果没有则必须先“完善信息”和“实名认证”
-
+        var user = JSON.parse(localStorage.getItem("user"));
+        if (user.services == null || user.services.length == 0) { //没有完善信息
+          CommonService.platformPrompt("以旧换新类型必须先完善资料", 'organizingdata');
+          return;
+        }
+        if (user.certstate.substr(3, 1) != 2) { //没有实名认证
+          CommonService.platformPrompt("以旧换新类型必须先实名认证", 'realname');
+          return;
+        }
       }
+
       var manufactor = [];//货物品类 多个用逗号隔开
       angular.forEach($scope.manufacteList, function (item) {
         if (item.checked) {
@@ -1171,7 +1254,7 @@ angular.module('starter.controllers', [])
       $scope.dengji.logid = localStorage.getItem("userid");//登记人userid
       $scope.dengji.longitude = $scope.addrareacountyone.Lng || localStorage.getItem("longitude") || 0;//经度 默认为0   地址表里有经纬度值 如果没值现在的地区取经纬度
       $scope.dengji.latitude = $scope.addrareacountyone.Lat || localStorage.getItem("latitude") || 0;//纬度 默认为0 地址表里有经纬度值 如果没值现在的地区取经纬度
-      $scope.dengji.category = $scope.recyclingCategory.join(",");//货物品类 多个用逗号隔开
+      $scope.dengji.category = $scope.recyclingCategoryName.join(",");//货物品类 多个用逗号隔开
       $scope.dengji.manufactor = manufactor.join(",");//单选
       $scope.dengji.details = {};//添加登记货源时明细不能为空，添加登记信息时明细为空
 

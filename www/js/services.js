@@ -214,10 +214,10 @@ angular.module('starter.services', [])
           buttonClicked: function (index) {
             switch (index) {
               case 0:
-                CommonService.takePicture($scope, 0, filename, isSingle)
+                CommonService.takePicture($scope, 1, filename, isSingle) //拍照
                 break;
               case 1:
-                CommonService.takePicture($scope, 1, filename, isSingle)
+                CommonService.takePicture($scope, 0, filename, isSingle) //从手机相册选择
                 break;
               default:
                 break;
@@ -598,7 +598,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
-          url: BoRecycle.api + "/api/dengji/getlist",
+          url: BoRecycle.api + "/api/dengji/getlist/"+params.page+"/"+params.size,
           params: params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
@@ -1141,7 +1141,7 @@ angular.module('starter.services', [])
                   AccountService.setFigure(figurparams);
                 }
               }
-              $scope.ImgsPicAddr.push(JSON.parse(result.response).data);
+              $scope.ImgsPicAddr.push(BoRecycle.imgUrl+JSON.parse(result.response).data);
               $scope.imageSuccessCount++;
               if ($scope.imageSuccessCount == $scope.imageUploadCount) {
                 $cordovaToast.showLongCenter("上传成功");

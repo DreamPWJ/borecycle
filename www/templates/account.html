@@ -7,7 +7,7 @@
   </ion-nav-title>
 
   <ion-content overflow-scroll="false" class="stable-bg account " has-bouncing="true">
-    <div class="list padding-top list-borderless">
+    <div class="list  ">
       <a nav-direction=forward ng-href="#/accountinfo" class="item item-avatar item-icon-right">
         <img ng-src="{{userdata.userfigure||img/head.jpg}}" class="border-radius-50" alt=""
              onerror="this.src='img/head.jpg'">
@@ -16,11 +16,9 @@
         <p>{{userdata.mobile}}</p>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
-    </div>
-    <div class="list">
       <a nav-direction=forward ng-href="#/order" class="item item-icon-left item-icon-right order ">
         <i class="icon iconfont icon-form " style="color: #4cd964;"></i>
-        <h2>我的订单</h2>
+        <h2>我的回收单</h2>
         <!--  <i class="icon ion-ios-arrow-right"></i> -->
       </a>
       <div class="row row-no-padding light-bg  row-center text-center order-item">
@@ -34,14 +32,16 @@
           <h2>2个</h2>
         </a>
       </div>
-      <!--      <a nav-direction=forward ng-href="#/order" class="item item-icon-left item-icon-right order ">
-              <i class="icon iconfont icon-form " ></i>
-              <h2>我的订单</h2>
-                <i class="icon ion-ios-arrow-right"></i>
-            </a>-->
+    </div>
+    <div class="list">
+      <a nav-direction=forward ng-href="#/order" class="item item-icon-left item-icon-right order ">
+        <i class="icon iconfont icon-form "></i>
+        <h2>我的订单</h2>
+        <i class="icon ion-ios-arrow-right"></i>
+      </a>
       <a nav-direction=forward ng-href="" class="item item-icon-left item-icon-right ">
         <i class="icon iconfont icon-moneybag"></i>
-        <h2>钱包 <span class="item-note">余额 ：￥0.00</span></h2>
+        <h2>我的钱包 <span class="item-note">余额 ：￥0.00</span></h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
       <a nav-direction=forward ng-href="#/tab/news" class="item item-icon-left item-icon-right">
@@ -55,11 +55,11 @@
         <h2>我的地址</h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
-      <a nav-direction=forward ng-href="" class="item item-icon-left item-icon-right ">
+<!--      <a nav-direction=forward ng-href="" class="item item-icon-left item-icon-right ">
         <i class="icon iconfont icon-zizhanghao"></i>
         <h2>子账号</h2>
         <i class="icon ion-ios-arrow-right"></i>
-      </a>
+      </a>-->
 
     </div>
     <div class="list">
