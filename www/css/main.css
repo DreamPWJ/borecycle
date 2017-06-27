@@ -209,6 +209,36 @@
   border-bottom: 1px solid #dddddd;
 }
 
+.pic-has-header {
+  top: 44px !important;
+  background-color: #000000 !important;
+}
+
+.show-updateconfirm .popup .popup-head {
+  border-bottom: 1px solid #dddddd;
+}
+
+#referenceprice .col-25 .item {
+  text-align: center;
+  padding-left: 0;
+}
+
+.classify-selected h2 {
+  border-left: 3px solid #00ACFF !important;
+  color: #00ACFF;
+}
+
+#referenceprice .item-thumbnail-left {
+  padding-left: 80px;
+  padding-bottom: 0;
+  min-height: 80px
+}
+
+#referenceprice .item-thumbnail-left img {
+  width: 60px;
+  height: 60px;
+}
+
 /*-------------------------------------------------------*/
 .border-rb {
   border-right: 1px solid rgba(221, 221, 221, 0.3);

@@ -326,48 +326,34 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'AccountSecurityCtrl'
       })
 
+      //绑定手机
+      .state('bindingmobile', {
+        url: '/bindingmobile/:status',
+        templateUrl: 'templates/account/bindingmobile.html',
+        controller: 'BindingMobileCtrl'
+      })
+
+      //绑定邮箱
+      .state('bindingemail', {
+        url: '/bindingemail/:status',
+        templateUrl: 'templates/account/bindingemail.html',
+        controller: 'BindingEmailCtrl'
+      })
+
+      //实名认证
+      .state('realname', {
+        url: '/realname/:status',
+        cache: false,
+        templateUrl: 'templates/account/realname.html',
+        controller: 'RealNameCtrl'
+      })
+
       //帮助与反馈
       .state('helpfeedback', {
         url: '/helpfeedback',
         cache: false,
         templateUrl: 'templates/account/helpfeedback.html',
         controller: 'HelpFeedBackCtrl'
-      })
-
-      //解绑手机
-      .state('cancelmobile', {
-        url: '/cancelmobile',
-        templateUrl: 'templates/account/cancelmobile.html',
-        controller: 'CancelMobileCtrl'
-      })
-
-      //绑定手机
-      .state('bindingmobile', {
-        url: '/bindingmobile/:oldphone',
-        templateUrl: 'templates/account/bindingmobile.html',
-        controller: 'BindingMobileCtrl'
-      })
-
-      //实名认证
-      .state('realname', {
-        url: '/realname',
-        cache: false,
-        templateUrl: 'templates/account/realname.html',
-        controller: 'RealNameCtrl'
-      })
-
-      //绑定邮箱
-      .state('bindingemail', {
-        url: '/bindingemail',
-        templateUrl: 'templates/account/bindingemail.html',
-        controller: 'BindingEmailCtrl'
-      })
-
-      //解绑电子邮箱
-      .state('cancelemail', {
-        url: '/cancelemail',
-        templateUrl: 'templates/account/cancelemail.html',
-        controller: 'CancelEmailCtrl'
       })
 
       //帮助信息共用模板

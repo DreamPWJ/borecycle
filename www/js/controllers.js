@@ -9,50 +9,11 @@ angular.module('starter.controllers', [])
 
   //APP首页面
   .controller('MainCtrl', function ($scope, $rootScope, CommonService, MainService, OrderService, BoRecycle, $ionicHistory, $interval, NewsService, AccountService, $ionicPlatform, WeiXinService) {
-    $scope.getMainData = function () {
-      if (!localStorage.getItem("userid")) {
-        var authLogin = function () {
-          //获取公共接口授权token  公共接口授权token两个小时失效  超过两个小时重新请求
-          if (!localStorage.getItem("token") || localStorage.getItem("token") == "undefined" || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
-            MainService.authLogin({grant_type: 'client_credentials'}).success(function (data) {
-              console.log(data);
-              if (data.access_token) {
-                localStorage.setItem("token", data.access_token);//公共接口授权token
-                localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
-              }
-            }).error(function () {
-              CommonService.platformPrompt("获取公共接口授权token失败", 'close');
-            })
-          }
-        }
-        $rootScope.publicAuth = $interval(function () {
-          authLogin();
-        }, 7199000);
-        authLogin();
-      } else {
-        $interval.cancel($rootScope.publicAuth);
-        var authLogin = function () {
-          MainService.authLogin(
-            {
-              grant_type: 'password',
-              username: localStorage.getItem("userid"),
-              password: localStorage.getItem("usersecret")
-            }).success(function (data) {
-            console.log(data);
-            if (data.access_token) {
-              localStorage.setItem("token", data.access_token);//登录接口授权token
-              localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
-            }
-          }).error(function () {
-            CommonService.platformPrompt("获取登录接口授权token失败", 'close');
-          })
-        }
-        $rootScope.loginAuth = $interval(function () {
-          authLogin();
-        }, 7199000);
-        authLogin();
 
+      //授权之后执行的方法
+      $scope.afterAuth = function () {
         //首页统计货量
+        $scope.cargoQuantity = {};
         OrderService.getCargoQuantity().success(function (data) {
           console.log(data);
           if (data.code == 1001) {
@@ -143,22 +104,74 @@ angular.module('starter.controllers', [])
           }
         })
       }
-      $scope.$broadcast('scroll.refreshComplete');
+
+      $scope.getMainData = function () {
+        if (!localStorage.getItem("userid")) {
+          var authLogin = function () {
+            //获取公共接口授权token  公共接口授权token两个小时失效  超过两个小时重新请求
+            if (!localStorage.getItem("token") || localStorage.getItem("token") == "undefined" || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
+              MainService.authLogin({grant_type: 'client_credentials'}).success(function (data) {
+                console.log(data);
+                if (data.access_token) {
+                  localStorage.setItem("token", data.access_token);//公共接口授权token
+                  localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
+                } else {
+                  CommonService.platformPrompt("获取公众接口授权token失败", 'close');
+                }
+              }).then(function () {
+                //授权之后执行的方法
+                $scope.afterAuth();
+              })
+            }
+          }
+          $rootScope.publicAuth = $interval(function () {
+            authLogin();
+          }, 7199000);
+          authLogin();
+        } else {
+          $interval.cancel($rootScope.publicAuth);
+          var authLogin = function () {
+            MainService.authLogin(
+              {
+                grant_type: 'password',
+                username: localStorage.getItem("userid"),
+                password: localStorage.getItem("usersecret")
+              }).success(function (data) {
+              console.log(data);
+              if (data.access_token) {
+                localStorage.setItem("token", data.access_token);//登录接口授权token
+                localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
+              } else {
+                CommonService.platformPrompt("获取登录接口授权token失败", 'close');
+              }
+            }).then(function () {
+              //授权之后执行的方法
+              $scope.afterAuth();
+            })
+          }
+          $rootScope.loginAuth = $interval(function () {
+            authLogin();
+          }, 7199000);
+          authLogin();
+
+          $scope.$broadcast('scroll.refreshComplete');
+        }
+      }
+
+//执行方法
+      $scope.getMainData();
+
+//定位
+//CommonService.getLocation();
+
+//在首页中清除导航历史退栈
+      $scope.$on('$ionicView.afterEnter', function () {
+        $ionicHistory.clearHistory();
+
+      })
 
     }
-    //执行方法
-    $scope.getMainData();
-
-    //定位
-    //CommonService.getLocation();
-
-    //在首页中清除导航历史退栈
-    $scope.$on('$ionicView.afterEnter', function () {
-      $ionicHistory.clearHistory();
-
-    })
-
-  })
+  )
 
   //用户密码登录页面
   .controller('LoginCtrl', function ($scope, $rootScope, $interval, CommonService, MainService, AccountService) {
@@ -197,7 +210,7 @@ angular.module('starter.controllers', [])
             }
 
           }).error(function () {
-            CommonService.platformPrompt("获取登录接口授权token失败!", 'close');
+            CommonService.platformPrompt("获取登录接口授权token失败", 'close');
           })
         }
         $rootScope.loginAuth = $interval(function () {
@@ -265,7 +278,7 @@ angular.module('starter.controllers', [])
             }
 
           }).error(function () {
-            CommonService.platformPrompt("获取登录接口授权token失败!", 'close');
+            CommonService.platformPrompt("获取登录接口授权token失败", 'close');
           })
         }
         $rootScope.loginAuth = $interval(function () {
@@ -408,7 +421,31 @@ angular.module('starter.controllers', [])
   })
 
   //参考价页面
-  .controller('ReferencePriceCtrl', function ($scope, CommonService) {
+  .controller('ReferencePriceCtrl', function ($scope, $stateParams, CommonService, OrderService) {
+    $scope.classifyindex = $stateParams.index || 0;//选中产品分类标示
+    //获取产品分类
+    $scope.getClassify = function () {
+      //获取产品品类
+      OrderService.getProductList({ID: "", Name: ""}).success(function (data) {
+        console.log(data);
+        if (data.code == 1001) {
+          $scope.productList = data.data;
+        } else {
+          CommonService.platformPrompt("获取产品品类失败", 'close');
+        }
+      }).then(function () {
+        $scope.getClassifyDetails($scope.classifyindex);
+      })
+    }
+    $scope.getClassify()
+    //点击产品分类获取产品分类详情
+    $scope.getClassifyDetails = function (index) {
+      $scope.classifyindex = index;
+      /*  $scope.classifyDetails = $scope.classifyinfo[index].son;*!/*/
+    }
+
+    $scope.scrollHeight = (window.innerHeight - 44 - 49) + 'px';
+    $scope.scrollContentHeight = document.querySelector("#classify-scroll-content").clientHeight + 'px';
 
   })
 
@@ -523,7 +560,7 @@ angular.module('starter.controllers', [])
         angular.forEach(data.data.data_list, function (item) {
           $scope.newsList.push(item);
         })
-        $scope.total = data.page_count;
+        $scope.total = data.total_count;
         $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
@@ -682,19 +719,32 @@ angular.module('starter.controllers', [])
     }
     $scope.getAddrlist(0);//交易地址加载刷新
 
+    //设置默认地址
+    $scope.setDefaultAddr = function (addrid) {
+      $scope.defaultparams = {
+        id: addrid,
+        userlogid: localStorage.getItem("userid")
+      }
+      AddressService.setDefualtAddr($scope.defaultparams).success(function (data) {
+        CommonService.platformPrompt(data.message, 'close');
+        $scope.getAddrlist(0);//重新加载列表
+      })
+    }
+
     //删除用户常用地址
     $scope.deleteAddr = function (addrid, status) {
-      /*      if (JSON.parse(localStorage.getItem("user")).grade == 5 && status == 1) {//当会员是供货商（=5）时，默认地址不能删除
-       CommonService.platformPrompt('供货商会员不能删除默认地址', 'close');
-       return;
-       }
-       $scope.delparams = {
-       id: addrid,
-       userid: localStorage.getItem("userid")
-       }
-       AddressService.deleteAddr($scope.delparams).success(function (data) {
-       $scope.getAddrlist(0);//重新加载列表
-       })*/
+      if (JSON.parse(localStorage.getItem("user")).grade == 5 && status == 1) {//当会员是供货商（=5）时，默认地址不能删除
+        CommonService.platformPrompt('供货商会员不能删除默认地址', 'close');
+        return;
+      }
+      $scope.delparams = {
+        id: addrid,
+        userid: localStorage.getItem("userid")
+      }
+      AddressService.deleteAddr($scope.delparams).success(function (data) {
+        CommonService.platformPrompt(data.message, 'close');
+        $scope.getAddrlist(0);//重新加载列表
+      })
     }
     //修改地址信息
     $scope.updateaddress = function (item) {
@@ -766,7 +816,7 @@ angular.module('starter.controllers', [])
   )
 
   //我的设置
-  .controller('SettingCtrl', function ($scope, $rootScope, $state, BoRecycle, CommonService) {
+  .controller('SettingCtrl', function ($scope, $rootScope, $state, BoRecycle) {
     $scope.version = BoRecycle.version;
     $scope.securitylevel = '未知';
     var certstate = JSON.parse(localStorage.getItem("user")).certstate;
@@ -810,60 +860,10 @@ angular.module('starter.controllers', [])
     })
   })
 
-  //帮助与反馈
-  .controller('HelpFeedBackCtrl', function ($scope, $rootScope, $state, CommonService, AccountService, MainService) {
-    $scope.helpfeedback = {};
-    //获取帮助中心列表
-    $scope.helpfeedbacklist = [];
-
-
-    //提交帮助反馈信息
-    $scope.addHelpFeedBack = function () {
-      $scope.datas = {
-        Title: $scope.helpfeedback.title,//反馈标题
-        Content: $scope.helpfeedback.content,//反馈内容
-        User: localStorage.getItem("userid") //反馈用户
-      }
-      AccountService.addHelpFeedback($scope.datas).success(function (data) {
-        if (data.code == 1001) {
-          CommonService.showAlert('', '<p>温馨提示:您的反馈我们已经接收,</p><p>我们会针对您的问题尽快做出答复,</p><p>非常感谢您对博绿网的支持！</p>', '')
-        } else {
-          CommonService.platformPrompt('提交反馈失败', 'close');
-        }
-      })
-    }
-  })
-
-  //解绑手机
-  .controller('CancelMobileCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
-    $scope.user = {};//提前定义用户对象
-    $scope.paracont = "获取验证码"; //初始发送按钮中的文字
-    $scope.paraclass = false; //控制验证码的disable
-    $scope.checkphone = function (mobilephone) {//检查手机号
-      AccountService.checkMobilePhone($scope, mobilephone);
-    }
-
-    //获取验证码
-    $scope.getVerifyCode = function () {
-      if ($scope.user.username != JSON.parse(localStorage.getItem("user")).mobile) {
-        CommonService.platformPrompt("输入手机号与原手机号不一致", 'cancelmobile');
-        return;
-      }
-      CommonService.getVerifyCode($scope, $scope.user.mobile);
-    }
-    $scope.cancelMobileSubmit = function () {
-      if ($scope.verifycode != $scope.user.code) {
-        CommonService.platformPrompt("输入的验证码不正确", "close");
-        return;
-      }
-      $state.go("bindingmobile", {'oldphone': $scope.user.username});//绑定页面
-    }
-
-  })
 
   //绑定手机
   .controller('BindingMobileCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, AccountService) {
-    $scope.oldphone = $stateParams.oldphone;
+    $scope.status = $stateParams.status;//认证状态
     $scope.user = {};//提前定义用户对象
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable
@@ -884,11 +884,9 @@ angular.module('starter.controllers', [])
       //修改手机号码
       $scope.datas = {
         userid: localStorage.getItem("userid"),		//用户id
-        old_mobile: $scope.oldphone,		//旧用户手机号码
-        new_mobile: $scope.user.username,	//新用户号码
-        new_code: $scope.user.password	//短信验证码
+        mobile: $scope.user.mobile	//新用户号码
       }
-      AccountService.modifyMobile($scope.datas).success(function (data) {
+      AccountService.authenticateMobile($scope.datas).success(function (data) {
         if (data.code == 1001) {
           CommonService.platformPrompt('绑定手机号成功', 'accountsecurity');
         } else {
@@ -899,8 +897,45 @@ angular.module('starter.controllers', [])
     }
   })
 
+  //绑定邮箱
+  .controller('BindingEmailCtrl', function ($scope, $rootScope, $stateParams, CommonService, AccountService) {
+    $scope.status = $stateParams.status;//认证状态
+    $scope.email = {};//邮箱
+    $scope.paracont = "获取验证码"; //初始发送按钮中的文字
+    $scope.paraclass = false; //控制验证码的disable
+    $scope.checkEmail = function (email) {//检查邮箱
+      AccountService.checkMobilePhoneAndEmail($scope, email);
+    }
+
+    //获取验证码
+    $scope.getVerifyCode = function () {
+      CommonService.getVerifyCode($scope, $scope.email.email);
+    }
+
+    //发送验证邮件
+    $scope.sendEmail = function () {
+      if ($scope.verifycode != $scope.email.code) {
+        CommonService.platformPrompt("输入的验证码不正确", 'close');
+        return;
+      }
+      $scope.params = {
+        userid: localStorage.getItem("userid"),		//用户id
+        email: $scope.email.email//邮箱号
+      }
+
+      AccountService.authenticateEmail($scope.params).success(function (data) {
+        if (data.code == 1001) {
+          CommonService.platformPrompt('绑定邮箱成功', 'accountsecurity');
+        } else {
+          CommonService.platformPrompt('绑定邮箱失败', 'close');
+        }
+      })
+    }
+  })
+
   //实名认证
-  .controller('RealNameCtrl', function ($scope, $rootScope, CommonService, AccountService) {
+  .controller('RealNameCtrl', function ($scope, $rootScope, $stateParams, CommonService, AccountService) {
+    $scope.status = $stateParams.status;//认证状态
     $scope.realname = {};//实名认证数据
     //上传图片数组集合
     $scope.imageList = [];
@@ -911,18 +946,26 @@ angular.module('starter.controllers', [])
     $scope.uploadActionSheet = function () {
       CommonService.uploadActionSheet($scope, 'User');
     }
+
     //获取实名认证信息
-    $scope.params = {
-      userid: localStorage.getItem("userid"),
+    if ($scope.status == 3) { //已认证
+      $scope.params = {
+        userid: localStorage.getItem("userid")
+      }
+      AccountService.getrealNameIdentity($scope.params).success(function (data) {
+        if (data.code == 1001) {
+          $scope.realname = data.data;
+        } else {
+          CommonService.platformPrompt('获取实名认证信息失败', 'close');
+        }
+
+      })
     }
-    /*    AccountService.getCertification($scope.params).success(function (data) {
-     $scope.certificationinfo = data;
-     console.log($scope.certificationinfo);
-     })*/
+
     //申请实名认证
     $scope.addCertificationName = function () {
       if ($scope.ImgsPicAddr.length == 0) {
-        CommonService.platformPrompt("请先上传认证照片后再提交!", 'close');
+        CommonService.platformPrompt("请先上传认证照片后再提交", 'close');
         return;
       }
 
@@ -952,75 +995,32 @@ angular.module('starter.controllers', [])
     };
   })
 
-  //绑定邮箱
-  .controller('BindingEmailCtrl', function ($scope, $rootScope, CommonService, AccountService) {
-    $rootScope.email = {};//邮箱
-    $scope.paracont = "获取验证码"; //初始发送按钮中的文字
-    $scope.paraclass = false; //控制验证码的disable
-    $scope.checkEmail = function (email) {//检查邮箱
-      AccountService.checkMobilePhoneAndEmail($scope, email);
-    }
 
-    //获取验证码
-    $scope.getVerifyCode = function () {
-      CommonService.getVerifyCode($scope, $scope.email.No);
-    }
 
-    //发送验证邮件
-    $scope.sendEmail = function () {
-      if ($scope.verifycode != $scope.email.code) {
-        CommonService.platformPrompt("输入的验证码不正确", 'close');
-        return;
-      }
-      $scope.params = {
-        email: $rootScope.email.No//邮箱号
-      }
+  //帮助与反馈
+  .controller('HelpFeedBackCtrl', function ($scope, $rootScope, $state, CommonService, AccountService, MainService) {
+    $scope.helpfeedback = {};
+    //获取帮助中心列表
+    $scope.helpfeedbacklist = [];
 
-      AccountService.sendEmailCode($scope.params).success(function (data) {
-        if (data.code == 1001) {
-          $rootScope.email.rescode = data;
-          CommonService.platformPrompt('绑定邮箱成功', 'accountsecurity');
-        } else {
-          CommonService.platformPrompt('绑定邮箱失败', 'close');
-        }
-      })
-    }
-  })
 
-  //解绑电子邮箱
-  .controller('CancelEmailCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
-    $scope.verify = true;
-    $scope.paracont = "获取验证码"; //初始发送按钮中的文字
-    $scope.paraclass = false; //控制验证码的disable
-    $scope.checkEmail = function (email) {//检查邮箱
-      AccountService.checkMobilePhoneAndEmail($scope, email);
-    }
-
-    //获取验证码
-    $scope.getVerifyCode = function () {
-      CommonService.getVerifyCode($scope, $scope.email.No);
-    }
-    //解绑电子邮箱
-    $scope.authenticationEmail = function () {
-      if ($scope.verifycode != $scope.email.code) {
-        CommonService.platformPrompt("输入的验证码不正确", 'close');
-        return;
-      }
+    //提交帮助反馈信息
+    $scope.addHelpFeedBack = function () {
       $scope.datas = {
-        userid: localStorage.getItem("userid"),		//用户id
-        email: $rootScope.email.No,//邮箱号
-        code: $rootScope.email.code //邮箱验证码
+        Title: $scope.helpfeedback.title,//反馈标题
+        Content: $scope.helpfeedback.content,//反馈内容
+        User: localStorage.getItem("userid") //反馈用户
       }
-      AccountService.authEmail($scope.datas).success(function (data) {
+      AccountService.addHelpFeedback($scope.datas).success(function (data) {
         if (data.code == 1001) {
-          CommonService.platformPrompt('解绑电子邮箱成功');
-          $scope.verify = false;
+          CommonService.showAlert('', '<p>温馨提示:您的反馈我们已经接收,</p><p>我们会针对您的问题尽快做出答复,</p><p>非常感谢您对博绿网的支持！</p>', '')
         } else {
-          CommonService.platformPrompt('解绑电子邮箱失败', 'close');
+          CommonService.platformPrompt('提交反馈失败', 'close');
         }
       })
     }
   })
+
 
   //帮助信息共用模板
   .controller('HelpCtrl', function ($scope, $rootScope, $stateParams, $state, BoRecycle, CommonService, AccountService, WeiXinService) {
@@ -1103,14 +1103,16 @@ angular.module('starter.controllers', [])
             $scope.recyclingCategory.push(item.grpid);
           }
         })
-
+        console.log($scope.recyclingCategory.join(","));
         OrderService.getListManufacte({
           ShorteName: '',
           Name: '',
-          GrpID: $scope.recyclingCategory.join(",")
+          GrpID: ''// $scope.recyclingCategory.join(",")
         }).success(function (data) {
           console.log(data);
-          if (data.code != 1001) {
+          if (data.code == 1001) {
+            $scope.manufacteList = data.data
+          } else {
             CommonService.platformPrompt("获取品类所属厂商失败", 'close');
           }
         })
@@ -1149,7 +1151,7 @@ angular.module('starter.controllers', [])
 
 
       //添加登记信息/货源信息(添加登记货源时明细不能为空，添加登记信息时明细为空)
-      /*      OrderService.addDengJi().success(function (data) {
+      /*      OrderService.addDengJi($scope.dengji).success(function (data) {
        console.log(data);
        CommonService.platformPrompt(data.message, 'close');
        })*/

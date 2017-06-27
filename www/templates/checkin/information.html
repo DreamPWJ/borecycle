@@ -45,15 +45,23 @@
         <div class="item text-wrap">
                     <span class="input-label icon iconfont icon-changshang "
                           style="font-size: 0.9rem!important;"> 所属厂商</span>
-          <ion-checkbox class="item-borderless checkbox-positive" ng-model="d">
-            格力
+          <ion-checkbox class="item-borderless checkbox-positive" ng-repeat="item in manufacteList"
+                        ng-click="checkChecded()"
+                        ng-model="item.checked">
+            {{item.shortename}}
           </ion-checkbox>
-          <ion-checkbox class="item-borderless checkbox-positive" ng-model="e">
-            海尔
+
+        </div>
+        <div class="item text-wrap">
+                    <span class="input-label icon iconfont icon-xzcplx "
+                          style="font-size: 0.9rem!important;"> 活动类型</span>
+          <ion-checkbox class="item-borderless checkbox-positive" ng-model="g" ng-value="0">
+            无
           </ion-checkbox>
-          <ion-checkbox class="item-borderless checkbox-positive" ng-model="f">
-            海信
+          <ion-checkbox class="item-borderless checkbox-positive" ng-model="h" ng-value="1">
+            以旧换新
           </ion-checkbox>
+
 
         </div>
       </div>

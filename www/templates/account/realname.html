@@ -3,35 +3,37 @@
     <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back ng-click="$ionicGoBack()"></button>
   </ion-nav-buttons>
   <ion-nav-title>
-    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 实名认证</h1>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> {{status==2||status==3?'修改':'绑定'}}实名认证</h1>
   </ion-nav-title>
   <form name="realname">
     <ion-content overflow-scroll="false" class="stable-bg   has-button-footer" has-bouncing="true">
       <div class="list padding-top">
         <label class="item item-input ">
           <span class="input-label"> 姓名</span>
-          <input type="text" placeholder="请填写真实姓名" ng-model="realname.name" ng-value="certificationinfo.name"
+          <input type="text" placeholder="请填写真实姓名" ng-model="realname.name"
                  ng-maxlength="8" required/>
         </label>
         <label class="item item-input ">
           <span class="input-label"> 身份证号码</span>
-          <input type="text" placeholder="请填写真实身份号码" ng-model="realname.no" ng-value="certificationinfo.no" check-form
-                 ng-change="checkForm(realname.no,'身份证号输入错误','identitycard','')" required/>
+          <input type="text" placeholder="请填写真实身份号码" ng-model="realname.idno" check-form
+                 ng-blur="checkForm(realname.idno,'身份证号输入错误','identitycard','')" required/>
         </label>
         <label class="item item-input ">
           <span class="input-label"> 银行卡号</span>
-          <input type="text" placeholder="请填写真实银行卡号" ng-model="realname.no" ng-value="certificationinfo.no" check-form
-                 ng-change="checkForm(realname.no,'身份证号输入错误','identitycard','')" required/>
+          <input type="text" placeholder="请填写真实银行卡号" ng-model="realname.cardno" check-form
+                 ng-blur="checkForm(realname.cardno,'银行卡号输入错误','regular','/^(998801|998802|622525|622526|435744|435745|483536|528020|526855|622156|622155|356869|531659|622157|627066|627067|627068|627069)d{10}$/')"
+                 required/>
         </label>
         <label class="item item-input ">
           <span class="input-label"> 手机号码</span>
-          <input type="text" placeholder="请填写银行预留手机号码" ng-model="realname.no" ng-value="certificationinfo.no" check-form
-                 ng-change="checkForm(realname.no,'身份证号输入错误','identitycard','')" required/>
+          <input type="text" placeholder="请填写银行预留手机号码" ng-model="realname.mobile" check-form
+                 ng-blur="checkForm(realname.mobile,'手机号码输入错误','mobilephone','')" required/>
         </label>
-        <label class="item item-input item-icon-right " ng-click="uploadActionSheet()">
-          <span class="input-label"> 上传身份证  <span class="padding-left grey">  必须上传 请参看示例</span></span>
-          <i class="icon iconfont icon-add positive"></i>
-        </label>
+        <div class="item item-input " >
+          <span class="input-label"> 上传身份证 </span>
+          <input type="text" placeholder="必须上传 请参考示例" class="col-60 " style="background-color: #FFFFFF" readonly>
+          <i ng-click="uploadActionSheet()" class="icon iconfont icon-add positive"></i>
+        </div>
         <div class="row  row-wrap row-horizontal-around">
           <img ng-repeat="item in imageList" ng-click="shouBigImage(item)" ng-src="{{item}}" alt="实名认证图片"
                style="height: 12rem" class="col-80 padding">
@@ -49,7 +51,7 @@
     <div class="padding light-bg bottom-0" keyboard-attach>
       <button ng-disabled="!(realname.$valid&&verify)" class="button button-positive full-image "
               ng-click="addCertificationName()">
-        提交认证
+        {{status==2||status==3?'修改':'确认'}}认证
       </button>
     </div>
   </form>
