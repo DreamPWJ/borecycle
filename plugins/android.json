@@ -68,6 +68,10 @@
         },
         "phonegap-plugin-barcodescanner": {
             "PACKAGE_NAME": "com.boolv.recycle"
+        },
+        "cordova-plugin-qqsdk": {
+            "QQ_APP_ID": "1106251722",
+            "PACKAGE_NAME": "com.boolv.recycle"
         }
     },
     "dependent_plugins": {

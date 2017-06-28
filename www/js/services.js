@@ -1,11 +1,36 @@
 angular.module('starter.services', [])
 //service在使用this指针，而factory直接返回一个对象
   .service('CommonService', function ($ionicPopup, $ionicPopover, $rootScope, $state, $ionicModal, $cordovaCamera, $cordovaImagePicker, $ionicPlatform, $ionicActionSheet, $ionicHistory, $timeout, $cordovaToast, $cordovaGeolocation, $cordovaBarcodeScanner, $ionicViewSwitcher, $interval, AccountService, WeiXinService) {
-    return {
-      platformPrompt: function (msg, stateurl) {
-        if ($ionicPlatform.is('android') || $ionicPlatform.is('ios')) {
-          try {
-            $cordovaToast.showLongCenter(msg);
+      return {
+        platformPrompt: function (msg, stateurl) {
+          if ($ionicPlatform.is('android') || $ionicPlatform.is('ios')) {
+            try {
+              $cordovaToast.showLongCenter(msg);
+              if (stateurl == null || stateurl == '') {
+                $ionicHistory.goBack();
+              } else if (stateurl == 'close') {//不处理
+
+              } else {
+                $state.go(stateurl, {}, {reload: true});
+              }
+
+            } catch (e) {
+              this.showAlert("博回收", msg, stateurl);
+            }
+          } else {
+            this.showAlert("博回收", msg, stateurl);
+          }
+        },
+        showAlert: function (title, template, stateurl) {
+          // 一个提示对话框
+          var alertPopup = $ionicPopup.alert({
+            cssClass: "show-alert",
+            title: title,
+            template: template,
+            okText: '确定',
+            okType: 'button-positive'
+          });
+          alertPopup.then(function (res) {
             if (stateurl == null || stateurl == '') {
               $ionicHistory.goBack();
             } else if (stateurl == 'close') {//不处理
@@ -14,417 +39,428 @@ angular.module('starter.services', [])
               $state.go(stateurl, {}, {reload: true});
             }
 
-          } catch (e) {
-            this.showAlert("博回收", msg, stateurl);
-          }
-        } else {
-          this.showAlert("博回收", msg, stateurl);
-        }
-      },
-      showAlert: function (title, template, stateurl) {
-        // 一个提示对话框
-        var alertPopup = $ionicPopup.alert({
-          cssClass: "show-alert",
-          title: title,
-          template: template,
-          okText: '确定',
-          okType: 'button-positive'
-        });
-        alertPopup.then(function (res) {
-          if (stateurl == null || stateurl == '') {
-            $ionicHistory.goBack();
-          } else if (stateurl == 'close') {//不处理
+          });
+        },
+        showConfirm: function (title, template, okText, cancelText, stateurl, closeurl, confirmfunction) {
+          var confirmPopup = $ionicPopup.confirm({
+            cssClass: "show-confirm",
+            title: '<strong>' + title + '</strong>',
+            template: template,
+            okText: okText,
+            cancelText: cancelText,
+            okType: 'button-positive',
+            cancelType: 'button-assertive'
+          });
 
-          } else {
-            $state.go(stateurl, {}, {reload: true});
-          }
-
-        });
-      },
-      showConfirm: function (title, template, okText, cancelText, stateurl, closeurl, confirmfunction) {
-        var confirmPopup = $ionicPopup.confirm({
-          cssClass: "show-confirm",
-          title: '<strong>' + title + '</strong>',
-          template: template,
-          okText: okText,
-          cancelText: cancelText,
-          okType: 'button-positive',
-          cancelType: 'button-assertive'
-        });
-
-        confirmPopup.then(function (res) {
-          if (res) {
-            if (stateurl != '') {
-              $state.go(stateurl, {}, {reload: true});
-              $ionicViewSwitcher.nextDirection("forward");//前进画效果
-            } else {
-              confirmfunction();
-            }
-
-          } else {
-            if (closeurl == 'close') {//不处理
-              return;
-            }
-            $state.go((closeurl == null || closeurl == '') ? 'tab.main' : closeurl, {}, {reload: true})
-            $ionicViewSwitcher.nextDirection("back");//后退动画效果
-          }
-        });
-      },
-      customModal: function ($scope, templateurl, index, animation) { //自定义modal ndex页面出现多个模态框的情况 进行命名区别 index 可以为1.2.3.   animation动画slide-in-left slide-in-right
-        index = index == undefined ? "" : index;
-        $ionicModal.fromTemplateUrl(templateurl, {
-          scope: $scope,
-          animation: 'slide-in-up'
-        }).then(function (modal) {
-          $scope["modal" + index] = modal;
-        });
-        $scope.openModal = function () {
-          $scope["modal" + index].show();
-        };
-        $scope.closeModal = function () {
-          $scope["modal" + index].hide();
-        };
-        //当我们用到模型时，清除它！
-        $scope.$on('$destroy', function () {
-          $scope["modal" + index].remove();
-        });
-        // 当隐藏的模型时执行动作
-        $scope.$on('modal' + index + '.hide', function () {
-          // 执行动作
-        });
-        // 当移动模型时执行动作
-        $scope.$on('modal' + index + '.removed', function () {
-          // 执行动作
-        });
-      },
-      ionicPopover: function ($scope, templateUrl, index) {//页面出现多个Popover框的情况 进行命名区别 index 可以为1.2.3
-        index = index == undefined ? "" : index;
-        $ionicPopover.fromTemplateUrl('templates/popover/' + templateUrl, {
-          scope: $scope,
-        }).then(function (popover) {
-          $scope["popover" + index] = popover;
-        });
-        $scope.openPopover = function ($event) {
-          $scope["popover" + index].show($event);
-          //动态计算popover高度
-          $rootScope.popoversize = document.querySelectorAll("#mypopover a").length * 55 + 'px';
-        };
-        $scope.closePopover = function () {
-          $scope["popover" + index].hide();
-        };
-        //Cleanup the popover when we're done with it! 清除浮动框
-        $scope.$on('$destroy', function () {
-          $scope["popover" + index].remove();
-        });
-        $scope.$on('$ionicView.leave', function () {
-          $scope["popover" + index].hide();
-        });
-        // 在隐藏浮动框后执行
-        $scope.$on('popover' + index + '.hidden', function () {
-          // Execute action
-        });
-        // 移除浮动框后执行
-        $scope.$on('popover' + index + '.removed', function () {
-          // Execute action
-        });
-      },
-      //扫一扫
-      barcodeScanner: function ($scope) {
-        //是否是微信
-        if (WeiXinService.isWeiXin()) {
-          //通过config接口注入权限验证配置
-          WeiXinService.weichatConfig(localStorage.getItem("timestamp"), localStorage.getItem("noncestr"), localStorage.getItem("signature"));
-          //通过ready接口处理成功验证
-          wx.ready(function () {
-            WeiXinService.wxscanQRCode($scope, $scope ? 1 : 0); //调起微信扫一扫接口
-          })
-          return;
-        }
-        /*      先检测设备是否就绪，通过cordova内置的原生事件deviceready来检测*/
-        document.addEventListener("deviceready", function () {
-          $cordovaBarcodeScanner
-            .scan()
-            .then(function (barcodeData) {
-              // Success! Barcode data is here 扫描数据：barcodeData.text
-              var reg = new RegExp("^((http)||(https)){1}://[\s]{0,}");//二维码信息是否有http链接
-              if (reg.test(barcodeData.text)) {
-                //通过默认浏览器打开
-                window.open(barcodeData.text, '_system', 'location=yes');
+          confirmPopup.then(function (res) {
+            if (res) {
+              if (stateurl != '') {
+                $state.go(stateurl, {}, {reload: true});
+                $ionicViewSwitcher.nextDirection("forward");//前进画效果
               } else {
-                $cordovaToast.showShortCenter('扫一扫信息:' + barcodeData.text);
+                confirmfunction();
               }
-            }, function (error) {
-              $cordovaToast.showShortCenter('扫描失败,请重新扫描');
-            });
 
-
-          // NOTE: encoding not functioning yet 编不能正常工作
-          $cordovaBarcodeScanner
-            .encode(BarcodeScanner.Encode.TEXT_TYPE, "http://www.nytimes.com")
-            .then(function (success) {
-              // Success!
-            }, function (error) {
-              // An error occurred
-            });
-        }, false);
-      },
-      shareActionSheet: function (title, desc, link, imgUrl, type) {
-        CommonService = this;
-        if (ionic.Platform.isWebView()) {
-          //微信分享
-          Wechat.share({
-            text: "博绿固废回收分享",
-            scene: type == 0 ? Wechat.Scene.SESSION : Wechat.Scene.TIMELINE
-          }, function () {
-            CommonService.platformPrompt("微信分享成功", 'close');
-          }, function (reason) {
-            CommonService.platformPrompt("微信分享失败:" + reason, 'close');
-          });
-
-        }
-        if (WeiXinService.isWeiXin()) {
-          //通过config接口注入权限验证配置
-          WeiXinService.weichatConfig(localStorage.getItem("timestamp"), localStorage.getItem("noncestr"), localStorage.getItem("signature"));
-          //通过ready接口处理成功验证
-          wx.ready(function () {
-            // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
-            //自动调用分享按钮注册和自定义分享
-            WeiXinService.wxonMenuShareTimeline(title, link, imgUrl);//微信朋友圈
-            WeiXinService.wxonMenuShareAppMessage(title, desc, link, imgUrl);//微信好友
-            WeiXinService.wxonMenuShareQQ(title, desc, link, imgUrl);//QQ好友
-            WeiXinService.wxonMenuShareQZone(title, desc, link, imgUrl);//QQ空间
-
-          });
-        }
-      },
-      uploadActionSheet: function ($scope, filename, isSingle) {//上传图片  isSingle是否是单张上传
-        isSingle = (isSingle == undefined) ? false : isSingle;
-        CommonService = this;
-        $ionicActionSheet.show({
-          cssClass: 'action-s',
-          titleText: '上传图片',
-          buttons: [
-            {text: '拍照'},
-            {text: '从手机相册选择'},
-          ],
-          cancelText: '取消',
-          cancel: function () {
-            return true;
-          },
-          buttonClicked: function (index) {
-            switch (index) {
-              case 0:
-                CommonService.takePicture($scope, 1, filename, isSingle) //拍照
-                break;
-              case 1:
-                CommonService.takePicture($scope, 0, filename, isSingle) //从手机相册选择
-                break;
-              default:
-                break;
+            } else {
+              if (closeurl == 'close') {//不处理
+                return;
+              }
+              $state.go((closeurl == null || closeurl == '') ? 'tab.main' : closeurl, {}, {reload: true})
+              $ionicViewSwitcher.nextDirection("back");//后退动画效果
             }
-            return true;
+          });
+        },
+        customModal: function ($scope, templateurl, index, animation) { //自定义modal ndex页面出现多个模态框的情况 进行命名区别 index 可以为1.2.3.   animation动画slide-in-left slide-in-right
+          index = index == undefined ? "" : index;
+          $ionicModal.fromTemplateUrl(templateurl, {
+            scope: $scope,
+            animation: 'slide-in-up'
+          }).then(function (modal) {
+            $scope["modal" + index] = modal;
+          });
+          $scope.openModal = function () {
+            $scope["modal" + index].show();
+          };
+          $scope.closeModal = function () {
+            $scope["modal" + index].hide();
+          };
+          //当我们用到模型时，清除它！
+          $scope.$on('$destroy', function () {
+            $scope["modal" + index].remove();
+          });
+          // 当隐藏的模型时执行动作
+          $scope.$on('modal' + index + '.hide', function () {
+            // 执行动作
+          });
+          // 当移动模型时执行动作
+          $scope.$on('modal' + index + '.removed', function () {
+            // 执行动作
+          });
+        },
+        ionicPopover: function ($scope, templateUrl, index) {//页面出现多个Popover框的情况 进行命名区别 index 可以为1.2.3
+          index = index == undefined ? "" : index;
+          $ionicPopover.fromTemplateUrl('templates/popover/' + templateUrl, {
+            scope: $scope,
+          }).then(function (popover) {
+            $scope["popover" + index] = popover;
+          });
+          $scope.openPopover = function ($event) {
+            $scope["popover" + index].show($event);
+            //动态计算popover高度
+            $rootScope.popoversize = document.querySelectorAll("#mypopover a").length * 55 + 'px';
+          };
+          $scope.closePopover = function () {
+            $scope["popover" + index].hide();
+          };
+          //Cleanup the popover when we're done with it! 清除浮动框
+          $scope.$on('$destroy', function () {
+            $scope["popover" + index].remove();
+          });
+          $scope.$on('$ionicView.leave', function () {
+            $scope["popover" + index].hide();
+          });
+          // 在隐藏浮动框后执行
+          $scope.$on('popover' + index + '.hidden', function () {
+            // Execute action
+          });
+          // 移除浮动框后执行
+          $scope.$on('popover' + index + '.removed', function () {
+            // Execute action
+          });
+        },
+        //扫一扫
+        barcodeScanner: function ($scope) {
+          //是否是微信
+          if (WeiXinService.isWeiXin()) {
+            //通过config接口注入权限验证配置
+            WeiXinService.weichatConfig(localStorage.getItem("timestamp"), localStorage.getItem("noncestr"), localStorage.getItem("signature"));
+            //通过ready接口处理成功验证
+            wx.ready(function () {
+              WeiXinService.wxscanQRCode($scope, $scope ? 1 : 0); //调起微信扫一扫接口
+            })
+            return;
           }
-        });
-      },
-      //调用摄像头和相册 type 0是图库 1是拍照
-      takePicture: function ($scope, type, filenames, isSingle) {
-        //统计上传成功数量
-        $scope.imageSuccessCount = 0;
-        //是否是微信
-        if (WeiXinService.isWeiXin()) {
-          //通过config接口注入权限验证配置
-          WeiXinService.weichatConfig(localStorage.getItem("timestamp"), localStorage.getItem("noncestr"), localStorage.getItem("signature"));
-          //通过ready接口处理成功验证
-          wx.ready(function () {
-            WeiXinService.wxchooseImage($scope, type); //拍照或从手机相册中选图接口
-          })
-          return;
-        }
-        if (type == 0 && !isSingle) {//图库
-          /*          var options = {
-           maximumImagesCount: 6 - $scope.imageList.length,//需要显示的图片的数量
-           width: 800,
-           height: 800,
-           quality: 80
-           };*/
-          $cordovaImagePicker.getPictures(options).then(function (results) {
-            $scope.imageUploadCount = results.length;
-            for (var i = 0, len = results.length; i < len; i++) {
-              $scope.imageList.push(results[i]);
-              AccountService.addFilenames($scope, {filenames: filenames}, results[i]);
+          /*      先检测设备是否就绪，通过cordova内置的原生事件deviceready来检测*/
+          document.addEventListener("deviceready", function () {
+            $cordovaBarcodeScanner
+              .scan()
+              .then(function (barcodeData) {
+                // Success! Barcode data is here 扫描数据：barcodeData.text
+                var reg = new RegExp("^((http)||(https)){1}://[\s]{0,}");//二维码信息是否有http链接
+                if (reg.test(barcodeData.text)) {
+                  //通过默认浏览器打开
+                  window.open(barcodeData.text, '_system', 'location=yes');
+                } else {
+                  $cordovaToast.showShortCenter('扫一扫信息:' + barcodeData.text);
+                }
+              }, function (error) {
+                $cordovaToast.showShortCenter('扫描失败,请重新扫描');
+              });
+
+
+            // NOTE: encoding not functioning yet 编不能正常工作
+            $cordovaBarcodeScanner
+              .encode(BarcodeScanner.Encode.TEXT_TYPE, "http://www.nytimes.com")
+              .then(function (success) {
+                // Success!
+              }, function (error) {
+                // An error occurred
+              });
+          }, false);
+        },
+        shareActionSheet: function (title, desc, link, imgUrl, type) {
+          CommonService = this;
+          if (ionic.Platform.isWebView()) {
+            //微信分享
+            if (type == 0 || type == 1) {
+              Wechat.share({
+                message: {
+                  title: title,
+                  description: desc,
+                  thumb: imgUrl,
+                  media: {
+                    type: Wechat.Type.LINK,
+                    webpageUrl: link
+                  }
+                },
+                scene: type == 0 ? Wechat.Scene.SESSION : Wechat.Scene.TIMELINE   // share to Timeline
+              }, function () {
+                CommonService.platformPrompt("微信分享成功", 'close');
+              }, function (reason) {
+                CommonService.platformPrompt("微信分享失败:" + reason, 'close');
+              });
             }
+            //QQ分享
+            if (type == 2 || type == 3) {
+              var args = {};
+              args.client = QQSDK.ClientType.QQ;//QQSDK.ClientType.QQ,QQSDK.ClientType.TIM;
+              args.scene = type == 2 ? QQSDK.Scene.QQ : QQSDK.Scene.QQZone;//QQSDK.Scene.QQZone,QQSDK.Scene.Favorite
+              args.url = link;
+              args.title = title;
+              args.description = desc;
+              args.image = imgUrl;
+              QQSDK.shareNews(function () {
+                CommonService.platformPrompt("QQ分享成功", 'close');
+              }, function (failReason) {
+                CommonService.platformPrompt("QQ分享失败" + failReason, 'close');
+              }, args);
+            }
+          }
+          if (WeiXinService.isWeiXin()) {
+            //通过config接口注入权限验证配置
+            WeiXinService.weichatConfig(localStorage.getItem("timestamp"), localStorage.getItem("noncestr"), localStorage.getItem("signature"));
+            //通过ready接口处理成功验证
+            wx.ready(function () {
+              // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+              //自动调用分享按钮注册和自定义分享
+              WeiXinService.wxonMenuShareTimeline(title, link, imgUrl);//微信朋友圈
+              WeiXinService.wxonMenuShareAppMessage(title, desc, link, imgUrl);//微信好友
+              WeiXinService.wxonMenuShareQQ(title, desc, link, imgUrl);//QQ好友
+              WeiXinService.wxonMenuShareQZone(title, desc, link, imgUrl);//QQ空间
 
-          }, function (error) {
-            $cordovaToast.showLongCenter('获取图片失败');
+            });
+          }
+        }
+        ,
+        uploadActionSheet: function ($scope, filename, isSingle) {//上传图片  isSingle是否是单张上传
+          isSingle = (isSingle == undefined) ? false : isSingle;
+          CommonService = this;
+          $ionicActionSheet.show({
+            cssClass: 'action-s',
+            titleText: '上传图片',
+            buttons: [
+              {text: '拍照'},
+              {text: '从手机相册选择'},
+            ],
+            cancelText: '取消',
+            cancel: function () {
+              return true;
+            },
+            buttonClicked: function (index) {
+              switch (index) {
+                case 0:
+                  CommonService.takePicture($scope, 1, filename, isSingle) //拍照
+                  break;
+                case 1:
+                  CommonService.takePicture($scope, 0, filename, isSingle) //从手机相册选择
+                  break;
+                default:
+                  break;
+              }
+              return true;
+            }
           });
-
-          window.imagePicker.getPictures(
-            function (results) {
+        }
+        ,
+        //调用摄像头和相册 type 0是图库 1是拍照
+        takePicture: function ($scope, type, filenames, isSingle) {
+          //统计上传成功数量
+          $scope.imageSuccessCount = 0;
+          //是否是微信
+          if (WeiXinService.isWeiXin()) {
+            //通过config接口注入权限验证配置
+            WeiXinService.weichatConfig(localStorage.getItem("timestamp"), localStorage.getItem("noncestr"), localStorage.getItem("signature"));
+            //通过ready接口处理成功验证
+            wx.ready(function () {
+              WeiXinService.wxchooseImage($scope, type); //拍照或从手机相册中选图接口
+            })
+            return;
+          }
+          if (type == 0 && !isSingle) {//图库
+            /*          var options = {
+             maximumImagesCount: 6 - $scope.imageList.length,//需要显示的图片的数量
+             width: 800,
+             height: 800,
+             quality: 80
+             };*/
+            $cordovaImagePicker.getPictures(options).then(function (results) {
               $scope.imageUploadCount = results.length;
               for (var i = 0, len = results.length; i < len; i++) {
                 $scope.imageList.push(results[i]);
                 AccountService.addFilenames($scope, {filenames: filenames}, results[i]);
-                console.log('图片URI: ' + results[i]);
               }
+
             }, function (error) {
               $cordovaToast.showLongCenter('获取图片失败');
-            }, {
-              maximumImagesCount: 6,
-              width: 800
-            }
-          );
+            });
+
+            window.imagePicker.getPictures(
+              function (results) {
+                $scope.imageUploadCount = results.length;
+                for (var i = 0, len = results.length; i < len; i++) {
+                  $scope.imageList.push(results[i]);
+                  AccountService.addFilenames($scope, {filenames: filenames}, results[i]);
+                  console.log('图片URI: ' + results[i]);
+                }
+              }, function (error) {
+                $cordovaToast.showLongCenter('获取图片失败');
+              }, {
+                maximumImagesCount: 6,
+                width: 800
+              }
+            );
+          }
+          if (type == 1 || (type == 0 && isSingle)) {  //拍照
+            //$cordovaCamera.cleanup();
+            var options = {
+              quality: 100,//相片质量0-100
+              destinationType: Camera.DestinationType.FILE_URI,        //返回类型：DATA_URL= 0，返回作为 base64 編碼字串。 FILE_URI=1，返回影像档的 URI。NATIVE_URI=2，返回图像本机URI (例如，資產庫)
+              sourceType: type == 0 ? Camera.PictureSourceType.PHOTOLIBRARY : Camera.PictureSourceType.CAMERA,//从哪里选择图片：PHOTOLIBRARY=0，相机拍照=1，SAVEDPHOTOALBUM=2。0和1其实都是本地图库
+              allowEdit: false,                                        //在选择之前允许修改截图
+              encodingType: Camera.EncodingType.JPEG,                   //保存的图片格式： JPEG = 0, PNG = 1
+              targetWidth: 500,                                        //照片宽度
+              targetHeight: 500,                                       //照片高度
+              mediaType: 0,                                             //可选媒体类型：圖片=0，只允许选择图片將返回指定DestinationType的参数。 視頻格式=1，允许选择视频，最终返回 FILE_URI。ALLMEDIA= 2，允许所有媒体类型的选择。
+              cameraDirection: 0,                                       //枪后摄像头类型：Back= 0,Front-facing = 1
+              saveToPhotoAlbum: true                                   //保存进手机相册
+            };
+
+            $cordovaCamera.getPicture(options).then(function (imageUrl) {
+              $scope.imageUploadCount = 1;
+              $scope.imageList.push(imageUrl);
+              AccountService.addFilenames($scope, {filenames: filenames}, imageUrl);
+
+            }, function (err) {
+              // An error occured. Show a message to the user
+              $cordovaToast.showLongCenter('获取照片失败');
+
+            });
+          }
+
         }
-        if (type == 1 || (type == 0 && isSingle)) {  //拍照
-          //$cordovaCamera.cleanup();
-          var options = {
-            quality: 100,//相片质量0-100
-            destinationType: Camera.DestinationType.FILE_URI,        //返回类型：DATA_URL= 0，返回作为 base64 編碼字串。 FILE_URI=1，返回影像档的 URI。NATIVE_URI=2，返回图像本机URI (例如，資產庫)
-            sourceType: type == 0 ? Camera.PictureSourceType.PHOTOLIBRARY : Camera.PictureSourceType.CAMERA,//从哪里选择图片：PHOTOLIBRARY=0，相机拍照=1，SAVEDPHOTOALBUM=2。0和1其实都是本地图库
-            allowEdit: false,                                        //在选择之前允许修改截图
-            encodingType: Camera.EncodingType.JPEG,                   //保存的图片格式： JPEG = 0, PNG = 1
-            targetWidth: 500,                                        //照片宽度
-            targetHeight: 500,                                       //照片高度
-            mediaType: 0,                                             //可选媒体类型：圖片=0，只允许选择图片將返回指定DestinationType的参数。 視頻格式=1，允许选择视频，最终返回 FILE_URI。ALLMEDIA= 2，允许所有媒体类型的选择。
-            cameraDirection: 0,                                       //枪后摄像头类型：Back= 0,Front-facing = 1
-            saveToPhotoAlbum: true                                   //保存进手机相册
-          };
-
-          $cordovaCamera.getPicture(options).then(function (imageUrl) {
-            $scope.imageUploadCount = 1;
-            $scope.imageList.push(imageUrl);
-            AccountService.addFilenames($scope, {filenames: filenames}, imageUrl);
-
-          }, function (err) {
-            // An error occured. Show a message to the user
-            $cordovaToast.showLongCenter('获取照片失败');
-
-          });
-        }
-
-      },
-      getLocation: function (callback) { //获取当前经纬度
-        //是否是微信
-        if (WeiXinService.isWeiXin()) {
-          //通过config接口注入权限验证配置
-          WeiXinService.weichatConfig(localStorage.getItem("timestamp"), localStorage.getItem("noncestr"), localStorage.getItem("signature"));
-          //通过ready接口处理成功验证
-          wx.ready(function () {
-            WeiXinService.wxgetLocation(); //获取地理位置接口
-          })
-          return;
-        }
-        CommonService = this;
-        var posOptions = {timeout: 10000, enableHighAccuracy: false};
-        $cordovaGeolocation.getCurrentPosition(posOptions)
-          .then(function (position) {
-            localStorage.setItem("latitude", position.coords.latitude);
-            localStorage.setItem("longitude", position.coords.longitude);
-            callback.call(this);
-          }, function (err) {
-            CommonService.platformPrompt("获取定位失败", 'close');
-          });
-      },
-      isLogin: function (flag) {//判断是否登录
-        if (!localStorage.getItem("userid")) {
-          if (flag) {
-            $state.go('login');
-          } else {
-            this.showConfirm('博回收', '温馨提示:此功能需要登录才能使用,请先登录', '登录', '关闭', 'login');
+        ,
+        getLocation: function (callback) { //获取当前经纬度
+          //是否是微信
+          if (WeiXinService.isWeiXin()) {
+            //通过config接口注入权限验证配置
+            WeiXinService.weichatConfig(localStorage.getItem("timestamp"), localStorage.getItem("noncestr"), localStorage.getItem("signature"));
+            //通过ready接口处理成功验证
+            wx.ready(function () {
+              WeiXinService.wxgetLocation(); //获取地理位置接口
+            })
             return;
           }
-          return false;
-        } else {
-          return true;
+          CommonService = this;
+          var posOptions = {timeout: 10000, enableHighAccuracy: false};
+          $cordovaGeolocation.getCurrentPosition(posOptions)
+            .then(function (position) {
+              localStorage.setItem("latitude", position.coords.latitude);
+              localStorage.setItem("longitude", position.coords.longitude);
+              callback.call(this);
+            }, function (err) {
+              CommonService.platformPrompt("获取定位失败", 'close');
+            });
         }
-      },
-      getStateName: function () {    //得到上一个路由名称方法
-        var stateName = "";
-        if ($ionicHistory.backView() && $ionicHistory.backView().stateName != "tab.account" && $ionicHistory.backView().stateName != "setting" && $ionicHistory.backView().stateName != "organizingdata") {
-          stateName = $ionicHistory.backView().stateName;
-        }
-        if (stateName) {
-          $ionicHistory.goBack();
-        } else {
-          $state.go("tab.main", {}, {reload: true});
-        }
-      },
-      windowOpen: function (url) {        //通过默认浏览器打开
-        if (ionic.Platform.isWebView()) {  // Check if we are running within a WebView (such as Cordova)
-          window.open(url, '_system', 'location=yes');
-        } else {//如果是H5浏览器页面或者微信
-          window.open(url, "_self");
-        }
-
-      },
-      toolTip: function (msg, type) { //全局tooltip提示
-        this.message = msg;
-        this.type = type;
-        //提示框显示最多3秒消失
-        var _self = this;
-        $timeout(function () {
-          _self.message = null;
-          _self.type = null;
-        }, 3000);
-      },
-      countDown: function ($scope) {//60s倒计时
-        var second = 60,
-          timePromise = undefined;
-        timePromise = $interval(function () {
-          if (second <= 0) {
-            $interval.cancel(timePromise);
-            $scope.paracont = "重发验证码";
-            $scope.paraclass = true;
+        ,
+        isLogin: function (flag) {//判断是否登录
+          if (!localStorage.getItem("userid")) {
+            if (flag) {
+              $state.go('login');
+            } else {
+              this.showConfirm('博回收', '温馨提示:此功能需要登录才能使用,请先登录', '登录', '关闭', 'login');
+              return;
+            }
+            return false;
           } else {
-            $scope.paraclass = false;
-            $scope.paracont = second + "s后重试";
-            second--;
+            return true;
           }
-        }, 1000, 100);
-      },
-      getVerifyCode: function ($scope, account) {//获取验证码
-        event.preventDefault();
-        CommonService = this;
-        if ($scope.paraclass) { //按钮可用
-          //60s倒计时
-          this.countDown($scope);
-          if (/^1(3|4|5|7|8)\d{9}$/.test(account)) {
-            AccountService.sendCode({mobile: account}).success(function (data) {
-              $scope.verifycode = data.data;
-              if (data.code != 1001) {
-                CommonService.platformPrompt("手机验证码获取失败", 'close');
-              }
-            })
-          } else if (/^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(account)) {
-            AccountService.sendEmailCode({email: account}).success(function (data) {
-              $scope.verifycode = data.data;
-              if (data.code != 1001) {
-                CommonService.platformPrompt("邮箱验证码获取失败", 'close');
-              }
-            })
+        }
+        ,
+        getStateName: function () {    //得到上一个路由名称方法
+          var stateName = "";
+          if ($ionicHistory.backView() && $ionicHistory.backView().stateName != "tab.account" && $ionicHistory.backView().stateName != "setting" && $ionicHistory.backView().stateName != "organizingdata") {
+            stateName = $ionicHistory.backView().stateName;
+          }
+          if (stateName) {
+            $ionicHistory.goBack();
+          } else {
+            $state.go("tab.main", {}, {reload: true});
+          }
+        }
+        ,
+        windowOpen: function (url) {        //通过默认浏览器打开
+          if (ionic.Platform.isWebView()) {  // Check if we are running within a WebView (such as Cordova)
+            window.open(url, '_system', 'location=yes');
+          } else {//如果是H5浏览器页面或者微信
+            window.open(url, "_self");
           }
 
         }
-      },
-      removeEmptyArray: function (array) { //去除数组空值 重新组织数组
-        for (var i = 0; i < array.length; i++) {
-          if (array[i] == "" || typeof(array[i]) == "undefined" || array[i] == false) {
-            array.splice(i, 1);
-            i = i - 1;
+        ,
+        toolTip: function (msg, type) { //全局tooltip提示
+          this.message = msg;
+          this.type = type;
+          //提示框显示最多3秒消失
+          var _self = this;
+          $timeout(function () {
+            _self.message = null;
+            _self.type = null;
+          }, 3000);
+        }
+        ,
+        countDown: function ($scope) {//60s倒计时
+          var second = 60,
+            timePromise = undefined;
+          timePromise = $interval(function () {
+            if (second <= 0) {
+              $interval.cancel(timePromise);
+              $scope.paracont = "重发验证码";
+              $scope.paraclass = true;
+            } else {
+              $scope.paraclass = false;
+              $scope.paracont = second + "s后重试";
+              second--;
+            }
+          }, 1000, 100);
+        }
+        ,
+        getVerifyCode: function ($scope, account) {//获取验证码
+          event.preventDefault();
+          CommonService = this;
+          if ($scope.paraclass) { //按钮可用
+            //60s倒计时
+            this.countDown($scope);
+            if (/^1(3|4|5|7|8)\d{9}$/.test(account)) {
+              AccountService.sendCode({mobile: account}).success(function (data) {
+                $scope.verifycode = data.data;
+                if (data.code != 1001) {
+                  CommonService.platformPrompt("手机验证码获取失败", 'close');
+                }
+              })
+            } else if (/^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(account)) {
+              AccountService.sendEmailCode({email: account}).success(function (data) {
+                $scope.verifycode = data.data;
+                if (data.code != 1001) {
+                  CommonService.platformPrompt("邮箱验证码获取失败", 'close');
+                }
+              })
+            }
+
           }
         }
-        return array;
-      },
-      checkChecded: function ($scope, array) { //检查是否复选框选中
-        $scope.ischecked = false;
-        angular.forEach(array, function (item) {
-          if (item.checked) {
-            $scope.ischecked = true;
+        ,
+        removeEmptyArray: function (array) { //去除数组空值 重新组织数组
+          for (var i = 0; i < array.length; i++) {
+            if (array[i] == "" || typeof(array[i]) == "undefined" || array[i] == false) {
+              array.splice(i, 1);
+              i = i - 1;
+            }
           }
-        })
+          return array;
+        }
+        ,
+        checkChecded: function ($scope, array) { //检查是否复选框选中
+          $scope.ischecked = false;
+          angular.forEach(array, function (item) {
+            if (item.checked) {
+              $scope.ischecked = true;
+            }
+          })
+        }
       }
-    }
 
-  })
+    }
+  )
   .service('MainService', function ($q, $http, BoRecycle, EncodingService) { //主页服务定义
     return {
       //获取公共接口授权token
@@ -598,7 +634,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
-          url: BoRecycle.api + "/api/dengji/getlist/"+params.page+"/"+params.size,
+          url: BoRecycle.api + "/api/dengji/getlist/" + params.page + "/" + params.size,
           params: params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
@@ -1141,7 +1177,7 @@ angular.module('starter.services', [])
                   AccountService.setFigure(figurparams);
                 }
               }
-              $scope.ImgsPicAddr.push(BoRecycle.imgUrl+JSON.parse(result.response).data);
+              $scope.ImgsPicAddr.push(BoRecycle.imgUrl + JSON.parse(result.response).data);
               $scope.imageSuccessCount++;
               if ($scope.imageSuccessCount == $scope.imageUploadCount) {
                 $cordovaToast.showLongCenter("上传成功");

@@ -637,7 +637,7 @@ angular.module('starter.controllers', [])
   })
 
   //我的设置页面
-  .controller('AccountCtrl', function ($scope, $rootScope, CommonService, AccountService) {
+  .controller('AccountCtrl', function ($scope, $rootScope, CommonService, AccountService, WeiXinService) {
     //是否登录
     if (!CommonService.isLogin(true)) {
       return;
@@ -656,6 +656,19 @@ angular.module('starter.controllers', [])
       }
     })
 
+    AccountService.getHelpContent({ID: 22}).success(function (data) {
+      $scope.helpdata = data.data;
+      $scope.title = "关于我们";
+    }).then(function () {
+      if (WeiXinService.isWeiXin()) { //如果是微信
+        $scope.isWeiXin = true;
+        CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract, BoRecycle.mobApi + '/#/help/22', '');
+      }
+      //调用分享面板
+      $scope.shareActionSheet = function (type) {
+        CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract, '', BoRecycle.mobApi + '/#/help/22', '', type);
+      }
+    })
 
   })
 
@@ -988,6 +1001,32 @@ angular.module('starter.controllers', [])
     $scope.ImgsPicAddr = [];//图片信息数组
     $scope.uploadName = 'realname';//上传图片的类别 用于区分
     $scope.uploadtype = 4;//上传媒体操作类型 1.卖货单 2 供货单 3 买货单 4身份证 5 头像
+    $scope.paracont = "获取验证码"; //初始发送按钮中的文字
+    $scope.paraclass = false; //控制验证码的disable
+    $scope.serviceId = "";//e签宝服务id
+    $scope.checkphone = function (mobilephone) {//检查手机号
+      AccountService.checkMobilePhone($scope, mobilephone);
+    }
+
+    //e签宝验证码
+    $scope.getVerifyCode = function () {
+      event.preventDefault();
+      CommonService.countDown($scope)
+      //发送实名认证码，返回实名认证服务id,提交实名认证时需填写
+      $scope.params = {
+        idno: $scope.realname.idno,	//身份证号码
+        mobile: $scope.realname.mobile,//手机号码
+        name: $scope.realname.name,//真实姓名
+        cardno: $scope.realname.cardno //银行卡号
+      }
+      AccountService.authenticateSign($scope.params).success(function (data) {
+        console.log(JSON.stringify(data));
+        if (data.code == 1001) {
+          $scope.serviceId = data.data.serviceId;//e签宝服务id
+        }
+      })
+    }
+
     //上传照片
     $scope.uploadActionSheet = function () {
       CommonService.uploadActionSheet($scope, 'User', true);
@@ -1016,43 +1055,32 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt("请先上传认证照片后再提交", 'close');
         return;
       }
-//发送实名认证码，返回实名认证服务id,提交实名认证时需填写
-      $scope.params = {
+
+      //提交实名认证，需要带入authenticate_sign 实名认证服务id
+      $scope.datas = {
+        userid: localStorage.getItem("userid"),	//当前用户userid
+        name: $scope.realname.name,	    //姓名
         idno: $scope.realname.idno,	//身份证号码
+        cardno: $scope.realname.cardno, //银行卡号
         mobile: $scope.realname.mobile,//手机号码
-        name: $scope.realname.name,//真实姓名
-        cardno: $scope.realname.cardno //银行卡号
+        serviceid: $scope.serviceId,//e签宝服务id
+        code: $scope.realname.code,//e签宝验证码
+        frontpic: $scope.ImgsPicAddr[0],//身份证照片地址。必须上传、上传使用公用上传图片接口
+        state: "",//审核通过
+        createdate: "",//日期
+        remark: ""//审核备注
       }
-      AccountService.authenticateSign($scope.params).success(function (data) {
-        console.log(data);
-        CommonService.platformPrompt(data.msg, 'close');
-        $scope.serviceId = data.serviceId;
-      }).then(function () {
-        //提交实名认证，需要带入authenticate_sign 实名认证服务id
-        $scope.datas = {
-          userid: localStorage.getItem("userid"),	//当前用户userid
-          name: $scope.realname.name,	    //姓名
-          idno: $scope.realname.idno,	//身份证号码
-          cardno: $scope.realname.cardno, //银行卡号
-          mobile: $scope.realname.mobile,//手机号码
-          serviceid: $scope.serviceId,//e签宝服务id
-          code: "",//e签宝验证码
-          frontpic: $scope.ImgsPicAddr[0],//身份证照片地址。必须上传、上传使用公用上传图片接口
-          state: "",//审核通过
-          createdate: "",//日期
-          remark: ""//审核备注
+      console.log(JSON.stringify($scope.datas));
+      AccountService.realNameAuthenticate($scope.datas).success(function (data) {
+        console.log(JSON.stringify(data));
+        if (data.code == 1001) {
+          CommonService.platformPrompt('实名认证提交成功,我们会尽快处理', 'accountsecurity');
+          /*          CommonService.showAlert('', '<p>温馨提示:您的认证信息已经</p><p>提交成功,我们会尽快处理！</p>', '')*/
+        } else {
+          CommonService.platformPrompt('实名认证失败', 'close');
         }
-        console.log(JSON.stringify($scope.datas));
-        AccountService.realNameAuthenticate($scope.datas).success(function (data) {
-          console.log(JSON.stringify(data));
-          if (data.code == 1001) {
-            CommonService.platformPrompt('实名认证提交成功,我们会尽快处理', 'accountsecurity');
-            /*          CommonService.showAlert('', '<p>温馨提示:您的认证信息已经</p><p>提交成功,我们会尽快处理！</p>', '')*/
-          } else {
-            CommonService.platformPrompt('实名认证失败', 'close');
-          }
-        })
       })
+
 
     }
     $scope.bigImage = false;    //初始默认大图是隐藏的
@@ -1124,11 +1152,11 @@ angular.module('starter.controllers', [])
       }).then(function () {
         if (WeiXinService.isWeiXin()) { //如果是微信
           $scope.isWeiXin = true;
-          CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract, BoRecycle.moblileApi + '/#/help/' + id, '');
+          CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract, BoRecycle.mobApi + '/#/help/' + id, '');
         }
         //调用分享面板
-        $scope.shareActionSheet = function () {
-          //   umeng.share($scope.helpdata.Title, $scope.helpdata.Abstract, '', BoRecycle.moblileApi + '/#/help/' + id);
+        $scope.shareActionSheet = function (type) {
+          CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract, '', BoRecycle.mobApi + '/#/help/' + id, '', type);
         }
       })
     }
