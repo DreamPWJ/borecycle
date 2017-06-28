@@ -232,7 +232,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
       })
 
-      //我的订单详情页面
+      //我的回收单订单详情页面
       .state('orderdetails', {
         url: '/orderdetails/:no',
         cache: false,
@@ -241,6 +241,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
       })
 
+      //我的回订单详情页面
+      .state('myorderdetails', {
+        url: '/myorderdetails/:no',
+        cache: false,
+        templateUrl: 'templates/order/myorderdetails.html',
+        controller: 'MyOrderDetailsCtrl'
+
+      })
       //我的回收录单页面
       .state('recycleorder', {
         url: '/recycleorder',

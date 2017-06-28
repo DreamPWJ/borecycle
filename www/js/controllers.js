@@ -488,7 +488,7 @@ angular.module('starter.controllers', [])
       $scope.datas = {
         DJNo: "",//登记单号(可为空)
         Type: "",//类型1.登记信息 2.登记货源(可为空)
-        userid: localStorage.getItem("userid"),//用户userid
+        userid: "",//用户userid
         Category: "",//货物品类 多个用逗号隔开(可为空)
         HYType: "",//货物类别 0.未区分 1废料 2二手(可为空)
         State: "",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
@@ -528,7 +528,19 @@ angular.module('starter.controllers', [])
       //滑动的索引和速度
       $ionicSlideBoxDelegate.$getByHandle("slidebox-orderlist").slide(index)
     }
-
+    //接单
+    $scope.jieDan = function (no) {
+      event.preventDefault();
+      /*      OrderService.cancelDengJiOrder({djno: djno}).success(function (data) {
+       console.log(data);
+       if (data.code == 1001) {
+       CommonService.platformPrompt("接单成功", "close");
+       } else {
+       CommonService.platformPrompt("接单失败", "close");
+       }
+       })*/
+      CommonService.showConfirm('接单提示', '尊敬的用户,您好！恭喜您,接单成功！订单有效期为24小时,请您务必在24小时之内上门回收！', '查看订单', '继续接单', 'orderdetails', 'close');
+    }
     //联系他
     $scope.relation = function (phonenumber) {
       event.preventDefault();
@@ -551,7 +563,7 @@ angular.module('starter.controllers', [])
 
 
   //我的订单页面
-  .controller('MyOrderCtrl', function ($scope, $state, CommonService, OrderService, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
+  .controller('MyOrderCtrl', function ($scope, $rootScope, $state, CommonService, OrderService, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
     $scope.tabIndex = 0;//tab默认
     //未完成订单
     $scope.unfinishedorderList = [];
@@ -648,7 +660,7 @@ angular.module('starter.controllers', [])
     }
 
     //关闭订单
-    $scope.closeOrder = function (djno) {
+    $rootScope.closeOrder = function (djno) {
       event.preventDefault();
       CommonService.showConfirm('操作提示', '您是否要关闭此订单?"是"点击"确定",否则请点击"取消"', '确定', '取消', '', 'close', function () {
         OrderService.cancelDengJiOrder({djno: djno}).success(function (data) {
@@ -732,8 +744,31 @@ angular.module('starter.controllers', [])
     }
 
   })
-  //我的订单详情页面
+  //我的回收订单详情页面
   .controller('OrderDetailsCtrl', function ($scope, $stateParams, CommonService, OrderService) {
+    OrderService.getDengJiDetail({djno: $stateParams.no}).success(function (data) {
+      console.log(data);
+      if (data.code == 1001) {
+        $scope.orderDetail = data.data;
+      } else {
+        CommonService.platformPrompt("获取回收单详情失败", "close");
+      }
+
+    }).then(function () {
+      //获取评论内容
+      OrderService.getComment({djno: $stateParams.no}).success(function (data) {
+        console.log(data);
+        if (data.code == 1001) {
+          $scope.commentInfo = data.data;
+        } else {
+          CommonService.platformPrompt("获取评论内容失败", "close");
+        }
+      })
+    })
+  })
+
+  //我的订单详情页面
+  .controller('MyOrderDetailsCtrl', function ($scope, $stateParams, CommonService, OrderService) {
     OrderService.getDengJiDetail({djno: $stateParams.no}).success(function (data) {
       console.log(data);
       if (data.code == 1001) {
@@ -742,6 +777,16 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt("获取订单详情失败", "close");
       }
 
+    }).then(function () {
+      //获取评论内容
+      OrderService.getComment({djno: $stateParams.no}).success(function (data) {
+        console.log(data);
+        if (data.code == 1001) {
+          $scope.commentInfo = data.data;
+        } else {
+          CommonService.platformPrompt("获取评论内容失败", "close");
+        }
+      })
     })
 
   })
@@ -838,7 +883,7 @@ angular.module('starter.controllers', [])
   })
 
   //我的设置页面
-  .controller('AccountCtrl', function ($scope, $rootScope,BoRecycle, CommonService, AccountService, WeiXinService) {
+  .controller('AccountCtrl', function ($scope, $rootScope, BoRecycle, CommonService, AccountService, WeiXinService) {
     //是否登录
     if (!CommonService.isLogin(true)) {
       return;
@@ -867,7 +912,7 @@ angular.module('starter.controllers', [])
       }
       //调用分享面板
       $scope.shareActionSheet = function (type) {
-        CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract,  BoRecycle.mobApi + '/help/22', '', type);
+        CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract, BoRecycle.mobApi + '/help/22', '', type);
       }
     })
 
@@ -1357,7 +1402,7 @@ angular.module('starter.controllers', [])
         }
         //调用分享面板
         $scope.shareActionSheet = function (type) {
-          CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract,  BoRecycle.mobApi + '/help/' + id, '', type);
+          CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract, BoRecycle.mobApi + '/help/' + id, '', type);
         }
       })
     }

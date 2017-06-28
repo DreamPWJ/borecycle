@@ -6,33 +6,50 @@
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 评价</h1>
   </ion-nav-title>
   <form name="evaluate">
-    <ion-content overflow-scroll="false" class="has-button-footer stable-bg" has-bouncing="true">
-      <div class="list padding-top ">
-        <!--      <a ng-href="" class="item item-thumbnail-left ">
-                <img ng-src="{{evaluateuserinfo.figure}}" class="border-radius-50" alt="">
-                <h2 class="padding-top">{{evaluateuserinfo.username}}</h2>
-                <p>{{evaluateuserinfo.mobile}} </p>
-                <p >信用等级 :
-                  <i ng-class="{true:'positive',false:'grey'}[evaluateuserinfo.score>=0]"   class="icon ion-star"></i>
-                  <i ng-class="{true:'positive',false:'grey'}[evaluateuserinfo.score>198]" class="icon ion-star"></i>
-                  <i ng-class="{true:'positive',false:'grey'}[evaluateuserinfo.score>396]" class="icon ion-star "></i>
-                  <i ng-class="{true:'positive',false:'grey'}[evaluateuserinfo.score>594]" class="icon ion-star "></i>
-                  <i ng-class="{true:'positive',false:'grey'}[evaluateuserinfo.score>792]" class="icon ion-star "></i></p>
-
-              </a>-->
-        <p></p>
-        <ion-item ng-repeat="item in evaluatelist">{{item.Name}} <span class="padding-left  evaluate-star">
-        <i class="icon ion-star  " ng-class="{true:'positive',false:'grey'}[evaluateinfo.star[$index]>=1]"
+    <ion-content overflow-scroll="false" id="evaluate" class="has-button-footer stable-bg" has-bouncing="true">
+      <div class="list ">
+        <div class="item">综合评价 <span class="padding-left  evaluate-star">
+        <i class="iconfont icon-favorfill  " ng-class="{true:'energized',false:'grey'}[evaluateinfo.star[$index]>=1]"
            ng-click="evaluatestar($index,1)"></i>
-        <i class="icon ion-star " ng-class="{true:'positive',false:'grey'}[evaluateinfo.star[$index]>=2]"
+        <i class="iconfont icon-favorfill " ng-class="{true:'energized',false:'grey'}[evaluateinfo.star[$index]>=2]"
            ng-click="evaluatestar($index,2)"></i>
-        <i class="icon ion-star " ng-class="{true:'positive',false:'grey'}[evaluateinfo.star[$index]>=3]"
+        <i class="iconfont icon-favorfill " ng-class="{true:'energized',false:'grey'}[evaluateinfo.star[$index]>=3]"
            ng-click="evaluatestar($index,3)"></i>
-        <i class="icon ion-star " ng-class="{true:'positive',false:'grey'}[evaluateinfo.star[$index]>=4]"
+        <i class="iconfont icon-favorfill " ng-class="{true:'energized',false:'grey'}[evaluateinfo.star[$index]>=4]"
            ng-click="evaluatestar($index,4)"></i>
-        <i class="icon ion-star " ng-class="{true:'positive',false:'grey'}[evaluateinfo.star[$index]>=5]"
+        <i class="iconfont icon-favorfill " ng-class="{true:'energized',false:'grey'}[evaluateinfo.star[$index]>=5]"
            ng-click="evaluatestar($index,5)"></i>
-      </span></ion-item>
+      </span></div>
+        <div class="item  ">
+          <span class="input-label "> 服务态度</span>
+          <ion-checkbox class="item-borderless checkbox-positive" ng-checked="evaluateinfo.service==0"
+                        ng-click="evaluateinfo.service=0">
+            满意
+          </ion-checkbox>
+          <ion-checkbox class="item-borderless checkbox-positive" ng-checked="evaluateinfo.service==1"
+                        ng-click="evaluateinfo.service=1">
+            一般
+          </ion-checkbox>
+          <ion-checkbox class="item-borderless checkbox-positive" ng-checked="evaluateinfo.service==2"
+                        ng-click="evaluateinfo.service=3">
+            差
+          </ion-checkbox>
+        </div>
+        <div class="item  ">
+          <span class="input-label "> 交易价格</span>
+          <ion-checkbox class="item-borderless checkbox-positive" ng-checked="evaluateinfo.service==0"
+                        ng-click="evaluateinfo.service=0">
+            合理
+          </ion-checkbox>
+          <ion-checkbox class="item-borderless checkbox-positive" ng-checked="evaluateinfo.service==1"
+                        ng-click="evaluateinfo.service=1">
+            一般
+          </ion-checkbox>
+          <ion-checkbox class="item-borderless checkbox-positive" ng-checked="evaluateinfo.service==2"
+                        ng-click="evaluateinfo.service=3">
+            低
+          </ion-checkbox>
+        </div>
         <p></p>
         <label class="item item-input item-borderless">
           <textarea rows="5" ng-model="evaluateinfo.Memo" placeholder="请填写评价内容" ng-maxlength="300" required></textarea>

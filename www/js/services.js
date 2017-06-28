@@ -49,7 +49,7 @@ angular.module('starter.services', [])
           okText: okText,
           cancelText: cancelText,
           okType: 'button-positive',
-          cancelType: 'button-energized'
+          cancelType: 'button-balanced'
         });
 
         confirmPopup.then(function (res) {
