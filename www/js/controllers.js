@@ -465,38 +465,48 @@ angular.module('starter.controllers', [])
 
   })
 
-  //我的订单页面
+  //我的回收订单页面
   .controller('OrderCtrl', function ($scope, $state, CommonService, OrderService, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
     //是否登录
     if (!CommonService.isLogin(true)) {
       return;
     }
 
-    $scope.dengJiList = [];
+    $scope.orderList = [];
     $scope.page = 0;
     $scope.total = 1;
-    $scope.getDengJiList = function () { ////查询登记信息/货源信息分页列
+    $scope.getOrderList = function () { //查询登记信息/货源信息分页列
       if (arguments != [] && arguments[0] == 0) {
         $scope.page = 0;
-        $scope.dengJiList = [];
+        $scope.orderList = [];
       }
       $scope.page++;
       $scope.params = {
         page: $scope.page,//页码
-        size: 5,//条数
-        userid: localStorage.getItem("userid")//用户id
+        size: 5//条数
       }
-      OrderService.getDengJiList($scope.params).success(function (data) {
+      $scope.datas = {
+        DJNo: "",//登记单号(可为空)
+        Type: 1,//类型1.登记信息 2.登记货源(可为空)
+        userid: localStorage.getItem("userid"),//用户userid
+        Category: "",//货物品类 多个用逗号隔开(可为空)
+        HYType: "",//货物类别 0.未区分 1废料 2二手(可为空)
+        State: "",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
+        longt: "", //当前经度（获取距离）(可为空)
+        lat: "",//当前纬度（获取距离）(可为空)
+        expiry: ""//小时 取预警数据 订单预警数据（24小时截至马上过期的（expiry=3表示取3小时内）
+      }
+      OrderService.getDengJiList($scope.params, $scope.datas).success(function (data) {
         console.log(data);
         $scope.isNotData = false;
-        if (data == null || data.data.data_list == null) {
+        if (data.data == null) {
           $scope.isNotData = true;
-          return
+          return;
         }
         angular.forEach(data.data.data_list, function (item) {
-          $scope.dengJiList.push(item);
+          $scope.orderList.push(item);
         })
-        $scope.total = data.total_count;
+        $scope.total = data.data.page_count;
         $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
@@ -504,7 +514,7 @@ angular.module('starter.controllers', [])
       })
     }
 
-    $scope.getDengJiList(0);////查询登记信息/货源信息分页列刷新
+    $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
 
     $scope.tabIndex = 0;//当前tabs页
     //左右滑动列表
@@ -516,7 +526,7 @@ angular.module('starter.controllers', [])
     $scope.selectedTab = function (index) {
       $scope.tabIndex = index;
       //滑动的索引和速度
-      $ionicSlideBoxDelegate.$getByHandle("slidebox-myorderlist").slide(index)
+      $ionicSlideBoxDelegate.$getByHandle("slidebox-orderlist").slide(index)
     }
 
     //联系他
@@ -539,6 +549,152 @@ angular.module('starter.controllers', [])
 
   })
 
+
+  //我的订单页面
+  .controller('MyOrderCtrl', function ($scope, $state, CommonService, OrderService, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
+
+    $scope.orderList = [];
+    $scope.page = 0;
+    $scope.total = 1;
+    $scope.getOrderList = function () { //查询登记信息/货源信息分页列
+      if (arguments != [] && arguments[0] == 0) {
+        $scope.page = 0;
+        $scope.orderList = [];
+      }
+      $scope.page++;
+      $scope.params = {
+        page: $scope.page,//页码
+        size: 5//条数
+      }
+      $scope.datas = {
+        DJNo: "",//登记单号(可为空)
+        Type: 1,//类型1.登记信息 2.登记货源(可为空)
+        userid: localStorage.getItem("userid"),//用户userid
+        Category: "",//货物品类 多个用逗号隔开(可为空)
+        HYType: "",//货物类别 0.未区分 1废料 2二手(可为空)
+        State: "",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
+        longt: "", //当前经度（获取距离）(可为空)
+        lat: "",//当前纬度（获取距离）(可为空)
+        expiry: ""//小时 取预警数据 订单预警数据（24小时截至马上过期的（expiry=3表示取3小时内）
+      }
+      OrderService.getDengJiList($scope.params, $scope.datas).success(function (data) {
+        console.log(data);
+        $scope.isNotData = false;
+        if (data.data == null) {
+          $scope.isNotData = true;
+          return;
+        }
+        angular.forEach(data.data.data_list, function (item) {
+          $scope.orderList.push(item);
+        })
+        $scope.total = data.data.page_count;
+        $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
+      }).finally(function () {
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+      })
+    }
+
+    $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
+
+    $scope.tabIndex = 0;//当前tabs页
+    //左右滑动列表
+    $scope.slideChanged = function (index) {
+      $scope.tabIndex = index;
+      // $scope.getOrdersList(0); //获取订单数据
+    };
+    //点击选项卡
+    $scope.selectedTab = function (index) {
+      $scope.tabIndex = index;
+      //滑动的索引和速度
+      $ionicSlideBoxDelegate.$getByHandle("slidebox-myorderlist").slide(index)
+    }
+
+    //关闭订单
+    $scope.closeOrder = function (djno) {
+      event.preventDefault();
+      CommonService.showConfirm('操作提示', '您是否要关闭此订单?"是"点击"确定",否则请点击"取消"', '确定', '取消', '', 'close', function () {
+        OrderService.cancelDengJiOrder({djno: djno}).success(function (data) {
+          console.log(data);
+          if (data.code == 1001) {
+            $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
+            CommonService.platformPrompt("订单关闭成功", "close")
+          } else {
+            CommonService.platformPrompt("订单关闭失败", "close")
+          }
+        })
+      });
+    }
+
+  })
+
+  //我的订单预警页面
+  .controller('OrderWarningCtrl', function ($scope, $state, CommonService, OrderService, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
+
+    $scope.orderList = [];
+    $scope.page = 0;
+    $scope.total = 1;
+    $scope.getOrderList = function () { //查询登记信息/货源信息分页列
+      if (arguments != [] && arguments[0] == 0) {
+        $scope.page = 0;
+        $scope.orderList = [];
+      }
+      $scope.page++;
+      $scope.params = {
+        page: $scope.page,//页码
+        size: 5//条数
+      }
+      $scope.datas = {
+        DJNo: "",//登记单号(可为空)
+        Type: 1,//类型1.登记信息 2.登记货源(可为空)
+        userid: localStorage.getItem("userid"),//用户userid
+        Category: "",//货物品类 多个用逗号隔开(可为空)
+        HYType: "",//货物类别 0.未区分 1废料 2二手(可为空)
+        State: "",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
+        longt: "", //当前经度（获取距离）(可为空)
+        lat: "",//当前纬度（获取距离）(可为空)
+        expiry: ""//小时 取预警数据 订单预警数据（24小时截至马上过期的（expiry=3表示取3小时内）
+      }
+      OrderService.getDengJiList($scope.params, $scope.datas).success(function (data) {
+        console.log(data);
+        $scope.isNotData = false;
+        if (data.data == null) {
+          $scope.isNotData = true;
+          return;
+        }
+        angular.forEach(data.data.data_list, function (item) {
+          $scope.orderList.push(item);
+        })
+        $scope.total = data.data.page_count;
+        $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
+      }).finally(function () {
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+      })
+    }
+
+    $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
+
+
+    //联系他
+    $scope.relation = function (phonenumber) {
+      event.preventDefault();
+      window.open('tel:' + phonenumber);
+    }
+
+    //回收
+    $scope.recycle = function () {
+      event.preventDefault();
+      $state.go("recycleorder")
+    }
+
+    //导航
+    $scope.navigation = function () {
+      event.preventDefault();
+      $state.go("navigation")
+    }
+
+  })
   //我的订单详情页面
   .controller('OrderDetailsCtrl', function ($scope, CommonService) {
 
@@ -616,7 +772,7 @@ angular.module('starter.controllers', [])
         angular.forEach(data.data.data_list, function (item) {
           $scope.newsList.push(item);
         })
-        $scope.total = data.total_count;
+        $scope.total = data.data.page_count;
         $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
@@ -1279,11 +1435,12 @@ angular.module('starter.controllers', [])
       })
       $scope.dengji.type = 1;//类型 1.	登记信息 2.	登记货源
       $scope.dengji.hytype = 0;//物类别 0.未区分 1废料 2二手 (登记信息时为0)
-      $scope.dengji.logid = localStorage.getItem("userid");//登记人userid
+      $scope.dengji.userid = localStorage.getItem("userid");//登记人userid
       $scope.dengji.longitude = $scope.addrareacountyone.Lng || localStorage.getItem("longitude") || 0;//经度 默认为0   地址表里有经纬度值 如果没值现在的地区取经纬度
       $scope.dengji.latitude = $scope.addrareacountyone.Lat || localStorage.getItem("latitude") || 0;//纬度 默认为0 地址表里有经纬度值 如果没值现在的地区取经纬度
       $scope.dengji.category = $scope.recyclingCategoryName.join(",");//货物品类 多个用逗号隔开
       $scope.dengji.manufactor = manufactor.join(",");//单选
+      $scope.dengji.addrcode = $scope.addrareacountyone.ID;
       $scope.dengji.details = {};//添加登记货源时明细不能为空，添加登记信息时明细为空
 
       console.log($scope.dengji);
@@ -1291,7 +1448,12 @@ angular.module('starter.controllers', [])
       //添加登记信息/货源信息(添加登记货源时明细不能为空，添加登记信息时明细为空)
       OrderService.addDengJi($scope.dengji).success(function (data) {
         console.log(data);
-        CommonService.platformPrompt(data.message, 'order');
+        if (data.code == 1001) {
+          CommonService.platformPrompt("登记信息提交成功", 'myorder');
+        } else {
+          CommonService.platformPrompt("登记信息提交失败", 'close');
+        }
+
       })
 
     }

@@ -205,12 +205,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
       })
 
-      //我的订单页面
+      //我的回收订单页面
       .state('order', {
         url: '/order',
         cache: false,
         templateUrl: 'templates/order.html',
         controller: 'OrderCtrl'
+
+      })
+
+      //我的订单页面
+      .state('myorder', {
+        url: '/myorder',
+        cache: false,
+        templateUrl: 'templates/order/myorder.html',
+        controller: 'MyOrderCtrl'
 
       })
 
@@ -220,6 +229,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         cache: false,
         templateUrl: 'templates/order/orderdetails.html',
         controller: 'OrderDetailsCtrl'
+
+      })
+
+      //我的订单预警页面
+      .state('orderwarning', {
+        url: '/orderwarning',
+        cache: false,
+        templateUrl: 'templates/order/orderwarning.html',
+        controller: 'OrderWarningCtrl'
 
       })
 

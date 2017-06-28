@@ -117,6 +117,12 @@
   padding: 0;
 }
 
+.show-alert .button, .show-confirm .button {
+  bottom: -0.6rem;
+  height: 2.2rem !important;
+  min-height: 2.2rem !important;
+}
+
 /*修改覆盖ActionSheet框默认样式*/
 .action-s .button {
   color: #00ACFF;
