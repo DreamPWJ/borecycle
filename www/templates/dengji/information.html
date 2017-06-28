@@ -1,0 +1,81 @@
+<ion-view>
+  <ion-nav-buttons side="left">
+    <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back ng-click="$ionicGoBack()"></button>
+  </ion-nav-buttons>
+  <ion-nav-title>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 登记信息</h1>
+  </ion-nav-title>
+  <form name="informationForm">
+    <ion-content overflow-scroll="false" class="stable-bg has-button-footer" id="information">
+
+      <div class="list">
+        <div class="item text-wrap">
+          <span class="input-label icon ion-ios-color-filter-outline "> 货物品类</span>
+          <ion-checkbox ng-repeat="item in productList" class="item-borderless checkbox-positive"
+                        ng-click="checkChecded()"
+                        ng-model="item.checked">
+            {{item.name}}
+          </ion-checkbox>
+        </div>
+
+        <label class="item item-input">
+          <span class="input-label icon ion-ios-person-outline"> 联系人</span>
+          <input type="text" name="name" ng-model="dengji.name" placeholder="请输入联系人姓名" required/>
+        </label>
+        <label class="item item-input">
+          <span class="input-label icon ion-ios-telephone-outline"> 手机号码</span>
+          <input type="number" name="motel" ng-model="dengji.motel" check-form
+                 ng-blur="checkForm(dengji.motel,'手机号输入错误','mobilephone','')"
+                 maxlength="11" placeholder="请输入联系人手机号码" required/>
+        </label>
+
+
+        <label class="item item-input " ng-click="openModal()">
+          <span class="input-label icon ion-ios-location-outline"> 货源地址 </span>
+          <p class="{{addresspcd?'dark':'grey'}}">{{addresspcd?addresspcd:"请选择货源地址"}}</p>
+        </label>
+        <div class="item item-input ">
+          <span class="input-label icon ion-ios-location-outline"> 详细地址</span>
+          <textarea class="col-50" rows="1" ng-model="dengji.addrdetail" placeholder="输入街道门牌号等详细地址"
+          ></textarea>
+          <div class="positive padding-left" ng-click="location()"><i class="icon iconfont icon-locationfill"></i>定位
+          </div>
+
+        </div>
+
+        <div class="item text-wrap">
+                    <span class="input-label icon iconfont icon-changshang "
+                          style="font-size: 0.9rem!important;"> 所属厂商</span>
+          <ion-checkbox class="item-borderless checkbox-positive" ng-repeat="item in manufacteList"
+                        ng-model="item.checked" ng-change="multipleChoice(manufacteList,item)">
+            {{item.shortename}}
+          </ion-checkbox>
+
+        </div>
+        <div class="item text-wrap">
+                    <span class="input-label icon iconfont icon-xzcplx "
+                          style="font-size: 0.9rem!important;"> 活动类型</span>
+          <ion-checkbox class="item-borderless checkbox-positive" ng-checked="dengji.acttype==0"
+                        ng-click="dengji.acttype=0">
+            无
+          </ion-checkbox>
+          <ion-checkbox class="item-borderless checkbox-positive" ng-checked="dengji.acttype==1"
+                        ng-click="dengji.acttype=1">
+            以旧换新
+          </ion-checkbox>
+
+
+        </div>
+      </div>
+      <p></p>
+    </ion-content>
+    <div class="padding light-bg  bottom-0" keyboard-attach>
+      <button ng-disabled="!(informationForm.$valid&&verify&&ischecked&&addresspcd)"
+              class="button button-positive full-image "
+              ng-click="informationSubmit()">
+        提交
+      </button>
+    </div>
+  </form>
+</ion-view>
+

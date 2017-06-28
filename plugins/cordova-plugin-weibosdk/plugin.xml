@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  id="cordova-plugin-weibosdk"
+  version="0.5.8">
+
+  <name>cordova-plugin-weibosdk</name>
+  <description>A Cordova wrapper around the Sina WeiboSDK for Android and iOS. Provides access to ssoLogin, WeiboShating etc</description>
+  <license>MIT</license>
+  <keywords>Cordova,Weibo</keywords>
+  <repo>https://github.com/iVanPan/cordova_weibo.git</repo>
+  <issue>https://github.com/iVanPan/cordova_weibo/issues</issue>
+
+  <preference name="WEIBO_APP_ID" />
+  <!--require cordova version -->
+  <engines>
+    <engine name="cordova" version=">=3.5.0" />
+    <engine name="cordova-android" version=">=4.0.0" />
+    <engine name="cordova-ios" version=">=4.0.0" />
+  </engines>
+
+  <!-- js module-->
+  <js-module src="www/weibo.js" name="WeiboSDK">
+    <clobbers target="WeiboSDK" />
+  </js-module>
+
+  <!-- ios -->
+  <platform name="ios">
+    <config-file target="config.xml" parent="/*">
+      <feature name="WeiboSDK">
+        <param name="ios-package" value="CDVWeiboSDK"/>
+      </feature>
+     <access origin="http://*.weibo.cn" minimum-tls-version='TLSv1.0' requires-forward-secrecy='false'/>
+     <access origin="http://*.sina.cn" minimum-tls-version='TLSv1.0' requires-forward-secrecy='false'/>
+     <access origin="http://*.sinaimg.cn" minimum-tls-version='TLSv1.0' requires-forward-secrecy='false'/>
+     <access origin="http://*.weibo.com" minimum-tls-version='TLSv1.0' requires-forward-secrecy='false'/>
+     <access origin="http://*.sinajs.cn" minimum-tls-version='TLSv1.0' requires-forward-secrecy='false'/>
+     <access origin="http://*.sina.com.cn" minimum-tls-version='TLSv1.0' requires-forward-secrecy='false'/>
+     <preference name="WEIBO_APP_ID" value="$WEIBO_APP_ID"/>
+   </config-file>
+   <!--set ios URLTypes for Weibo -->
+   <config-file platform="ios" target="*-Info.plist" parent="CFBundleURLTypes">
+    <array>
+      <dict>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLName</key>
+        <string>$PACKAGE_NAME</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>wb$WEIBO_APP_ID</string>
+        </array>
+      </dict>
+    </array>
+  </config-file>
+  <!--scheme query whitlist-->
+  <config-file platform="ios" target="*-Info.plist" parent="LSApplicationQueriesSchemes">
+      <array>
+		    <string>sinaweibohd</string>
+		    <string>sinaweibo</string>
+		    <string>weibosdk</string>
+		    <string>weibosdk2.5</string>
+      </array>
+  </config-file>
+  <header-file src="src/ios/CDVWeiboSDK.h"/>
+  <source-file src="src/ios/CDVWeiboSDK.m"/>
+  <!-- Weibo sdk version 3.2.0 https://github.com/sinaweibosdk/weibo_ios_sdk -->
+  <header-file src="src/ios/libWeiboSDK/WBHttpRequest.h" />
+  <header-file src="src/ios/libWeiboSDK/WBHttpRequest+WeiboToken.h" />
+  <header-file src="src/ios/libWeiboSDK/WeiboSDK.h" />
+  <header-file src="src/ios/libWeiboSDK/WeiboSDK+Statistics.h" />
+  <source-file src="src/ios/libWeiboSDK/libWeiboSDK.a" framework="true"  compiler-flags="-objc"/>
+  <resource-file src="src/ios/libWeiboSDK/WeiboSDK.bundle" />
+
+  <!--required frameworks for weibo sdk-->
+  <framework src="QuartzCore.framework" />
+  <framework src="ImageIO.framework" />
+  <framework src="SystemConfiguration.framework" />
+  <framework src="Security.framework" />
+  <framework src="CoreTelephony.framework" />
+  <framework src="CoreText.framework" />
+  <framework src="Foundation.framework" />
+  <framework src="CoreGraphics.framework" />
+  <framework src="libz.tbd" />
+  <framework src="libsqlite3.tbd" />
+  <info>
+    1.安装完这个插件,请用 Xcode 打开工程,查看 URL Types 里面 Weibo 的 URL Type 有没有，如果没有请手动添加。
+    
+    1.after installing this plugin,check the URL Types in your Xcode project.If you don't find URL Types for weibosdk，manually add it.
+  </info>
+</platform>
+<!-- android -->
+<platform name="android">
+  <config-file target="res/xml/config.xml" parent="/*">
+    <feature name="WeiboSDK" >
+      <param name="android-package" value="me.vanpan.weibosdk.WeiboSDKPlugin"/>
+    </feature>
+    <access origin="https://open.weibo.cn/*" />
+    <access origin="https://login.sina.com.cn/*" />
+    <access origin="https://passport.weibo.cn/*"/>
+    <access origin="http://*.sinaimg.cn/*"/>
+    <access origin="https://api.weibo.com/*"/>
+    <preference name="WEIBO_APP_ID" value="$WEIBO_APP_ID"/>
+  </config-file>
+  <!-- android  uses-permission for weibo sdk-->
+  <config-file target="AndroidManifest.xml" parent="/manifest">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+  </config-file>
+
+  <source-file src="src/android/WeiboSDKPlugin.java" target-dir="src/me/vanpan/weibosdk" />
+  <!-- android weibo sdk version 4.0.0(2.0.3)  https://github.com/sinaweibosdk/weibo_android_sdk-->
+  <source-file src="src/android/libs/so/arm64-v8a/libweibosdkcore.so" target-dir="libs/arm64-v8a/"/>
+  <source-file src="src/android/libs/so/armeabi/libweibosdkcore.so" target-dir="libs/armeabi/"/>
+  <source-file src="src/android/libs/so/armeabi-v7a/libweibosdkcore.so" target-dir="libs/armeabi-v7a/"/>
+  <source-file src="src/android/libs/so/mips/libweibosdkcore.so" target-dir="libs/mips/"/>
+  <source-file src="src/android/libs/so/mips64/libweibosdkcore.so" target-dir="libs/mips64/"/>
+  <source-file src="src/android/libs/so/x86/libweibosdkcore.so" target-dir="libs/x86/"/>
+  <source-file src="src/android/libs/so/x86_64/libweibosdkcore.so" target-dir="libs/x86_64/"/>
+  <source-file src="src/android/libs/openDefault-2.0.3.aar" target-dir="libs/" />
+  <framework src="src/android/libs/WeiboSDKPlugin.gradle" custom="true" type="gradleReference" />
+</platform>
+</plugin>

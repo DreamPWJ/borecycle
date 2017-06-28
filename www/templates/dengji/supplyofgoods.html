@@ -1,0 +1,96 @@
+<ion-view>
+  <ion-nav-buttons side="left">
+    <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back ng-click="$ionicGoBack()"></button>
+  </ion-nav-buttons>
+  <ion-nav-title>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 登记货源</h1>
+  </ion-nav-title>
+
+  <form name="supplyofgoodsForm">
+    <ion-content overflow-scroll="false" class="stable-bg has-button-footer" id="supplyofgoods">
+      <ion-list hide-show>
+        <ion-item class="item-icon-left item-icon-right" ng-click="toggle(0)">
+          <i class="icon iconfont icon-xzcplx"></i>
+          选择品类
+          <i ng-class="{true:'ion-ios-arrow-right',false:'ion-ios-arrow-down'}[showme]"
+             class="icon iconfont "></i>
+        </ion-item>
+        <div ng-hide="showme" class="row row-center row-wrap text-center light-bg select-category ">
+          <label for="shouji" class="col-20"><i class="iconfont icon-shouji"></i>
+            <p>废旧手机</p>
+            <input type="checkbox" id="shouji">
+            <span></span>
+          </label>
+          <label for="dianshiji" class="col-20"><i class="iconfont icon-dianshiji"></i>
+            <p>电视机</p>
+            <input type="checkbox" id="dianshiji">
+            <span></span>
+          </label>
+          <label for="bingxiang" class="col-20"><i class="iconfont icon-bingxiang"></i>
+            <p>冰箱</p>
+            <input type="checkbox" id="bingxiang">
+            <span></span>
+          </label>
+          <label for="kongtiao" class="col-20"><i class="iconfont icon-kongtiao"></i>
+            <p>空调</p>
+            <input type="checkbox" id="kongtiao">
+            <span></span>
+          </label>
+          <label for="xiyiji" class="col-20"><i class="iconfont icon-xiyiji"></i>
+            <p>洗衣机</p>
+            <input type="checkbox" id="xiyiji">
+            <span></span>
+          </label>
+          <label for="taishi" class="col-20"><i class="iconfont icon-diannao-taishi"></i>
+            <p>台式电脑</p>
+            <input type="checkbox" id="taishi">
+            <span></span>
+          </label>
+          <label for="bijibendiannao" class="col-20"><i class="iconfont icon-bijibendiannao"></i>
+            <p>笔记本</p>
+            <input type="checkbox" id="bijibendiannao">
+            <span></span>
+          </label>
+        </div>
+        <p></p>
+
+        <ion-item class="item-icon-left item-icon-right item-borderless" ng-click="toggle(1)">
+          <i class="icon iconfont icon-edit"></i>
+          录入数量
+          <i ng-class="{true:'ion-ios-arrow-right',false:'ion-ios-arrow-down'}[showme1]"
+             class="icon iconfont "></i>
+        </ion-item>
+        <div ng-hide="showme1">
+          <ion-item class="item-icon-left">
+            <i class="icon iconfont icon-shouji"></i>
+            手机 <span>废品 :</span> <input type="number" name="a" ng-model="a" class="col-25"
+                                        style="display: inline-block;" placeholder="请输入数量" required/>
+            <span>二手 :</span> <input type="number" name="a" ng-model="a" class="col-25"
+                                     style="display: inline-block;" placeholder="请输入数量" required/>
+          </ion-item>
+          <ion-item class="item-icon-left">
+            <i class="icon iconfont icon-dianshiji"></i>
+            电视 <span>废品 :</span> <input type="number" name="a" ng-model="a" class="col-25"
+                                        style="display: inline-block;" placeholder="请输入数量" required/>
+            <span>二手 :</span> <input type="number" name="a" ng-model="a" class="col-25"
+                                     style="display: inline-block;" placeholder="请输入数量" required/>
+          </ion-item>
+          <ion-item class="item-icon-left">
+            <i class="icon iconfont icon-bingxiang"></i>
+            冰箱 <span>废品 :</span> <input type="number" name="a" ng-model="a" class="col-25"
+                                        style="display: inline-block;" placeholder="请输入数量" required/>
+            <span>二手 :</span> <input type="number" name="a" ng-model="a" class="col-25"
+                                     style="display: inline-block;" placeholder="请输入数量" required/>
+          </ion-item>
+        </div>
+      </ion-list>
+      <p></p>
+    </ion-content>
+    <div class="padding light-bg  bottom-0" keyboard-attach>
+      <button ng-disabled="!supplyofgoodsForm.$valid" class="button button-positive full-image " ng-click="">
+        提交
+      </button>
+    </div>
+  </form>
+</ion-view>
+

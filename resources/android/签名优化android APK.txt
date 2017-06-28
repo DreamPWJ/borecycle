@@ -19,4 +19,4 @@ Theme.Light.NoTitleBar.Fullscreen
 cordova plugin add https://github.com/iVanPan/Cordova_QQ.git --variable QQ_APP_ID=1106251722
 
 #微博
-cordova plugin add https://github.com/iVanPan/cordova_weibo.git --variable WEIBO_APP_ID=YOUR_WEIBO_APPID
+cordova plugin add https://github.com/iVanPan/cordova_weibo.git --variable WEIBO_APP_ID=2892785162

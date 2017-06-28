@@ -223,21 +223,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
       })
 
-      //我的订单详情页面
-      .state('orderdetails', {
-        url: '/orderdetails',
-        cache: false,
-        templateUrl: 'templates/order/orderdetails.html',
-        controller: 'OrderDetailsCtrl'
-
-      })
-
       //我的订单预警页面
       .state('orderwarning', {
         url: '/orderwarning',
         cache: false,
         templateUrl: 'templates/order/orderwarning.html',
         controller: 'OrderWarningCtrl'
+
+      })
+
+      //我的订单详情页面
+      .state('orderdetails', {
+        url: '/orderdetails/:no',
+        cache: false,
+        templateUrl: 'templates/order/orderdetails.html',
+        controller: 'OrderDetailsCtrl'
 
       })
 
@@ -411,7 +411,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       .state('information', {
         url: '/information',
         cache: false,
-        templateUrl: 'templates/checkin/information.html',
+        templateUrl: 'templates/dengji/information.html',
         controller: 'InformationCtrl'
       })
 
@@ -419,10 +419,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       .state('supplyofgoods', {
         url: '/supplyofgoods',
         cache: false,
-        templateUrl: 'templates/checkin/supplyofgoods.html',
+        templateUrl: 'templates/dengji/supplyofgoods.html',
         controller: 'SupplyOfGoodsCtrl'
       })
 
+      //评论页面
+      .state('evaluate', {
+        url: '/evaluate/:no/:type',
+        cache: false,
+        templateUrl: 'templates/dengji/evaluate.html',
+        controller: 'EvaluateCtrl'
+      })
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/tab/main');
 
