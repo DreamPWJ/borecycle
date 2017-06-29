@@ -249,6 +249,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'MyOrderDetailsCtrl'
 
       })
+
       //我的回收录单页面
       .state('recycleorder', {
         url: '/recycleorder',
@@ -437,6 +438,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         cache: false,
         templateUrl: 'templates/dengji/evaluate.html',
         controller: 'EvaluateCtrl'
+      })
+
+      //付款页面
+      .state('payment', {
+        url: '/payment',
+        cache: false,
+        templateUrl: 'templates/orderreceipt/payment.html',
+        controller: 'PaymentCtrl'
       })
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/tab/main');

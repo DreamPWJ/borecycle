@@ -925,7 +925,7 @@ angular.module('starter.services', [])
         });
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       },
-      getDefualtAddr: function (params) { //根据ID获取默认交易地址
+      getDefualtAddrByID: function (params) { //根据ID获取默认交易地址
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise;
         promise = $http({

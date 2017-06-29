@@ -779,14 +779,14 @@ angular.module('starter.controllers', [])
 
     }).then(function () {
       //获取评论内容
-      OrderService.getComment({djno: $stateParams.no}).success(function (data) {
-        console.log(data);
-        if (data.code == 1001) {
-          $scope.commentInfo = data.data;
-        } else {
-          CommonService.platformPrompt("获取评论内容失败", "close");
-        }
-      })
+      /*      OrderService.getComment({djno: $stateParams.no}).success(function (data) {
+       console.log(data);
+       if (data.code == 1001) {
+       $scope.commentInfo = data.data;
+       } else {
+       CommonService.platformPrompt("获取评论内容失败", "close");
+       }
+       })*/
     })
 
   })
@@ -1517,7 +1517,7 @@ angular.module('starter.controllers', [])
         }
       }
 
-      var manufactor = [];//货物品类 多个用逗号隔开
+      var manufactor = [];//厂商 单选
       angular.forEach($scope.manufacteList, function (item) {
         if (item.checked) {
           manufactor.push(item.id);
@@ -1550,44 +1550,151 @@ angular.module('starter.controllers', [])
   })
 
   //登记货源
-  .controller('SupplyOfGoodsCtrl', function ($scope, CommonService) {
+  .controller('SupplyOfGoodsCtrl', function ($scope, CommonService, OrderService, AddressService) {
     //是否登录
     if (!CommonService.isLogin(true)) {
       return;
     }
+    $scope.productLists = [];//产品品类
+    //获取产品品类
+    OrderService.getProductList({ID: "", Name: ""}).success(function (data) {
+      console.log(data);
+      if (data.code == 1001) {
+        $scope.productList = data.data;
+      } else {
+        CommonService.platformPrompt("获取产品品类失败", 'close');
+      }
+    }).then(function () {
+      angular.forEach($scope.productList, function (item) { //根据产品品类及是否统货取产品列表(最新报价)
+        OrderService.getProductListIsth({grpid: item.grpid, isth: 1}).success(function (data) {
+          console.log(data);
+          if (data.code == 1001) {
+            var items = item;
+            items.details = data.data;
+            $scope.productLists.push(items);
+          }
+        })
+      })
+      $scope.productList = $scope.productLists;
+      $scope.checkChecded = function () {
+        CommonService.checkChecded($scope, $scope.productList);
+        $scope.recyclingCategoryName = [];//回收品类名字数组
+        angular.forEach($scope.productList, function (item) {
+          if (item.checked) {
+            $scope.recyclingCategoryName.push(item.name);
+          }
+        })
+
+      }
+
+    })
+
+
+    //登记货源提交
+    $scope.supplyofgoodsSubmit = function () {
+      console.log($scope.productList);
+      //获取当前用户默认地址
+      AddressService.getDefualtAddr({userid: localStorage.getItem("userid")}).success(function (data) {
+        console.log(data);
+        if (data.code == 1001) {
+          $scope.address = data.data;
+        } else {
+          CommonService.platformPrompt("获取默认地址失败", 'close');
+        }
+      }).then(function () {
+        $scope.supplyofgoods = [];//要提交的json数组
+        $scope.wastenumdetails = [];//废旧数据详情
+        $scope.secondhandnumdetails = [];//二手数据详情
+        var user = JSON.parse(localStorage.getItem("user"));
+
+        //获取废旧和二手 填写的num数据
+        angular.forEach($scope.productList, function (item) {
+          if (item.checked) {//选中的品类
+            angular.forEach(item.details, function (itemitem) {
+              if (itemitem.wastenum) { //废旧数据
+                $scope.wastenumdetails.push({
+                  num: itemitem.wastenum,
+                  grpid: itemitem.grpid,
+                  proid: itemitem.id,
+                  proname: itemitem.name + itemitem.type + itemitem.size,
+                  unit: itemitem.unit
+                })
+              }
+              if (itemitem.secondhandnum) { //二手数据
+                $scope.secondhandnumdetails.push({
+                  num: itemitem.secondhandnum,
+                  grpid: itemitem.grpid,
+                  proid: itemitem.id,
+                  proname: itemitem.name + itemitem.type + itemitem.size,
+                  unit: itemitem.unit
+                })
+              }
+            })
+          }
+        })
+        for (var i = 0; i < 2; i++) { //两次循环
+          var items = {};
+          items.type = 2;//类型 1.	登记信息 2.	登记货源
+          items.userid = localStorage.getItem("userid");//登记人userid
+          items.name = user.username;//登记人姓名
+          items.motel = user.mobile;//登记人电话
+          items.longitude = $scope.address.Lng || localStorage.getItem("longitude") || 0;//经度 默认为0   地址表里有经纬度值 如果没值现在的地区取经纬度
+          items.latitude = $scope.address.Lat || localStorage.getItem("latitude") || 0;//纬度 默认为0 地址表里有经纬度值 如果没值现在的地区取经纬度
+          items.category = $scope.recyclingCategoryName.join(",");//货物品类 多个用逗号隔开
+          items.manufactor = "";//单选 登记货源是空
+          items.addrcode = $scope.address.ID;//地址id
+          items.addrdetail = $scope.address.AddrDetail;//详细地址
+          items.hytype = i == 0 ? 1 : 2;//货物类别 0.未区分 1废料 2二手 (登记信息时为0)
+          items.details = i == 0 ? $scope.wastenumdetails : $scope.secondhandnumdetails;//登记货源明细数据数组
+          $scope.supplyofgoods.push(items)
+        }
+
+        console.log(JSON.stringify($scope.supplyofgoods));
+
+        //添加登记信息/货源信息(添加登记货源时明细不能为空，添加登记信息时明细为空)
+        OrderService.addDengJi($scope.supplyofgoods).success(function (data) {
+          console.log(data);
+          if (data.code == 1001) {
+            CommonService.platformPrompt("登记货源提交成功", 'myorder');
+          } else {
+            CommonService.platformPrompt("登记货源提交失败", 'close');
+          }
+
+        })
+      })
+    }
+
 
   })
 
   //添加评论页面
   .controller('EvaluateCtrl', function ($scope, $rootScope, $stateParams, CommonService, OrderService) {
     $scope.evaluateinfo = {};//评论信息
-    $scope.evaluateinfo.star = [];//评分数组
-    $scope.evaluatestar = function (index, stars) {
-      $scope.evaluateinfo.star[index] = stars;
+    $scope.evaluateinfo.star = 5;//评分数  默认
+    $scope.evaluateinfo.service = 1;//服务态度 默认
+    $scope.evaluateinfo.tranprice = 1;//交易价格 默认
+    $scope.evaluatestar = function (stars) {
+      $scope.evaluateinfo.star = stars;
     };
 
     //提交评论
     $scope.submitevalute = function () {
-      $scope.EIIDList = [];//评价属性ID数组
-      $scope.EINameList = [];//评价名称数组
-      angular.forEach($scope.evaluatelist, function (item, index) {
-        $scope.EIIDList.push(item.ID);
-        $scope.EINameList.push(item.Name)
-      })
+
       //查单 添加评价
       $scope.datas = {
         id: "",//编号
         djno: $stateParams.no,//登记单号
         type: $stateParams.type,//订单类型 1-	登记信息 2-	登记货源
         userid: localStorage.getItem("userid"),//评论人
-        score: "",//综合评分 1．1颗星 5. 5颗星（默认）
-        service: "",//服务态度 1．	满意（默认） 2．	一般3．	差
-        tranprice: "",//交易价格 1．	合理（默认） 2．	一般3．	差
+        score: $scope.evaluateinfo.star,//综合评分 1．1颗星 5. 5颗星（默认）
+        service: $scope.evaluateinfo.service,//服务态度 1．	满意（默认） 2．	一般3．	差
+        tranprice: $scope.evaluateinfo.tranprice,//交易价格 1．	合理（默认） 2．	一般3．	差
         updatetime: "",//最后修改时间
-        remark: ""
+        remark: $scope.evaluateinfo.remark
       }
 
       OrderService.addComment($scope.datas).success(function (data) {
+        console.log(data);
         if (data.code == 1001) {
           CommonService.platformPrompt('恭喜您 评价成功', '');
         } else {
@@ -1596,4 +1703,10 @@ angular.module('starter.controllers', [])
 
       })
     }
+
+
+  })
+  //付款页面
+  .controller('PaymentCtrl', function ($scope, $stateParams, CommonService, OrderService) {
+
   })

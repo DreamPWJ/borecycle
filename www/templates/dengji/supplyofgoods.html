@@ -16,39 +16,10 @@
              class="icon iconfont "></i>
         </ion-item>
         <div ng-hide="showme" class="row row-center row-wrap text-center light-bg select-category ">
-          <label for="shouji" class="col-20"><i class="iconfont icon-shouji"></i>
-            <p>废旧手机</p>
-            <input type="checkbox" id="shouji">
-            <span></span>
-          </label>
-          <label for="dianshiji" class="col-20"><i class="iconfont icon-dianshiji"></i>
-            <p>电视机</p>
-            <input type="checkbox" id="dianshiji">
-            <span></span>
-          </label>
-          <label for="bingxiang" class="col-20"><i class="iconfont icon-bingxiang"></i>
-            <p>冰箱</p>
-            <input type="checkbox" id="bingxiang">
-            <span></span>
-          </label>
-          <label for="kongtiao" class="col-20"><i class="iconfont icon-kongtiao"></i>
-            <p>空调</p>
-            <input type="checkbox" id="kongtiao">
-            <span></span>
-          </label>
-          <label for="xiyiji" class="col-20"><i class="iconfont icon-xiyiji"></i>
-            <p>洗衣机</p>
-            <input type="checkbox" id="xiyiji">
-            <span></span>
-          </label>
-          <label for="taishi" class="col-20"><i class="iconfont icon-diannao-taishi"></i>
-            <p>台式电脑</p>
-            <input type="checkbox" id="taishi">
-            <span></span>
-          </label>
-          <label for="bijibendiannao" class="col-20"><i class="iconfont icon-bijibendiannao"></i>
-            <p>笔记本</p>
-            <input type="checkbox" id="bijibendiannao">
+          <label ng-repeat="item in productList" ng-click="checkChecded()" for="{{item.imgurl}}" class="col-20"><i
+            class="iconfont {{item.imgurl}}"></i>
+            <p>{{item.name}}</p>
+            <input type="checkbox" id="{{item.imgurl}}" ng-model="item.checked">
             <span></span>
           </label>
         </div>
@@ -61,33 +32,25 @@
              class="icon iconfont "></i>
         </ion-item>
         <div ng-hide="showme1">
-          <ion-item class="item-icon-left">
-            <i class="icon iconfont icon-shouji"></i>
-            手机 <span>废品 :</span> <input type="number" name="a" ng-model="a" class="col-25"
-                                        style="display: inline-block;" placeholder="请输入数量" required/>
-            <span>二手 :</span> <input type="number" name="a" ng-model="a" class="col-25"
-                                     style="display: inline-block;" placeholder="请输入数量" required/>
+          <ion-item ng-repeat="item in productList" ng-if="item.checked">
+            <div>
+              <i class="icon iconfont {{item.imgurl}}"></i> {{item.name}}
+            </div>
+            <div class="row" ng-repeat="items in item.details">
+            <span class="col-50">{{items.name}}废品 : <input type="number" ng-model="items.wastenum"
+                                                           style="display: inline-block;" placeholder="废品数量"/></span>
+              <span class="col-50">{{items.name}}二手 : <input type="number" ng-model="items.secondhandnum"
+                                                             style="display: inline-block;" placeholder="二手数量"/></span>
+            </div>
           </ion-item>
-          <ion-item class="item-icon-left">
-            <i class="icon iconfont icon-dianshiji"></i>
-            电视 <span>废品 :</span> <input type="number" name="a" ng-model="a" class="col-25"
-                                        style="display: inline-block;" placeholder="请输入数量" required/>
-            <span>二手 :</span> <input type="number" name="a" ng-model="a" class="col-25"
-                                     style="display: inline-block;" placeholder="请输入数量" required/>
-          </ion-item>
-          <ion-item class="item-icon-left">
-            <i class="icon iconfont icon-bingxiang"></i>
-            冰箱 <span>废品 :</span> <input type="number" name="a" ng-model="a" class="col-25"
-                                        style="display: inline-block;" placeholder="请输入数量" required/>
-            <span>二手 :</span> <input type="number" name="a" ng-model="a" class="col-25"
-                                     style="display: inline-block;" placeholder="请输入数量" required/>
-          </ion-item>
+
         </div>
       </ion-list>
       <p></p>
     </ion-content>
     <div class="padding light-bg  bottom-0" keyboard-attach>
-      <button ng-disabled="!supplyofgoodsForm.$valid" class="button button-positive full-image " ng-click="">
+      <button ng-disabled="!(supplyofgoodsForm.$valid&&ischecked)" class="button button-positive full-image "
+              ng-click="supplyofgoodsSubmit()">
         提交
       </button>
     </div>
