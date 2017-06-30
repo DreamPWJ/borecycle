@@ -255,7 +255,7 @@
 .tool-tip {
   position: fixed;
   z-index: 10000;
-  top: 55px;
+  top: 60px;
   width: 100%;
   text-align: center;
   animation: tooltipmessage 3s;
@@ -270,16 +270,18 @@
   background-color: #ef473a;
   color: #ffffff;
   text-align: center;
-  padding: 0.3rem 1.2rem;
-  border-radius: 0.8rem;
+  padding: 0.5rem 1.5rem;
+  border-radius: 1.2rem;
+  box-shadow: 1px 1px 2px rgba(136, 136, 136, 0.5);
 }
 
 .tool-tip-message-success {
   background-color: #33cd5f;
   color: #ffffff;
   text-align: center;
-  padding: 0.3rem 1.2rem;
-  border-radius: 0.8rem;
+  padding: 0.5rem 1.5rem;
+  border-radius: 1.2rem;
+  box-shadow: 1px 1px 2px rgba(136, 136, 136, 0.5);
 }
 
 @-webkit-keyframes tooltipmessage {

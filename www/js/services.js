@@ -16,6 +16,7 @@ angular.module('starter.services', [])
 
           } catch (e) {
             this.showAlert("博回收", msg, stateurl);
+          /*  this.toolTip(msg,"tool-tip-message-success");*/
           }
         } else {
           this.showAlert("博回收", msg, stateurl);
@@ -234,8 +235,7 @@ angular.module('starter.services', [])
 
           });
         }
-      }
-      ,
+      },
       uploadActionSheet: function ($scope, filename, isSingle) {//上传图片  isSingle是否是单张上传
         isSingle = (isSingle == undefined) ? false : isSingle;
         CommonService = this;
@@ -264,8 +264,7 @@ angular.module('starter.services', [])
             return true;
           }
         });
-      }
-      ,
+      },
       //调用摄像头和相册 type 0是图库 1是拍照
       takePicture: function ($scope, type, filenames, isSingle) {
         //统计上传成功数量
@@ -341,8 +340,7 @@ angular.module('starter.services', [])
           });
         }
 
-      }
-      ,
+      },
       getLocation: function (callback) { //获取当前经纬度
         //是否是微信
         if (WeiXinService.isWeiXin()) {
@@ -364,8 +362,7 @@ angular.module('starter.services', [])
           }, function (err) {
             CommonService.platformPrompt("获取定位失败", 'close');
           });
-      }
-      ,
+      },
       isLogin: function (flag) {//判断是否登录
         if (!localStorage.getItem("userid")) {
           if (flag) {
@@ -378,8 +375,7 @@ angular.module('starter.services', [])
         } else {
           return true;
         }
-      }
-      ,
+      },
       getStateName: function () {    //得到上一个路由名称方法
         var stateName = "";
         if ($ionicHistory.backView() && $ionicHistory.backView().stateName != "tab.account" && $ionicHistory.backView().stateName != "setting" && $ionicHistory.backView().stateName != "organizingdata") {
@@ -390,8 +386,7 @@ angular.module('starter.services', [])
         } else {
           $state.go("tab.main", {}, {reload: true});
         }
-      }
-      ,
+      },
       windowOpen: function (url) {        //通过默认浏览器打开
         if (ionic.Platform.isWebView()) {  // Check if we are running within a WebView (such as Cordova)
           window.open(url, '_system', 'location=yes');
@@ -399,8 +394,7 @@ angular.module('starter.services', [])
           window.open(url, "_self");
         }
 
-      }
-      ,
+      },
       toolTip: function (msg, type) { //全局tooltip提示
         this.message = msg;
         this.type = type;
@@ -410,8 +404,7 @@ angular.module('starter.services', [])
           _self.message = null;
           _self.type = null;
         }, 3000);
-      }
-      ,
+      },
       countDown: function ($scope) {//60s倒计时
         var second = 60,
           timePromise = undefined;
@@ -426,8 +419,7 @@ angular.module('starter.services', [])
             second--;
           }
         }, 1000, 100);
-      }
-      ,
+      },
       getVerifyCode: function ($scope, account) {//获取验证码
         event.preventDefault();
         CommonService = this;
@@ -451,18 +443,7 @@ angular.module('starter.services', [])
           }
 
         }
-      }
-      ,
-      removeEmptyArray: function (array) { //去除数组空值 重新组织数组
-        for (var i = 0; i < array.length; i++) {
-          if (array[i] == "" || typeof(array[i]) == "undefined" || array[i] == false) {
-            array.splice(i, 1);
-            i = i - 1;
-          }
-        }
-        return array;
-      }
-      ,
+      },
       checkChecded: function ($scope, array) { //检查是否复选框选中
         $scope.ischecked = false;
         angular.forEach(array, function (item) {

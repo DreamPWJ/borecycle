@@ -23,7 +23,7 @@
           <p>暂无待接单</p>
         </div>
         <ion-list>
-          <a ng-href="#/orderdetails/{{item.djno}}" class="item " ng-repeat="item in jiedanorderList">
+          <a ng-href="#/orderdetails/{{item.djno}}/1" class="item " ng-repeat="item in jiedanorderList">
             <h2 class="positive">{{item.addrdetail}}</h2>
             <p class="text-wrap">交易品类 : {{item.category}}
               <span class="jiedan balanced item-note" ng-click="jieDan(item.djno,item.userid,item.type)"><i
@@ -45,7 +45,7 @@
           <p>暂无待处理单</p>
         </div>
         <ion-list>
-          <a ng-href="#/orderdetails/{{item.orno}}" class="item " ng-repeat="item in chuliorderList">
+          <a ng-href="#/orderdetails/{{item.orno}}/2" class="item " ng-repeat="item in chuliorderList">
             <h2 class="positive">{{item.addrdetail}}</h2>
             <p class="text-wrap ">交易品类 : {{item.category}} <span class="balanced">{{item.hytype==1?'废品':'二手'}}</span>
               <span class="item-note pending  "><span class="energized" ng-click="relation(item.ormotel)"><i

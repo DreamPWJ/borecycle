@@ -676,12 +676,12 @@ angular.module('starter.controllers', [])
     }
 
     //回收
-    $scope.recycle = function (orno,djno, type, userid) {
+    $scope.recycle = function (orno, djno, type, userid) {
       event.preventDefault();
       if (user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
         CommonService.platformPrompt("接单时会员身份必须是上门回收者", 'close');
       }
-      var json = {orno:orno,djno: djno, type: type, userid: userid}
+      var json = {orno: orno, djno: djno, type: type, userid: userid}
       $state.go("recycleorder", {orderinfo: JSON.stringify(json)});
 
     }
@@ -867,12 +867,12 @@ angular.module('starter.controllers', [])
       }
 
       //回收
-      $scope.recycle = function (orno,djno, type, userid) {
+      $scope.recycle = function (orno, djno, type, userid) {
         event.preventDefault();
         if (user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
           CommonService.platformPrompt("接单时会员身份必须是上门回收者", 'close');
         }
-        var json = {orno:orno,djno: djno, type: type, userid: userid}
+        var json = {orno: orno, djno: djno, type: type, userid: userid}
         $state.go("recycleorder", {orderinfo: JSON.stringify(json)});
       }
 
@@ -886,25 +886,43 @@ angular.module('starter.controllers', [])
   )
   //我的回收订单详情页面
   .controller('OrderDetailsCtrl', function ($scope, $stateParams, CommonService, OrderService) {
-    OrderService.getDengJiDetail({djno: $stateParams.no}).success(function (data) {
-      console.log(data);
-      if (data.code == 1001) {
-        $scope.orderDetail = data.data;
-      } else {
-        CommonService.platformPrompt("获取回收单详情失败", "close");
-      }
-
-    }).then(function () {
-      //获取评论内容
-      OrderService.getComment({djno: $stateParams.no}).success(function (data) {
+    $scope.orderType = $stateParams.type;//1.待接单 2 待处理
+    if ($scope.orderType == 1) {
+      OrderService.getDengJiDetail({djno: $stateParams.no}).success(function (data) {
         console.log(data);
         if (data.code == 1001) {
-          $scope.commentInfo = data.data;
+          $scope.orderDetail = data.data;
         } else {
-          CommonService.platformPrompt("获取评论内容失败", "close");
+          CommonService.platformPrompt("获取回收单详情失败", "close");
         }
+
+      }).then(function () {
+        $scope.getComment();
       })
-    })
+    }
+    if ($scope.orderType == 2) {
+      OrderService.getOrderReceiptDetail({orno: $stateParams.no}).success(function (data) {
+        console.log(data);
+        if (data.code == 1001) {
+          $scope.orderDetail = data.data;
+        } else {
+          CommonService.platformPrompt("获取回收单详情失败", "close");
+        }
+
+      }).then(function () {
+        $scope.getComment();
+      })
+    }
+
+
+    //获取评论内容
+    $scope.getComment = function () {
+      OrderService.getComment({djno: $stateParams.no}).success(function (data) {
+        /*    console.log(data);*/
+        $scope.commentInfo = data.data;
+
+      })
+    }
   })
 
   //我的订单详情页面
@@ -919,14 +937,10 @@ angular.module('starter.controllers', [])
 
     }).then(function () {
       //获取评论内容
-      /*      OrderService.getComment({djno: $stateParams.no}).success(function (data) {
-       console.log(data);
-       if (data.code == 1001) {
-       $scope.commentInfo = data.data;
-       } else {
-       CommonService.platformPrompt("获取评论内容失败", "close");
-       }
-       })*/
+      OrderService.getComment({djno: $stateParams.no}).success(function (data) {
+        console.log(data);
+        $scope.commentInfo = data.data;
+      })
     })
 
   })
@@ -975,15 +989,22 @@ angular.module('starter.controllers', [])
     $scope.orderinfo = JSON.parse($stateParams.orderinfo);
 
     //回收录单提交付款
-    var details=[];
+    var details = [];
     $scope.recycleWriteNext = function () {
       //回收记录明细数据筛选
       angular.forEach($scope.productList, function (item) {
-        if(item.checked){
+        if (item.checked) {
           angular.forEach(item.details, function (items) {
-             if(items.checked){
-               details.push({grpid:items.grpid,proid:items.id,proname:items.name,unit:items.unit,num:items.recyclenum,price:items.recycleprice,uname:items.uname})
-             }
+            if (items.checked) {
+              details.push({
+                grpid: items.grpid,
+                proid: items.id,
+                proname: items.name,
+                unit: items.unit,
+                num: items.recyclenum,
+                price: items.recycleprice
+              })
+            }
           })
         }
       })
@@ -997,7 +1018,7 @@ angular.module('starter.controllers', [])
         orstate: 5,//状态 0已取消 1审核不通过 2未审核（待审核） 3审核通过 4回收不通过 5回收未审核 6回收审核通过 (接单时为2，回收时为5) 7已过期 必填参数
         details: details //接单回收记录明细数据
       }
-      console.log( $scope.huishoudata);
+      console.log($scope.huishoudata);
 
       OrderService.addOrderReceipt($scope.huishoudata).success(function (data) {
         console.log(data);

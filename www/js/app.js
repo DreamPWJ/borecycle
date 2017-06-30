@@ -234,7 +234,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
       //我的回收单订单详情页面
       .state('orderdetails', {
-        url: '/orderdetails/:no',
+        url: '/orderdetails/:no/:type',
         cache: false,
         templateUrl: 'templates/order/orderdetails.html',
         controller: 'OrderDetailsCtrl'
