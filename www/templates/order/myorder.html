@@ -25,7 +25,7 @@
         <ion-list>
           <a ng-href="#/myorderdetails/{{item.djno}}" class="item " ng-repeat="item in unfinishedorderList ">
             <h2 class="positive">货主 : {{item.name}} {{item.motel| hidepartinfo : 'phone'}} 状态 :
-              {{item.type==1?item.strstate:item.orstate}}</h2>
+              {{item.strstate}}</h2>
             <p class="text-wrap">交易品类 : {{item.category}}
               <span class="close assertive item-note" ng-click="closeOrder(item.djno)"
                     ng-if="item.state==2||item.state==3"><i class="iconfont icon-jian"></i>关闭</span></p>
@@ -49,7 +49,7 @@
         <ion-list>
           <a ng-href="#/myorderdetails{{item.djno}}" class="item " ng-repeat="item in orderList ">
             <h2 class="positive">货主 : {{item.name}} {{item.motel| hidepartinfo : 'phone'}} 状态
-              :{{item.type==1?item.strstate:item.orstate}}</h2>
+              :{{item.strstate}}</h2>
             <p class="text-wrap">交易品类 : {{item.category}}
               <span class="close assertive item-note" ng-click="closeOrder(item.djno)"
                     ng-if="item.state==2||item.state==3"><i class="iconfont icon-jian"></i>关闭</span></p>
@@ -60,7 +60,8 @@
           </a>
 
         </ion-list>
-        <ion-infinite-scroll on-infinite="getOrderList()" ng-if="totalcomplete > pagecomplete" immediate-check="false">
+        <ion-infinite-scroll on-infinite="getOrderList()" ng-if="total > page"
+                             immediate-check="false">
       </ion-content>
     </ion-slide>
 
