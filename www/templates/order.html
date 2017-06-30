@@ -23,7 +23,7 @@
           <p>暂无待接单</p>
         </div>
         <ion-list>
-          <a ng-href="#/orderdetails/1" class="item " ng-repeat="item in jiedanorderList">
+          <a ng-href="#/orderdetails/{{item.djno}}" class="item " ng-repeat="item in jiedanorderList">
             <h2 class="positive">{{item.addrdetail}}</h2>
             <p class="text-wrap">交易品类 : {{item.category}}
               <span class="jiedan balanced item-note" ng-click="jieDan(item.djno,item.userid,item.type)"><i
@@ -45,14 +45,14 @@
           <p>暂无待处理单</p>
         </div>
         <ion-list>
-          <a ng-href="#/orderdetails/1" class="item ">
-            <h2 class="positive">梅林街道深华科技园1栋东5G5室</h2>
-            <p class="text-wrap ">交易品类 : 家电
-              <span class="item-note pending  "><span class="energized" ng-click="relation(10086)"><i
+          <a ng-href="#/orderdetails/{{item.orno}}" class="item " ng-repeat="item in chuliorderList">
+            <h2 class="positive">{{item.addrdetail}}</h2>
+            <p class="text-wrap ">交易品类 : {{item.category}} <span class="balanced">{{item.hytype==1?'废品':'二手'}}</span>
+              <span class="item-note pending  "><span class="energized" ng-click="relation(item.ormotel)"><i
                 class="iconfont icon-phone"></i>联系他</span>
-             <span class="balanced" ng-click="recycle()"><i class="iconfont icon-huishou"></i>回收</span> <span
+             <span class="balanced" ng-click="recycle(item.orno,item.djno,item.type,item.userid)"><i class="iconfont icon-huishou"></i>回收</span> <span
                   class="positive" ng-click="navigation()"><i class="iconfont icon-daohang1"></i>导航</span></span></p>
-            <p class="text-wrap ">张三 189****9982 距离:100米 </p>
+            <p class="text-wrap ">{{item.orname}} {{item.ormotel | hidepartinfo : 'phone'}} 距离:{{item.distance}}</p>
           </a>
         </ion-list>
         <ion-infinite-scroll on-infinite="getOrderList()" ng-if="chulitotal > chulipage" immediate-check="false">

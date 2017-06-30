@@ -25,7 +25,7 @@
         </div>
         <p></p>
 
-        <ion-item class="item-icon-left item-icon-right item-borderless" ng-click="toggle(1)">
+        <ion-item class="item-icon-left item-icon-right item-borderless" ng-if="ischecked" ng-click="toggle(1)">
           <i class="icon iconfont icon-edit"></i>
           录入数量
           <i ng-class="{true:'ion-ios-arrow-right',false:'ion-ios-arrow-down'}[showme1]"
@@ -38,9 +38,12 @@
             </div>
             <div class="row" ng-repeat="items in item.details">
             <span class="col-50">{{items.name}}废品 : <input type="number" ng-model="items.wastenum"
-                                                           style="display: inline-block;" placeholder="废品数量"/></span>
+                                                           check-form
+                                                           ng-keyup="checkAtLeastOne(item.details,'wastenum')"
+                                                           style="display: inline-block;" placeholder="数量"/></span>
               <span class="col-50">{{items.name}}二手 : <input type="number" ng-model="items.secondhandnum"
-                                                             style="display: inline-block;" placeholder="二手数量"/></span>
+                                                             ng-keyup="checkAtLeastOne(item.details,'secondhandnum')"
+                                                             style="display: inline-block;" placeholder="数量"/></span>
             </div>
           </ion-item>
 
@@ -49,7 +52,8 @@
       <p></p>
     </ion-content>
     <div class="padding light-bg  bottom-0" keyboard-attach>
-      <button ng-disabled="!(supplyofgoodsForm.$valid&&ischecked)" class="button button-positive full-image "
+      <button ng-disabled="!(supplyofgoodsForm.$dirty&&ischecked&&verifyLeastOne)"
+              class="button button-positive full-image "
               ng-click="supplyofgoodsSubmit()">
         提交
       </button>

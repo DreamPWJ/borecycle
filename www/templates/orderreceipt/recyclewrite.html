@@ -1,0 +1,39 @@
+<ion-view>
+  <ion-nav-buttons side="left">
+    <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back ng-click="$ionicGoBack()"></button>
+  </ion-nav-buttons>
+  <ion-nav-title>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 回收数量以及报价</h1>
+  </ion-nav-title>
+  <form name="recyclewrite">
+    <ion-content overflow-scroll="false" id="recyclewrite" class="has-button-footer stable-bg" has-bouncing="true">
+      <ion-list>
+        <div ng-repeat="item in productList" ng-if="item.checked" hide-show>
+          <div ng-repeat="items in item.details" ng-if="items.checked">
+            <ion-item class="item-icon-left item-icon-right " ng-click="toggle(0)">
+              <i class="icon iconfont {{item.imgurl}}"></i>
+              {{items.name}}
+              <i ng-class="{true:'ion-ios-arrow-right',false:'ion-ios-arrow-down'}[showme]"
+                 class="icon iconfont "></i>
+            </ion-item>
+            <div ng-hide="showme">
+              <ion-item class="item-input">
+                <span class="input-label icon iconfont icon-suobanxin "   style="font-size: 1rem!important;"> 回收数量</span>
+                <input type="number" placeholder="请输入回收数量" ng-model="items.recyclenum" required />
+              </ion-item>
+              <ion-item class="item-input">
+                <span class="input-label icon iconfont icon-recharge " style="font-size: 1rem!important;"> 回收价格</span>
+                <input type="number" placeholder="请输入回收价格" ng-model="items.recycleprice" required/>
+              </ion-item>
+            </div>
+          </div>
+        </div>
+      </ion-list>
+
+    </ion-content>
+    <div class="padding light-bg bottom-0" keyboard-attach>
+      <a class="button button-positive  full-image" ng-disabled="!recyclewrite.$valid"
+         ng-click="recycleWriteNext()">提交</a>
+    </div>
+  </form>
+</ion-view>

@@ -532,7 +532,7 @@ angular.module('starter.controllers', [])
           console.log(data);
           if ($scope.tabIndex == 0) {  //待接单订单
             $scope.isNotjiedanData = false;
-            if (data.data == null) {
+            if (data.data == null || data.data.data_list.length == 0) {
               $scope.isNotjiedanData = true;
               return;
             }
@@ -540,7 +540,7 @@ angular.module('starter.controllers', [])
 
           if ($scope.tabIndex == 2) {   //所有订单
             $scope.isNotData = false;
-            if (data.data == null) {
+            if (data.data == null || data.data.data_list.length == 0) {
               $scope.isNotData = true;
               return;
             }
@@ -590,14 +590,14 @@ angular.module('starter.controllers', [])
           console.log(data);
           if ($scope.tabIndex == 1) {   //待处理订单
             $scope.isNotchuliData = false;
-            if (data.data == null) {
+            if (data.data == null || data.data.data_list.length == 0) {
               $scope.isNotchuliData = true;
               return;
             }
           }
           if ($scope.tabIndex == 2) {   //所有订单
             $scope.isNotData = false;
-            if (data.data == null) {
+            if (data.data == null || data.data.data_list.length == 0) {
               $scope.isNotData = true;
               return;
             }
@@ -676,12 +676,14 @@ angular.module('starter.controllers', [])
     }
 
     //回收
-    $scope.recycle = function () {
+    $scope.recycle = function (orno,djno, type, userid) {
       event.preventDefault();
       if (user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
         CommonService.platformPrompt("接单时会员身份必须是上门回收者", 'close');
       }
-      $state.go("recycleorder")
+      var json = {orno:orno,djno: djno, type: type, userid: userid}
+      $state.go("recycleorder", {orderinfo: JSON.stringify(json)});
+
     }
 
     //导航
@@ -741,14 +743,14 @@ angular.module('starter.controllers', [])
         console.log(data);
         if ($scope.tabIndex == 0) {//未完成订单
           $scope.isNotunfinishedData = false;
-          if (data.data == null) {
+          if (data.data == null || data.data.data_list.length == 0) {
             $scope.isNotunfinishedData = true;
             return;
           }
         }
         if ($scope.tabIndex == 1) {//所有订单
           $scope.isNotData = false;
-          if (data.data == null) {
+          if (data.data == null || data.data.data_list.length == 0) {
             $scope.isNotData = true;
             return;
           }
@@ -811,71 +813,77 @@ angular.module('starter.controllers', [])
 
   //我的订单预警页面
   .controller('OrderWarningCtrl', function ($scope, $state, CommonService, OrderService, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
-
-    $scope.orderList = [];
-    $scope.page = 0;
-    $scope.total = 1;
-    $scope.getOrderList = function () { //查询登记信息/货源信息分页列
-      if (arguments != [] && arguments[0] == 0) {
-        $scope.page = 0;
-        $scope.orderList = [];
-      }
-      $scope.page++;
-      $scope.params = {
-        page: $scope.page,//页码
-        size: 5//条数
-      }
-      $scope.datas = {
-        DJNo: "",//登记单号(可为空)
-        Type: "",//类型1.登记信息 2.登记货源(可为空)
-        userid: localStorage.getItem("userid"),//用户userid
-        Category: "",//货物品类 多个用逗号隔开(可为空)
-        HYType: "",//货物类别 0.未区分 1废料 2二手(可为空)
-        State: "",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
-        longt: "", //当前经度（获取距离）(可为空)
-        lat: "",//当前纬度（获取距离）(可为空)
-        expiry: ""//小时 取预警数据 订单预警数据（24小时截至马上过期的（expiry=3表示取3小时内）
-      }
-      OrderService.getDengJiList($scope.params, $scope.datas).success(function (data) {
-        console.log(data);
-        $scope.isNotData = false;
-        if (data.data == null) {
-          $scope.isNotData = true;
-          return;
+      var user = JSON.parse(localStorage.getItem("user"));//用户信息
+      $scope.orderList = [];
+      $scope.page = 0;
+      $scope.total = 1;
+      $scope.getOrderList = function () { //查询登记信息/货源信息分页列
+        if (arguments != [] && arguments[0] == 0) {
+          $scope.page = 0;
+          $scope.orderList = [];
         }
-        angular.forEach(data.data.data_list, function (item) {
-          $scope.orderList.push(item);
+        $scope.page++;
+        $scope.params = {
+          page: $scope.page,//页码
+          size: 5//条数
+        }
+        $scope.datas = {
+          DJNo: "",//登记单号(可为空)
+          Type: 1,//类型1.登记信息 2.登记货源(可为空)
+          userid: "",//用户userid
+          Category: "",//货物品类 多个用逗号隔开(可为空)
+          HYType: "",//货物类别 0.未区分 1废料 2二手(可为空)
+          State: "4,5",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
+          longt: localStorage.getItem("longitude") || "", //当前经度（获取距离）(可为空)
+          lat: localStorage.getItem("latitude") || "",//当前纬度（获取距离）(可为空)
+          ORNO: "",//接单单号(可为空)
+          ORuserid: localStorage.getItem("userid")//接单人(不能为空)
+        }
+        OrderService.getOrderReceiptList($scope.params, $scope.datas).success(function (data) {
+          console.log(data);
+          $scope.isNotData = false;
+          if (data.data == null || data.data.data_list.length == 0) {
+            $scope.isNotData = true;
+            return;
+          }
+          angular.forEach(data.data.data_list, function (item) {
+            $scope.orderList.push(item);
+          })
+          $scope.total = data.data.page_count;
+          $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
+        }).finally(function () {
+          $scope.$broadcast('scroll.refreshComplete');
+          $scope.$broadcast('scroll.infiniteScrollComplete');
         })
-        $scope.total = data.data.page_count;
-        $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
-      }).finally(function () {
-        $scope.$broadcast('scroll.refreshComplete');
-        $scope.$broadcast('scroll.infiniteScrollComplete');
-      })
+      }
+
+      $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
+
+
+      //联系他
+      $scope.relation = function (phonenumber) {
+        event.preventDefault();
+        window.open('tel:' + phonenumber);
+      }
+
+      //回收
+      $scope.recycle = function (orno,djno, type, userid) {
+        event.preventDefault();
+        if (user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
+          CommonService.platformPrompt("接单时会员身份必须是上门回收者", 'close');
+        }
+        var json = {orno:orno,djno: djno, type: type, userid: userid}
+        $state.go("recycleorder", {orderinfo: JSON.stringify(json)});
+      }
+
+      //导航
+      $scope.navigation = function () {
+        event.preventDefault();
+        $state.go("navigation")
+      }
+
     }
-
-    $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
-
-
-    //联系他
-    $scope.relation = function (phonenumber) {
-      event.preventDefault();
-      window.open('tel:' + phonenumber);
-    }
-
-    //回收
-    $scope.recycle = function () {
-      event.preventDefault();
-      $state.go("recycleorder")
-    }
-
-    //导航
-    $scope.navigation = function () {
-      event.preventDefault();
-      $state.go("navigation")
-    }
-
-  })
+  )
   //我的回收订单详情页面
   .controller('OrderDetailsCtrl', function ($scope, $stateParams, CommonService, OrderService) {
     OrderService.getDengJiDetail({djno: $stateParams.no}).success(function (data) {
@@ -924,10 +932,89 @@ angular.module('starter.controllers', [])
   })
 
   //我的回收录单页面
-  .controller('RecycleOrderCtrl', function ($scope, CommonService) {
+  .controller('RecycleOrderCtrl', function ($scope, $state, $stateParams, CommonService, OrderService) {
+    $scope.orderinfo = JSON.parse($stateParams.orderinfo);
+    $scope.productLists = [];//产品品类
+    //获取产品品类
+    OrderService.getProductList({ID: "", Name: ""}).success(function (data) {
+      console.log(data);
+      if (data.code == 1001) {
+        $scope.productList = data.data;
+      } else {
+        CommonService.platformPrompt("获取产品品类失败", 'close');
+      }
+    }).then(function () {
+      angular.forEach($scope.productList, function (item) { //根据产品品类及是否统货取产品列表(最新报价)
+        OrderService.getProductListIsth({grpid: item.grpid, isth: 0}).success(function (data) {
+          if (data.code == 1001) {
+            var items = item;
+            items.details = data.data;
+            $scope.productLists.push(items);
+          }
+        })
+      })
+      $scope.productList = $scope.productLists;
+      $scope.checkChecded = function () {
+        CommonService.checkChecded($scope, $scope.productList);
+      }
 
+    })
+
+    //回收录单选择下一步
+    $scope.recycleNext = function () {
+      $state.go("recyclewrite", {
+        orderinfo: JSON.stringify($scope.orderinfo),
+        item: JSON.stringify($scope.productList)
+      })
+    }
+  })
+
+  //回收数量以及报价
+  .controller('RecycleWriteCtrl', function ($scope, $state, $stateParams, CommonService, OrderService) {
+    $scope.productList = JSON.parse($stateParams.item);
+    $scope.orderinfo = JSON.parse($stateParams.orderinfo);
+
+    //回收录单提交付款
+    var details=[];
+    $scope.recycleWriteNext = function () {
+      //回收记录明细数据筛选
+      angular.forEach($scope.productList, function (item) {
+        if(item.checked){
+          angular.forEach(item.details, function (items) {
+             if(items.checked){
+               details.push({grpid:items.grpid,proid:items.id,proname:items.name,unit:items.unit,num:items.recyclenum,price:items.recycleprice,uname:items.uname})
+             }
+          })
+        }
+      })
+      //添加接单收货/货源归集(添加回收时明细不能为空，接单时明细为空)
+      $scope.huishoudata = {
+        orno: $scope.orderinfo.orno,//接单收货单号(回收时不能为空)
+        oruserid: localStorage.getItem("userid"),//接单人账号userid 必填参数
+        djno: $scope.orderinfo.djno,//登记信息单号 必填参数
+        userid: $scope.orderinfo.userid,//登记信息人账号 必填参数
+        type: $scope.orderinfo.type,//类型 1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）  必填参数
+        orstate: 5,//状态 0已取消 1审核不通过 2未审核（待审核） 3审核通过 4回收不通过 5回收未审核 6回收审核通过 (接单时为2，回收时为5) 7已过期 必填参数
+        details: details //接单回收记录明细数据
+      }
+      console.log( $scope.huishoudata);
+
+      OrderService.addOrderReceipt($scope.huishoudata).success(function (data) {
+        console.log(data);
+        if (data.code == 1001) {
+          CommonService.platformPrompt("回收单提交成功", "payment");
+        } else {
+          CommonService.platformPrompt("回收单提交失败", "close");
+        }
+      })
+    }
+  })
+
+  //付款页面
+  .controller('PaymentCtrl', function ($scope, $stateParams, CommonService, OrderService) {
 
   })
+
 
   //导航页面
   .controller('NavigationCtrl', function ($scope, CommonService, $window, OrderService) {
@@ -1669,7 +1756,7 @@ angular.module('starter.controllers', [])
       console.log($scope.dengji);
 
       //添加登记信息/货源信息(添加登记货源时明细不能为空，添加登记信息时明细为空)
-      OrderService.addDengJi($scope.dengji).success(function (data) {
+      OrderService.addDengJi([$scope.dengji]).success(function (data) {
         console.log(data);
         if (data.code == 1001) {
           CommonService.platformPrompt("登记信息提交成功", 'myorder');
@@ -1732,7 +1819,7 @@ angular.module('starter.controllers', [])
         if (data.code == 1001) {
           $scope.address = data.data;
         } else {
-          CommonService.platformPrompt("获取默认地址失败", 'close');
+          CommonService.platformPrompt("获取默认地址失败", 'myaddress');
         }
       }).then(function () {
         $scope.supplyofgoods = [];//要提交的json数组
@@ -1837,9 +1924,5 @@ angular.module('starter.controllers', [])
       })
     }
 
-
-  })
-  //付款页面
-  .controller('PaymentCtrl', function ($scope, $stateParams, CommonService, OrderService) {
 
   })

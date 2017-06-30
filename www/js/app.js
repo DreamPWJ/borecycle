@@ -252,11 +252,27 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
       //我的回收录单页面
       .state('recycleorder', {
-        url: '/recycleorder',
+        url: '/recycleorder/:orderinfo',
         cache: false,
-        templateUrl: 'templates/order/recycleorder.html',
+        templateUrl: 'templates/orderreceipt/recycleorder.html',
         controller: 'RecycleOrderCtrl'
 
+      })
+
+      //回收数量以及报价
+      .state('recyclewrite', {
+        url: '/recyclewrite/:orderinfo/:item',
+        cache: false,
+        templateUrl: 'templates/orderreceipt/recyclewrite.html',
+        controller: 'RecycleWriteCtrl'
+      })
+
+      //付款页面
+      .state('payment', {
+        url: '/payment',
+        cache: false,
+        templateUrl: 'templates/orderreceipt/payment.html',
+        controller: 'PaymentCtrl'
       })
 
       //导航页面
@@ -440,13 +456,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'EvaluateCtrl'
       })
 
-      //付款页面
-      .state('payment', {
-        url: '/payment',
-        cache: false,
-        templateUrl: 'templates/orderreceipt/payment.html',
-        controller: 'PaymentCtrl'
-      })
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/tab/main');
 
