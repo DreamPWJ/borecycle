@@ -62,50 +62,50 @@ angular.module('starter.controllers', [])
             console.log(exception);
           }
         };
-      }
-
-
-      if (ionic.Platform.isWebView()) { //包含cordova插件的应用
-        window.setTimeout(this.getRegistrationID, 3000);
-      }
-
-
-      if ($ionicPlatform.is('android')) {//android系统自动更新软件版本
-        $scope.versionparams = {
-          page: 1,//当前页码
-          size: 1,//每页条数
-          ID: 3,//编码 ,等于空时取所有
-          Name: '博回收',//软件名称（中文）
-          NameE: '',//软件名称（英文）
-          Enable: 1 //是否启用 1启用 2禁用
+        if (ionic.Platform.isWebView()) { //包含cordova插件的应用
+          window.setTimeout(this.getRegistrationID, 3000);
         }
-        AccountService.getVersionsList($scope.versionparams).success(function (data) {
-          console.log(data);
-          $scope.versions = data.data.data_list[0];
-          if (BoRecycle.version < $scope.versions.vercode) {
-            AccountService.showUpdateConfirm($scope.versions.remark, $scope.versions.attached, $scope.versions.vercode);
+
+
+        if ($ionicPlatform.is('android')) {//android系统自动更新软件版本
+          $scope.versionparams = {
+            page: 1,//当前页码
+            size: 1,//每页条数
+            ID: 3,//编码 ,等于空时取所有
+            Name: '博回收',//软件名称（中文）
+            NameE: '',//软件名称（英文）
+            Enable: 1 //是否启用 1启用 2禁用
           }
-        })
+          AccountService.getVersionsList($scope.versionparams).success(function (data) {
+            console.log(data);
+            $scope.versions = data.data.data_list[0];
+            if (BoRecycle.version < $scope.versions.vercode) {
+              AccountService.showUpdateConfirm($scope.versions.remark, $scope.versions.attached, $scope.versions.vercode);
+            }
+          })
+        }
+
+        //是否是微信 初次获取签名 获取微信签名
+        if (WeiXinService.isWeiXin()) {
+          // 获取微信签名
+          $scope.wxparams = {
+            url: location.href.split('#')[0] //当前网页的URL，不包含#及其后面部分
+          }
+          WeiXinService.getWCSignature($scope.wxparams).success(function (data) {
+            console.log(data);
+            if (data.code == 1001) {
+              localStorage.setItem("timestamp", data.data.timestamp);//生成签名的时间戳
+              localStorage.setItem("noncestr", data.data.noncestr);//生成签名的随机串
+              localStorage.setItem("signature", data.data.signature);//生成签名
+              //通过config接口注入权限验证配置
+              WeiXinService.weichatConfig(data.data.timestamp, data.data.noncestr, data.data.signature);
+            } else {
+              CommonService.platformPrompt("获取微信签名失败", 'close');
+            }
+          })
+        }
       }
 
-      //是否是微信 初次获取签名 获取微信签名
-      if (WeiXinService.isWeiXin()) {
-        // 获取微信签名
-        $scope.wxparams = {
-          url: location.href.split('#')[0] //当前网页的URL，不包含#及其后面部分
-        }
-        WeiXinService.getWCSignature($scope.wxparams).success(function (data) {
-          if (data.code == 1001) {
-            localStorage.setItem("timestamp", data.timestamp);//生成签名的时间戳
-            localStorage.setItem("noncestr", data.noncestr);//生成签名的随机串
-            localStorage.setItem("signature", data.signature);//生成签名
-            //通过config接口注入权限验证配置
-            WeiXinService.weichatConfig(data.timestamp, data.noncestr, data.signature);
-          } else {
-            CommonService.platformPrompt("获取微信签名失败", 'close');
-          }
-        })
-      }
 
       $scope.getMainData = function () {
         if (!localStorage.getItem("userid")) {
@@ -124,6 +124,8 @@ angular.module('starter.controllers', [])
                 //授权之后执行的方法
                 $scope.afterAuth();
               })
+            } else {
+              $scope.afterAuth();//未登录已经公共授权
             }
           }
           $rootScope.publicAuth = $interval(function () {
@@ -156,8 +158,9 @@ angular.module('starter.controllers', [])
           }, 7199000);
           authLogin();
 
-          $scope.$broadcast('scroll.refreshComplete');
+
         }
+        $scope.$broadcast('scroll.refreshComplete');
       }
 
 //执行方法
@@ -538,31 +541,17 @@ angular.module('starter.controllers', [])
             }
           }
 
-          if ($scope.tabIndex == 2) {   //所有订单
-            $scope.isNotData = false;
-            if (data.data == null || data.data.data_list.length == 0) {
-              $scope.isNotData = true;
-              return;
-            }
-          }
-
           angular.forEach(data.data.data_list, function (item) {
             if ($scope.tabIndex == 0) {  //待接单订单
               $scope.jiedanorderList.push(item);
             }
 
-            if ($scope.tabIndex == 2) {   //所有订单
-              $scope.orderList.push(item);
-            }
           })
 
           if ($scope.tabIndex == 0) {  //待接单订单
             $scope.jiedantotal = data.data.page_count;
           }
 
-          if ($scope.tabIndex == 2) {   //所有订单
-            $scope.total = data.data.page_count;
-          }
 
           $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
         }).finally(function () {
@@ -572,15 +561,15 @@ angular.module('starter.controllers', [])
       }
 
 
-      //待处理接口
-      if ($scope.tabIndex == 1) {
+      //待处理接口, 所有订单就是看这个人接的单，而不是发布信息(加一个类型及会员参数)
+      if ($scope.tabIndex == 1 || $scope.tabIndex == 2) {
         $scope.datas = {
           DJNo: "",//登记单号(可为空)
           Type: 1,//类型1.登记信息 2.登记货源(可为空)
           userid: "",//用户userid
           Category: "",//货物品类 多个用逗号隔开(可为空)
           HYType: "",//货物类别 0.未区分 1废料 2二手(可为空)
-          State: "4,5",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
+          State: $scope.tabIndex == 1 ? "4,5" : "",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
           longt: localStorage.getItem("longitude") || "", //当前经度（获取距离）(可为空)
           lat: localStorage.getItem("latitude") || "",//当前纬度（获取距离）(可为空)
           ORNO: "",//接单单号(可为空)
@@ -690,6 +679,12 @@ angular.module('starter.controllers', [])
     $scope.navigation = function () {
       event.preventDefault();
       $state.go("navigation")
+    }
+
+    //去付款
+    $scope.topay = function () {
+      event.preventDefault();
+      $state.go("payment")
     }
 
   })
@@ -882,11 +877,16 @@ angular.module('starter.controllers', [])
         $state.go("navigation")
       }
 
+      //去付款
+      $scope.topay = function () {
+        event.preventDefault();
+        $state.go("payment")
+      }
     }
   )
   //我的回收订单详情页面
   .controller('OrderDetailsCtrl', function ($scope, $stateParams, CommonService, OrderService) {
-    $scope.orderType = $stateParams.type;//1.待接单 2 待处理
+    $scope.orderType = $stateParams.type;//1.待接单 2 待处理和所有订单
     if ($scope.orderType == 1) {
       OrderService.getDengJiDetail({djno: $stateParams.no}).success(function (data) {
         console.log(data);
@@ -917,7 +917,7 @@ angular.module('starter.controllers', [])
 
     //获取评论内容
     $scope.getComment = function () {
-      OrderService.getComment({djno: $stateParams.no}).success(function (data) {
+      OrderService.getComment({djno: $scope.orderDetail.djno}).success(function (data) {
         /*    console.log(data);*/
         $scope.commentInfo = data.data;
 
@@ -1025,7 +1025,7 @@ angular.module('starter.controllers', [])
         if (data.code == 1001) {
           CommonService.platformPrompt("回收单提交成功", "payment");
         } else {
-          CommonService.platformPrompt("回收单提交失败", "close");
+          CommonService.platformPrompt(data.message, "close");
         }
       })
     }
@@ -1045,7 +1045,7 @@ angular.module('starter.controllers', [])
     var map = new AMap.Map('gaode-map', {
         resizeEnable: true,
         zoom: 16,
-        center: [localStorage.getItem("longitude") || 114.0557100, localStorage.getItem("latitude") || 22.5224500,]
+        center: [localStorage.getItem("longitude") || 114.0557100, localStorage.getItem("latitude") || 22.5224500]
       })
     ;
     AMap.plugin(['AMap.ToolBar', 'AMap.Scale', 'AMap.OverView'],
