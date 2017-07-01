@@ -8,7 +8,9 @@
   </ion-nav-title>
 
 
-  <ion-content overflow-scroll="false" class="stable-bg has-button-footer" id="orderdetails">
+  <ion-content overflow-scroll="false" class="stable-bg "
+               ng-class="{true:'has-button-footer'}[orderDetail.state==2||orderDetail.state==3||orderDetail.state==6]"
+               id="orderdetails">
     <ion-list hide-show>
       <ion-item class=" item-icon-right" ng-click="toggle(0)">
         订单号 : {{orderDetail.djno}} 状态 : <span class="positive">{{orderDetail.strstate}}</span>
@@ -29,59 +31,60 @@
           联系地址 : {{orderDetail.addrdetail }}({{orderDetail.area.MergerName}})
         </ion-item>
         <ion-item>
-          下单时间 : {{orderDetail.addtime |date :'yyyy-MM-dd'}}
+          下单时间 : {{orderDetail.addtime |date :'yyyy-MM-dd HH:mm'}}
         </ion-item>
         <ion-item>
           接单人 : {{orderDetail.orname}}
         </ion-item>
         <ion-item>
-          接单时间 : {{orderDetail.oraddtime |date :'yyyy-MM-dd'}}
+          接单时间 : {{orderDetail.oraddtime |date :'yyyy-MM-dd HH:mm'}}
         </ion-item>
       </div>
       <p></p>
+      <div ng-if="orderDetail.djdetails">
+        <ion-item class=" item-icon-right item-borderless" ng-click="toggle(1)">
+          回收清单 ( <span class="positive">交易金额 : {{orderDetail.totalprice  | currency:'￥'}}</span> )
+          <i ng-class="{true:'ion-ios-arrow-right',false:'ion-ios-arrow-down'}[showme1]"
+             class="icon iconfont "></i>
+        </ion-item>
+        <div ng-hide="showme1" class="orderdetails">
+          <ion-item class="text-wrap" ng-repeat="item in orderDetail.djdetails">
+            {{item.proname}} : {{item.num+item.uname}} <span ng-if="item.price">( 回收价 : {{item.price}}元/台 )</span>
+          </ion-item>
 
-      <ion-item class=" item-icon-right item-borderless" ng-click="toggle(1)">
-        回收清单 ( <span class="positive">交易金额 : {{orderDetail.totalprice  | currency:'￥'}}</span> )
-        <i ng-class="{true:'ion-ios-arrow-right',false:'ion-ios-arrow-down'}[showme1]"
-           class="icon iconfont "></i>
-      </ion-item>
-      <div ng-hide="showme1" class="orderdetails">
-        <ion-item class="text-wrap" ng-repeat="item in orderDetail.djdetails">
-          黑白电视机 15寸 : 1台 (回收价 : 100元/台)
-        </ion-item>
-        <ion-item class="text-wrap">
-          滚筒洗衣机 6L : 1台 (回收价 : 80元/台)
-        </ion-item>
-        <ion-item>
-          回收时间 : 2017-05-20 15:36
-        </ion-item>
+          <ion-item>
+            回收时间 : {{orderDetail.djdetails[0].addtime | date :'yyyy-MM-dd HH:mm'}}
+          </ion-item>
+        </div>
       </div>
       <p></p>
-
-      <ion-item class=" item-icon-right item-borderless" ng-click="toggle(2)">
-        客户评价 <span class="iconfont icon-favorfill energized "></span>
-        <span class="iconfont icon-favorfill energized "></span>
-        <span class="iconfont icon-favorfill energized "></span>
-        <span class="iconfont icon-favorfill energized "></span>
-        <span class="iconfont icon-favorfill energized "></span>
-        <i ng-class="{true:'ion-ios-arrow-right',false:'ion-ios-arrow-down'}[showme2]"
-           class="icon iconfont "></i>
-      </ion-item>
-      <div ng-hide="showme2" class="orderdetails">
-        <ion-item>
-          服务态度 : 非常好
+      <div ng-if="commentInfo">
+        <ion-item class=" item-icon-right item-borderless" ng-click="toggle(2)">
+          客户评价
+          <span class="iconfont icon-favorfill energized " ng-if="commentInfo.score>=1"></span>
+          <span class="iconfont icon-favorfill energized " ng-if="commentInfo.score>=2"></span>
+          <span class="iconfont icon-favorfill energized " ng-if="commentInfo.score>=3"></span>
+          <span class="iconfont icon-favorfill energized " ng-if="commentInfo.score>=4"></span>
+          <span class="iconfont icon-favorfill energized " ng-if="commentInfo.score>=5"></span>
+          <i ng-class="{true:'ion-ios-arrow-right',false:'ion-ios-arrow-down'}[showme2]"
+             class="icon iconfont "></i>
         </ion-item>
-        <ion-item>
-          表达 : 非常清晰
-        </ion-item>
-        <ion-item>
-          回收价格 : 非常合理
-        </ion-item>
+        <div ng-hide="showme2" class="orderdetails">
+          <ion-item>
+            服务态度 : {{commentInfo.service==1?"满意":(commentInfo.service==2?"一般":"差")}}
+          </ion-item>
+          <ion-item>
+            回收价格 : {{commentInfo.tranprice==1?"合理":(commentInfo.tranprice==2?"一般":"低")}}
+          </ion-item>
+          <ion-item>
+            描述 : {{commentInfo.remark}}
+          </ion-item>
+        </div>
       </div>
     </ion-list>
     <p></p>
   </ion-content>
-  <div class="row padding light-bg  bottom-0 row-horizontal-around" keyboard-attach>
+  <div class="row padding light-bg  bottom-0 row-horizontal-around" keyboard-attach ng-if="orderDetail.state==2||orderDetail.state==3||orderDetail.state==6">
     <button class="button  button-assertive  icon iconfont icon-jian col-33  "
             style="font-size: 1rem!important;" ng-click="closeOrder(orderDetail.djno)"
             ng-if="orderDetail.state==2||orderDetail.state==3">

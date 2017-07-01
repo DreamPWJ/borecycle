@@ -682,9 +682,10 @@ angular.module('starter.controllers', [])
     }
 
     //去付款
-    $scope.topay = function () {
+    $scope.topay = function (type, djno, fromuser, touser, amount, orname) {
       event.preventDefault();
-      $state.go("payment")
+      var json = {type: type, djno: djno, fromuser: fromuser, touser: touser, amount: amount, orname: orname}
+      $state.go("payment", {orderinfo: JSON.stringify(json)})
     }
 
   })
@@ -878,14 +879,17 @@ angular.module('starter.controllers', [])
       }
 
       //去付款
-      $scope.topay = function () {
+      //去付款
+      $scope.topay = function (type, djno, fromuser, touser, amount, orname) {
         event.preventDefault();
-        $state.go("payment")
+        var json = {type: type, djno: djno, fromuser: fromuser, touser: touser, amount: amount, orname: orname}
+        $state.go("payment", {orderinfo: JSON.stringify(json)})
       }
     }
   )
   //我的回收订单详情页面
-  .controller('OrderDetailsCtrl', function ($scope, $stateParams, CommonService, OrderService) {
+  .controller('OrderDetailsCtrl', function ($scope, $state, $stateParams, CommonService, OrderService) {
+    var user = JSON.parse(localStorage.getItem("user"));//用户信息
     $scope.orderType = $stateParams.type;//1.待接单 2 待处理和所有订单
     if ($scope.orderType == 1) {
       OrderService.getDengJiDetail({djno: $stateParams.no}).success(function (data) {
@@ -923,6 +927,29 @@ angular.module('starter.controllers', [])
 
       })
     }
+    //回收
+    $scope.recycle = function (orno, djno, type, userid) {
+      event.preventDefault();
+      if (user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
+        CommonService.platformPrompt("接单时会员身份必须是上门回收者", 'close');
+      }
+      var json = {orno: orno, djno: djno, type: type, userid: userid}
+      $state.go("recycleorder", {orderinfo: JSON.stringify(json)});
+
+    }
+
+    //导航
+    $scope.navigation = function () {
+      event.preventDefault();
+      $state.go("navigation")
+    }
+
+    //去付款
+    $scope.topay = function (type, djno, fromuser, touser, amount, orname) {
+      event.preventDefault();
+      var json = {type: type, djno: djno, fromuser: fromuser, touser: touser, amount: amount, orname: orname}
+      $state.go("payment", {orderinfo: JSON.stringify(json)})
+    }
   })
 
   //我的订单详情页面
@@ -937,7 +964,7 @@ angular.module('starter.controllers', [])
 
     }).then(function () {
       //获取评论内容
-      OrderService.getComment({djno: $stateParams.no}).success(function (data) {
+      OrderService.getComment({djno: $scope.orderDetail.djno}).success(function (data) {
         console.log(data);
         $scope.commentInfo = data.data;
       })
@@ -1033,7 +1060,29 @@ angular.module('starter.controllers', [])
 
   //付款页面
   .controller('PaymentCtrl', function ($scope, $stateParams, CommonService, OrderService) {
-
+    $scope.orderinfo = JSON.parse($stateParams.orderinfo);
+    console.log($scope.orderinfo);
+    //确认支付
+    $scope.confirmPayment = function () {
+      $scope.data = {
+        ordertype: $scope.orderinfo.type, //type类型 1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
+        orderno: $scope.orderinfo.djno,//登记号
+        fromuser: $scope.orderinfo.fromuser,//付款方
+        touser: $scope.orderinfo.touser,//收款方
+        amount: $scope.orderinfo.amount,//订单金额
+        fwamount: 0//服务费金额
+      }
+      console.log($scope.data);
+      //回收付款
+      OrderService.payOrderReceipt($scope.data).success(function (data) {
+        console.log(data);
+        if (data.code == 1001) {
+          CommonService.platformPrompt("回收付款成功", "")
+        } else {
+          CommonService.platformPrompt("回收付款失败", "close")
+        }
+      })
+    }
   })
 
 

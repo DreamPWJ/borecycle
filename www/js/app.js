@@ -269,7 +269,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
       //付款页面
       .state('payment', {
-        url: '/payment',
+        url: '/payment/:orderinfo',
         cache: false,
         templateUrl: 'templates/orderreceipt/payment.html',
         controller: 'PaymentCtrl'
