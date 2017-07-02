@@ -10,8 +10,7 @@ angular.module('starter.controllers', [])
     $scope.isLogin = localStorage.getItem("userid") ? true : false;//是否登录
   })
   //APP首页面
-  .controller('MainCtrl', function ($scope, $rootScope, CommonService, MainService, OrderService, BoRecycle, $ionicHistory, $interval, NewsService, AccountService, $ionicPlatform, WeiXinService) {
-
+  .controller('MainCtrl', function ($scope, $rootScope, CommonService, MainService, OrderService, BoRecycle, $location, $ionicHistory, $interval, NewsService, AccountService, $ionicPlatform, WeiXinService) {
     //授权之后执行的方法
     $scope.afterAuth = function () {
       //首页统计货量
@@ -103,6 +102,23 @@ angular.module('starter.controllers', [])
             CommonService.platformPrompt("获取微信签名失败", 'close');
           }
         })
+        //获取微信openid获取会员账号，如果没有则添加
+        var wxcode = WeiXinService.getQueryString("code");
+        if (wxcode) {
+          WeiXinService.getWCOpenId({
+            code: code,
+            UserLogID: localStorage.getItem("userid") || ""
+          }).success(function (data) {
+            console.log(data);
+            if (data == 1001) {
+              localStorage.setItem("openid", data.data)
+            } else {
+              CommonService.platformPrompt("获取微信OpenID失败", 'close');
+            }
+
+          })
+        }
+
       }
     }
 
@@ -187,6 +203,7 @@ angular.module('starter.controllers', [])
     $scope.user = {};//提前定义用户对象
     $scope.agreedeal = true;//同意用户协议
     $scope.loginSubmit = function () {
+      $scope.user.openID = localStorage.getItem("openid") || "";//微信openID
       $scope.user.client = ionic.Platform.isWebView() ? 0 : (ionic.Platform.is('android') ? 1 : 2);
       AccountService.login($scope.user).success(function (data) {
         console.log(data);
@@ -254,6 +271,7 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt("输入的验证码不正确", 'close');
         return;
       }
+      $scope.user.openID = localStorage.getItem("openid") || "";//微信openID
       $scope.user.client = ionic.Platform.isWebView() ? 0 : (ionic.Platform.is('android') ? 1 : 2);
       console.log($scope.user);
       AccountService.loginMobile($scope.user).success(function (data) {
@@ -344,6 +362,7 @@ angular.module('starter.controllers', [])
       })
 
       $scope.user.client = ionic.Platform.isWebView() ? 0 : (ionic.Platform.is('android') ? 1 : 2);
+      $scope.user.openID = localStorage.getItem("openid") || "";//微信openID
       console.log($scope.user);
 
       AccountService.register($scope.user).success(function (data) {

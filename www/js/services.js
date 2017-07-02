@@ -170,7 +170,7 @@ angular.module('starter.services', [])
         }, false);
       },
       shareActionSheet: function (title, desc, link, imgUrl, type) { //分享功能
-        if (imgUrl==null || imgUrl == "") { //默认分享图片链接
+        if (imgUrl == null || imgUrl == "") { //默认分享图片链接
           imgUrl = "http://www.boolv.com/images/logo.png";
         }
         CommonService = this;
@@ -2186,6 +2186,12 @@ angular.module('starter.services', [])
             // 用户取消分享后执行的回调函数
           }
         });
+      },
+      getQueryString: function (name) { //// 通过key获取url中的参数值
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
       }
     }
   })
