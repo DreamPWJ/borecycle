@@ -3,6 +3,7 @@ angular.module('starter.services', [])
   .service('CommonService', function ($ionicPopup, $ionicPopover, $rootScope, $state, $ionicModal, $cordovaCamera, $cordovaImagePicker, $ionicPlatform, $ionicActionSheet, $ionicHistory, $timeout, $cordovaToast, $cordovaGeolocation, $cordovaBarcodeScanner, $ionicViewSwitcher, $interval, AccountService, WeiXinService) {
     return {
       platformPrompt: function (msg, stateurl) {
+        $rootScope.commonService = CommonService;
         if ($ionicPlatform.is('android') || $ionicPlatform.is('ios')) {
           try {
             $cordovaToast.showLongCenter(msg);
@@ -15,11 +16,11 @@ angular.module('starter.services', [])
             }
 
           } catch (e) {
-            this.showAlert("博回收", msg, stateurl);
-            /*  this.toolTip(msg,"tool-tip-message-success");*/
+            $rootScope.commonService.toolTip(msg,"tool-tip-message-success");
           }
         } else {
-          this.showAlert("博回收", msg, stateurl);
+          $rootScope.commonService.toolTip(msg,"tool-tip-message-success");
+    /*      this.showAlert("博回收", msg, stateurl);*/
         }
       },
       showAlert: function (title, template, stateurl) {

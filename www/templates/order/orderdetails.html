@@ -28,7 +28,7 @@
         </ion-item>
         <ion-item class="text-wrap item-icon-right">
           联系地址 : {{orderDetail.addrdetail }}({{orderDetail.area.MergerName}})
-          <i class="icon iconfont icon-daohang1 positive"></i>
+          <i ng-click="navigation(orderDetail.longitude,orderDetail.latitude)" class="icon iconfont icon-daohang1 positive"></i>
         </ion-item>
         <ion-item>
           接单时间 : {{orderDetail.oraddtime |date :'yyyy-MM-dd HH:mm'}}
@@ -83,7 +83,7 @@
             ng-click="recycle(orderDetail.orno,orderDetail.djno,orderDetail.type,orderDetail.userid)">
       回收
     </button>
-    <button class="button button-positive icon iconfont icon-daohang1 col-30 " style="font-size: 1rem!important;"
+    <button ng-if="item.orstate<=4"  class="button button-positive icon iconfont icon-daohang1 col-30 " style="font-size: 1rem!important;"
             ng-click="navigation(orderDetail.longitude,orderDetail.latitude)">
       导航
     </button>

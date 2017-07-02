@@ -487,7 +487,7 @@ angular.module('starter.controllers', [])
   })
 
   //我的回收订单页面
-  .controller('OrderCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, OrderService, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
+  .controller('OrderCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, OrderService, $timeout, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
     //是否登录
     if (!CommonService.isLogin(true)) {
       return;
@@ -495,8 +495,8 @@ angular.module('starter.controllers', [])
     $scope.order = {
       showDelete: false
     };
-    $rootScope.orderType = $stateParams.orderType; //orderType类型 1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
-    $scope.tabIndex = 0;
+    $rootScope.orderType = $stateParams.orderType; //orderType类型 0.是全部订单 1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
+    $scope.tabIndex = 0;//当前tabs页
     var user = JSON.parse(localStorage.getItem("user"));//用户信息
     //待接单订单
     $scope.jiedanorderList = [];
@@ -544,7 +544,7 @@ angular.module('starter.controllers', [])
       if ($scope.tabIndex == 0) {
         $scope.datas = {
           DJNo: "",//登记单号(可为空)
-          Type: $rootScope.orderType,//类型1.登记信息 2.登记货源(可为空)
+          Type: $rootScope.orderType == 0 ? "" : $rootScope.orderType,//类型1.登记信息 2.登记货源(可为空)
           userid: "",//用户userid
           Category: "",//货物品类 多个用逗号隔开(可为空)
           HYType: "",//货物类别 0.未区分 1废料 2二手(可为空)
@@ -555,12 +555,13 @@ angular.module('starter.controllers', [])
         }
         OrderService.getDengJiList($scope.params, $scope.datas).success(function (data) {
           console.log(data);
-          if ($scope.tabIndex == 0) {  //待接单订单
-            $scope.isNotjiedanData = false;
-            if (data.data == null || data.data.data_list.length == 0) {
+          $scope.isNotjiedanData = false;
+
+          if (data.data == null || data.data.data_list.length == 0) {
+            if ($scope.tabIndex == 0) {  //待接单订单
               $scope.isNotjiedanData = true;
-              return;
             }
+            return;
           }
 
           angular.forEach(data.data.data_list, function (item) {
@@ -587,7 +588,7 @@ angular.module('starter.controllers', [])
       if ($scope.tabIndex == 1 || $scope.tabIndex == 2) {
         $scope.datas = {
           DJNo: "",//登记单号(可为空)
-          Type: $rootScope.orderType,//类型1.登记信息 2.登记货源(可为空)
+          Type: $rootScope.orderType == 0 ? "" : $rootScope.orderType,//类型1.登记信息 2.登记货源(可为空)
           userid: "",//用户userid
           Category: "",//货物品类 多个用逗号隔开(可为空)
           HYType: "",//货物类别 0.未区分 1废料 2二手(可为空)
@@ -599,70 +600,76 @@ angular.module('starter.controllers', [])
         }
 
         OrderService.getOrderReceiptList($scope.params, $scope.datas).success(function (data) {
-          console.log(data);
-          if ($scope.tabIndex == 1) {   //待处理订单
+            console.log(data);
             $scope.isNotchuliData = false;
-            if (data.data == null || data.data.data_list.length == 0) {
-              $scope.isNotchuliData = true;
-              return;
-            }
-          }
-          if ($scope.tabIndex == 2) {   //所有订单
             $scope.isNotData = false;
             if (data.data == null || data.data.data_list.length == 0) {
-              $scope.isNotData = true;
+              if ($scope.tabIndex == 1) {   //待处理订单
+                $scope.isNotchuliData = true;
+              }
+              if ($scope.tabIndex == 2) {    //所有订单
+                $scope.isNotData = true;
+              }
               return;
             }
-          }
 
-          angular.forEach(data.data.data_list, function (item) {
+
+            angular.forEach(data.data.data_list, function (item) {
+
+              if ($scope.tabIndex == 1) {   //待处理订单
+                $scope.chuliorderList.push(item);
+              }
+              if ($scope.tabIndex == 2) {   //所有订单
+                $scope.orderList.push(item);
+              }
+            })
+
 
             if ($scope.tabIndex == 1) {   //待处理订单
-              $scope.chuliorderList.push(item);
+              $scope.chulitotal = data.data.page_count;
             }
             if ($scope.tabIndex == 2) {   //所有订单
-              $scope.orderList.push(item);
+              $scope.total = data.data.page_count;
             }
-          })
 
-
-          if ($scope.tabIndex == 1) {   //待处理订单
-            $scope.chulitotal = data.data.page_count;
+            $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
           }
-          if ($scope.tabIndex == 2) {   //所有订单
-            $scope.total = data.data.page_count;
-          }
-
-          $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
-        }).finally(function () {
+        ).finally(function () {
           $scope.$broadcast('scroll.refreshComplete');
           $scope.$broadcast('scroll.infiniteScrollComplete');
         })
       }
     }
 
-    $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
 
-    $scope.tabIndex = 0;//当前tabs页
-    //左右滑动列表
+//左右滑动列表
     $scope.slideChanged = function (index) {
       $scope.tabIndex = index;
       $scope.getOrderList(0); //获取订单数据
     };
-    //点击选项卡
+//点击选项卡
     $scope.selectedTab = function (index) {
       $scope.tabIndex = index;
       //滑动的索引和速度
       $ionicSlideBoxDelegate.$getByHandle("slidebox-orderlist").slide(index)
     }
-    //接单
+
+    $timeout(function () {
+        if ($rootScope.orderType == 0) {
+          $scope.selectedTab(1);
+        } else {
+          $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
+        }
+      }
+      , 100)
+//接单
     $scope.jieDan = function (djno, userid, type) {
       event.preventDefault();
-      if ($rootScope.orderType == 1 && user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
+      if (type == 1 && user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
         CommonService.platformPrompt("接单回收时接单,会员身份必须是上门回收者", 'close');
         return;
       }
-      if ($rootScope.orderType == 2 && user.services.indexOf(3) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
+      if (type == 2 && user.services.indexOf(3) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
         CommonService.platformPrompt("跟单收货时接单,会员身份必须是货场", 'close');
         return;
       }
@@ -686,7 +693,7 @@ angular.module('starter.controllers', [])
       })
 
     }
-    //在待处理订单中 取消订单
+//在待处理订单中 取消订单
     $scope.cancelOrder = function (orno) {
       OrderService.cancelOrderReceipt({orno: orno}).success(function (data) {
         console.log(data);
@@ -697,20 +704,20 @@ angular.module('starter.controllers', [])
         }
       })
     }
-    //联系他
+//联系他
     $scope.relation = function (phonenumber) {
       event.preventDefault();
       window.open('tel:' + phonenumber);
     }
 
-    //回收
+//回收
     $scope.recycle = function (orno, djno, type, userid) {
       event.preventDefault();
-      if ($rootScope.orderType == 1 && user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
+      if (type == 1 && user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
         CommonService.platformPrompt("接单回收时回收,会员身份必须是上门回收者", 'close');
         return;
       }
-      if ($rootScope.orderType == 2 && user.services.indexOf(3) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
+      if (type == 2 && user.services.indexOf(3) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
         CommonService.platformPrompt("跟单收货时回收,会员身份必须是货场", 'close');
         return;
       }
@@ -719,13 +726,13 @@ angular.module('starter.controllers', [])
 
     }
 
-    //导航
+//导航
     $scope.navigation = function (longitude, latitude) {
       event.preventDefault();
       $state.go("navigation", {longitude: longitude, latitude: latitude})
     }
 
-    //去付款
+//去付款
     $scope.topay = function (type, djno, fromuser, touser, amount, orname) {
       event.preventDefault();
       var json = {type: type, djno: djno, fromuser: fromuser, touser: touser, amount: amount, orname: orname}
@@ -853,11 +860,10 @@ angular.module('starter.controllers', [])
   //我的订单预警页面
   .controller('OrderWarningCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, OrderService, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
       var user = JSON.parse(localStorage.getItem("user"));//用户信息
-      $rootScope.orderType = $stateParams.orderType; //orderType类型 1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
       $scope.orderList = [];
       $scope.page = 0;
       $scope.total = 1;
-      $scope.getOrderList = function () { //查询登记信息/货源信息分页列
+      $scope.getOrderList = function () { //查询接单收货/货源归集分页列
         if (arguments != [] && arguments[0] == 0) {
           $scope.page = 0;
           $scope.orderList = [];
@@ -869,15 +875,16 @@ angular.module('starter.controllers', [])
         }
         $scope.datas = {
           DJNo: "",//登记单号(可为空)
-          Type: 1,//类型1.登记信息 2.登记货源(可为空)
+          Type: "",//类型1.登记信息 2.登记货源(可为空)
           userid: "",//用户userid
           Category: "",//货物品类 多个用逗号隔开(可为空)
           HYType: "",//货物类别 0.未区分 1废料 2二手(可为空)
-          State: "4,5",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
+          State: "4",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
           longt: localStorage.getItem("longitude") || "", //当前经度（获取距离）(可为空)
           lat: localStorage.getItem("latitude") || "",//当前纬度（获取距离）(可为空)
           ORNO: "",//接单单号(可为空)
-          ORuserid: localStorage.getItem("userid")//接单人(不能为空)
+          ORuserid: localStorage.getItem("userid"),//接单人(不能为空)
+          expiry:3 //小时 取预警数据 订单预警数据（24小时截至马上过期的（expiry=3表示取3小时内））
         }
         OrderService.getOrderReceiptList($scope.params, $scope.datas).success(function (data) {
           console.log(data);
@@ -909,11 +916,11 @@ angular.module('starter.controllers', [])
       //回收
       $scope.recycle = function (orno, djno, type, userid) {
         event.preventDefault();
-        if ($rootScope.orderType == 1 && user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
+        if (type == 1 && user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
           CommonService.platformPrompt("接单回收时回收,会员身份必须是上门回收者", 'close');
           return;
         }
-        if ($rootScope.orderType == 2 && user.services.indexOf(3) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
+        if (type == 2 && user.services.indexOf(3) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
           CommonService.platformPrompt("跟单收货时回收,会员身份必须是货场", 'close');
           return;
         }
@@ -939,7 +946,7 @@ angular.module('starter.controllers', [])
   .controller('OrderDetailsCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, OrderService) {
     var user = JSON.parse(localStorage.getItem("user"));//用户信息
     $scope.type = $stateParams.type;//1.待接单 2 待处理和所有订单
-    $rootScope.orderType = $rootScope.orderType; //orderType类型 1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
+    $rootScope.orderType = $rootScope.orderType; //orderType类型0.全部订单  1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
     if ($scope.type == 1) {
       OrderService.getDengJiDetail({djno: $stateParams.no}).success(function (data) {
         console.log(data);
@@ -979,11 +986,11 @@ angular.module('starter.controllers', [])
     //回收
     $scope.recycle = function (orno, djno, type, userid) {
       event.preventDefault();
-      if ($rootScope.orderType == 1 && user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
+      if (type == 1 && user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
         CommonService.platformPrompt("接单回收时回收,会员身份必须是上门回收者", 'close');
         return;
       }
-      if ($rootScope.orderType == 2 && user.services.indexOf(3) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
+      if (type == 2 && user.services.indexOf(3) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
         CommonService.platformPrompt("跟单收货时回收,会员身份必须是货场", 'close');
         return;
       }
