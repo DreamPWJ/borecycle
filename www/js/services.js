@@ -16,7 +16,7 @@ angular.module('starter.services', [])
 
           } catch (e) {
             this.showAlert("博回收", msg, stateurl);
-          /*  this.toolTip(msg,"tool-tip-message-success");*/
+            /*  this.toolTip(msg,"tool-tip-message-success");*/
           }
         } else {
           this.showAlert("博回收", msg, stateurl);
@@ -169,7 +169,10 @@ angular.module('starter.services', [])
             });
         }, false);
       },
-      shareActionSheet: function (title, desc, link, imgUrl, type) {
+      shareActionSheet: function (title, desc, link, imgUrl, type) { //分享功能
+        if (imgUrl==null || imgUrl == "") { //默认分享图片链接
+          imgUrl = "http://www.boolv.com/images/logo.png";
+        }
         CommonService = this;
         if (ionic.Platform.isWebView()) {
           //微信分享
@@ -186,7 +189,7 @@ angular.module('starter.services', [])
               },
               scene: type == 0 ? Wechat.Scene.SESSION : Wechat.Scene.TIMELINE   // share to Timeline
             }, function () {
-              CommonService.platformPrompt("微信分享成功", 'close');
+              CommonService.platformPrompt("微信分享成功", '');
             }, function (reason) {
               CommonService.platformPrompt("微信分享失败 : " + reason, 'close');
             });
@@ -201,21 +204,20 @@ angular.module('starter.services', [])
             args.description = desc;
             args.image = imgUrl;
             QQSDK.shareNews(function () {
-              CommonService.platformPrompt("QQ分享成功", 'close');
+              CommonService.platformPrompt("QQ分享成功", '');
             }, function (failReason) {
               CommonService.platformPrompt("QQ分享失败 : " + failReason, 'close');
             }, args);
           }
-          //微博分享（该插件只支持网页链接）
+          //微博分享
           if (type == 4) {
             var args = {};
             args.url = link;
             args.title = title;
             args.description = desc;
-            args.imageUrl = imgUrl;//if you don't have imageUrl,for android http://www.sinaimg.cn/blog/developer/wiki/LOGO_64x64.png will be the defualt one
-            args.defaultText = "";
-            YCWeibo.shareToWeibo(function () {
-              CommonService.platformPrompt("微博分享成功", 'close');
+            args.imagel = imgUrl;
+            WeiboSDK.shareToWeibo(function () {
+              CommonService.platformPrompt("微博分享成功", '');
             }, function (failReason) {
               CommonService.platformPrompt("微博分享失败 : " + failReason, 'close');
             }, args);

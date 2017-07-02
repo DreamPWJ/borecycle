@@ -78,7 +78,7 @@
     <p></p>
   </ion-content>
   <div class="row padding light-bg  bottom-0 row-horizontal-around" keyboard-attach>
-    <button class="button  button-balanced  icon iconfont icon-huishou col-30  "
+    <button ng-if="orderDetail.orstate==4" class="button  button-balanced  icon iconfont icon-huishou col-30  "
             style="font-size: 1rem!important;"
             ng-click="recycle(orderDetail.orno,orderDetail.djno,orderDetail.type,orderDetail.userid)">
       回收
@@ -87,7 +87,8 @@
             ng-click="navigation()">
       导航
     </button>
-    <button class="button button-energized icon iconfont icon-sponsor col-30 " style="font-size: 1rem!important;"
+    <button ng-if="orderDetail.orstate==5" class="button button-energized icon iconfont icon-sponsor col-30 "
+            style="font-size: 1rem!important;"
             ng-click="topay(orderDetail.type,orderDetail.djno,orderDetail.userid,orderDetail.oruserid,orderDetail.totalprice,orderDetail.orname)">
       付款
     </button>

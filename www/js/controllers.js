@@ -12,171 +12,170 @@ angular.module('starter.controllers', [])
   //APP首页面
   .controller('MainCtrl', function ($scope, $rootScope, CommonService, MainService, OrderService, BoRecycle, $ionicHistory, $interval, NewsService, AccountService, $ionicPlatform, WeiXinService) {
 
-      //授权之后执行的方法
-      $scope.afterAuth = function () {
-        //首页统计货量
-        $scope.cargoQuantity = {};
-        OrderService.getCargoQuantity().success(function (data) {
-          console.log(data);
-          if (data.code == 1001) {
-            $scope.cargoQuantity = data.data;
-          } else {
-            CommonService.platformPrompt("获取统计货量数据失败", 'close');
-          }
-
-        })
-
-        //获取极光推送registrationID
-        var getRegistrationID = function () {
-          window.plugins.jPushPlugin.getRegistrationID(onGetRegistrationID);
-        };
-
-        var onGetRegistrationID = function (data) {
-          try {
-            if (data.length == 0) {
-              window.setTimeout(getRegistrationID, 1000);
-              return;
-            }
-            $scope.jPushRegistrationID = data;
-            localStorage.setItem("jPushRegistrationID", data)
-            console.log("JPushPlugin:registrationID is " + data);
-
-            //提交设备信息到服务器
-            $scope.datas = {
-              registration_id: $scope.jPushRegistrationID,	//极光注册id
-              user: localStorage.getItem("userid"),	//用户id,没登录为空
-              mobile: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).mobile : '',	//手机号码 获取不到为空
-              alias: "",	//设备别名
-              device: $ionicPlatform.is('android') ? 0 : 1,	//设备类型:0-android,1-ios
-              Lat: localStorage.getItem("latitude") || 22.5224500,
-              Lon: localStorage.getItem("longitude") || 114.0557100
-            }
-            console.log(JSON.stringify($scope.datas));
-            NewsService.setDeviceInfo($scope.datas).success(function (data) {
-              if (data.code != 1001) {
-                CommonService.platformPrompt("提交设备信息到服务器失败", 'close');
-              }
-            })
-
-          } catch (exception) {
-            console.log(exception);
-          }
-        };
-        if (ionic.Platform.isWebView()) { //包含cordova插件的应用
-          window.setTimeout(this.getRegistrationID, 3000);
+    //授权之后执行的方法
+    $scope.afterAuth = function () {
+      //首页统计货量
+      $scope.cargoQuantity = {};
+      OrderService.getCargoQuantity().success(function (data) {
+        console.log(data);
+        if (data.code == 1001) {
+          $scope.cargoQuantity = data.data;
+        } else {
+          CommonService.platformPrompt("获取统计货量数据失败", 'close');
         }
 
+      })
 
-        if ($ionicPlatform.is('android')) {//android系统自动更新软件版本
-          $scope.versionparams = {
-            page: 1,//当前页码
-            size: 1,//每页条数
-            ID: 3,//编码 ,等于空时取所有
-            Name: '博回收',//软件名称（中文）
-            NameE: '',//软件名称（英文）
-            Enable: 1 //是否启用 1启用 2禁用
+      //获取极光推送registrationID
+      var getRegistrationID = function () {
+        window.plugins.jPushPlugin.getRegistrationID(onGetRegistrationID);
+      };
+
+      var onGetRegistrationID = function (data) {
+        try {
+          if (data.length == 0) {
+            window.setTimeout(getRegistrationID, 1000);
+            return;
           }
-          AccountService.getVersionsList($scope.versionparams).success(function (data) {
-            console.log(data);
-            $scope.versions = data.data.data_list[0];
-            if (BoRecycle.version < $scope.versions.vercode) {
-              AccountService.showUpdateConfirm($scope.versions.remark, $scope.versions.attached, $scope.versions.vercode);
+          $scope.jPushRegistrationID = data;
+          localStorage.setItem("jPushRegistrationID", data)
+          console.log("JPushPlugin:registrationID is " + data);
+
+          //提交设备信息到服务器
+          $scope.datas = {
+            registration_id: $scope.jPushRegistrationID,	//极光注册id
+            user: localStorage.getItem("userid"),	//用户id,没登录为空
+            mobile: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).mobile : '',	//手机号码 获取不到为空
+            alias: "",	//设备别名
+            device: $ionicPlatform.is('android') ? 0 : 1,	//设备类型:0-android,1-ios
+            Lat: localStorage.getItem("latitude") || 22.5224500,
+            Lon: localStorage.getItem("longitude") || 114.0557100
+          }
+          console.log(JSON.stringify($scope.datas));
+          NewsService.setDeviceInfo($scope.datas).success(function (data) {
+            if (data.code != 1001) {
+              CommonService.platformPrompt("提交设备信息到服务器失败", 'close');
             }
           })
-        }
 
-        //是否是微信 初次获取签名 获取微信签名
-        if (WeiXinService.isWeiXin()) {
-          // 获取微信签名
-          $scope.wxparams = {
-            url: location.href.split('#')[0] //当前网页的URL，不包含#及其后面部分
-          }
-          WeiXinService.getWCSignature($scope.wxparams).success(function (data) {
-            console.log(data);
-            if (data.code == 1001) {
-              localStorage.setItem("timestamp", data.data.timestamp);//生成签名的时间戳
-              localStorage.setItem("noncestr", data.data.noncestr);//生成签名的随机串
-              localStorage.setItem("signature", data.data.signature);//生成签名
-              //通过config接口注入权限验证配置
-              WeiXinService.weichatConfig(data.data.timestamp, data.data.noncestr, data.data.signature);
-            } else {
-              CommonService.platformPrompt("获取微信签名失败", 'close');
-            }
-          })
+        } catch (exception) {
+          console.log(exception);
         }
+      };
+      if (ionic.Platform.isWebView()) { //包含cordova插件的应用
+        window.setTimeout(this.getRegistrationID, 3000);
       }
 
 
-      $scope.getMainData = function () {
-        if (!localStorage.getItem("userid")) {
-          var authLogin = function () {
-            //获取公共接口授权token  公共接口授权token两个小时失效  超过两个小时重新请求
-            if (!localStorage.getItem("token") || localStorage.getItem("token") == "undefined" || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
-              MainService.authLogin({grant_type: 'client_credentials'}).success(function (data) {
-                console.log(data);
-                if (data.access_token) {
-                  localStorage.setItem("token", data.access_token);//公共接口授权token
-                  localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
-                } else {
-                  CommonService.platformPrompt("获取公众接口授权token失败", 'close');
-                }
-              }).then(function () {
-                //授权之后执行的方法
-                $scope.afterAuth();
-              })
-            } else {
-              $scope.afterAuth();//未登录已经公共授权
-            }
+      if ($ionicPlatform.is('android')) {//android系统自动更新软件版本
+        $scope.versionparams = {
+          page: 1,//当前页码
+          size: 1,//每页条数
+          ID: 3,//编码 ,等于空时取所有
+          Name: '博回收',//软件名称（中文）
+          NameE: '',//软件名称（英文）
+          Enable: 1 //是否启用 1启用 2禁用
+        }
+        AccountService.getVersionsList($scope.versionparams).success(function (data) {
+          console.log(data);
+          $scope.versions = data.data.data_list[0];
+          if (BoRecycle.version < $scope.versions.vercode) {
+            AccountService.showUpdateConfirm($scope.versions.remark, $scope.versions.attached, $scope.versions.vercode);
           }
-          $rootScope.publicAuth = $interval(function () {
-            authLogin();
-          }, 7199000);
-          authLogin();
-        } else {
-          $interval.cancel($rootScope.publicAuth);
-          var authLogin = function () {
-            MainService.authLogin(
-              {
-                grant_type: 'password',
-                username: localStorage.getItem("userid"),
-                password: localStorage.getItem("usersecret")
-              }).success(function (data) {
+        })
+      }
+
+      //是否是微信 初次获取签名 获取微信签名
+      if (WeiXinService.isWeiXin()) {
+        // 获取微信签名
+        $scope.wxparams = {
+          url: location.href.split('#')[0] //当前网页的URL，不包含#及其后面部分
+        }
+        WeiXinService.getWCSignature($scope.wxparams).success(function (data) {
+          console.log(data);
+          if (data.code == 1001) {
+            localStorage.setItem("timestamp", data.data.timestamp);//生成签名的时间戳
+            localStorage.setItem("noncestr", data.data.noncestr);//生成签名的随机串
+            localStorage.setItem("signature", data.data.signature);//生成签名
+            //通过config接口注入权限验证配置
+            WeiXinService.weichatConfig(data.data.timestamp, data.data.noncestr, data.data.signature);
+          } else {
+            CommonService.platformPrompt("获取微信签名失败", 'close');
+          }
+        })
+      }
+    }
+
+
+    $scope.getMainData = function () {
+      if (!localStorage.getItem("userid")) {
+        var authLogin = function () {
+          //获取公共接口授权token  公共接口授权token两个小时失效  超过两个小时重新请求
+          if (!localStorage.getItem("token") || localStorage.getItem("token") == "undefined" || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
+            MainService.authLogin({grant_type: 'client_credentials'}).success(function (data) {
               console.log(data);
               if (data.access_token) {
-                localStorage.setItem("token", data.access_token);//登录接口授权token
-                localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
+                localStorage.setItem("token", data.access_token);//公共接口授权token
+                localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
               } else {
-                CommonService.platformPrompt("获取登录接口授权token失败", 'close');
+                CommonService.platformPrompt("获取公众接口授权token失败", 'close');
               }
             }).then(function () {
               //授权之后执行的方法
               $scope.afterAuth();
             })
+          } else {
+            $scope.afterAuth();//未登录已经公共授权
           }
-          $rootScope.loginAuth = $interval(function () {
-            authLogin();
-          }, 7199000);
-          authLogin();
-
-
         }
-        $scope.$broadcast('scroll.refreshComplete');
+        $rootScope.publicAuth = $interval(function () {
+          authLogin();
+        }, 7199000);
+        authLogin();
+      } else {
+        $interval.cancel($rootScope.publicAuth);
+        var authLogin = function () {
+          MainService.authLogin(
+            {
+              grant_type: 'password',
+              username: localStorage.getItem("userid"),
+              password: localStorage.getItem("usersecret")
+            }).success(function (data) {
+            console.log(data);
+            if (data.access_token) {
+              localStorage.setItem("token", data.access_token);//登录接口授权token
+              localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
+            } else {
+              CommonService.platformPrompt("获取登录接口授权token失败", 'close');
+            }
+          }).then(function () {
+            //授权之后执行的方法
+            $scope.afterAuth();
+          })
+        }
+        $rootScope.loginAuth = $interval(function () {
+          authLogin();
+        }, 7199000);
+        authLogin();
+
+
       }
+      $scope.$broadcast('scroll.refreshComplete');
+    }
 
 //执行方法
-      $scope.getMainData();
+    $scope.getMainData();
 
 //定位
 //CommonService.getLocation();
 
 //在首页中清除导航历史退栈
-      $scope.$on('$ionicView.afterEnter', function () {
-        $ionicHistory.clearHistory();
+    $scope.$on('$ionicView.afterEnter', function () {
+      $ionicHistory.clearHistory();
 
-      })
+    })
 
-    }
-  )
+  })
 
   //用户密码登录页面
   .controller('LoginCtrl', function ($scope, $rootScope, $interval, CommonService, MainService, AccountService) {
@@ -469,12 +468,14 @@ angular.module('starter.controllers', [])
   })
 
   //我的回收订单页面
-  .controller('OrderCtrl', function ($scope, $state, CommonService, OrderService, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
+  .controller('OrderCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, OrderService, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
     //是否登录
     if (!CommonService.isLogin(true)) {
       return;
     }
-    $scope.tabIndex = 0;//tab默认
+
+    $rootScope.orderType = $stateParams.orderType; //orderType类型 1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
+    $scope.tabIndex = 0;
     var user = JSON.parse(localStorage.getItem("user"));//用户信息
     //待接单订单
     $scope.jiedanorderList = [];
@@ -522,7 +523,7 @@ angular.module('starter.controllers', [])
       if ($scope.tabIndex == 0) {
         $scope.datas = {
           DJNo: "",//登记单号(可为空)
-          Type: 1,//类型1.登记信息 2.登记货源(可为空)
+          Type: $rootScope.orderType,//类型1.登记信息 2.登记货源(可为空)
           userid: "",//用户userid
           Category: "",//货物品类 多个用逗号隔开(可为空)
           HYType: "",//货物类别 0.未区分 1废料 2二手(可为空)
@@ -565,7 +566,7 @@ angular.module('starter.controllers', [])
       if ($scope.tabIndex == 1 || $scope.tabIndex == 2) {
         $scope.datas = {
           DJNo: "",//登记单号(可为空)
-          Type: 1,//类型1.登记信息 2.登记货源(可为空)
+          Type: $rootScope.orderType,//类型1.登记信息 2.登记货源(可为空)
           userid: "",//用户userid
           Category: "",//货物品类 多个用逗号隔开(可为空)
           HYType: "",//货物类别 0.未区分 1废料 2二手(可为空)
@@ -575,6 +576,7 @@ angular.module('starter.controllers', [])
           ORNO: "",//接单单号(可为空)
           ORuserid: localStorage.getItem("userid")//接单人(不能为空)
         }
+
         OrderService.getOrderReceiptList($scope.params, $scope.datas).success(function (data) {
           console.log(data);
           if ($scope.tabIndex == 1) {   //待处理订单
@@ -635,8 +637,13 @@ angular.module('starter.controllers', [])
     //接单
     $scope.jieDan = function (djno, userid, type) {
       event.preventDefault();
-      if (user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
-        CommonService.platformPrompt("接单时会员身份必须是上门回收者", 'close');
+      if ($rootScope.orderType == 1 && user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
+        CommonService.platformPrompt("接单回收时接单,会员身份必须是上门回收者", 'close');
+        return;
+      }
+      if ($rootScope.orderType == 2 && user.services.indexOf(3) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
+        CommonService.platformPrompt("跟单收货时接单,会员身份必须是货场", 'close');
+        return;
       }
       //添加接单收货/货源归集(添加回收时明细不能为空，接单时明细为空)
       $scope.jiedandata = {
@@ -667,8 +674,13 @@ angular.module('starter.controllers', [])
     //回收
     $scope.recycle = function (orno, djno, type, userid) {
       event.preventDefault();
-      if (user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
-        CommonService.platformPrompt("接单时会员身份必须是上门回收者", 'close');
+      if ($rootScope.orderType == 1 && user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
+        CommonService.platformPrompt("接单回收时回收,会员身份必须是上门回收者", 'close');
+        return;
+      }
+      if ($rootScope.orderType == 2 && user.services.indexOf(3) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
+        CommonService.platformPrompt("跟单收货时回收,会员身份必须是货场", 'close');
+        return;
       }
       var json = {orno: orno, djno: djno, type: type, userid: userid}
       $state.go("recycleorder", {orderinfo: JSON.stringify(json)});
@@ -689,7 +701,6 @@ angular.module('starter.controllers', [])
     }
 
   })
-
 
   //我的订单页面
   .controller('MyOrderCtrl', function ($scope, $rootScope, $state, CommonService, OrderService, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
@@ -808,8 +819,9 @@ angular.module('starter.controllers', [])
   })
 
   //我的订单预警页面
-  .controller('OrderWarningCtrl', function ($scope, $state, CommonService, OrderService, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
+  .controller('OrderWarningCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, OrderService, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
       var user = JSON.parse(localStorage.getItem("user"));//用户信息
+      $rootScope.orderType = $stateParams.orderType; //orderType类型 1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
       $scope.orderList = [];
       $scope.page = 0;
       $scope.total = 1;
@@ -865,8 +877,13 @@ angular.module('starter.controllers', [])
       //回收
       $scope.recycle = function (orno, djno, type, userid) {
         event.preventDefault();
-        if (user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
-          CommonService.platformPrompt("接单时会员身份必须是上门回收者", 'close');
+        if ($rootScope.orderType == 1 && user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
+          CommonService.platformPrompt("接单回收时回收,会员身份必须是上门回收者", 'close');
+          return;
+        }
+        if ($rootScope.orderType == 2 && user.services.indexOf(3) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
+          CommonService.platformPrompt("跟单收货时回收,会员身份必须是货场", 'close');
+          return;
         }
         var json = {orno: orno, djno: djno, type: type, userid: userid}
         $state.go("recycleorder", {orderinfo: JSON.stringify(json)});
@@ -879,7 +896,6 @@ angular.module('starter.controllers', [])
       }
 
       //去付款
-      //去付款
       $scope.topay = function (type, djno, fromuser, touser, amount, orname) {
         event.preventDefault();
         var json = {type: type, djno: djno, fromuser: fromuser, touser: touser, amount: amount, orname: orname}
@@ -888,10 +904,11 @@ angular.module('starter.controllers', [])
     }
   )
   //我的回收订单详情页面
-  .controller('OrderDetailsCtrl', function ($scope, $state, $stateParams, CommonService, OrderService) {
+  .controller('OrderDetailsCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, OrderService) {
     var user = JSON.parse(localStorage.getItem("user"));//用户信息
-    $scope.orderType = $stateParams.type;//1.待接单 2 待处理和所有订单
-    if ($scope.orderType == 1) {
+    $scope.type = $stateParams.type;//1.待接单 2 待处理和所有订单
+    $rootScope.orderType = $rootScope.orderType; //orderType类型 1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
+    if ($scope.type == 1) {
       OrderService.getDengJiDetail({djno: $stateParams.no}).success(function (data) {
         console.log(data);
         if (data.code == 1001) {
@@ -904,7 +921,7 @@ angular.module('starter.controllers', [])
         $scope.getComment();
       })
     }
-    if ($scope.orderType == 2) {
+    if ($scope.type == 2) {
       OrderService.getOrderReceiptDetail({orno: $stateParams.no}).success(function (data) {
         console.log(data);
         if (data.code == 1001) {
@@ -930,8 +947,13 @@ angular.module('starter.controllers', [])
     //回收
     $scope.recycle = function (orno, djno, type, userid) {
       event.preventDefault();
-      if (user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
-        CommonService.platformPrompt("接单时会员身份必须是上门回收者", 'close');
+      if ($rootScope.orderType == 1 && user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
+        CommonService.platformPrompt("接单回收时回收,会员身份必须是上门回收者", 'close');
+        return;
+      }
+      if ($rootScope.orderType == 2 && user.services.indexOf(3) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
+        CommonService.platformPrompt("跟单收货时回收,会员身份必须是货场", 'close');
+        return;
       }
       var json = {orno: orno, djno: djno, type: type, userid: userid}
       $state.go("recycleorder", {orderinfo: JSON.stringify(json)});
@@ -1084,7 +1106,6 @@ angular.module('starter.controllers', [])
       })
     }
   })
-
 
   //导航页面
   .controller('NavigationCtrl', function ($scope, CommonService, $window, OrderService) {

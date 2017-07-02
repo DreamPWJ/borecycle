@@ -94,23 +94,23 @@
   background: url(../img/main/topbj.jpg) 100% 100%;
   background-size: cover;
   height: 14rem;
-  padding-top: 1.2rem;
+  padding-top: 0.8rem;
 }
 
 #main .total {
   margin: auto;
-  width: 8.5rem;
-  height: 8.5rem;
+  width: 9rem;
+  height: 9rem;
   border-radius: 50%;
-  padding-top: 2.8rem;
+  padding-top: 3rem;
   border: 3px solid rgba(255, 255, 255, 0.6);
 
 }
 
 #main .total .num {
   font-size: 1.8rem;
-  font-weight: bold;
-  height: 1.5rem;
+  height: 1.8rem;
+  line-height: 1.8rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

@@ -50,9 +50,12 @@
             <p class="text-wrap ">交易品类 : {{item.category}} <span class="balanced">{{item.hytype==1?'废品':'二手'}}</span>
               <span class="item-note pending  "><span class="energized" ng-click="relation(item.ormotel)"><i
                 class="iconfont icon-phone"></i>联系他</span>
-             <span class="balanced" ng-click="recycle(item.orno,item.djno,item.type,item.userid)"><i
+             <span ng-if="item.orstate==4" class="balanced"
+                   ng-click="recycle(item.orno,item.djno,item.type,item.userid)"><i
                class="iconfont icon-huishou"></i>回收</span> <span
-                  class="positive" ng-click="navigation()"><i class="iconfont icon-daohang1"></i>导航</span></span></p>
+                  class="positive" ng-click="navigation()"><i class="iconfont icon-daohang1"></i>导航</span>
+                      <span ng-if="item.orstate==5" class="balanced" ng-click="topay()"><i
+                        class="iconfont icon-sponsor"></i>去付款</span></span></p>
             <p class="text-wrap ">{{item.orname}} {{item.ormotel | hidepartinfo : 'phone'}} 距离:{{item.distance}}</p>
           </a>
         </ion-list>
@@ -74,10 +77,11 @@
               <p class="text-wrap ">交易品类 : {{item.category}} <span class="balanced">{{item.hytype==1?'废品':'二手'}}</span>
                 <span class="item-note pending  "><span class="energized" ng-click="relation(item.ormotel)"><i
                   class="iconfont icon-phone"></i>联系他</span>
-             <span class="balanced" ng-click="recycle(item.orno,item.djno,item.type,item.userid)"><i
+             <span ng-if="item.orstate==4" class="balanced"
+                   ng-click="recycle(item.orno,item.djno,item.type,item.userid)"><i
                class="iconfont icon-huishou"></i>回收</span> <span
                     class="positive" ng-click="navigation()"><i class="iconfont icon-daohang1"></i>导航</span>
-                <span class="balanced" ng-click="topay()"><i class="iconfont icon-sponsor"></i>去付款</span>
+                <span ng-if="item.orstate==5" class="balanced" ng-click="topay()"><i class="iconfont icon-sponsor"></i>去付款</span>
                 </span></p>
               <p class="text-wrap ">{{item.orname}} {{item.ormotel | hidepartinfo : 'phone'}} 距离:{{item.distance}}</p>
             </a>
