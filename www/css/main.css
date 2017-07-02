@@ -41,7 +41,7 @@
 }
 
 #orderlist .jiedan, #orderlist .pending, #orderwarning .pending, #myorderlist .close {
-  margin-top: 0.1rem !important;
+  margin-top: 0.2rem !important;
 }
 
 #orderlist .jiedan i, #orderlist .pending i, #orderwarning .pending i, #myorderlist .close i {

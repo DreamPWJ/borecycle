@@ -1,26 +1,27 @@
 angular.module('starter.services', [])
 //service在使用this指针，而factory直接返回一个对象
   .service('CommonService', function ($ionicPopup, $ionicPopover, $rootScope, $state, $ionicModal, $cordovaCamera, $cordovaImagePicker, $ionicPlatform, $ionicActionSheet, $ionicHistory, $timeout, $cordovaToast, $cordovaGeolocation, $cordovaBarcodeScanner, $ionicViewSwitcher, $interval, AccountService, WeiXinService) {
+
     return {
       platformPrompt: function (msg, stateurl) {
         $rootScope.commonService = CommonService;
         if ($ionicPlatform.is('android') || $ionicPlatform.is('ios')) {
           try {
             $cordovaToast.showLongCenter(msg);
-            if (stateurl == null || stateurl == '') {
-              $ionicHistory.goBack();
-            } else if (stateurl == 'close') {//不处理
-
-            } else {
-              $state.go(stateurl, {}, {reload: true});
-            }
-
           } catch (e) {
-            $rootScope.commonService.toolTip(msg,"tool-tip-message-success");
+            $rootScope.commonService.toolTip(msg, "tool-tip-message-success");
           }
         } else {
-          $rootScope.commonService.toolTip(msg,"tool-tip-message-success");
-    /*      this.showAlert("博回收", msg, stateurl);*/
+          $rootScope.commonService.toolTip(msg, "tool-tip-message-success");
+          /*      this.showAlert("博回收", msg, stateurl);*/
+        }
+
+        if (stateurl == null || stateurl == '') {
+          $ionicHistory.goBack();
+        } else if (stateurl == 'close') {//不处理
+
+        } else {
+          $state.go(stateurl, {}, {reload: true});
         }
       },
       showAlert: function (title, template, stateurl) {

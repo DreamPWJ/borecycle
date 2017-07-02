@@ -686,7 +686,9 @@ angular.module('starter.controllers', [])
       OrderService.addOrderReceipt($scope.jiedandata).success(function (data) {
         console.log(data);
         if (data.code == 1001) {
-          CommonService.showConfirm('接单提示', '尊敬的用户,您好！恭喜您,接单成功！订单有效期为24小时,请您务必在24小时之内上门回收！', '查看订单', '继续接单', 'orderdetails', 'close');
+          CommonService.showConfirm('接单提示', '尊敬的用户,您好！恭喜您,接单成功！订单有效期为24小时,请您务必在24小时之内上门回收！', '查看订单', '继续接单', '', 'close', function () {
+            $state.go("orderdetails", {no: djno, type: type})
+          });
         } else {
           CommonService.platformPrompt("接单失败", "close");
         }
@@ -711,7 +713,7 @@ angular.module('starter.controllers', [])
     }
 
 //回收
-    $scope.recycle = function (orno, djno, type, userid) {
+    $scope.recycle = function (orno, djno, type, userid, amount, orname) {
       event.preventDefault();
       if (type == 1 && user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
         CommonService.platformPrompt("接单回收时回收,会员身份必须是上门回收者", 'close');
@@ -721,7 +723,7 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt("跟单收货时回收,会员身份必须是货场", 'close');
         return;
       }
-      var json = {orno: orno, djno: djno, type: type, userid: userid}
+      var json = {orno: orno, djno: djno, type: type, userid: userid, amount: amount, orname: orname}
       $state.go("recycleorder", {orderinfo: JSON.stringify(json)});
 
     }
@@ -884,7 +886,7 @@ angular.module('starter.controllers', [])
           lat: localStorage.getItem("latitude") || "",//当前纬度（获取距离）(可为空)
           ORNO: "",//接单单号(可为空)
           ORuserid: localStorage.getItem("userid"),//接单人(不能为空)
-          expiry:3 //小时 取预警数据 订单预警数据（24小时截至马上过期的（expiry=3表示取3小时内））
+          expiry: 3 //小时 取预警数据 订单预警数据（24小时截至马上过期的（expiry=3表示取3小时内））
         }
         OrderService.getOrderReceiptList($scope.params, $scope.datas).success(function (data) {
           console.log(data);
@@ -914,7 +916,7 @@ angular.module('starter.controllers', [])
       }
 
       //回收
-      $scope.recycle = function (orno, djno, type, userid) {
+      $scope.recycle = function (orno, djno, type, userid, amount, orname) {
         event.preventDefault();
         if (type == 1 && user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
           CommonService.platformPrompt("接单回收时回收,会员身份必须是上门回收者", 'close');
@@ -924,7 +926,7 @@ angular.module('starter.controllers', [])
           CommonService.platformPrompt("跟单收货时回收,会员身份必须是货场", 'close');
           return;
         }
-        var json = {orno: orno, djno: djno, type: type, userid: userid}
+        var json = {orno: orno, djno: djno, type: type, userid: userid, amount: amount, orname: orname}
         $state.go("recycleorder", {orderinfo: JSON.stringify(json)});
       }
 
@@ -946,7 +948,6 @@ angular.module('starter.controllers', [])
   .controller('OrderDetailsCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, OrderService) {
     var user = JSON.parse(localStorage.getItem("user"));//用户信息
     $scope.type = $stateParams.type;//1.待接单 2 待处理和所有订单
-    $rootScope.orderType = $rootScope.orderType; //orderType类型0.全部订单  1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
     if ($scope.type == 1) {
       OrderService.getDengJiDetail({djno: $stateParams.no}).success(function (data) {
         console.log(data);
@@ -984,7 +985,7 @@ angular.module('starter.controllers', [])
       })
     }
     //回收
-    $scope.recycle = function (orno, djno, type, userid) {
+    $scope.recycle = function (orno, djno, type, userid, amount, orname) {
       event.preventDefault();
       if (type == 1 && user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
         CommonService.platformPrompt("接单回收时回收,会员身份必须是上门回收者", 'close');
@@ -994,7 +995,7 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt("跟单收货时回收,会员身份必须是货场", 'close');
         return;
       }
-      var json = {orno: orno, djno: djno, type: type, userid: userid}
+      var json = {orno: orno, djno: djno, type: type, userid: userid, amount: amount, orname: orname}
       $state.go("recycleorder", {orderinfo: JSON.stringify(json)});
 
     }
@@ -1076,6 +1077,7 @@ angular.module('starter.controllers', [])
   .controller('RecycleWriteCtrl', function ($scope, $state, $stateParams, CommonService, OrderService) {
     $scope.productList = JSON.parse($stateParams.item);
     $scope.orderinfo = JSON.parse($stateParams.orderinfo);
+    console.log($scope.productList);
 
     //回收录单提交付款
     var details = [];
@@ -1112,7 +1114,18 @@ angular.module('starter.controllers', [])
       OrderService.addOrderReceipt($scope.huishoudata).success(function (data) {
         console.log(data);
         if (data.code == 1001) {
-          CommonService.platformPrompt("回收单提交成功", "payment");
+          CommonService.platformPrompt("回收单提交成功", "close");
+          //去付款
+          var json = {
+            type: $scope.orderinfo.type,
+            djno: $scope.orderinfo.djno,
+            fromuser: $scope.orderinfo.userid,
+            touser: localStorage.getItem("userid"),
+            amount: $scope.orderinfo.amount,
+            orname: $scope.orderinfo.orname
+          }
+          $state.go("payment", {orderinfo: JSON.stringify(json)})
+
         } else {
           CommonService.platformPrompt(data.message, "close");
         }
