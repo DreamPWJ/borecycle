@@ -18,12 +18,15 @@
             </ion-item>
             <div ng-hide="showme">
               <ion-item class="item-input">
-                <span class="input-label icon iconfont icon-suobanxin "   style="font-size: 1rem!important;"> 回收数量</span>
-                <input type="number" placeholder="请输入回收数量" ng-model="items.recyclenum" required />
+                <span class="input-label icon iconfont icon-suobanxin " style="font-size: 1rem!important;"> 回收数量</span>
+                <input type="number" placeholder="请输入回收数量" ng-model="items.recyclenum" check-form
+                       ng-change="checkForm(items.recyclenum,'输入回收数量错误',items.unit==1?'positiveinteger':'positivenumber','')"
+                       required/>
               </ion-item>
               <ion-item class="item-input">
                 <span class="input-label icon iconfont icon-recharge " style="font-size: 1rem!important;"> 回收价格</span>
-                <input type="number" placeholder="请输入回收价格" ng-model="items.recycleprice" required/>
+                <input type="number" placeholder="请输入回收价格" ng-model="items.recycleprice" check-form
+                       ng-change="checkForm(items.recycleprice,'输入回收价格错误','positivenumber','')" required/>
               </ion-item>
             </div>
           </div>
@@ -32,7 +35,7 @@
 
     </ion-content>
     <div class="padding light-bg bottom-0" keyboard-attach>
-      <a class="button button-positive  full-image" ng-disabled="!recyclewrite.$valid"
+      <a class="button button-positive  full-image" ng-disabled="!(recyclewrite.$valid&verify)"
          ng-click="recycleWriteNext()">提交</a>
     </div>
   </form>

@@ -46,6 +46,7 @@
 
 #orderlist .jiedan i, #orderlist .pending i, #orderwarning .pending i, #myorderlist .close i {
   vertical-align: text-bottom;
+  margin-left: 0.5rem;
 }
 
 .tab-largen.tab-item {
@@ -240,6 +241,36 @@
 #referenceprice .item-thumbnail-left img {
   width: 60px;
   height: 60px;
+}
+
+.item-content {
+  padding-right: 16px !important;
+}
+
+#panel {
+  position: fixed;
+  background-color: #ffffff;
+  max-height: 100%;
+  overflow-y: auto;
+  top: 44px;
+  right: 0px;
+  width: 110px;
+}
+
+#panel .amap-call {
+  text-decoration: none !important;
+  background-color: #00ACFF !important;
+  padding: 3px;
+  text-align: center;
+}
+
+#panel .amap-lib-driving, #panel .amap-lib-driving .planTitle {
+  padding: 3px;
+  border: none;
+}
+
+#panel .amap-lib-driving .planTitle {
+  background-color: #ffffff !important;
 }
 
 /*-------------------------------------------------------*/

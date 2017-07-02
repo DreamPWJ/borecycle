@@ -5,6 +5,9 @@
   <ion-nav-title>
     <h1 class="title"><img id="logo" src="img/logo.png" alt=""/> 我的回收单</h1>
   </ion-nav-title>
+  <ion-nav-buttons side="right" >
+    <button ng-if="tabIndex==1"  class="button icon iconfont icon-sortlight button-clear" ng-click="order.showDelete = !order.showDelete;"></button>
+  </ion-nav-buttons>
   <ion-tabs id="orderlist-tab" class="tabs-light tabs-top" delegate-handle="my-handle-orderlist">
     <div class="row row-horizontal-around text-center">
       <span class="col-33 {{tabIndex==0?'active':''}}" ng-click="selectedTab(0)">待接单 </span>
@@ -44,21 +47,25 @@
           <i class="icon ion-android-notifications"></i>
           <p>暂无待处理单</p>
         </div>
-        <ion-list>
-          <a ng-href="#/orderdetails/{{item.orno}}/2" class="item " ng-repeat="item in chuliorderList">
+        <ion-list show-reorder="order.showDelete">
+          <ion-item ng-href="#/orderdetails/{{item.orno}}/2" class="item " ng-repeat="item in chuliorderList">
             <h2 class="positive">{{item.addrdetail}}</h2>
-            <p class="text-wrap ">交易品类 : {{item.category}} <span class="balanced">{{item.hytype==1?'废品':'二手'}}</span>
+            <p class="text-wrap "  >交易品类 : {{item.category}} <span class="balanced">{{item.hytype==1?'废品':'二手'}}</span>
               <span class="item-note pending  "><span class="energized" ng-click="relation(item.ormotel)"><i
                 class="iconfont icon-phone"></i>联系他</span>
              <span ng-if="item.orstate==4" class="balanced"
                    ng-click="recycle(item.orno,item.djno,item.type,item.userid)"><i
                class="iconfont icon-huishou"></i>回收</span> <span
-                  class="positive" ng-click="navigation()"><i class="iconfont icon-daohang1"></i>导航</span>
-                      <span ng-if="item.orstate==5" class="balanced" ng-click="topay()"><i
+                  class="positive" ng-click="navigation(item.longitude,item.latitude)"><i class="iconfont icon-daohang1"></i>导航</span>
+                      <span ng-if="item.orstate==5" class="balanced" ng-click="topay(item.type,item.djno,item.userid,item.oruserid,item.totalprice,item.orname)"><i
                         class="iconfont icon-sponsor"></i>去付款</span></span></p>
             <p class="text-wrap ">{{item.orname}} {{item.ormotel | hidepartinfo : 'phone'}} 距离:{{item.distance}}</p>
-          </a>
+
+            <ion-reorder-button  class="iconfont icon-jian " ng-click="cancelOrder(item.orno)" ></ion-reorder-button>
+          </ion-item>
         </ion-list>
+        <p ng-if="chuliorderList.length!=0" class="text-center padding-top grey"><i class="icon ion-information-circled"></i>
+          点击列表右上角按钮可取消接单</p>
         <ion-infinite-scroll on-infinite="getOrderList()" ng-if="chulitotal > chulipage" immediate-check="false">
       </ion-content>
     </ion-slide>
@@ -80,8 +87,8 @@
              <span ng-if="item.orstate==4" class="balanced"
                    ng-click="recycle(item.orno,item.djno,item.type,item.userid)"><i
                class="iconfont icon-huishou"></i>回收</span> <span
-                    class="positive" ng-click="navigation()"><i class="iconfont icon-daohang1"></i>导航</span>
-                <span ng-if="item.orstate==5" class="balanced" ng-click="topay()"><i class="iconfont icon-sponsor"></i>去付款</span>
+                    class="positive" ng-click="navigation(item.longitude,item.latitude)"><i class="iconfont icon-daohang1"></i>导航</span>
+                <span ng-if="item.orstate==5" class="balanced" ng-click="topay(item.type,item.djno,item.userid,item.oruserid,item.totalprice,item.orname)"><i class="iconfont icon-sponsor"></i>去付款</span>
                 </span></p>
               <p class="text-wrap ">{{item.orname}} {{item.ormotel | hidepartinfo : 'phone'}} 距离:{{item.distance}}</p>
             </a>

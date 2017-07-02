@@ -183,7 +183,7 @@ angular.module('starter.controllers', [])
     $scope.getMainData();
 
 //定位
-//CommonService.getLocation();
+    CommonService.getLocation();
 
 //在首页中清除导航历史退栈
     $scope.$on('$ionicView.afterEnter', function () {
@@ -492,7 +492,9 @@ angular.module('starter.controllers', [])
     if (!CommonService.isLogin(true)) {
       return;
     }
-
+    $scope.order = {
+      showDelete: false
+    };
     $rootScope.orderType = $stateParams.orderType; //orderType类型 1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
     $scope.tabIndex = 0;
     var user = JSON.parse(localStorage.getItem("user"));//用户信息
@@ -684,6 +686,17 @@ angular.module('starter.controllers', [])
       })
 
     }
+    //在待处理订单中 取消订单
+    $scope.cancelOrder = function (orno) {
+      OrderService.cancelOrderReceipt({orno: orno}).success(function (data) {
+        console.log(data);
+        if (data.code == 1001) {
+          CommonService.platformPrompt("取消接单成功", "close");
+        } else {
+          CommonService.platformPrompt(data.message, "close");
+        }
+      })
+    }
     //联系他
     $scope.relation = function (phonenumber) {
       event.preventDefault();
@@ -707,9 +720,9 @@ angular.module('starter.controllers', [])
     }
 
     //导航
-    $scope.navigation = function () {
+    $scope.navigation = function (longitude, latitude) {
       event.preventDefault();
-      $state.go("navigation")
+      $state.go("navigation", {longitude: longitude, latitude: latitude})
     }
 
     //去付款
@@ -909,9 +922,9 @@ angular.module('starter.controllers', [])
       }
 
       //导航
-      $scope.navigation = function () {
+      $scope.navigation = function (longitude, latitude) {
         event.preventDefault();
-        $state.go("navigation")
+        $state.go("navigation", {longitude: longitude, latitude: latitude})
       }
 
       //去付款
@@ -980,10 +993,11 @@ angular.module('starter.controllers', [])
     }
 
     //导航
-    $scope.navigation = function () {
+    $scope.navigation = function (longitude, latitude) {
       event.preventDefault();
-      $state.go("navigation")
+      $state.go("navigation", {longitude: longitude, latitude: latitude})
     }
+
 
     //去付款
     $scope.topay = function (type, djno, fromuser, touser, amount, orname) {
@@ -1127,38 +1141,25 @@ angular.module('starter.controllers', [])
   })
 
   //导航页面
-  .controller('NavigationCtrl', function ($scope, CommonService, $window, OrderService) {
+  .controller('NavigationCtrl', function ($scope, $stateParams, CommonService, $window, OrderService) {
     //$window.location.href="http://m.amap.com/navi/?start=116.403124,39.940693&dest=116.481488,39.990464&destName=阜通西&naviBy=car&key=0ffd53eb83c2cea2181a5fbfa9f3c311"
     // window.open("http://m.amap.com/navi/?start=116.403124,39.940693&dest=116.481488,39.990464&destName=阜通西&naviBy=car&key=0ffd53eb83c2cea2181a5fbfa9f3c311")
     /*    CommonService.getLocation(function () {*/
-    var map = new AMap.Map('gaode-map', {
-        resizeEnable: true,
-        zoom: 16,
-        center: [localStorage.getItem("longitude") || 114.0557100, localStorage.getItem("latitude") || 22.5224500]
-      })
-    ;
-    AMap.plugin(['AMap.ToolBar', 'AMap.Scale', 'AMap.OverView'],
-      function () {
-        map.addControl(new AMap.ToolBar());
-
-        map.addControl(new AMap.Scale());
-
-        /*          map.addControl(new AMap.OverView({isOpen:true}));*/
-      });
     //基本地图加载
-    /*      var map = new AMap.Map("gaode-map", {
-     resizeEnable: true,
-     center: [116.397428, 39.90923],//地图中心点
-     zoom: 13 //地图显示的缩放级别
-     });
-     //构造路线导航类
-     var driving = new AMap.Driving({
-     map: map,
-     panel: "panel"
-     });
-     // 根据起终点经纬度规划驾车导航路线
-     driving.search(new AMap.LngLat(116.379028, 39.865042), new AMap.LngLat(116.427281, 39.903719));*/
-    /*    })*/
+    var map = new AMap.Map("gaode-map", {
+      resizeEnable: true,
+      center: [localStorage.getItem("longitude") ? Number(localStorage.getItem("longitude")).toFixed(6) : 114.0557100, localStorage.getItem("latitude") ? Number(localStorage.getItem("latitude")).toFixed(6) : 22.5224500],//地图中心点
+      zoom: 13 //地图显示的缩放级别
+    });
+    //构造路线导航类
+    var driving = new AMap.Driving({
+      map: map,
+      panel: "panel"
+    });
+    // 根据起终点经纬度规划驾车导航路线
+    driving.search(new AMap.LngLat(localStorage.getItem("longitude") ? Number(localStorage.getItem("longitude")).toFixed(6) : 114.0557100, localStorage.getItem("latitude") ? Number(localStorage.getItem("latitude")).toFixed(6) : 22.5224500), new AMap.LngLat($stateParams.longitude ? Number($stateParams.longitude).toFixed(6) : 114.0557100, $stateParams.latitude ? Number($stateParams.latitude).toFixed(6) : 22.5224500));
+    /*   });*/
+
   })
 
   //通知消息列表

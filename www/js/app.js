@@ -277,7 +277,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
       //导航页面
       .state('navigation', {
-        url: '/navigation',
+        url: '/navigation/:longitude/:latitude',
         cache: false,
         templateUrl: 'templates/order/navigation.html',
         controller: 'NavigationCtrl'
