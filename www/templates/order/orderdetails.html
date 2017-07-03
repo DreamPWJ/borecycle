@@ -80,7 +80,7 @@
   <div  class="row padding light-bg  bottom-0 row-horizontal-around" keyboard-attach ng-if="orderDetail.state<=4||orderDetail.orstate==5">
     <button ng-if="orderDetail.state==4" class="button  button-balanced  icon iconfont icon-huishou col-40  "
             style="font-size: 1rem!important;"
-            ng-click="recycle(orderDetail.orno,orderDetail.djno,orderDetail.type,orderDetail.userid,orderDetail.totalprice,orderDetail.orname)">
+            ng-click="recycle(orderDetail.orno,orderDetail.djno,orderDetail.type,orderDetail.userid,orderDetail.totalprice,orderDetail.orname,orderDetail.category)">
       回收
     </button>
     <button ng-if="orderDetail.state<=4"  class="button button-positive icon iconfont icon-daohang1 col-40" style="font-size: 1rem!important;"

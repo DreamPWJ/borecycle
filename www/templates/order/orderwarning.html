@@ -19,7 +19,7 @@
             <span class="item-note pending  "><span ng-if="item.orstate<=4"  class="energized" ng-click="relation(item.ormotel)"><i
               class="iconfont icon-phone"></i>联系他</span>
              <span ng-if="item.orstate==4" class="balanced"
-                   ng-click="recycle(item.orno,item.djno,item.type,item.userid,item.totalprice,item.orname)"><i
+                   ng-click="recycle(item.orno,item.djno,item.type,item.userid,item.totalprice,item.orname,item.category)"><i
                class="iconfont icon-huishou"></i>回收</span>
                 <span ng-if="item.orstate==5" class="balanced" ng-click="topay(item.type,item.djno,item.userid,item.oruserid,item.totalprice,item.orname)"><i class="iconfont icon-sponsor"></i>去付款</span>
               <span

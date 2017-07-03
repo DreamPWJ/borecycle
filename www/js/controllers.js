@@ -713,7 +713,7 @@ angular.module('starter.controllers', [])
     }
 
 //回收
-    $scope.recycle = function (orno, djno, type, userid, amount, orname) {
+    $scope.recycle = function (orno, djno, type, userid, amount, orname,productname) {
       event.preventDefault();
       if (type == 1 && user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
         CommonService.platformPrompt("接单回收时回收,会员身份必须是上门回收者", 'close');
@@ -723,7 +723,7 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt("跟单收货时回收,会员身份必须是货场", 'close');
         return;
       }
-      var json = {orno: orno, djno: djno, type: type, userid: userid, amount: amount, orname: orname}
+      var json = {orno: orno, djno: djno, type: type, userid: userid, amount: amount, orname: orname,productname:productname}
       $state.go("recycleorder", {orderinfo: JSON.stringify(json)});
 
     }
@@ -916,7 +916,7 @@ angular.module('starter.controllers', [])
       }
 
       //回收
-      $scope.recycle = function (orno, djno, type, userid, amount, orname) {
+      $scope.recycle = function (orno, djno, type, userid, amount, orname,productname) {
         event.preventDefault();
         if (type == 1 && user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
           CommonService.platformPrompt("接单回收时回收,会员身份必须是上门回收者", 'close');
@@ -926,7 +926,7 @@ angular.module('starter.controllers', [])
           CommonService.platformPrompt("跟单收货时回收,会员身份必须是货场", 'close');
           return;
         }
-        var json = {orno: orno, djno: djno, type: type, userid: userid, amount: amount, orname: orname}
+        var json = {orno: orno, djno: djno, type: type, userid: userid, amount: amount, orname: orname,productname:productname}
         $state.go("recycleorder", {orderinfo: JSON.stringify(json)});
       }
 
@@ -985,7 +985,7 @@ angular.module('starter.controllers', [])
       })
     }
     //回收
-    $scope.recycle = function (orno, djno, type, userid, amount, orname) {
+    $scope.recycle = function (orno, djno, type, userid, amount, orname,productname) {
       event.preventDefault();
       if (type == 1 && user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
         CommonService.platformPrompt("接单回收时回收,会员身份必须是上门回收者", 'close');
@@ -995,7 +995,7 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt("跟单收货时回收,会员身份必须是货场", 'close');
         return;
       }
-      var json = {orno: orno, djno: djno, type: type, userid: userid, amount: amount, orname: orname}
+      var json = {orno: orno, djno: djno, type: type, userid: userid, amount: amount, orname: orname,productname:productname}
       $state.go("recycleorder", {orderinfo: JSON.stringify(json)});
 
     }
@@ -1040,7 +1040,7 @@ angular.module('starter.controllers', [])
     $scope.orderinfo = JSON.parse($stateParams.orderinfo);
     $scope.productLists = [];//产品品类
     //获取产品品类
-    OrderService.getProductList({ID: "", Name: ""}).success(function (data) {
+    OrderService.getProductList({ID: "", Name: $scope.orderinfo.productname}).success(function (data) {
       console.log(data);
       if (data.code == 1001) {
         $scope.productList = data.data;
@@ -1227,7 +1227,10 @@ angular.module('starter.controllers', [])
         ids: id
       }
       NewsService.updateNewsLook($scope.lookparams).success(function (data) {
-        $scope.newslist(0);
+        if(data.code==1001){
+          $scope.newslist(0);
+        }
+        CommonService.platformPrompt(data.message, 'close');
       })
     }
   })

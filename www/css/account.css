@@ -126,3 +126,7 @@
 #organizingdata .checkbox-icon:after, #information .checkbox-icon:after, #register .services .checkbox-icon:after,#evaluate .checkbox-icon:after {
   width: 12px;
 }
+
+.item-checkbox .item-content{
+  padding-right: 0!important;
+}
