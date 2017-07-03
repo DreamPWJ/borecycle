@@ -532,13 +532,13 @@ angular.module('starter.services', [])
         });
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       },
-      getOrderReceiptList: function (params) { //查询接单收货/货源归集分页列
+      getOrderReceiptList: function (params,datas) { //查询接单收货/货源归集分页列
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
           url: BoRecycle.api + "/api/orderreceipt/getlist/" + params.page + "/" + params.size,
-          params: params
+          params: datas
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -703,6 +703,19 @@ angular.module('starter.services', [])
           method: 'GET',
           url: BoRecycle.api + "/api/product/getprolist/" + params.grpid + "/" + params.isth,
           params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getOrderSum: function (params) { //获得我的里面待处理和预警订单数
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/orderreceipt/getsum/" + params.userid + "/" + params.expiry
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -1297,7 +1310,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise
         promise = $http({
           method: 'GET',
-          url: BoRecycle.api + "/api/util/getversionslist/" + params.page + "/" + params.size,
+          url: BoRecycle.api + "/api/util/getversionslist/1/20",
           params: params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了

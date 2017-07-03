@@ -68,8 +68,6 @@ angular.module('starter.controllers', [])
 
       if ($ionicPlatform.is('android')) {//android系统自动更新软件版本
         $scope.versionparams = {
-          page: 1,//当前页码
-          size: 1,//每页条数
           ID: 3,//编码 ,等于空时取所有
           Name: '博回收',//软件名称（中文）
           NameE: '',//软件名称（英文）
@@ -205,6 +203,7 @@ angular.module('starter.controllers', [])
     $scope.loginSubmit = function () {
       $scope.user.openID = localStorage.getItem("openid") || "";//微信openID
       $scope.user.client = ionic.Platform.isWebView() ? 0 : (ionic.Platform.is('android') ? 1 : 2);
+      console.log(JSON.stringify($scope.user));
       AccountService.login($scope.user).success(function (data) {
         console.log(data);
         $scope.userdata = data.data;
@@ -712,18 +711,26 @@ angular.module('starter.controllers', [])
       window.open('tel:' + phonenumber);
     }
 
-//回收
-    $scope.recycle = function (orno, djno, type, userid, amount, orname,productname) {
+//去收货
+    $scope.recycle = function (orno, djno, type, userid, amount, orname, productname) {
       event.preventDefault();
       if (type == 1 && user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
-        CommonService.platformPrompt("接单回收时回收,会员身份必须是上门回收者", 'close');
+        CommonService.platformPrompt("接单回收时去收货,会员身份必须是上门回收者", 'close');
         return;
       }
       if (type == 2 && user.services.indexOf(3) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
-        CommonService.platformPrompt("跟单收货时回收,会员身份必须是货场", 'close');
+        CommonService.platformPrompt("跟单收货时去收货,会员身份必须是货场", 'close');
         return;
       }
-      var json = {orno: orno, djno: djno, type: type, userid: userid, amount: amount, orname: orname,productname:productname}
+      var json = {
+        orno: orno,
+        djno: djno,
+        type: type,
+        userid: userid,
+        amount: amount,
+        orname: orname,
+        productname: productname
+      }
       $state.go("recycleorder", {orderinfo: JSON.stringify(json)});
 
     }
@@ -886,8 +893,9 @@ angular.module('starter.controllers', [])
           lat: localStorage.getItem("latitude") || "",//当前纬度（获取距离）(可为空)
           ORNO: "",//接单单号(可为空)
           ORuserid: localStorage.getItem("userid"),//接单人(不能为空)
-          expiry: 3 //小时 取预警数据 订单预警数据（24小时截至马上过期的（expiry=3表示取3小时内））
+          expiry: 6 //小时 取预警数据 订单预警数据（24小时截至马上过期的（expiry=3表示取3小时内））
         }
+        console.log(JSON.stringify($scope.datas));
         OrderService.getOrderReceiptList($scope.params, $scope.datas).success(function (data) {
           console.log(data);
           $scope.isNotData = false;
@@ -915,18 +923,26 @@ angular.module('starter.controllers', [])
         window.open('tel:' + phonenumber);
       }
 
-      //回收
-      $scope.recycle = function (orno, djno, type, userid, amount, orname,productname) {
+      //去收货
+      $scope.recycle = function (orno, djno, type, userid, amount, orname, productname) {
         event.preventDefault();
         if (type == 1 && user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
-          CommonService.platformPrompt("接单回收时回收,会员身份必须是上门回收者", 'close');
+          CommonService.platformPrompt("接单回收时去收货,会员身份必须是上门回收者", 'close');
           return;
         }
         if (type == 2 && user.services.indexOf(3) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
-          CommonService.platformPrompt("跟单收货时回收,会员身份必须是货场", 'close');
+          CommonService.platformPrompt("跟单收货时去收货,会员身份必须是货场", 'close');
           return;
         }
-        var json = {orno: orno, djno: djno, type: type, userid: userid, amount: amount, orname: orname,productname:productname}
+        var json = {
+          orno: orno,
+          djno: djno,
+          type: type,
+          userid: userid,
+          amount: amount,
+          orname: orname,
+          productname: productname
+        }
         $state.go("recycleorder", {orderinfo: JSON.stringify(json)});
       }
 
@@ -984,18 +1000,26 @@ angular.module('starter.controllers', [])
 
       })
     }
-    //回收
-    $scope.recycle = function (orno, djno, type, userid, amount, orname,productname) {
+    //去收货
+    $scope.recycle = function (orno, djno, type, userid, amount, orname, productname) {
       event.preventDefault();
       if (type == 1 && user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
-        CommonService.platformPrompt("接单回收时回收,会员身份必须是上门回收者", 'close');
+        CommonService.platformPrompt("接单回收时去收货,会员身份必须是上门回收者", 'close');
         return;
       }
       if (type == 2 && user.services.indexOf(3) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
-        CommonService.platformPrompt("跟单收货时回收,会员身份必须是货场", 'close');
+        CommonService.platformPrompt("跟单收货时去收货,会员身份必须是货场", 'close');
         return;
       }
-      var json = {orno: orno, djno: djno, type: type, userid: userid, amount: amount, orname: orname,productname:productname}
+      var json = {
+        orno: orno,
+        djno: djno,
+        type: type,
+        userid: userid,
+        amount: amount,
+        orname: orname,
+        productname: productname
+      }
       $state.go("recycleorder", {orderinfo: JSON.stringify(json)});
 
     }
@@ -1077,7 +1101,7 @@ angular.module('starter.controllers', [])
   .controller('RecycleWriteCtrl', function ($scope, $state, $stateParams, CommonService, OrderService) {
     $scope.productList = JSON.parse($stateParams.item);
     $scope.orderinfo = JSON.parse($stateParams.orderinfo);
-    console.log($scope.productList);
+    console.log($scope.orderinfo);
 
     //回收录单提交付款
     var details = [];
@@ -1095,6 +1119,7 @@ angular.module('starter.controllers', [])
                 num: items.recyclenum,
                 price: items.recycleprice
               })
+              $scope.orderinfo.amount += items.recyclenum * items.recycleprice;//总价格
             }
           })
         }
@@ -1227,7 +1252,7 @@ angular.module('starter.controllers', [])
         ids: id
       }
       NewsService.updateNewsLook($scope.lookparams).success(function (data) {
-        if(data.code==1001){
+        if (data.code == 1001) {
           $scope.newslist(0);
         }
         CommonService.platformPrompt(data.message, 'close');
@@ -1236,7 +1261,7 @@ angular.module('starter.controllers', [])
   })
 
   //我的设置页面
-  .controller('AccountCtrl', function ($scope, $rootScope, BoRecycle, CommonService, AccountService, WeiXinService) {
+  .controller('AccountCtrl', function ($scope, $rootScope, BoRecycle, CommonService, AccountService, OrderService, WeiXinService) {
     //是否登录
     if (!CommonService.isLogin(true)) {
       return;
@@ -1256,6 +1281,7 @@ angular.module('starter.controllers', [])
       }
     })
 
+    //获取关于我们信息
     AccountService.getHelpContent({ID: 22}).success(function (data) {
       $scope.helpdata = data.data;
       $scope.title = "关于我们";
@@ -1267,6 +1293,16 @@ angular.module('starter.controllers', [])
       //调用分享面板
       $scope.shareActionSheet = function (type) {
         CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract, BoRecycle.mobApi + '/help/22', '', type);
+      }
+    })
+
+//获得我的里面待处理和预警订单数
+    OrderService.getOrderSum({userid: localStorage.getItem("userid"), expiry: 6}).success(function (data) {
+      console.log(data);
+      if (data.code == 1001) {
+        $scope.orderSum = data.data;
+      } else {
+        CommonService.platformPrompt(data.message, 'close');
       }
     })
 
