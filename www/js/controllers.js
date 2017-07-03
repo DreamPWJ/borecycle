@@ -327,7 +327,7 @@ angular.module('starter.controllers', [])
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable;
     $scope.user.services = [];//用户类型数组key
-    $scope.services = [{key: 2, value: "上门回收者", checked: false}, {key: 3, value: "货场", checked: false}, {
+    $scope.services = [{key: 1, value: "信息提供者", checked: false},{ key: 2, value: "上门回收者", checked: false}, {key: 3, value: "货场", checked: false}, {
       key: 4,
       value: "二手商家",
       checked: false
@@ -383,7 +383,7 @@ angular.module('starter.controllers', [])
     $scope.addrinfo = {};//地址信息
     $scope.recyclingCategory = [];//回收品类数组
     $scope.user.services = [];//用户类型数组key
-    $scope.services = [{key: 2, value: "上门回收者", checked: false}, {key: 2, value: "货场", checked: false}, {
+    $scope.services = [{key: 1, value: "信息提供者", checked: false},{key: 2, value: "上门回收者", checked: false}, {key: 3, value: "货场", checked: false}, {
       key: 4,
       value: "二手商家",
       checked: false
@@ -544,7 +544,7 @@ angular.module('starter.controllers', [])
         $scope.datas = {
           DJNo: "",//登记单号(可为空)
           Type: $rootScope.orderType == 0 ? "" : $rootScope.orderType,//类型1.登记信息 2.登记货源(可为空)
-          userid: "",//用户userid
+          userid: $rootScope.orderType == 0 ? localStorage.getItem("userid"):"",//用户userid
           Category: "",//货物品类 多个用逗号隔开(可为空)
           HYType: "",//货物类别 0.未区分 1废料 2二手(可为空)
           State: "2,3",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
@@ -588,7 +588,7 @@ angular.module('starter.controllers', [])
         $scope.datas = {
           DJNo: "",//登记单号(可为空)
           Type: $rootScope.orderType == 0 ? "" : $rootScope.orderType,//类型1.登记信息 2.登记货源(可为空)
-          userid: "",//用户userid
+          userid:$rootScope.orderType == 0 ? localStorage.getItem("userid"):"",//用户userid
           Category: "",//货物品类 多个用逗号隔开(可为空)
           HYType: "",//货物类别 0.未区分 1废料 2二手(可为空)
           State: $scope.tabIndex == 1 ? "4,5" : "",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
@@ -1919,7 +1919,7 @@ angular.module('starter.controllers', [])
       $scope.dengji.longitude = $scope.addrareacountyone.Lng || localStorage.getItem("longitude") || 0;//经度 默认为0   地址表里有经纬度值 如果没值现在的地区取经纬度
       $scope.dengji.latitude = $scope.addrareacountyone.Lat || localStorage.getItem("latitude") || 0;//纬度 默认为0 地址表里有经纬度值 如果没值现在的地区取经纬度
       $scope.dengji.category = $scope.recyclingCategoryName.join(",");//货物品类 多个用逗号隔开
-      $scope.dengji.manufactor = manufactor.join(",");//单选
+      $scope.dengji.manufactor =manufactor.length==0?"":manufactor.join(",");//单选
       $scope.dengji.addrcode = $scope.addrareacountyone.ID;
       $scope.dengji.details = {};//添加登记货源时明细不能为空，添加登记信息时明细为空
 
