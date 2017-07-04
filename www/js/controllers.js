@@ -56,7 +56,9 @@ angular.module('starter.controllers', [])
           console.log(JSON.stringify($scope.datas));
           NewsService.setDeviceInfo($scope.datas).success(function (data) {
             console.log(JSON.stringify(data));
-            if (data.code != 1001) {
+            if (data.code == 1001) {
+             localStorage.setItem("jPushRegistrationID",$scope.jPushRegistrationID);
+            }else {
               CommonService.platformPrompt("提交设备信息到服务器失败", 'close');
             }
           })
@@ -65,7 +67,7 @@ angular.module('starter.controllers', [])
           console.log(exception);
         }
       };
-      if (ionic.Platform.isWebView() && localStorage.getItem("userid")) { //包含cordova插件的应用
+      if (ionic.Platform.isWebView() && localStorage.getItem("userid")&&!localStorage.getItem("jPushRegistrationID")) { //包含cordova插件的应用
         window.setTimeout(getRegistrationID, 3000);
       }
 
@@ -1577,10 +1579,9 @@ angular.module('starter.controllers', [])
     }
     //增加地址方法
     $scope.dealaddresssubmit = function () {
-      console.log($scope.addressiteminfo);
-      $scope.addrinfo.addrid = $scope.addressiteminfo ? $scope.addressiteminfo.ID : null;//传入id 则是修改地址
+      $scope.addrinfo.addrid = $scope.addressiteminfo ? $scope.addressiteminfo.ID : null;//传入地址id 则是修改地址
       $scope.addrinfo.userid = localStorage.getItem("userid");//用户id
-      $scope.addrinfo.addrcode = $scope.addrareacountyone ? $scope.addrareacountyone.ID : $scope.addressiteminfo.ID;	//地区id
+      $scope.addrinfo.addrcode = $scope.addrareacountyone ? $scope.addrareacountyone.ID : $scope.addressiteminfo.AddrCode;	//地区id
       $scope.addrinfo.is_default = $scope.addrinfoother.isstatus ? 1 : 0;	//是否默认0-否，1-是
       $scope.addrinfo.lat = $scope.addrareacountyone ? $scope.addrareacountyone.Lat : $scope.addressiteminfo.Lat;	//纬度
       $scope.addrinfo.lng = $scope.addrareacountyone ? $scope.addrareacountyone.Lng : $scope.addressiteminfo.Lng; 	//经度
