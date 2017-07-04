@@ -33,6 +33,7 @@ angular.module('starter.controllers', [])
       };
 
       var onGetRegistrationID = function (data) {
+
         try {
           if (data.length == 0) {
             window.setTimeout(getRegistrationID, 1000);
@@ -41,19 +42,20 @@ angular.module('starter.controllers', [])
           $scope.jPushRegistrationID = data;
           localStorage.setItem("jPushRegistrationID", data)
           console.log("JPushPlugin:registrationID is " + data);
-
           //提交设备信息到服务器
           $scope.datas = {
             registration_id: $scope.jPushRegistrationID,	//极光注册id
-            user: localStorage.getItem("userid"),	//用户id,没登录为空
+            user: localStorage.getItem("userid"),	//用户id 必填
             mobile: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).mobile : '',	//手机号码 获取不到为空
             alias: "",	//设备别名
             device: $ionicPlatform.is('android') ? 0 : 1,	//设备类型:0-android,1-ios
             Lat: localStorage.getItem("latitude") || 22.5224500,
-            Lon: localStorage.getItem("longitude") || 114.0557100
+            Lon: localStorage.getItem("longitude") || 114.0557100,
+            type:2 //新app 2
           }
-          console.log(JSON.stringify($scope.datas));
+          console.log (JSON.stringify($scope.datas));
           NewsService.setDeviceInfo($scope.datas).success(function (data) {
+            console.log(JSON.stringify(data));
             if (data.code != 1001) {
               CommonService.platformPrompt("提交设备信息到服务器失败", 'close');
             }
@@ -63,8 +65,8 @@ angular.module('starter.controllers', [])
           console.log(exception);
         }
       };
-      if (ionic.Platform.isWebView()) { //包含cordova插件的应用
-        window.setTimeout(this.getRegistrationID, 3000);
+      if (ionic.Platform.isWebView()&&localStorage.getItem("userid")) { //包含cordova插件的应用
+        window.setTimeout(getRegistrationID, 3000);
       }
 
 
@@ -760,8 +762,8 @@ angular.module('starter.controllers', [])
        会员角色你还要判断他有没有申请通过  0 审核不通过 1 未审核 2 审核通过*/
 
 
-      if (user.userext.autit != 2) {
-        CommonService.platformPrompt("会员类型审核通过后才能操作", 'close');
+      if (!user.userext||user.userext.autit != 2) {
+        CommonService.platformPrompt(user.userext?"会员类型审核通过后才能操作":"用户设置里面完善资料后再操作", user.userext?'close':'organizingdata');
         return;
       }
       if (type == 1 && user.services.indexOf(2) != -1) {

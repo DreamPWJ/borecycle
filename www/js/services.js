@@ -731,8 +731,8 @@ angular.module('starter.services', [])
          会员角色你还要判断他有没有申请通过  0 审核不通过 1 未审核 2 审核通过*/
 
 
-        if (user.userext.autit != 2) {
-          CommonService.platformPrompt("会员类型审核通过后才能操作", 'close');
+        if (!user.userext || user.userext.autit != 2) {
+          CommonService.platformPrompt(user.userext?"会员类型审核通过后才能操作":"用户设置里面完善资料后再操作",  user.userext?'close':'organizingdata');
           return;
         }
         if (type == 1 && user.services.indexOf(2) != -1) {
