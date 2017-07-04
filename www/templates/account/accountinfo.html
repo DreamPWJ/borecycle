@@ -18,12 +18,12 @@
         <h2>昵称 <span class="item-note">{{userinfo.nickname}}</span></h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
-      <a ng-href="#/cancelmobile" class="item item-icon-right">
+      <a ng-href="#/bindingmobile/{{phonestatus}}" class="item item-icon-right">
         <h2>手机号码 <span class="item-note">{{userinfo.mobile}}</span></h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
       <a ng-href="" class="item item-icon-right border-bottom-none">
-        <h2>会员类型 <span class="item-note">{{userinfo.type==1?'销售员':(userinfo.type==2?'上门回收者':(userinfo.type==3?'货场':'二手商家'))}}</span>
+        <h2>会员类型 <span class="item-note">{{servicesstr}}</span>
         </h2>
       </a>
 
@@ -45,8 +45,8 @@
               <h2>回收地区 <span class="item-note"> 广东 深圳 福田</span></h2>
               <i class="icon ion-ios-arrow-right"></i>
             </a>-->
-      <a class="item item-icon-right " ng-click="openCustomModal()">
-        <h2>所在地区 <span class="item-note">{{userinfo.areaname}}</span></h2>
+      <a class="item item-icon-right " >
+        <h2>所在地区 <span class="item-note">{{userinfo.addr}}</span></h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
     </div>

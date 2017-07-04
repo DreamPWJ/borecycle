@@ -107,7 +107,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
       //点击极光推送跳转到相应页面
       document.addEventListener("jpush.openNotification", function (data) {
-        /*$state.go("myorderdetails", {no: 1})*/;//订单详情
+        /*   alert(JSON.stringify(data))*/
+        /*$state.go("myorderdetails", {no: 1});*///订单详情
       }, false)
 
       //调试模式，这样报错会在应用中弹出一个遮罩层显示错误信息
@@ -422,6 +423,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         url: '/register',
         templateUrl: 'templates/account/register.html',
         controller: 'RegisterCtrl'
+      })
+
+      //找回密码
+      .state('findpassword', {
+        url: '/findpassword',
+        templateUrl: 'templates/account/findpassword.html',
+        controller: 'FindPasswordCtrl'
       })
 
       //完善资料页面

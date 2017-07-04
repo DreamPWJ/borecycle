@@ -154,6 +154,10 @@
 
 }
 
+#supplyofgoods .iconfont, #recycleorder .iconfont{
+  color: #00ACFF;
+}
+
 #supplyofgoods .select-category label, #recycleorder .select-category label {
   position: relative;
   margin-top: 0.6rem;
@@ -232,16 +236,6 @@
   color: #00ACFF;
 }
 
-#referenceprice .item-thumbnail-left {
-  padding-left: 80px;
-  padding-bottom: 0;
-  min-height: 80px
-}
-
-#referenceprice .item-thumbnail-left img {
-  width: 60px;
-  height: 60px;
-}
 
 .item-content {
   padding-right: 16px !important;

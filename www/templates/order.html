@@ -56,7 +56,7 @@
              <span ng-if="item.state==4" class="balanced"
                    ng-click="recycle(item.orno,item.djno,item.type,item.userid,item.totalprice,item.orname,item.category)"><i
                class="iconfont icon-huishou"></i>去收货</span>
-                      <span ng-if="item.state==5" class="balanced" ng-click="topay(item.type,item.djno,item.userid,item.oruserid,item.totalprice,item.orname)"><i
+                      <span ng-if="item.state==5" class="balanced" ng-click="topay(item.type,item.djno,item.orno,item.userid,item.oruserid,item.totalprice,item.orname)"><i
                         class="iconfont icon-sponsor"></i>去付款</span><span
                   class="positive" ng-if="item.state<=4"  ng-click="navigation(item.longitude,item.latitude)"><i class="iconfont icon-daohang1"></i>导航</span></span></p>
             <p class="text-wrap ">{{item.orname}} {{item.ormotel | hidepartinfo : 'phone'}} 距离:{{item.distance}} <span ng-if="item.state>=5"> 状态 : {{item.strstate}}</span></p>
@@ -87,7 +87,7 @@
              <span ng-if="item.state==4" class="balanced"
                    ng-click="recycle(item.orno,item.djno,item.type,item.userid,item.totalprice,item.orname,item.category)"><i
                class="iconfont icon-huishou"></i>去收货</span>
-                <span ng-if="item.state==5" class="balanced" ng-click="topay(item.type,item.djno,item.userid,item.oruserid,item.totalprice,item.orname)"><i class="iconfont icon-sponsor"></i>去付款</span>
+                <span ng-if="item.state==5" class="balanced" ng-click="topay(item.type,item.djno,item.orno,item.userid,item.oruserid,item.totalprice,item.orname)"><i class="iconfont icon-sponsor"></i>去付款</span>
                <span class="positive" ng-if="item.state<=4"  ng-click="navigation(item.longitude,item.latitude)"><i class="iconfont icon-daohang1"></i>导航</span> </span></p>
               <p class="text-wrap ">{{item.orname}} {{item.ormotel | hidepartinfo : 'phone'}} 距离:{{item.distance}}  <span > 状态 : {{item.strstate}}</span></p>
             </a>

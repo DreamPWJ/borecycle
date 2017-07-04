@@ -1,19 +1,18 @@
 angular.module('starter.services', [])
 //service在使用this指针，而factory直接返回一个对象
-  .service('CommonService', function ($ionicPopup, $ionicPopover, $rootScope, $state, $ionicModal, $cordovaCamera, $cordovaImagePicker, $ionicPlatform, $ionicActionSheet, $ionicHistory, $timeout, $cordovaToast, $cordovaGeolocation, $cordovaBarcodeScanner, $ionicViewSwitcher, $interval, AccountService, WeiXinService) {
-
+.service('CommonService', function ($ionicPopup, $ionicPopover, $rootScope, $state, $ionicModal, $cordovaCamera, $cordovaImagePicker, $ionicPlatform, $ionicActionSheet, $ionicHistory, $timeout, $cordovaToast, $cordovaGeolocation, $cordovaBarcodeScanner, $ionicViewSwitcher, $interval, AccountService, WeiXinService) {
     return {
-      platformPrompt: function (msg, stateurl) {
+      platformPrompt: function (msg, stateurl, stateparams) {
+        CommonService=this;
         $rootScope.commonService = CommonService;
         if ($ionicPlatform.is('android') || $ionicPlatform.is('ios')) {
           try {
             $cordovaToast.showLongCenter(msg);
           } catch (e) {
-            $rootScope.commonService.toolTip(msg, "tool-tip-message-success");
+              $rootScope.commonService.toolTip(msg, "tool-tip-message-success");
           }
         } else {
-          $rootScope.commonService.toolTip(msg, "tool-tip-message-success");
-          /*      this.showAlert("博回收", msg, stateurl);*/
+            $rootScope.commonService.toolTip(msg, "tool-tip-message-success");
         }
 
         if (stateurl == null || stateurl == '') {
@@ -21,10 +20,10 @@ angular.module('starter.services', [])
         } else if (stateurl == 'close') {//不处理
 
         } else {
-          $state.go(stateurl, {}, {reload: true});
+          $state.go(stateurl, stateparams, {reload: true});
         }
       },
-      showAlert: function (title, template, stateurl) {
+      showAlert: function (title, template, stateurl,stateparams) {
         // 一个提示对话框
         var alertPopup = $ionicPopup.alert({
           cssClass: "show-alert",
@@ -39,12 +38,12 @@ angular.module('starter.services', [])
           } else if (stateurl == 'close') {//不处理
 
           } else {
-            $state.go(stateurl, {}, {reload: true});
+            $state.go(stateurl, stateparams, {reload: true});
           }
 
         });
       },
-      showConfirm: function (title, template, okText, cancelText, stateurl, closeurl, confirmfunction) {
+      showConfirm: function (title, template, okText, cancelText, stateurl, closeurl, confirmfunction,stateparams) {
         var confirmPopup = $ionicPopup.confirm({
           cssClass: "show-confirm",
           title: '<strong>' + title + '</strong>',
@@ -68,7 +67,7 @@ angular.module('starter.services', [])
             if (closeurl == 'close') {//不处理
               return;
             }
-            $state.go((closeurl == null || closeurl == '') ? 'tab.main' : closeurl, {}, {reload: true})
+            $state.go((closeurl == null || closeurl == '') ? 'tab.main' : closeurl, stateparams, {reload: true})
             $ionicViewSwitcher.nextDirection("back");//后退动画效果
           }
         });
@@ -372,7 +371,7 @@ angular.module('starter.services', [])
           if (flag) {
             $state.go('login');
           } else {
-            this.showConfirm('博回收', '温馨提示:此功能需要登录才能使用,请先登录', '登录', '关闭', 'login');
+            this.showConfirm('收收', '温馨提示:此功能需要登录才能使用,请先登录', '登录', '关闭', 'login');
             return;
           }
           return false;
@@ -382,7 +381,7 @@ angular.module('starter.services', [])
       },
       getStateName: function () {    //得到上一个路由名称方法
         var stateName = "";
-        if ($ionicHistory.backView() && $ionicHistory.backView().stateName != "tab.account" && $ionicHistory.backView().stateName != "setting" && $ionicHistory.backView().stateName != "organizingdata") {
+        if ($ionicHistory.backView() && $ionicHistory.backView().stateName != "tab.account" && $ionicHistory.backView().stateName != "setting" && $ionicHistory.backView().stateName != "organizingdata"&& $ionicHistory.backView().stateName != "findpassword") {
           stateName = $ionicHistory.backView().stateName;
         }
         if (stateName) {
@@ -410,7 +409,7 @@ angular.module('starter.services', [])
         }, 3000);
       },
       countDown: function ($scope) {//60s倒计时
-        var second = 60,
+        var second = 120,
           timePromise = undefined;
         timePromise = $interval(function () {
           if (second <= 0) {
@@ -532,7 +531,7 @@ angular.module('starter.services', [])
         });
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       },
-      getOrderReceiptList: function (params,datas) { //查询接单收货/货源归集分页列
+      getOrderReceiptList: function (params, datas) { //查询接单收货/货源归集分页列
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise;
         promise = $http({
@@ -1354,7 +1353,7 @@ angular.module('starter.services', [])
               });
               $ionicLoading.hide();
             }, function (err) {
-              $cordovaToast.showLongCenter("博回收APP下载失败," + err);
+              $cordovaToast.showLongCenter("收收APP下载失败," + err);
               $ionicLoading.hide();
               return;
             }, function (progress) {
