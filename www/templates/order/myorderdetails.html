@@ -33,10 +33,10 @@
         <ion-item>
           下单时间 : {{orderDetail.addtime |date :'yyyy-MM-dd HH:mm'}}
         </ion-item>
-        <ion-item>
+        <ion-item ng-if="orderDetail.orname">
           接单人 : {{orderDetail.orname}}
         </ion-item>
-        <ion-item>
+        <ion-item ng-if="orderDetail.oraddtime">
           接单时间 : {{orderDetail.oraddtime |date :'yyyy-MM-dd HH:mm'}}
         </ion-item>
       </div>
@@ -49,7 +49,7 @@
         </ion-item>
         <div ng-hide="showme1" class="orderdetails">
           <ion-item class="text-wrap" ng-repeat="item in orderDetail.details">
-            {{item.proname}} : {{item.num+item.uname}} <span ng-if="item.price">( 回收价 : {{item.price}}元/台 )</span>
+            {{item.proname}} : {{item.num+item.uname}} <span ng-if="item.price">( 回收价 : {{item.price}}元/{{item.uname}}  )</span>
           </ion-item>
 
           <ion-item>

@@ -17,14 +17,14 @@ navigation history that also transitions its views in and out.
   </ion-tab>
 
   <!-- 钱包 Tab 普通会员和销售员是另一个tab（含钱包）-->
-  <ion-tab title="钱包" class="tab-largen tab-hidden" icon-off="iconfont  icon-moneybag"
+  <ion-tab title="钱包" class="tab-largen {{usertype!=1?'tab-hidden':''}}" icon-off="iconfont  icon-moneybag"
            icon-on="iconfont icon-moneybag"
            href="#/wallet">
     <ion-nav-view name="tab-wallet"></ion-nav-view>
   </ion-tab>
 
   <!-- 订单 Tab  二手商家、上门回收、货场都是属于回收商，是同一个tab（含订单） -->
-  <ion-tab title="{{isLogin?'回收单':'订单'}}" class="tab-largen" icon-off="iconfont  icon-form" icon-on="iconfont icon-form"
+  <ion-tab title="{{isLogin?'回收单':'订单'}}" class="tab-largen {{usertype==1?'tab-hidden':''}}" icon-off="iconfont  icon-form" icon-on="iconfont icon-form"
            href="#/order/0">
     <ion-nav-view name="tab-order"></ion-nav-view>
   </ion-tab>
