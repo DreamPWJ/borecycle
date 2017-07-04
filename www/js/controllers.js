@@ -678,7 +678,7 @@ angular.module('starter.controllers', [])
         $scope.datas = {
           DJNo: "",//登记单号(可为空)
           Type: "",//类型1.登记信息 2.登记货源(可为空)
-          userid: $rootScope.orderType == 0 ? localStorage.getItem("userid") : "",//用户userid
+          userid: "",//用户userid
           Category: "",//货物品类 多个用逗号隔开(可为空)
           HYType: "",//货物类别 0.未区分 1废料 2二手(可为空)
           State: $scope.tabIndex == 1 ? "4,5" : "",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
@@ -757,6 +757,11 @@ angular.module('starter.controllers', [])
        如果会员是3（货场）,只能接登记货源单
        如果会员是4（二手商家）,只能接登记货源单
        会员角色你还要判断他有没有申请通过  0 审核不通过 1 未审核 2 审核通过*/
+
+      if (userid == localStorage.getItem("userid")) {//自已不能接自己的订单
+        CommonService.platformPrompt("自已不能接自己的订单", 'close');
+        return;
+      }
 
       if (user.userext.autit != 2) {
         CommonService.platformPrompt("会员类型审核通过后才能操作", 'close');
@@ -968,7 +973,7 @@ angular.module('starter.controllers', [])
       $scope.datas = {
         DJNo: "",//登记单号(可为空)
         Type: "",//类型1.登记信息 2.登记货源(可为空)
-        userid: localStorage.getItem("userid"),//用户userid
+        userid: "",//用户userid
         Category: "",//货物品类 多个用逗号隔开(可为空)
         HYType: "",//货物类别 0.未区分 1废料 2二手(可为空)
         State: "4",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)

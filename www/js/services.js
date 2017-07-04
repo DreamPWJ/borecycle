@@ -488,7 +488,7 @@ angular.module('starter.services', [])
       },
     }
   })
-  .service('OrderService', function ($q, $http, BoRecycle, $state) { //订单 接单收货/货源归集及回收 登记信息/货源接口服务定义
+  .service('OrderService', function ($q, $http, BoRecycle, $state, CommonService) { //订单 接单收货/货源归集及回收 登记信息/货源接口服务定义
     return {
       navigation: function (params) { //导航路线规划
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
@@ -722,14 +722,18 @@ angular.module('starter.services', [])
         });
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       },
-      torecycle: function (user,orno, djno, type, userid, amount, name, productname, hytype) {//去收货参数封装
+      torecycle: function (user, orno, djno, type, userid, amount, name, productname, hytype) {//去收货参数封装
         event.preventDefault();
-        CommonService=this;
         /*  如果会员是1（信息提供者）,不能接单
          如果会员是2（上门回收者）,只能接登记信息单
          如果会员是3（货场）,只能接登记货源单
          如果会员是4（二手商家）,只能接登记货源单
          会员角色你还要判断他有没有申请通过  0 审核不通过 1 未审核 2 审核通过*/
+
+        if (userid == localStorage.getItem("userid")) {//自已不能接自己的订单
+          CommonService.platformPrompt("自已不能去收货自己的订单", 'close');
+          return;
+        }
 
         if (user.userext.autit != 2) {
           CommonService.platformPrompt("会员类型审核通过后才能操作", 'close');
@@ -760,7 +764,7 @@ angular.module('starter.services', [])
       },
       topay: function (type, djno, orno, fromuser, touser, amount, name) {//去付款参数封装
         event.preventDefault();
-        CommonService=this;
+        CommonService = this;
         var json = {
           type: type,
           djno: djno,
