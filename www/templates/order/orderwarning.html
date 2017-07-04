@@ -16,16 +16,17 @@
         <a ng-href="#/orderdetails/{{item.orno}}/2" class="item " ng-repeat="item in orderList">
           <h2 class="positive">{{item.addrdetail}}</h2>
           <p class="text-wrap ">交易品类 : {{item.category}} <span class="balanced">{{item.hytype==1?'废品':'二手'}}</span>
-            <span class="item-note pending  "><span ng-if="item.state<=4"  class="energized" ng-click="relation(item.ormotel)"><i
-              class="iconfont icon-phone"></i>联系他</span>
+         </p>
+          <p class="text-wrap ">{{item.name}} {{item.motel | hidepartinfo : 'phone'}} 有效期: <span class="assertive">{{item.expirydate}}</span> 小时</p>
+          <p>   <span class="item-note pending  "><span ng-if="item.state<=4"  class="energized" ng-click="relation(item.motel)"><i
+            class="iconfont icon-phone"></i>联系他</span>
              <span ng-if="item.state==4" class="balanced"
-                   ng-click="recycle(item.orno,item.djno,item.type,item.userid,item.totalprice,item.orname,item.category)"><i
+                   ng-click="recycle(item.orno,item.djno,item.type,item.userid,item.totalprice,item.name,item.category)"><i
                class="iconfont icon-huishou"></i>去收货</span>
-                <span ng-if="item.state==5" class="balanced" ng-click="topay(item.type,item.djno,item.orno,item.userid,item.oruserid,item.totalprice,item.orname)"><i class="iconfont icon-sponsor"></i>去付款</span>
+                <span ng-if="item.state==5" class="balanced" ng-click="topay(item.type,item.djno,item.orno,item.oruserid,item.userid,item.totalprice,item.name)"><i class="iconfont icon-sponsor"></i>去付款</span>
               <span
                 class="positive" ng-if="item.state<=4"  ng-click="navigation(item.longitude,item.latitude)"><i class="iconfont icon-daohang1"></i>导航</span>
                 </span></p>
-          <p class="text-wrap ">{{item.orname}} {{item.ormotel | hidepartinfo : 'phone'}} 有效期: <span class="assertive">{{item.expirydate}}</span> 小时</p>
         </a>
     </ion-list>
    <ion-infinite-scroll on-infinite="getOrderList()" ng-if="total > page" immediate-check="false">

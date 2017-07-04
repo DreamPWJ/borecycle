@@ -43,10 +43,10 @@
         <div class="row  row-wrap row-horizontal-around">
           <img ng-repeat="item in imageList" ng-click="shouBigImage(item)" ng-src="{{item}}" alt="实名认证图片"
                style="height: 12rem" class="col-80 padding">
-          <img ng-if="realname" ng-click="shouBigImage(realname.frontpic)"
+          <img ng-if="realname&&status==2" ng-click="shouBigImage(realname.frontpic)"
                ng-src="{{realname.frontpic}}" alt="实名认证图片" style="height: 12rem" class="col-80 padding">
         </div>
-        <div ng-if="imageList.length==0&&!realname" class="row  row-wrap padding-top grey">
+        <div ng-if="imageList.length==0&&status!=2" class="row  row-wrap padding-top grey">
           <span class="padding">示例 ：</span>
           <img ng-click="shouBigImage('img/account/realname.png')" ng-src="img/account/realname.png" alt="实名认证示例"
                style="height: 12rem"

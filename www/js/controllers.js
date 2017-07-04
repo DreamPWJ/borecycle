@@ -8,6 +8,7 @@ angular.module('starter.controllers', [])
   //Tabs Ctrl
   .controller('TabsCtrl', function ($scope) {
     $scope.isLogin = localStorage.getItem("userid") ? true : false;//是否登录
+    $scope.usertype = localStorage.getItem("usertype"); //用户会员类型  0 无 1信息提供者  2回收者
   })
   //APP首页面
   .controller('MainCtrl', function ($scope, $rootScope, CommonService, MainService, OrderService, BoRecycle, $location, $ionicHistory, $interval, NewsService, AccountService, $ionicPlatform, WeiXinService) {
@@ -507,6 +508,21 @@ angular.module('starter.controllers', [])
         AccountService.setUserInfo($scope.user).success(function (data) {
           console.log(data);
           CommonService.platformPrompt(data.message, data.code == 1001 ? (localStorage.getItem("userid") ? '' : 'login') : 'close');
+          if (data.code == 1001 && localStorage.getItem("userid")) {  //更新用户信息
+            //根据会员ID获取会员账号基本信息
+            AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (datas) {
+              console.log(datas);
+              if (datas.code == 1001) {
+                $rootScope.userdata = datas.data;
+                localStorage.setItem("user", JSON.stringify(datas.data));
+                var services = datas.data.services;
+                //用户会员类型  0 无 1信息提供者  2回收者
+                localStorage.setItem("usertype", services.length == 0 ? 0 : (services.length == 1 && services.indexOf(1) != -1) ? 1 : 2);
+              } else {
+                CommonService.platformPrompt(datas.message, 'close');
+              }
+            })
+          }
         })
       }
     }
@@ -583,6 +599,7 @@ angular.module('starter.controllers', [])
     $scope.page = 0;
     $scope.total = 1;
     $scope.getOrderList = function () { //查询登记信息/货源信息分页列
+
       if (arguments != [] && arguments[0] == 0) {
 
         if ($scope.tabIndex == 0) {  //待接单订单
@@ -612,6 +629,7 @@ angular.module('starter.controllers', [])
         page: $scope.tabIndex == 0 ? $scope.jiedanpage : ($scope.tabIndex == 1 ? $scope.chulipage : $scope.page),//页码
         size: 5//条数
       }
+
       //待接单接口
       if ($scope.tabIndex == 0) {
         $scope.datas = {
@@ -646,7 +664,6 @@ angular.module('starter.controllers', [])
           if ($scope.tabIndex == 0) {  //待接单订单
             $scope.jiedantotal = data.data.page_count;
           }
-
 
           $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
         }).finally(function () {
@@ -685,7 +702,6 @@ angular.module('starter.controllers', [])
               return;
             }
 
-
             angular.forEach(data.data.data_list, function (item) {
 
               if ($scope.tabIndex == 1) {   //待处理订单
@@ -695,7 +711,6 @@ angular.module('starter.controllers', [])
                 $scope.orderList.push(item);
               }
             })
-
 
             if ($scope.tabIndex == 1) {   //待处理订单
               $scope.chulitotal = data.data.page_count;
@@ -733,7 +748,7 @@ angular.module('starter.controllers', [])
           $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
         }
       }
-      , 100)
+      , 10)
 //接单
     $scope.jieDan = function (djno, userid, type) {
       event.preventDefault();
@@ -758,9 +773,10 @@ angular.module('starter.controllers', [])
       OrderService.addOrderReceipt($scope.jiedandata).success(function (data) {
         console.log(data);
         if (data.code == 1001) {
-          CommonService.showConfirm('接单提示', '尊敬的用户,您好！恭喜您,接单成功！订单有效期为24小时,请您务必在24小时之内上门回收！', '查看订单', '继续接单', '', 'close', function () {
-            $state.go("orderdetails", {no: djno, type: type})
-          });
+          CommonService.showConfirm('接单提示', '尊敬的用户,您好！恭喜您,接单成功！订单有效期为24小时,请您务必在24小时之内上门回收！', '查看订单', '继续接单', 'orderdetails', 'close', '', {
+            no: djno,
+            type: type
+          })
         } else {
           CommonService.platformPrompt("接单失败", "close");
         }
@@ -785,7 +801,7 @@ angular.module('starter.controllers', [])
     }
 
 //去收货
-    $scope.recycle = function (orno, djno, type, userid, amount, orname, productname) {
+    $scope.recycle = function (orno, djno, type, userid, amount, name, productname) {
       event.preventDefault();
       if (type == 1 && user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
         CommonService.platformPrompt("接单回收时去收货,会员身份必须是上门回收者", 'close');
@@ -801,7 +817,7 @@ angular.module('starter.controllers', [])
         type: type,
         userid: userid,
         amount: amount,
-        orname: orname,
+        name: name,
         productname: productname
       }
       $state.go("recycleorder", {orderinfo: JSON.stringify(json)});
@@ -815,7 +831,7 @@ angular.module('starter.controllers', [])
     }
 
 //去付款
-    $scope.topay = function (type, djno, orno, fromuser, touser, amount, orname) {
+    $scope.topay = function (type, djno, orno, fromuser, touser, amount, name) {
       event.preventDefault();
       var json = {
         type: type,
@@ -824,7 +840,7 @@ angular.module('starter.controllers', [])
         fromuser: fromuser,
         touser: touser,
         amount: amount,
-        orname: orname
+        name: name
       }
       $state.go("payment", {orderinfo: JSON.stringify(json)})
     }
@@ -966,7 +982,7 @@ angular.module('starter.controllers', [])
         $scope.datas = {
           DJNo: "",//登记单号(可为空)
           Type: "",//类型1.登记信息 2.登记货源(可为空)
-          userid: "",//用户userid
+          userid: localStorage.getItem("userid"),//用户userid
           Category: "",//货物品类 多个用逗号隔开(可为空)
           HYType: "",//货物类别 0.未区分 1废料 2二手(可为空)
           State: "4",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
@@ -1005,7 +1021,7 @@ angular.module('starter.controllers', [])
       }
 
       //去收货
-      $scope.recycle = function (orno, djno, type, userid, amount, orname, productname) {
+      $scope.recycle = function (orno, djno, type, userid, amount, name, productname) {
         event.preventDefault();
         if (type == 1 && user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
           CommonService.platformPrompt("接单回收时去收货,会员身份必须是上门回收者", 'close');
@@ -1021,7 +1037,7 @@ angular.module('starter.controllers', [])
           type: type,
           userid: userid,
           amount: amount,
-          orname: orname,
+          name: name,
           productname: productname
         }
         $state.go("recycleorder", {orderinfo: JSON.stringify(json)});
@@ -1034,7 +1050,7 @@ angular.module('starter.controllers', [])
       }
 
       //去付款
-      $scope.topay = function (type, djno, orno, fromuser, touser, amount, orname) {
+      $scope.topay = function (type, djno, orno, fromuser, touser, amount, name) {
         event.preventDefault();
         var json = {
           type: type,
@@ -1043,7 +1059,7 @@ angular.module('starter.controllers', [])
           fromuser: fromuser,
           touser: touser,
           amount: amount,
-          orname: orname
+          name: name
         }
         $state.go("payment", {orderinfo: JSON.stringify(json)})
       }
@@ -1090,7 +1106,7 @@ angular.module('starter.controllers', [])
       })
     }
     //去收货
-    $scope.recycle = function (orno, djno, type, userid, amount, orname, productname) {
+    $scope.recycle = function (orno, djno, type, userid, amount, name, productname) {
       event.preventDefault();
       if (type == 1 && user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
         CommonService.platformPrompt("接单回收时去收货,会员身份必须是上门回收者", 'close');
@@ -1106,7 +1122,7 @@ angular.module('starter.controllers', [])
         type: type,
         userid: userid,
         amount: amount,
-        orname: orname,
+        name: name,
         productname: productname
       }
       $state.go("recycleorder", {orderinfo: JSON.stringify(json)});
@@ -1121,7 +1137,7 @@ angular.module('starter.controllers', [])
 
 
     //去付款
-    $scope.topay = function (type, djno, orno, fromuser, touser, amount, orname) {
+    $scope.topay = function (type, djno, orno, fromuser, touser, amount, name) {
       event.preventDefault();
       var json = {
         type: type,
@@ -1130,7 +1146,7 @@ angular.module('starter.controllers', [])
         fromuser: fromuser,
         touser: touser,
         amount: amount,
-        orname: orname
+        name: name
       }
       $state.go("payment", {orderinfo: JSON.stringify(json)})
     }
@@ -1242,10 +1258,10 @@ angular.module('starter.controllers', [])
             type: $scope.orderinfo.type,
             djno: $scope.orderinfo.djno,
             orno: $scope.orderinfo.orno,
-            fromuser: $scope.orderinfo.userid,
-            touser: localStorage.getItem("userid"),
+            fromuser:localStorage.getItem("userid") ,
+            touser: $scope.orderinfo.userid,
             amount: $scope.orderinfo.amount,
-            orname: $scope.orderinfo.orname
+            name: $scope.orderinfo.name
           }
           $state.go("payment", {orderinfo: JSON.stringify(json)})
 
@@ -1276,8 +1292,8 @@ angular.module('starter.controllers', [])
         console.log(data);
         if (data.code == 1001) {
           CommonService.platformPrompt("回收付款成功", "orderdetails", {
-            no: $scope.orderinfo.type == 1 ? $scope.orderinfo.djno : $scope.orderinfo.orno,
-            type: $scope.orderinfo.type
+            no: $scope.orderinfo.orno,
+            type: 2
           })
         } else {
           CommonService.platformPrompt("回收付款失败", "close")
@@ -1800,6 +1816,7 @@ angular.module('starter.controllers', [])
         console.log(data);
         if (data.code == 1001) {
           $scope.realname = data.data;
+
         } else {
           CommonService.platformPrompt('获取实名认证信息失败', 'close');
         }
@@ -1833,8 +1850,12 @@ angular.module('starter.controllers', [])
       AccountService.realNameAuthenticate($scope.datas).success(function (data) {
         console.log(JSON.stringify(data));
         if (data.code == 1001) {
-          CommonService.platformPrompt('实名认证提交成功,我们会尽快处理', 'accountsecurity');
-          /*          CommonService.showAlert('', '<p>温馨提示:您的认证信息已经</p><p>提交成功,我们会尽快处理！</p>', '')*/
+          CommonService.platformPrompt('实名认证提交成功', '');
+          var user = JSON.parse(localStorage.getItem('user'));
+          var certstate = user.certstate.split('');//转换成数组
+          certstate.splice(3, 1, 2)//将3这个位置的字符，替换成'xxxxx'. 用的是原生js的splice方法
+          user.certstate = certstate.join(''); //将数组转换成字符串
+          localStorage.setItem('user', JSON.stringify(user));
         } else {
           CommonService.platformPrompt('实名认证失败', 'close');
         }
@@ -1974,7 +1995,9 @@ angular.module('starter.controllers', [])
         }).success(function (data) {
           console.log(data);
           if (data.code == 1001) {
+            $scope.manufacteList = [];
             $scope.manufacteList = data.data
+            $scope.manufacteList.unshift({id: "", shortename: '无'});//追加到第一位
           } else {
             CommonService.platformPrompt("获取品类所属厂商失败", 'close');
           }
@@ -2025,7 +2048,7 @@ angular.module('starter.controllers', [])
           return;
         }
         if (user.certstate.substr(3, 1) != 2) { //没有实名认证
-          CommonService.platformPrompt("以旧换新类型必须先实名认证", 'realname');
+          CommonService.platformPrompt("以旧换新类型必须先实名认证", 'realname', {status: 0});
           return;
         }
       }
@@ -2042,7 +2065,7 @@ angular.module('starter.controllers', [])
       $scope.dengji.longitude = $scope.addrareacountyone.Lng || localStorage.getItem("longitude") || 0;//经度 默认为0   地址表里有经纬度值 如果没值现在的地区取经纬度
       $scope.dengji.latitude = $scope.addrareacountyone.Lat || localStorage.getItem("latitude") || 0;//纬度 默认为0 地址表里有经纬度值 如果没值现在的地区取经纬度
       $scope.dengji.category = $scope.recyclingCategoryName.join(",");//货物品类 多个用逗号隔开
-      $scope.dengji.manufactor = manufactor.length == 0 ? "" : manufactor.join(",");//单选
+      $scope.dengji.manufactor = manufactor.join(",");//单选
       $scope.dengji.addrcode = $scope.addrareacountyone.ID;
       $scope.dengji.details = {};//添加登记货源时明细不能为空，添加登记信息时明细为空
 

@@ -43,7 +43,7 @@
         </ion-item>
         <div ng-hide="showme1" class="orderdetails">
           <ion-item class="text-wrap" ng-repeat="item in orderDetail.details">
-            {{item.proname}} : {{item.num+item.uname}} <span ng-if="item.price">( 回收价 : {{item.price}}元/台 )</span>
+            {{item.proname}} : {{item.num+item.uname}} <span ng-if="item.price">( 回收价 : {{item.price}}元/{{item.uname}} )</span>
           </ion-item>
           <ion-item>
             回收时间 : {{orderDetail.details[0].addtime | date :'yyyy-MM-dd HH:mm'}}
@@ -80,7 +80,7 @@
   <div  class="row padding light-bg  bottom-0 row-horizontal-around" keyboard-attach ng-if="orderDetail.state<=4||orderDetail.state==5">
     <button ng-if="orderDetail.state==4" class="button  button-balanced  icon iconfont icon-huishou col-40  "
             style="font-size: 1rem!important;"
-            ng-click="recycle(orderDetail.orno,orderDetail.djno,orderDetail.type,orderDetail.userid,orderDetail.totalprice,orderDetail.orname,orderDetail.category)">
+            ng-click="recycle(orderDetail.orno,orderDetail.djno,orderDetail.type,orderDetail.userid,orderDetail.totalprice,orderDetail.name,orderDetail.category)">
       去收货
     </button>
     <button ng-if="orderDetail.state<=4"  class="button button-positive icon iconfont icon-daohang1 col-40" style="font-size: 1rem!important;"
@@ -89,7 +89,7 @@
     </button>
     <button ng-if="orderDetail.state==5" class="button button-energized icon iconfont icon-sponsor col-40 "
             style="font-size: 1rem!important;"
-            ng-click="topay(orderDetail.type,orderDetail.djno,orderDetail.orno,orderDetail.userid,orderDetail.oruserid,orderDetail.totalprice,orderDetail.orname)">
+            ng-click="topay(orderDetail.type,orderDetail.djno,orderDetail.orno,orderDetail.oruserid,orderDetail.userid,orderDetail.totalprice,orderDetail.name)">
       付款
     </button>
   </div>

@@ -443,7 +443,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //登记信息
       .state('information', {
         url: '/information',
-        cache: false,
         templateUrl: 'templates/dengji/information.html',
         controller: 'InformationCtrl'
       })

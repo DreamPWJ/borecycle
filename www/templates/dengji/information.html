@@ -46,7 +46,7 @@
         <div class="item text-wrap">
                     <span class="input-label icon iconfont icon-changshang "
                           style="font-size: 0.9rem!important;"> 所属厂商</span>
-          <ion-checkbox class="item-borderless checkbox-positive" ng-repeat="item in manufacteList"
+          <ion-checkbox name="manufacteList" class="item-borderless checkbox-positive" ng-repeat="item in manufacteList"
                         ng-model="item.checked" ng-change="multipleChoice(manufacteList,item)">
             {{item.shortename}}
           </ion-checkbox>

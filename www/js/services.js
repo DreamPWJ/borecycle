@@ -57,7 +57,7 @@ angular.module('starter.services', [])
         confirmPopup.then(function (res) {
           if (res) {
             if (stateurl != '') {
-              $state.go(stateurl, {}, {reload: true});
+              $state.go(stateurl, stateparams, {reload: true});
               $ionicViewSwitcher.nextDirection("forward");//前进画效果
             } else {
               confirmfunction();
