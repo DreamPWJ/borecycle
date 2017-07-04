@@ -635,6 +635,7 @@ angular.module('starter.controllers', [])
         $scope.datas = {
           DJNo: "",//登记单号(可为空)
           Type: "",//类型1.登记信息 2.登记货源(可为空)
+          ORuserid:localStorage.getItem("userid") ,//接单人
           userid: $rootScope.orderType == 0 ? localStorage.getItem("userid") : "",//用户userid
           Category: "",//货物品类 多个用逗号隔开(可为空)
           HYType: "",//货物类别 0.未区分 1废料 2二手(可为空)
@@ -758,10 +759,6 @@ angular.module('starter.controllers', [])
        如果会员是4（二手商家）,只能接登记货源单
        会员角色你还要判断他有没有申请通过  0 审核不通过 1 未审核 2 审核通过*/
 
-      if (userid == localStorage.getItem("userid")) {//自已不能接自己的订单
-        CommonService.platformPrompt("自已不能接自己的订单", 'close');
-        return;
-      }
 
       if (user.userext.autit != 2) {
         CommonService.platformPrompt("会员类型审核通过后才能操作", 'close');
@@ -874,6 +871,7 @@ angular.module('starter.controllers', [])
       $scope.datas = {
         DJNo: "",//登记单号(可为空)
         Type: "",//类型1.登记信息 2.登记货源(可为空)
+        ORuserid:"" ,//接单人
         userid: localStorage.getItem("userid"),//用户userid
         Category: "",//货物品类 多个用逗号隔开(可为空)
         HYType: "",//货物类别 0.未区分 1废料 2二手(可为空)
@@ -1995,8 +1993,8 @@ angular.module('starter.controllers', [])
       $scope.dengji.type = 1;//类型 1.	登记信息 2.	登记货源
       $scope.dengji.hytype = 0;//物类别 0.未区分 1废料 2二手 (登记信息时为0)
       $scope.dengji.userid = localStorage.getItem("userid");//登记人userid
-      $scope.dengji.longitude = $scope.addrareacountyone.Lng || localStorage.getItem("longitude") || 0;//经度 默认为0   地址表里有经纬度值 如果没值现在的地区取经纬度
-      $scope.dengji.latitude = $scope.addrareacountyone.Lat || localStorage.getItem("latitude") || 0;//纬度 默认为0 地址表里有经纬度值 如果没值现在的地区取经纬度
+      $scope.dengji.longitude =localStorage.getItem("longitude") ||  $scope.addrareacountyone.Lng || 0;//经度 默认为0   地址表里有经纬度值 如果没值现在的地区取经纬度
+      $scope.dengji.latitude = localStorage.getItem("latitude") || $scope.addrareacountyone.Lat ||  0;//纬度 默认为0 地址表里有经纬度值 如果没值现在的地区取经纬度
       $scope.dengji.category = $scope.recyclingCategoryName.join(",");//货物品类 多个用逗号隔开
       $scope.dengji.manufactor = manufactor.join(",");//单选
       $scope.dengji.addrcode = $scope.addrareacountyone.ID;
@@ -2112,8 +2110,8 @@ angular.module('starter.controllers', [])
           items.userid = localStorage.getItem("userid");//登记人userid
           items.name = user.username;//登记人姓名
           items.motel = user.mobile;//登记人电话
-          items.longitude = $scope.address.Lng || localStorage.getItem("longitude") || 0;//经度 默认为0   地址表里有经纬度值 如果没值现在的地区取经纬度
-          items.latitude = $scope.address.Lat || localStorage.getItem("latitude") || 0;//纬度 默认为0 地址表里有经纬度值 如果没值现在的地区取经纬度
+          items.longitude =localStorage.getItem("longitude") || $scope.address.Lng ||  0;//经度 默认为0   地址表里有经纬度值 如果没值现在的地区取经纬度
+          items.latitude =localStorage.getItem("latitude") || $scope.address.Lat ||  0;//纬度 默认为0 地址表里有经纬度值 如果没值现在的地区取经纬度
           items.category = $scope.recyclingCategoryName.join(",");//货物品类 多个用逗号隔开
           items.manufactor = "";//单选 登记货源是空
           items.addrcode = $scope.address.AddrCode;//地址code

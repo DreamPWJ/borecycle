@@ -730,10 +730,6 @@ angular.module('starter.services', [])
          如果会员是4（二手商家）,只能接登记货源单
          会员角色你还要判断他有没有申请通过  0 审核不通过 1 未审核 2 审核通过*/
 
-        if (userid == localStorage.getItem("userid")) {//自已不能接自己的订单
-          CommonService.platformPrompt("自已不能去收货自己的订单", 'close');
-          return;
-        }
 
         if (user.userext.autit != 2) {
           CommonService.platformPrompt("会员类型审核通过后才能操作", 'close');

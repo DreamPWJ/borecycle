@@ -47,7 +47,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             ionic.Platform.exitApp();
           } else {
             $rootScope.backButtonPressedOnceToExit = true;
-            $cordovaToast.showShortCenter('再按返回退出博回收');
+            $cordovaToast.showShortCenter('再按返回退出收收');
             setTimeout(function () {
               $rootScope.backButtonPressedOnceToExit = false;
             }, 2000);
@@ -73,7 +73,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         $rootScope.$on('$cordovaNetwork:offline', function (event, networkState) {
           var offlineState = networkState;
           //提醒用户的网络异常
-          CommonService.platformPrompt("网络异常 无法连接博回收服务器", 'close');
+          CommonService.platformPrompt("网络异常 无法连接收收服务器", 'close');
         })
         //添加JS 屏幕监听事件 禁止APP 横屏
         if (screenOrientation) {
