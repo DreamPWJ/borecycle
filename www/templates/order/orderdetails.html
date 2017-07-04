@@ -80,7 +80,7 @@
   <div  class="row padding light-bg  bottom-0 row-horizontal-around" keyboard-attach ng-if="orderDetail.state<=4||orderDetail.state==5">
     <button ng-if="orderDetail.state==4" class="button  button-balanced  icon iconfont icon-huishou col-40  "
             style="font-size: 1rem!important;"
-            ng-click="recycle(orderDetail.orno,orderDetail.djno,orderDetail.type,orderDetail.userid,orderDetail.totalprice,orderDetail.name,orderDetail.category)">
+            ng-click="recycle(orderDetail.orno,orderDetail.djno,orderDetail.type,orderDetail.userid,orderDetail.totalprice,orderDetail.name,orderDetail.category,orderDetail.hytype)">
       去收货
     </button>
     <button ng-if="orderDetail.state<=4"  class="button button-positive icon iconfont icon-daohang1 col-40" style="font-size: 1rem!important;"
@@ -90,7 +90,7 @@
     <button ng-if="orderDetail.state==5" class="button button-energized icon iconfont icon-sponsor col-40 "
             style="font-size: 1rem!important;"
             ng-click="topay(orderDetail.type,orderDetail.djno,orderDetail.orno,orderDetail.oruserid,orderDetail.userid,orderDetail.totalprice,orderDetail.name)">
-      付款
+      去付款
     </button>
   </div>
 

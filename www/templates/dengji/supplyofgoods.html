@@ -24,7 +24,23 @@
           </label>
         </div>
         <p></p>
+        <div class="item item-borderless jiaohuo row padding-left">
+                    <span class=" input-label icon iconfont icon-shouhuo "
+                          style="font-size: 1rem!important;"> 交货方式</span>
+          <label ng-click="goods.delivery=1" for="shangmen" class="">
+            <input type="checkbox" id="shangmen" ng-model="item.checked"  ng-checked="goods.delivery==1"
+                   >
+            <span>上门回收</span>
+          </label>
+          <label ng-click="goods.delivery=2" for="songluo" ng-click="goods.delivery=2">
+            <input type="checkbox" id="songluo" ng-model="item.checked"
+                   ng-checked="goods.delivery==2"
+                   >
+            <span>送货上门</span>
+          </label>
 
+        </div>
+        <p></p>
         <ion-item class="item-icon-left item-icon-right item-borderless" ng-if="ischecked" ng-click="toggle(1)">
           <i class="icon iconfont icon-edit"></i>
           录入数量

@@ -381,7 +381,7 @@ angular.module('starter.services', [])
       },
       getStateName: function () {    //得到上一个路由名称方法
         var stateName = "";
-        if ($ionicHistory.backView() && $ionicHistory.backView().stateName != "tab.account" && $ionicHistory.backView().stateName != "setting" && $ionicHistory.backView().stateName != "organizingdata"&& $ionicHistory.backView().stateName != "findpassword") {
+        if ($ionicHistory.backView() && $ionicHistory.backView().stateName != "tab.account" && $ionicHistory.backView().stateName != "setting" && $ionicHistory.backView().stateName != "organizingdata"&& $ionicHistory.backView().stateName != "findpassword"&& $ionicHistory.backView().stateName != "register") {
           stateName = $ionicHistory.backView().stateName;
         }
         if (stateName) {

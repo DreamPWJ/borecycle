@@ -154,7 +154,7 @@
 
 }
 
-#supplyofgoods .iconfont, #recycleorder .iconfont{
+#supplyofgoods .iconfont, #recycleorder .iconfont {
   color: #00ACFF;
 }
 
@@ -202,6 +202,27 @@
   opacity: 1;
 }
 
+#supplyofgoods .jiaohuo label span {
+  display: inline-block;
+  margin-left: 1rem;
+  width: 6rem;
+  height: 2rem;
+  border: 1px solid #00ACFF;
+  color: #00ACFF;
+  text-align: center;
+  line-height: 2rem;
+  border-radius: 0.5rem;
+}
+
+#supplyofgoods .jiaohuo input {
+  display: none;
+}
+
+#supplyofgoods .jiaohuo input:checked + span {
+  background-color: #00ACFF;
+  color: #ffffff;
+}
+
 #orderdetails .orderdetails .item {
   font-size: 0.9rem;
   color: #666;
@@ -235,7 +256,6 @@
   border-left: 3px solid #00ACFF !important;
   color: #00ACFF;
 }
-
 
 .item-content {
   padding-right: 16px !important;
