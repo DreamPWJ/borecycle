@@ -22,32 +22,22 @@
         <h2>手机号码 <span class="item-note">{{userinfo.mobile}}</span></h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
-      <a ng-href="" class="item item-icon-right border-bottom-none">
+      <a ng-href="" class="item ">
         <h2>会员类型 <span class="item-note">{{servicesstr}}</span>
         </h2>
       </a>
-
 
       <div ng-if="!isprovider" class="item stable-bg item-borderless">
         <h2 class=" text-right"> <span ui-sref="organizingdata" ><i class="iconfont icon-xiangyou positive"></i> 升级成为回收商</span></h2>
       </div>
 
-
       <a ng-href="#/updateuser/sex/{{userinfo.sex}}" class="item item-icon-right item-borderless">
         <h2>性别 <span class="item-note">{{userinfo.sex==0?'保密':(userinfo.sex==1?'男':'女')}}</span></h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
-      <!--      <a class="item item-icon-right ">
-              <h2>回收品类 <span class="item-note"> 手机 、家电</span></h2>
-              <i class="icon ion-ios-arrow-right"></i>
-            </a>
-            <a class="item item-icon-right ">
-              <h2>回收地区 <span class="item-note"> 广东 深圳 福田</span></h2>
-              <i class="icon ion-ios-arrow-right"></i>
-            </a>-->
-      <a class="item item-icon-right " >
+
+      <a class="item  " >
         <h2>所在地区 <span class="item-note">{{userinfo.addr}}</span></h2>
-        <i class="icon ion-ios-arrow-right"></i>
       </a>
     </div>
   </ion-content>

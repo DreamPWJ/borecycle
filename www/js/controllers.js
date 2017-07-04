@@ -531,9 +531,9 @@ angular.module('starter.controllers', [])
   //参考价页面
   .controller('ReferencePriceCtrl', function ($scope, $stateParams, CommonService, OrderService) {
     //是否登录
-    if (!CommonService.isLogin(true)) {
-      return;
-    }
+    /*    if (!CommonService.isLogin(true)) {
+     return;
+     }*/
     $scope.classifyindex = 0;//选中产品分类标示
     $scope.productLists = [];//产品品类
     //获取产品分类
@@ -748,7 +748,7 @@ angular.module('starter.controllers', [])
           $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
         }
       }
-      , 10)
+      , 50)
 //接单
     $scope.jieDan = function (djno, userid, type, hytype) {
       event.preventDefault();
@@ -758,7 +758,7 @@ angular.module('starter.controllers', [])
        如果会员是4（二手商家）,只能接登记货源单
        会员角色你还要判断他有没有申请通过  0 审核不通过 1 未审核 2 审核通过*/
 
-      if (user.services.userext.autit != 2) {
+      if (user.userext.autit != 2) {
         CommonService.platformPrompt("会员类型审核通过后才能操作", 'close');
         return;
       }
@@ -816,47 +816,7 @@ angular.module('starter.controllers', [])
 
 //去收货
     $scope.recycle = function (orno, djno, type, userid, amount, name, productname, hytype) {
-      event.preventDefault();
-      if (type == 1 && user.services.indexOf(2) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
-        CommonService.platformPrompt("接单回收时去收货,会员身份必须是上门回收者", 'close');
-        return;
-      }
-      if (type == 2 && user.services.indexOf(3) != -1) { //接单回收接口 接单时会员身份必须是2"上门回收者" 跟单收货接口 接单时会员身份必须是3"货场"
-        CommonService.platformPrompt("跟单收货时去收货,会员身份必须是货场", 'close');
-        return;
-      }
-      /*  如果会员是1（信息提供者）,不能接单
-       如果会员是2（上门回收者）,只能接登记信息单
-       如果会员是3（货场）,只能接登记货源单
-       如果会员是4（二手商家）,只能接登记货源单
-       会员角色你还要判断他有没有申请通过  0 审核不通过 1 未审核 2 审核通过*/
-
-      if (user.services.userext.autit != 2) {
-        CommonService.platformPrompt("会员类型审核通过后才能操作", 'close');
-        return;
-      }
-      if (type == 1 && user.services.indexOf(2) != -1) {
-        CommonService.platformPrompt("登记信息单去收货会员身份必须是上门回收者", 'close');
-        return;
-      }
-      if (type == 2 && hytype == 1 && user.services.indexOf(3) != -1) {
-        CommonService.platformPrompt("登记货源单废品去收货会员身份必须是货场", 'close');
-        return;
-      }
-      if (type == 2 && hytype == 2 && user.services.indexOf(4) != -1) {
-        CommonService.platformPrompt("登记货源单二手去收货会员身份必须是二手商家", 'close');
-        return;
-      }
-      var json = {
-        orno: orno,
-        djno: djno,
-        type: type,
-        userid: userid,
-        amount: amount,
-        name: name,
-        productname: productname
-      }
-      $state.go("recycleorder", {orderinfo: JSON.stringify(json)});
+      OrderService.torecycle(user, orno, djno, type, userid, amount, name, productname, hytype);
 
     }
 
@@ -868,17 +828,7 @@ angular.module('starter.controllers', [])
 
 //去付款
     $scope.topay = function (type, djno, orno, fromuser, touser, amount, name) {
-      event.preventDefault();
-      var json = {
-        type: type,
-        djno: djno,
-        orno: orno,
-        fromuser: fromuser,
-        touser: touser,
-        amount: amount,
-        name: name
-      }
-      $state.go("payment", {orderinfo: JSON.stringify(json)})
+      OrderService.topay(type, djno, orno, fromuser, touser, amount, name);
     }
 
   })
@@ -1058,39 +1008,7 @@ angular.module('starter.controllers', [])
 
     //去收货
     $scope.recycle = function (orno, djno, type, userid, amount, name, productname, hytype) {
-      event.preventDefault();
-      /*  如果会员是1（信息提供者）,不能接单
-       如果会员是2（上门回收者）,只能接登记信息单
-       如果会员是3（货场）,只能接登记货源单
-       如果会员是4（二手商家）,只能接登记货源单
-       会员角色你还要判断他有没有申请通过  0 审核不通过 1 未审核 2 审核通过*/
-
-      if (user.services.userext.autit != 2) {
-        CommonService.platformPrompt("会员类型审核通过后才能操作", 'close');
-        return;
-      }
-      if (type == 1 && user.services.indexOf(2) != -1) {
-        CommonService.platformPrompt("登记信息单去收货会员身份必须是上门回收者", 'close');
-        return;
-      }
-      if (type == 2 && hytype == 1 && user.services.indexOf(3) != -1) {
-        CommonService.platformPrompt("登记货源单废品去收货会员身份必须是货场", 'close');
-        return;
-      }
-      if (type == 2 && hytype == 2 && user.services.indexOf(4) != -1) {
-        CommonService.platformPrompt("登记货源单二手去收货会员身份必须是二手商家", 'close');
-        return;
-      }
-      var json = {
-        orno: orno,
-        djno: djno,
-        type: type,
-        userid: userid,
-        amount: amount,
-        name: name,
-        productname: productname
-      }
-      $state.go("recycleorder", {orderinfo: JSON.stringify(json)});
+      OrderService.torecycle(user, orno, djno, type, userid, amount, name, productname, hytype);
     }
 
     //导航
@@ -1101,17 +1019,7 @@ angular.module('starter.controllers', [])
 
     //去付款
     $scope.topay = function (type, djno, orno, fromuser, touser, amount, name) {
-      event.preventDefault();
-      var json = {
-        type: type,
-        djno: djno,
-        orno: orno,
-        fromuser: fromuser,
-        touser: touser,
-        amount: amount,
-        name: name
-      }
-      $state.go("payment", {orderinfo: JSON.stringify(json)})
+      OrderService.topay(type, djno, orno, fromuser, touser, amount, name);
     }
   })
 
@@ -1157,40 +1065,7 @@ angular.module('starter.controllers', [])
     }
     //去收货
     $scope.recycle = function (orno, djno, type, userid, amount, name, productname, hytype) {
-      event.preventDefault();
-      /*  如果会员是1（信息提供者）,不能接单
-       如果会员是2（上门回收者）,只能接登记信息单
-       如果会员是3（货场）,只能接登记货源单
-       如果会员是4（二手商家）,只能接登记货源单
-       会员角色你还要判断他有没有申请通过  0 审核不通过 1 未审核 2 审核通过*/
-
-      if (user.services.userext.autit != 2) {
-        CommonService.platformPrompt("会员类型审核通过后才能操作", 'close');
-        return;
-      }
-      if (type == 1 && user.services.indexOf(2) != -1) {
-        CommonService.platformPrompt("登记信息单去收货会员身份必须是上门回收者", 'close');
-        return;
-      }
-      if (type == 2 && hytype == 1 && user.services.indexOf(3) != -1) {
-        CommonService.platformPrompt("登记货源单废品去收货会员身份必须是货场", 'close');
-        return;
-      }
-      if (type == 2 && hytype == 2 && user.services.indexOf(4) != -1) {
-        CommonService.platformPrompt("登记货源单二手去收货会员身份必须是二手商家", 'close');
-        return;
-      }
-      var json = {
-        orno: orno,
-        djno: djno,
-        type: type,
-        userid: userid,
-        amount: amount,
-        name: name,
-        productname: productname
-      }
-      $state.go("recycleorder", {orderinfo: JSON.stringify(json)});
-
+      OrderService.torecycle(user, orno, djno, type, userid, amount, name, productname, hytype);
     }
 
     //导航
@@ -1202,17 +1077,7 @@ angular.module('starter.controllers', [])
 
     //去付款
     $scope.topay = function (type, djno, orno, fromuser, touser, amount, name) {
-      event.preventDefault();
-      var json = {
-        type: type,
-        djno: djno,
-        orno: orno,
-        fromuser: fromuser,
-        touser: touser,
-        amount: amount,
-        name: name
-      }
-      $state.go("payment", {orderinfo: JSON.stringify(json)})
+      OrderService.topay(type, djno, orno, fromuser, touser, amount, name);
     }
   })
 
@@ -2256,6 +2121,7 @@ angular.module('starter.controllers', [])
           }
         }
         console.log($scope.supplyofgoods);
+
         //添加登记信息/货源信息(添加登记货源时明细不能为空，添加登记信息时明细为空)
         OrderService.addDengJi($scope.supplyofgoods).success(function (data) {
           console.log(data);

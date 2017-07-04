@@ -1,18 +1,18 @@
 angular.module('starter.services', [])
 //service在使用this指针，而factory直接返回一个对象
-.service('CommonService', function ($ionicPopup, $ionicPopover, $rootScope, $state, $ionicModal, $cordovaCamera, $cordovaImagePicker, $ionicPlatform, $ionicActionSheet, $ionicHistory, $timeout, $cordovaToast, $cordovaGeolocation, $cordovaBarcodeScanner, $ionicViewSwitcher, $interval, AccountService, WeiXinService) {
+  .service('CommonService', function ($ionicPopup, $ionicPopover, $rootScope, $state, $ionicModal, $cordovaCamera, $cordovaImagePicker, $ionicPlatform, $ionicActionSheet, $ionicHistory, $timeout, $cordovaToast, $cordovaGeolocation, $cordovaBarcodeScanner, $ionicViewSwitcher, $interval, AccountService, WeiXinService) {
     return {
       platformPrompt: function (msg, stateurl, stateparams) {
-        CommonService=this;
+        CommonService = this;
         $rootScope.commonService = CommonService;
         if ($ionicPlatform.is('android') || $ionicPlatform.is('ios')) {
           try {
             $cordovaToast.showLongCenter(msg);
           } catch (e) {
-              $rootScope.commonService.toolTip(msg, "tool-tip-message-success");
+            $rootScope.commonService.toolTip(msg, "tool-tip-message-success");
           }
         } else {
-            $rootScope.commonService.toolTip(msg, "tool-tip-message-success");
+          $rootScope.commonService.toolTip(msg, "tool-tip-message-success");
         }
 
         if (stateurl == null || stateurl == '') {
@@ -23,7 +23,7 @@ angular.module('starter.services', [])
           $state.go(stateurl, stateparams, {reload: true});
         }
       },
-      showAlert: function (title, template, stateurl,stateparams) {
+      showAlert: function (title, template, stateurl, stateparams) {
         // 一个提示对话框
         var alertPopup = $ionicPopup.alert({
           cssClass: "show-alert",
@@ -43,7 +43,7 @@ angular.module('starter.services', [])
 
         });
       },
-      showConfirm: function (title, template, okText, cancelText, stateurl, closeurl, confirmfunction,stateparams) {
+      showConfirm: function (title, template, okText, cancelText, stateurl, closeurl, confirmfunction, stateparams) {
         var confirmPopup = $ionicPopup.confirm({
           cssClass: "show-confirm",
           title: '<strong>' + title + '</strong>',
@@ -381,7 +381,7 @@ angular.module('starter.services', [])
       },
       getStateName: function () {    //得到上一个路由名称方法
         var stateName = "";
-        if ($ionicHistory.backView() && $ionicHistory.backView().stateName != "tab.account" && $ionicHistory.backView().stateName != "setting" && $ionicHistory.backView().stateName != "organizingdata"&& $ionicHistory.backView().stateName != "findpassword"&& $ionicHistory.backView().stateName != "register") {
+        if ($ionicHistory.backView() && $ionicHistory.backView().stateName != "tab.account" && $ionicHistory.backView().stateName != "setting" && $ionicHistory.backView().stateName != "organizingdata" && $ionicHistory.backView().stateName != "findpassword" && $ionicHistory.backView().stateName != "register") {
           stateName = $ionicHistory.backView().stateName;
         }
         if (stateName) {
@@ -488,7 +488,7 @@ angular.module('starter.services', [])
       },
     }
   })
-  .service('OrderService', function ($q, $http, BoRecycle) { //订单 接单收货/货源归集及回收 登记信息/货源接口服务定义
+  .service('OrderService', function ($q, $http, BoRecycle, $state) { //订单 接单收货/货源归集及回收 登记信息/货源接口服务定义
     return {
       navigation: function (params) { //导航路线规划
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
@@ -721,6 +721,56 @@ angular.module('starter.services', [])
           deferred.reject(err);// 声明执行失败，即服务器返回错误
         });
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      torecycle: function (user,orno, djno, type, userid, amount, name, productname, hytype) {//去收货参数封装
+        event.preventDefault();
+        CommonService=this;
+        /*  如果会员是1（信息提供者）,不能接单
+         如果会员是2（上门回收者）,只能接登记信息单
+         如果会员是3（货场）,只能接登记货源单
+         如果会员是4（二手商家）,只能接登记货源单
+         会员角色你还要判断他有没有申请通过  0 审核不通过 1 未审核 2 审核通过*/
+
+        if (user.userext.autit != 2) {
+          CommonService.platformPrompt("会员类型审核通过后才能操作", 'close');
+          return;
+        }
+        if (type == 1 && user.services.indexOf(2) != -1) {
+          CommonService.platformPrompt("登记信息单去收货会员身份必须是上门回收者", 'close');
+          return;
+        }
+        if (type == 2 && hytype == 1 && user.services.indexOf(3) != -1) {
+          CommonService.platformPrompt("登记货源单废品去收货会员身份必须是货场", 'close');
+          return;
+        }
+        if (type == 2 && hytype == 2 && user.services.indexOf(4) != -1) {
+          CommonService.platformPrompt("登记货源单二手去收货会员身份必须是二手商家", 'close');
+          return;
+        }
+        var json = {
+          orno: orno,
+          djno: djno,
+          type: type,
+          userid: userid,
+          amount: amount,
+          name: name,
+          productname: productname
+        }
+        $state.go("recycleorder", {orderinfo: JSON.stringify(json)});
+      },
+      topay: function (type, djno, orno, fromuser, touser, amount, name) {//去付款参数封装
+        event.preventDefault();
+        CommonService=this;
+        var json = {
+          type: type,
+          djno: djno,
+          orno: orno,
+          fromuser: fromuser,
+          touser: touser,
+          amount: amount,
+          name: name
+        }
+        $state.go("payment", {orderinfo: JSON.stringify(json)})
       }
     }
   })
