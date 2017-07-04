@@ -30,7 +30,7 @@
           联系地址 : {{orderDetail.addrdetail }}({{orderDetail.area.MergerName}})
           <i ng-click="navigation(orderDetail.longitude,orderDetail.latitude)" class="icon iconfont icon-daohang1 positive"></i>
         </ion-item>
-        <ion-item>
+        <ion-item ng-if="orderDetail.oraddtime!='0001-01-01'">
           接单时间 : {{orderDetail.oraddtime |date :'yyyy-MM-dd HH:mm'}}
         </ion-item>
       </div>

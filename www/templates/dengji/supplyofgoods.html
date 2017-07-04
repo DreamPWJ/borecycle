@@ -24,21 +24,22 @@
           </label>
         </div>
         <p></p>
-        <div class="item item-borderless jiaohuo row padding-left">
-                    <span class=" input-label icon iconfont icon-shouhuo "
-                          style="font-size: 1rem!important;"> 交货方式</span>
-          <label ng-click="goods.delivery=1" for="shangmen" class="">
-            <input type="checkbox" id="shangmen" ng-model="item.checked"  ng-checked="goods.delivery==1"
-                   >
-            <span>上门回收</span>
-          </label>
-          <label ng-click="goods.delivery=2" for="songluo" ng-click="goods.delivery=2">
-            <input type="checkbox" id="songluo" ng-model="item.checked"
-                   ng-checked="goods.delivery==2"
-                   >
-            <span>送货上门</span>
-          </label>
-
+        <div class="item item-borderless  item-icon-left jiaohuo">
+          <i class="icon iconfont icon-shouhuo "></i>
+          <div class="row row-center row-no-padding">
+            <h2>交货方式</h2>
+            <label ng-click="goods.delivery=1" for="shangmen" class="">
+              <input type="checkbox" id="shangmen" ng-model="item.checked" ng-checked="goods.delivery==1"
+              >
+              <span>上门回收</span>
+            </label>
+            <label ng-click="goods.delivery=2" for="songluo" ng-click="goods.delivery=2">
+              <input type="checkbox" id="songluo" ng-model="item.checked"
+                     ng-checked="goods.delivery==2"
+              >
+              <span>送货上门</span>
+            </label>
+          </div>
         </div>
         <p></p>
         <ion-item class="item-icon-left item-icon-right item-borderless" ng-if="ischecked" ng-click="toggle(1)">
@@ -56,12 +57,12 @@
             <span class="col-50">{{items.name}}废品 : <input type="number" ng-model="items.wastenum"
                                                            check-form
                                                            ng-change="checkForm(items.wastenum,'输入废品数量错误',items.unit==1?'positiveinteger':'positivenumber','')"
-                                                           ng-keyup="checkAtLeastOne(item.details,'wastenum')"
+                                                           ng-required="!items.secondhandnum"
                                                            style="display: inline-block;" placeholder="数量"/></span>
               <span class="col-50">{{items.name}}二手 : <input type="number" ng-model="items.secondhandnum"
-                                                             ng-keyup="checkAtLeastOne(item.details,'secondhandnum')"
+                                                             ng-required="!items.wastenum"
                                                              ng-change="checkForm(items.secondhandnum,'输入二手数量错误',items.unit==1?'positiveinteger':'positivenumber','')"
-                                                             style="display: inline-block;" placeholder="数量"/></span>
+                                                             style="display: inline-block;" placeholder="数量" /></span>
             </div>
           </ion-item>
 
@@ -70,7 +71,7 @@
       <p></p>
     </ion-content>
     <div class="padding light-bg  bottom-0" keyboard-attach>
-      <button ng-disabled="!(supplyofgoodsForm.$dirty&&ischecked&&verifyLeastOne&&verify)"
+      <button ng-disabled="!(supplyofgoodsForm.$valid&&ischecked&&verify)"
               class="button button-positive full-image "
               ng-click="supplyofgoodsSubmit()">
         提交

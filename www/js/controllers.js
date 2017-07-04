@@ -51,9 +51,9 @@ angular.module('starter.controllers', [])
             device: $ionicPlatform.is('android') ? 0 : 1,	//设备类型:0-android,1-ios
             Lat: localStorage.getItem("latitude") || 22.5224500,
             Lon: localStorage.getItem("longitude") || 114.0557100,
-            type:2 //新app 2
+            type: 2 //新app 2
           }
-          console.log (JSON.stringify($scope.datas));
+          console.log(JSON.stringify($scope.datas));
           NewsService.setDeviceInfo($scope.datas).success(function (data) {
             console.log(JSON.stringify(data));
             if (data.code != 1001) {
@@ -65,7 +65,7 @@ angular.module('starter.controllers', [])
           console.log(exception);
         }
       };
-      if (ionic.Platform.isWebView()&&localStorage.getItem("userid")) { //包含cordova插件的应用
+      if (ionic.Platform.isWebView() && localStorage.getItem("userid")) { //包含cordova插件的应用
         window.setTimeout(getRegistrationID, 3000);
       }
 
@@ -121,6 +121,19 @@ angular.module('starter.controllers', [])
           })
         }
 
+      }
+      //根据会员ID获取会员账号基本信息
+      if (localStorage.getItem("userid")) {
+        AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
+          if (data.code == 1001) {
+            localStorage.setItem("user", JSON.stringify(data.data));
+            var services = data.data.services;
+            //用户会员类型  0 无 1信息提供者  2回收者
+            localStorage.setItem("usertype", services.length == 0 ? 0 : (services.length == 1 && services.indexOf(1) != -1) ? 1 : 2);
+          } else {
+            CommonService.platformPrompt(data.message, 'close');
+          }
+        })
       }
     }
 
@@ -432,8 +445,9 @@ angular.module('starter.controllers', [])
     }
   })
   //完善资料页面
-  .controller('OrganizingDataCtrl', function ($scope, CommonService, BoRecycle, OrderService, AccountService, AddressService) {
+  .controller('OrganizingDataCtrl', function ($scope,$rootScope, CommonService, BoRecycle, OrderService, AccountService, AddressService) {
     CommonService.customModal($scope, 'templates/modal/addressmodal.html');
+    $scope.isLogin = localStorage.getItem("userid") ? true : false;//是否登录
     $scope.user = {};//定义用户对象
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable
@@ -637,7 +651,7 @@ angular.module('starter.controllers', [])
         $scope.datas = {
           DJNo: "",//登记单号(可为空)
           Type: "",//类型1.登记信息 2.登记货源(可为空)
-          ORuserid:localStorage.getItem("userid") ,//接单人
+          ORuserid: localStorage.getItem("userid"),//接单人
           userid: $rootScope.orderType == 0 ? localStorage.getItem("userid") : "",//用户userid
           Category: "",//货物品类 多个用逗号隔开(可为空)
           HYType: "",//货物类别 0.未区分 1废料 2二手(可为空)
@@ -761,12 +775,11 @@ angular.module('starter.controllers', [])
        如果会员是4（二手商家）,只能接登记货源单
        会员角色你还要判断他有没有申请通过  0 审核不通过 1 未审核 2 审核通过*/
 
-
-      if (!user.userext||user.userext.autit != 2) {
-        CommonService.platformPrompt(user.userext?"会员类型审核通过后才能操作":"用户设置里面完善资料后再操作", user.userext?'close':'organizingdata');
+      if (!user.userext || user.userext.autit != 2) {
+        CommonService.platformPrompt(user.userext ? "会员类型审核通过后才能操作" : "用户设置里面完善资料后再操作", user.userext ? 'close' : 'organizingdata');
         return;
       }
-      if (type == 1 && user.services.indexOf(2) != -1) {
+      if ((type == 1||hytype==0) && user.services.indexOf(2) != -1) {
         CommonService.platformPrompt("登记信息单接单会员身份必须是上门回收者", 'close');
         return;
       }
@@ -873,7 +886,7 @@ angular.module('starter.controllers', [])
       $scope.datas = {
         DJNo: "",//登记单号(可为空)
         Type: "",//类型1.登记信息 2.登记货源(可为空)
-        ORuserid:"" ,//接单人
+        ORuserid: "",//接单人
         userid: localStorage.getItem("userid"),//用户userid
         Category: "",//货物品类 多个用逗号隔开(可为空)
         HYType: "",//货物类别 0.未区分 1废料 2二手(可为空)
@@ -1891,11 +1904,18 @@ angular.module('starter.controllers', [])
   })
 
   //登记信息
-  .controller('InformationCtrl', function ($scope, CommonService, BoRecycle, AccountService, AddressService, OrderService) {
+  .controller('InformationCtrl', function ($scope, CommonService, BoRecycle, $ionicHistory, AccountService, AddressService, OrderService) {
     //是否登录
     if (!CommonService.isLogin(true)) {
       return;
     }
+    /*
+     $scope.$on('$ionicView.afterEnter', function () { //动态清除页面缓存
+     if($ionicHistory.backView() && $ionicHistory.backView().stateName=="tab.main"){ //上一级路由名称
+
+     }
+     })
+     */
     CommonService.customModal($scope, 'templates/modal/addressmodal.html');
     $scope.dengji = {};//登记信息
     $scope.dengji.acttype = 0;//默认活动类型是0  1以旧换新 当用户选择“以旧换新”时，先判断用户有没有“完善信息”和“实名认证”，如果没有则必须先“完善信息”和“实名认证”。
@@ -1995,8 +2015,8 @@ angular.module('starter.controllers', [])
       $scope.dengji.type = 1;//类型 1.	登记信息 2.	登记货源
       $scope.dengji.hytype = 0;//物类别 0.未区分 1废料 2二手 (登记信息时为0)
       $scope.dengji.userid = localStorage.getItem("userid");//登记人userid
-      $scope.dengji.longitude =localStorage.getItem("longitude") ||  $scope.addrareacountyone.Lng || 0;//经度 默认为0   地址表里有经纬度值 如果没值现在的地区取经纬度
-      $scope.dengji.latitude = localStorage.getItem("latitude") || $scope.addrareacountyone.Lat ||  0;//纬度 默认为0 地址表里有经纬度值 如果没值现在的地区取经纬度
+      $scope.dengji.longitude = localStorage.getItem("longitude") || $scope.addrareacountyone.Lng || 0;//经度 默认为0   地址表里有经纬度值 如果没值现在的地区取经纬度
+      $scope.dengji.latitude = localStorage.getItem("latitude") || $scope.addrareacountyone.Lat || 0;//纬度 默认为0 地址表里有经纬度值 如果没值现在的地区取经纬度
       $scope.dengji.category = $scope.recyclingCategoryName.join(",");//货物品类 多个用逗号隔开
       $scope.dengji.manufactor = manufactor.join(",");//单选
       $scope.dengji.addrcode = $scope.addrareacountyone.ID;
@@ -2112,8 +2132,8 @@ angular.module('starter.controllers', [])
           items.userid = localStorage.getItem("userid");//登记人userid
           items.name = user.username;//登记人姓名
           items.motel = user.mobile;//登记人电话
-          items.longitude =localStorage.getItem("longitude") || $scope.address.Lng ||  0;//经度 默认为0   地址表里有经纬度值 如果没值现在的地区取经纬度
-          items.latitude =localStorage.getItem("latitude") || $scope.address.Lat ||  0;//纬度 默认为0 地址表里有经纬度值 如果没值现在的地区取经纬度
+          items.longitude = localStorage.getItem("longitude") || $scope.address.Lng || 0;//经度 默认为0   地址表里有经纬度值 如果没值现在的地区取经纬度
+          items.latitude = localStorage.getItem("latitude") || $scope.address.Lat || 0;//纬度 默认为0 地址表里有经纬度值 如果没值现在的地区取经纬度
           items.category = $scope.recyclingCategoryName.join(",");//货物品类 多个用逗号隔开
           items.manufactor = "";//单选 登记货源是空
           items.addrcode = $scope.address.AddrCode;//地址code

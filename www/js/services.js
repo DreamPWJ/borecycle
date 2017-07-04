@@ -732,10 +732,10 @@ angular.module('starter.services', [])
 
 
         if (!user.userext || user.userext.autit != 2) {
-          CommonService.platformPrompt(user.userext?"会员类型审核通过后才能操作":"用户设置里面完善资料后再操作",  user.userext?'close':'organizingdata');
+          CommonService.platformPrompt(user.userext ? "会员类型审核通过后才能操作" : "用户设置里面完善资料后再操作", user.userext ? 'close' : 'organizingdata');
           return;
         }
-        if (type == 1 && user.services.indexOf(2) != -1) {
+        if ((type == 1 || hytype == 0) && user.services.indexOf(2) != -1) {
           CommonService.platformPrompt("登记信息单去收货会员身份必须是上门回收者", 'close');
           return;
         }
