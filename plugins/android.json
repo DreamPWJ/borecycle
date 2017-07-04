@@ -50,7 +50,7 @@
             "PACKAGE_NAME": "com.boolv.recycle"
         },
         "cordova-plugin-wechat": {
-            "WECHATAPPID": "wx3a43052a36e31c53",
+            "WECHATAPPID": "wxb7618c43863f5a2f",
             "PACKAGE_NAME": "com.boolv.recycle"
         },
         "cordova-plugin-whitelist": {
@@ -75,6 +75,10 @@
         },
         "cordova-plugin-weibosdk": {
             "WEIBO_APP_ID": "2892785162",
+            "PACKAGE_NAME": "com.boolv.recycle"
+        },
+        "cordova-plugin-offbye-alipay": {
+            "PARTNER_ID": "2017061207472219",
             "PACKAGE_NAME": "com.boolv.recycle"
         }
     },

@@ -2116,7 +2116,7 @@ angular.module('starter.controllers', [])
           items.latitude = $scope.address.Lat || localStorage.getItem("latitude") || 0;//纬度 默认为0 地址表里有经纬度值 如果没值现在的地区取经纬度
           items.category = $scope.recyclingCategoryName.join(",");//货物品类 多个用逗号隔开
           items.manufactor = "";//单选 登记货源是空
-          items.addrcode = $scope.address.ID;//地址id
+          items.addrcode = $scope.address.AddrCode;//地址code
           items.delivery = $scope.goods.delivery; //交货方式 1 上门回收(默认) 2 送货上门 登记信息直接用1
           items.addrdetail = $scope.address.AddrDetail;//详细地址
           items.hytype = i == 0 ? 1 : 2;//货物类别 0.未区分 1废料 2二手 (登记信息时为0)

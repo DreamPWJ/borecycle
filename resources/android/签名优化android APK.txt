@@ -15,6 +15,14 @@ zipalign -v 4 android-release-unsigned.apk borecycle.apk
 #启动全屏显示白色背景
 Theme.Light.NoTitleBar.Fullscreen
 
+#支付宝支付相关
+PID: 2017061207472219
+
+cordova plugin add https://github.com/offbye/cordova-plugin-alipay.git --variable PARTNER_ID=2017061207472219
+
+#微信
+cordova plugin add cordova-plugin-wechat --variable wechatappid=wxb7618c43863f5a2f
+
 #QQ
 cordova plugin add https://github.com/iVanPan/Cordova_QQ.git --variable QQ_APP_ID=1106251722
 
