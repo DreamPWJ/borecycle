@@ -1,0 +1,53 @@
+<ion-view>
+  <ion-nav-buttons side="left">
+    <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back ng-click="$ionicGoBack()"></button>
+  </ion-nav-buttons>
+  <ion-nav-title>
+    <h1 class="title"><img id="logo" src="img/logo.png" alt=""/>添加银行卡</h1>
+  </ion-nav-title>
+  <form name="addcardForm">
+  <ion-content overflow-scroll="false" class="has-button-footer stable-bg account " has-bouncing="true">
+
+    <div class="list">
+      <label class="item item-input">
+        <span class="input-label"><i class="assertive">*</i>银行卡号</span>
+        <input type="text" placeholder="请输入完整卡号" ng-blur="getBankinfo()" ng-model="bankinfo.accountno" required/>
+      </label>
+      <label class="item item-input">
+        <span class="input-label"><span class="padding-right"><i class="assertive">*</i>银行名称</span>
+          <input ng-model="bankinfo.bankname" id="txtbankname" placeholder="填写或选择银行名称" ng-disabled="!(bankinfo.bankname=='')" class="no-border bankname"  required/><!-- list="bankName"-->
+        <!--<datalist id="bankName">-->
+          <!--<option  ng-repeat="item in bankName">{{item.Name}}</option>-->
+        <!--</datalist>-->
+        </span>
+      </label>
+      <label class="item item-input ">
+        <span class="input-label"><i class="assertive">*</i>支行名称</span>
+        <input type="text" placeholder="请输入正确的支行名称" ng-model="bankinfo.branchname" required/>
+      </label>
+      <label class="item item-input ">
+        <span class="input-label"><i class="assertive">*</i>手机号</span>
+        <input  placeholder="请输入银行预留手机号" ng-model="bankinfo.mobile" type="number" ng-keyup="checkphone(bankinfo.mobile)"
+                ng-maxlength="11"  required/>
+      </label>
+      <div class="item item-input ">
+        <span class="input-label"><i class="assertive">*</i>验证码</span>
+        <span class="row row-no-padding">
+        <input type="text" placeholder="请输入手机验证码" class="col-60" ng-model="bankinfo.code" required />
+        <button class="button button-small button-positive col-30" ng-disabled="!paraclass"
+                ng-class="{false:'button-outline'}[paraclass]" ng-click="sendCode()" style="z-index: 100;">{{paracont}}</button>
+          </span>
+      </div>
+      <label class="item item-input item-icon-right" ng-click="setDefault()">
+          <span class="input-label">是否默认</span>
+          <i class="icon" ng-class="bankinfo.isdefault?'ion-ios-circle-filled':'ion-ios-circle-outline'"></i>
+          <!--<input type="checkbox" class="item-checkbox-right checkbox" ng-model="bankinfo.isdefault">-->
+      </label>
+    </div>
+  </ion-content>
+  <div class="padding light-bg  bottom-0" keyboard-attach>
+    <!--<input type="hidden"  ng-model="bankinfo.serviceid" />-->
+    <!--<input type="hidden"  ng-model="bankinfo.accountname" />-->
+    <a ng-disabled="!addcardForm.$valid" class="button button-calm full-image button-small " ng-click="addUserBank()" >{{buttonText}}</a>
+  </div></form>
+</ion-view>

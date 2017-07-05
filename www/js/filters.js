@@ -24,3 +24,9 @@ angular.module('starter.filter', [])
       }
     }
   })
+  .filter('splitBandCardNumberFilter', [function() {
+      return function(content) {
+      return content ? content.replace(/(\d{8})\d{4}(\d{4})/, '$1****$2').replace(/\s/g,'').replace(/(\d{4})/g,"$1 ") : content;
+    }
+  }])
+;

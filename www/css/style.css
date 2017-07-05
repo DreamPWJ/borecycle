@@ -304,3 +304,27 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
 .iconfont {
   font-size: 1.5rem !important;
 }
+/*自定义图标样式*/
+.icon-balance-40:before { content: "\e635";line-height: 0.8;font-size: 40px;color: #FFD700; }
+.icon-gongshangyinhang-23:before { content: "\e610";font-size: 2.3rem;line-height: 40px; }
+.icon-pinganyinhang-23:before{ content: "\e61e"; font-size: 2.3rem;line-height: 40px;}
+/*自定义样式*/
+.f-right{float: right;}
+.gold{
+  color: #FFD700;
+}
+.gold-bg{
+  background-color: #FFD700;
+}
+.green{
+  color: #0ab66a;
+}
+.green-bg{
+  background-color: #0ab66a;
+}
+.skyblue{
+  color: #1296db;
+}
+.skyblue-bg{
+background-color: #1296db;
+}

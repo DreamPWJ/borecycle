@@ -2223,3 +2223,302 @@ angular.module('starter.controllers', [])
 
 
   })
+  //我的钱包
+  .controller('WalletCtrl',function ($scope, $rootScope,CommonService,MyWalletService) {
+    $scope.totalamount=0.00;//总金额
+    $scope.kyamount=0.00;//可用金额
+    $scope.djamount=0.00;//冻结金额
+    //是否登录
+    if (!CommonService.isLogin(true)) {
+      return;
+    }
+    //总金额
+    MyWalletService.get(localStorage.getItem("userid")).success(function (data) {
+      $scope.totalamount=data.data.totalamount;
+      $scope.kyamount=data.data.cashamount;//可用金额
+      $scope.djamount=data.data.freezeamount;//冻结金额
+    });
+    //银行卡数
+    $scope.total =0;
+    MyWalletService.bankget_count(localStorage.getItem("userid")).success(function (data) {
+      $scope.total = data.data;
+    });
+  })
+  //提现
+  .controller('CashCtrl', function ($scope, $rootScope, $state,$ionicHistory, MyWalletService,CommonService ) {
+    //是否登录
+    if (!CommonService.isLogin()) {
+      return;
+    }
+    $scope.subaccount={};
+    MyWalletService.get(localStorage.getItem("userid")).success(function (data) {
+      $scope.subaccount=data.data;
+    });
+    $scope.verbank = false;
+    $scope.myBk={};
+    $scope.cashinfo = {};
+    //银行列表
+    $scope.params = {
+      page: 1,//页码
+      size: 100,//条数
+      userid: localStorage.getItem("userid")//用户id
+    }
+    MyWalletService.getbanklist($scope.params).success(function (data) {
+      if(data.data.total_count!=0){
+        $scope.BankList = data.data.data_list;
+      }
+      else {
+        $scope.verbank = true;
+      }
+    });
+    $scope.changeBk=function (gt) {
+      angular.forEach($scope.BankList,function (item) {
+        if(gt==item.id){
+          $scope.myBk=item;
+        }
+      });
+      if(gt!=null)
+      {
+        $scope.verbank = true;
+      }
+    }
+    $scope.addcash = function () {
+      if ($scope.BankList ==null) {
+        CommonService.platformPrompt('请先添加一个银行账户', 'addbankaccount')
+        $state.go('addcard');
+        return;
+      }
+      $scope.datas = {
+        userbankid:$scope.myBk.id,
+        userid: localStorage.getItem("userid"),
+        amount: $scope.cashinfo.amount,
+      };
+      MyWalletService.cash($scope.datas).success(function (data) {
+        if (data.code == 1001) {
+          CommonService.showAlert('', '<p>恭喜您！</p><p>操作成功，平台审核后打入指定账号，请注意查收！</p>', 'wallet');
+        } else {
+          CommonService.platformPrompt('提现失败', 'close');
+        }
+      })
+    }
+  })
+  //交易记录
+  .controller('TransactionlistCtrl', function ($scope, $rootScope, $state,$ionicScrollDelegate,$ionicHistory,$ionicPopup, CommonService, AccountService,MyWalletService) {
+    //是否登录
+    if (!CommonService.isLogin()) {
+      return;
+    }
+    $scope.tradelist = [];
+    $scope.page = 0;
+    $scope.total = 1;
+    $scope.gettradelist = function () {
+      if ((arguments != [] && arguments[0] == 0)) {
+        $scope.page = 0;
+        $scope.tradelist = [];
+      }
+      $scope.page++;
+      $scope.params = {
+        page: $scope.page,//页码
+        size:10,//条数
+        userid: localStorage.getItem("userid"),//用户id
+      }
+      MyWalletService.get_tradelist($scope.params).success(function (data) {
+        $scope.isNotData = false;
+        if (data.data == null) {
+          $scope.isNotData = true;
+          $scope.total = 1;
+          $scope.$broadcast('scroll.infiniteScrollComplete');
+          return;
+        }
+        angular.forEach(data.data.data_list, function (item) {
+          $scope.tradelist.push(item);
+          //流水类型
+          item.channel= $scope.channelFmt(item.channel);
+        })
+        $scope.total = data.data.page_count;
+        $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
+      }).finally(function () {
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+      })
+    }
+    $scope.gettradelist(0);//产品加载刷新
+    $scope.channelFmt=function (channel) {
+      if(channel=="101")
+        return "<span class=\"font_green\">充值</span>";
+      else if(channel=="102")
+        return "<span class=\"font_097\">提现</span>";
+      else if(channel=="201")
+        return "<span>支付</span>&nbsp;<span>供货计划单</span><span class=\"font_097\">货款</span>";
+      else if(channel=="202")
+        return "<span>收</span>&nbsp;<span>供货计划单</span><span class=\"font_green\">货款</span>";
+      else if(channel=="203")
+        return "<span>支付</span>&nbsp;<span>供货单</span><span class=\"font_097\">货款</span>";
+      else if(channel=="204")
+        return "<span>收</span>&nbsp;<span>供货单</span><span class=\"font_green\">货款</span>";
+      else if(channel=="205")
+        return "<span>支付</span>&nbsp;<span>卖货单</span><span class=\"font_097\">货款</span>";
+      else if(channel=="206")
+        return "<span>收</span>&nbsp;<span>卖货单</span><span class=\"font_green\">货款</span>";
+      else if(channel=="207")
+        return "<span>支付</span>&nbsp;<span>买货单</span><span class=\"font_097\">定金</span>";
+      else if(channel=="208")
+        return "<span>收</span&nbsp;><span>买货单</span><span class=\"font_green\">定金</span>";
+      else if(channel=="301")
+        return "<span>收</span>&nbsp;<span>预付款</span>";
+      else
+        return "<span>还</span>&nbsp;<span>预付款</span>";
+    }
+  })
+//我的银行卡
+  .controller('BankcardCtrl',function ($scope, $rootScope, $state, $ionicHistory, CommonService, AccountService,MyWalletService) {
+    $scope.userbanklist = [];
+    $scope.page = 0;
+    $scope.total = 1;
+    $scope.getUserBanklist = function () {
+      if (arguments != [] && arguments[0] == 0) {
+        $scope.page = 0;
+        $scope.userbanklist = [];
+      }
+      $scope.page++;
+      $scope.params = {
+        page: $scope.page,//页码
+        size: 5,//条数
+        userid: localStorage.getItem("userid")//用户id
+      }
+      MyWalletService.getbanklist($scope.params).success(function (data) {
+        $scope.isNotData = false;console.log(data);
+        if (data.data.total_count==0) {
+          $scope.isNotData = true;
+          $rootScope.userbankliststatus = [];//无银行账号的时候清除数据
+          return;
+        }
+        angular.forEach(data.data.data_list, function (item) {
+          $scope.userbanklist.push(item);
+        })
+        $scope.total = data.data.page_count;
+      }).finally(function () {
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+      })
+    }
+    $scope.getUserBanklist(0);//收款账号加载刷新
+    $scope.setDefault=function (item) {
+      MyWalletService.setDefaultBC(item.id).success(function (data) {
+        if(data.code=1001){
+          item.isdefault=1;
+          CommonService.toolTip("恭喜您，操作成功！", "");
+          return;
+        }else{
+          CommonService.toolTip("操作失败，请重试！", "");
+          return;
+        }
+      }).error(function () {
+        CommonService.toolTip("操作失败，请重试！", "");
+        return;
+      });
+    }
+  })
+  //添加银行卡
+  .controller('AddcardCtrl',function ($scope, $rootScope, $state,$ionicHistory,CommonService,$location,MyWalletService,AccountService) {
+
+    //增加收款银行账号信息
+    $scope.bankinfo = {};
+    $scope.bankinfo.isdefault=false;
+    $scope.buttonText = '添加';
+    $scope.paracont = "获取验证码"; //初始发送按钮中的文字
+    $scope.paraclass = false; //控制验证码的disable
+    $scope.checkphone = function (mobilephone) {//检查手机号
+      AccountService.checkMobilePhone($scope, mobilephone);
+      $state.go("bankcard");
+    }
+    $scope.setDefault=function () {
+      $scope.bankinfo.isdefault=($scope.bankinfo.isdefault?false:true);
+    }
+    $scope.sendCode=function () {
+      event.preventDefault();
+      //按钮可用
+      if ($scope.paraclass) {
+        //取实名信息
+        MyWalletService.get_identity(localStorage.getItem("userid")).success(function (data) {
+          //console.log(data);
+          if(data.data!=null) {
+            $scope.personsign = {
+              "cardno": $scope.bankinfo.accountno,
+              "idno": data.data.idno,
+              "mobile": $scope.bankinfo.mobile,
+              "name": data.data.name
+            }
+            $scope.bankinfo.accountname = data.data.name;
+            MyWalletService.authenticate_sign($scope.personsign).success(function (data1) {
+              //console.log(data1);
+              if (data1.data.errCode == "0") {
+                //120s倒计时
+                CommonService.countDown($scope);
+                $scope.bankinfo.serviceid = data1.data.serviceId;
+              } else {
+                CommonService.platformPrompt('发送认证短信失败，请核实银行卡信息', 'close');
+              }
+            })
+          }
+          else{
+            CommonService.toolTip("为了您的账户安全，实名认证之后再绑定银行卡", "");
+            return;
+          }
+        }).error(function () {
+          CommonService.toolTip("验证码有误", "");
+          return;
+        })
+      }
+    }
+    // if ($rootScope.bankitem && $rootScope.bankitem.length != 0) { //修改银行信息
+    //   $scope.bankiteminfo = $rootScope.bankitem;
+    //   $scope.bankinfo.bankname = $scope.bankiteminfo.bankname;
+    //   $scope.bankinfo.accountno = $scope.bankiteminfo.accountno;
+    //   $scope.bankinfo.accountname = $scope.bankiteminfo.accountname;
+    //   $scope.bankinfo.branchname = $scope.bankiteminfo.branchname;
+    //   $scope.bankinfo.isdefault = $scope.bankiteminfo.isdefault == 1 ? true : false;
+    //   $rootScope.bankitem = [];//清空数据
+    //   $scope.buttonText = '修改';
+    // } else {
+    //   $scope.bankinfo.isdefault = true;
+    // }
+    //根据输入的银行卡号获取银行信息
+    $scope.getBankinfo=function () {
+      if($scope.bankinfo.accountno&&$scope.bankinfo.accountno.length>15){
+        MyWalletService.getBankInfoByCardNo($scope.bankinfo.accountno).success(function (data) {
+          if(data.code==1001&&data.data.issname){
+            $scope.bankinfo.bankname=data.data.issname;
+          }else {
+            $scope.bankinfo.bankname="";
+          }
+        });
+      }else {
+        $scope.bankinfo.bankname="";
+      }
+
+    }
+    $scope.addUserBank = function () {
+      $scope.datas = {
+        id: $scope.bankiteminfo ? $scope.bankiteminfo.id : 0, 	// id
+        bankname: $scope.bankinfo.bankname,	//银行名称
+        userid: localStorage.getItem("userid"),	//用户id
+        branchname: $scope.bankinfo.branchname,	//支行名称
+        accountno: $scope.bankinfo.accountno,	//银行帐号
+        accountname: $scope.bankinfo.accountname,	//开户人名称
+        isdefault: $scope.bankinfo.isdefault ? 1 : 0, 	//是否默认0-	否（默认值）1-	是
+        serviceid: $scope.bankinfo.serviceid,
+        code:$scope.bankinfo.code
+      }
+      MyWalletService.addbank($scope.datas).success(function (data) {
+        if (data.code == 1001) {
+          CommonService.showAlert('', '<p>恭喜您！</p><p>账户信息' + $scope.buttonText + '成功！</p>', '');
+          $state.go("/bankcard");
+          return;
+        } else {
+          CommonService.platformPrompt(data.message, 'close');
+        }
+      })
+    }
+  })
+;

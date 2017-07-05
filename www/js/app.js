@@ -462,7 +462,42 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/dengji/evaluate.html',
         controller: 'EvaluateCtrl'
       })
-
+      //我的钱包
+      .state('wallet', {
+        url: '/wallet',
+        cache: false,
+        templateUrl: 'templates/wallet/index.html',
+        controller: 'WalletCtrl'
+      })
+      //提现
+      .state('cash', {
+        url: '/cash',
+        cache: false,
+        templateUrl: 'templates/wallet/cash.html',
+        controller: 'CashCtrl'
+      })
+      //交易列表
+      .state('transactionlist', {
+        url: '/transactionlist',
+        cache: false,
+        templateUrl: 'templates/wallet/transactionlist.html',
+        controller: 'TransactionlistCtrl'
+      })
+      //我的银行卡
+      .state('bankcard', {
+        url: '/bankcard',
+        cache: false,
+        templateUrl: 'templates/wallet/bankcard.html',
+        controller: 'BankcardCtrl'
+      })
+      //添加银行卡
+      .state('addcard', {
+        url: '/addcard',
+        cache: false,
+        templateUrl: 'templates/wallet/addbankcard.html',
+        controller: 'AddcardCtrl'
+      })
+;
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/tab/main');
 
