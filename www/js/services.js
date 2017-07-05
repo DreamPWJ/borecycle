@@ -735,15 +735,15 @@ angular.module('starter.services', [])
           CommonService.platformPrompt(user.userext ? "会员类型审核通过后才能操作" : "用户设置里面完善资料后再操作", user.userext ? 'close' : 'organizingdata');
           return;
         }
-        if ((type == 1 || hytype == 0) && user.services.indexOf(2) != -1) {
+        if ((type == 1 || hytype == 0) && user.services.indexOf('2') != -1) {
           CommonService.platformPrompt("登记信息单去收货会员身份必须是上门回收者", 'close');
           return;
         }
-        if (type == 2 && hytype == 1 && user.services.indexOf(3) != -1) {
+        if (type == 2 && hytype == 1 && user.services.indexOf('3') != -1) {
           CommonService.platformPrompt("登记货源单废品去收货会员身份必须是货场", 'close');
           return;
         }
-        if (type == 2 && hytype == 2 && user.services.indexOf(4) != -1) {
+        if (type == 2 && hytype == 2 && user.services.indexOf('4') != -1) {
           CommonService.platformPrompt("登记货源单二手去收货会员身份必须是二手商家", 'close');
           return;
         }

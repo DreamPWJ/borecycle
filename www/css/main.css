@@ -58,7 +58,8 @@
   color: #ffffff !important;
   border-radius: 50%;
   border: 2px solid #ffffff;
-  box-shadow: 0px -1px 2px rgba(136, 136, 136, 0.5);
+  -webkit-box-shadow: 0px -1px 2px rgba(136, 136, 136, 0.5);
+          box-shadow: 0px -1px 2px rgba(136, 136, 136, 0.5);
   top: -0.7rem;
   opacity: 1;
 }
@@ -268,14 +269,25 @@
   overflow-y: auto;
   top: 44px;
   right: 0px;
-  width: 110px;
+  width: 105px;
 }
 
 #panel .amap-call {
+  position: relative;
   text-decoration: none !important;
   background-color: #00ACFF !important;
+  width: 5rem;
+  height: 5rem;
+  line-height: 5rem;
+  border-radius: 50%;
   padding: 3px;
   text-align: center;
+  bottom: 0;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  -webkit-box-shadow: 0px 1px 2px rgba(136, 136, 136, 0.5);
+  box-shadow: 0px 1px 2px rgba(136, 136, 136, 0.5);
 }
 
 #panel .amap-lib-driving, #panel .amap-lib-driving .planTitle {
@@ -321,7 +333,8 @@
   text-align: center;
   padding: 0.5rem 1.5rem;
   border-radius: 1.2rem;
-  box-shadow: 1px 1px 2px rgba(136, 136, 136, 0.5);
+  -webkit-box-shadow: 1px 1px 2px rgba(136, 136, 136, 0.5);
+          box-shadow: 1px 1px 2px rgba(136, 136, 136, 0.5);
 }
 
 .tool-tip-message-success {
@@ -330,7 +343,8 @@
   text-align: center;
   padding: 0.5rem 1.5rem;
   border-radius: 1.2rem;
-  box-shadow: 1px 1px 2px rgba(136, 136, 136, 0.5);
+  -webkit-box-shadow: 1px 1px 2px rgba(136, 136, 136, 0.5);
+          box-shadow: 1px 1px 2px rgba(136, 136, 136, 0.5);
 }
 
 @-webkit-keyframes tooltipmessage {

@@ -131,7 +131,7 @@ angular.module('starter.controllers', [])
             localStorage.setItem("user", JSON.stringify(data.data));
             var services = data.data.services;
             //用户会员类型  0 无 1信息提供者  2回收者
-            localStorage.setItem("usertype", services.length == 0 ? 0 : (services.length == 1 && services.indexOf(1) != -1) ? 1 : 2);
+            localStorage.setItem("usertype", services.length == 0 ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
           } else {
             CommonService.platformPrompt(data.message, 'close');
           }
@@ -264,7 +264,7 @@ angular.module('starter.controllers', [])
               localStorage.setItem("user", JSON.stringify(data.data));
               var services = data.data.services;
               //用户会员类型  0 无 1信息提供者  2回收者
-              localStorage.setItem("usertype", services.length == 0 ? 0 : (services.length == 1 && services.indexOf(1) != -1) ? 1 : 2);
+              localStorage.setItem("usertype", services.length == 0 ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
               if (services.length == 0) {//旧会员 完善信息
                 $state.go("organizingdata")
               }
@@ -340,7 +340,7 @@ angular.module('starter.controllers', [])
             localStorage.setItem("user", JSON.stringify(data.data));
             var services = data.data.services;
             //用户会员类型  0 无 1信息提供者  2回收者
-            localStorage.setItem("usertype", services.length == 0 ? 0 : (services.length == 1 && services.indexOf(1) != -1) ? 1 : 2);
+            localStorage.setItem("usertype", services.length == 0 ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
             if (services.length == 0) {//旧会员 完善信息
               $state.go("organizingdata")
             }
@@ -536,7 +536,7 @@ angular.module('starter.controllers', [])
               localStorage.setItem("user", JSON.stringify(datas.data));
               var services = datas.data.services;
               //用户会员类型  0 无 1信息提供者  2回收者
-              localStorage.setItem("usertype", services.length == 0 ? 0 : (services.length == 1 && services.indexOf(1) != -1) ? 1 : 2);
+              localStorage.setItem("usertype", services.length == 0 ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
             } else {
               CommonService.platformPrompt(datas.message, 'close');
             }
@@ -601,7 +601,7 @@ angular.module('starter.controllers', [])
     $scope.order = {
       showDelete: false
     };
-    $rootScope.orderType = $stateParams.orderType; //orderType类型 0.是全部订单 1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
+    $rootScope.orderType = $stateParams.orderType; //orderType类型 0.是我的回收订单 1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
     $scope.tabIndex = 0;//当前tabs页
     var user = JSON.parse(localStorage.getItem("user"));//用户信息
     //待接单订单
@@ -781,15 +781,15 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt(user.userext ? "会员类型审核通过后才能操作" : "用户设置里面完善资料后再操作", user.userext ? 'close' : 'organizingdata');
         return;
       }
-      if ((type == 1||hytype==0) && user.services.indexOf(2) != -1) {
+      if ((type == 1||hytype==0) && user.services.indexOf('2') != -1) {
         CommonService.platformPrompt("登记信息单接单会员身份必须是上门回收者", 'close');
         return;
       }
-      if (type == 2 && hytype == 1 && user.services.indexOf(3) != -1) {
+      if (type == 2 && hytype == 1 && user.services.indexOf('3') != -1) {
         CommonService.platformPrompt("登记货源单废品接单会员身份必须是货场", 'close');
         return;
       }
-      if (type == 2 && hytype == 2 && user.services.indexOf(4) != -1) {
+      if (type == 2 && hytype == 2 && user.services.indexOf('4') != -1) {
         CommonService.platformPrompt("登记货源单二手接单会员身份必须是二手商家", 'close');
         return;
       }
@@ -1048,6 +1048,8 @@ angular.module('starter.controllers', [])
   .controller('OrderDetailsCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, OrderService) {
     var user = JSON.parse(localStorage.getItem("user"));//用户信息
     $scope.type = $stateParams.type;//1.待接单 2 待处理和所有订单
+    $rootScope.orderType = $rootScope.orderType||2; //orderType类型 0.是我的回收订单 1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
+
     if ($scope.type == 1) {
       OrderService.getDengJiDetail({djno: $stateParams.no}).success(function (data) {
         console.log(data);
@@ -1344,7 +1346,7 @@ angular.module('starter.controllers', [])
         localStorage.setItem("user", JSON.stringify(data.data));
         var services = data.data.services;
         //用户会员类型  0 无 1信息提供者  2回收者
-        localStorage.setItem("usertype", services.length == 0 ? 0 : (services.length == 1 && services.indexOf(1) != -1) ? 1 : 2);
+        localStorage.setItem("usertype", services.length == 0 ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
       } else {
         CommonService.platformPrompt(data.message, 'close');
       }
@@ -1367,7 +1369,6 @@ angular.module('starter.controllers', [])
 
 //获得我的里面待处理和预警订单数
     OrderService.getOrderSum({userid: localStorage.getItem("userid"), expiry: 6}).success(function (data) {
-      console.log(data);
       if (data.code == 1001) {
         $scope.orderSum = data.data;
       } else {

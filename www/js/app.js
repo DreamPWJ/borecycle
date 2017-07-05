@@ -208,28 +208,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
       //我的回收订单页面
       .state('order', {
-        url: '/order/:orderType', //orderType类型 1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
+        url: '/order/:orderType', //orderType类型 0是我的回收单  1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
         cache: false,
         templateUrl: 'templates/order.html',
         controller: 'OrderCtrl'
-
-      })
-
-      //我的订单页面
-      .state('myorder', {
-        url: '/myorder',
-        cache: false,
-        templateUrl: 'templates/order/myorder.html',
-        controller: 'MyOrderCtrl'
-
-      })
-
-      //我的订单预警页面
-      .state('orderwarning', {
-        url: '/orderwarning',
-        cache: false,
-        templateUrl: 'templates/order/orderwarning.html',
-        controller: 'OrderWarningCtrl'
 
       })
 
@@ -242,12 +224,30 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
       })
 
-      //我的回订单详情页面
+      //我的订单页面
+      .state('myorder', {
+        url: '/myorder',
+        cache: false,
+        templateUrl: 'templates/order/myorder.html',
+        controller: 'MyOrderCtrl'
+
+      })
+
+      //我的订单详情页面
       .state('myorderdetails', {
         url: '/myorderdetails/:no',
         cache: false,
         templateUrl: 'templates/order/myorderdetails.html',
         controller: 'MyOrderDetailsCtrl'
+
+      })
+
+      //我的订单预警页面
+      .state('orderwarning', {
+        url: '/orderwarning',
+        cache: false,
+        templateUrl: 'templates/order/orderwarning.html',
+        controller: 'OrderWarningCtrl'
 
       })
 
