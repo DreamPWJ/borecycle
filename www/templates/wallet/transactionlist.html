@@ -8,7 +8,7 @@
   </ion-nav-title>
   <ion-content overflow-scroll="false" class="stable-bg" has-bouncing="true">
     <ion-refresher on-refresh="getAddrlist(0)" pulling-text="下拉更新"></ion-refresher>
-    <div ng-if="isNotData" class="isNotData">
+    <div ng-if="isNotData" class="isNotDataHint">
       <i class="icon ion-sad"></i>
       <p>无交易数据</p>
     </div>

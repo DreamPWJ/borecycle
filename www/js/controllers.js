@@ -2331,11 +2331,10 @@ angular.module('starter.controllers', [])
         userid: localStorage.getItem("userid"),//用户id
       }
       MyWalletService.get_tradelist($scope.params).success(function (data) {
+        console.log(data);
         $scope.isNotData = false;
-        if (data.data == null) {
+        if (data.data == null || data.data.data_list.length==0) {
           $scope.isNotData = true;
-          $scope.total = 1;
-          $scope.$broadcast('scroll.infiniteScrollComplete');
           return;
         }
         angular.forEach(data.data.data_list, function (item) {
