@@ -8,12 +8,14 @@ angular.module('starter.controllers', [])
 
   //Tabs Ctrl
   .controller('TabsCtrl', function ($scope) {
+    $scope.isLogin = localStorage.getItem("userid") ? true : false;//是否登录
+    $scope.usertype = localStorage.getItem("usertype"); //用户会员类型  0 无 1信息提供者  2回收者
     //$on用于事件 接收子级数据
     $scope.$on("usertype", function (event, data) {
       localStorage.setItem("usertype", data.usertype);
       $scope.usertype = data.usertype; //用户会员类型  0 无 1信息提供者  2回收者
     });
-    $scope.isLogin = localStorage.getItem("userid") ? true : false;//是否登录
+
   })
 
   //APP首页面

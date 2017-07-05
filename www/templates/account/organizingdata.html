@@ -6,7 +6,6 @@
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 完善资料</h1>
   </ion-nav-title>
 
-
   <ion-content overflow-scroll="false" class="stable-bg" id="organizingdata">
     <form name="organizingdataForm">
       <div class="list">
@@ -31,7 +30,8 @@
         </button>
         <label class="item item-input">
           <span class="input-label icon ion-ios-calculator-outline"> 月回收量</span>
-          <input type="number" name="recoveryqty" ng-model="user.recoveryqty" placeholder="请输入月回收量" maxlength="8" required/>
+          <input type="number" name="recoveryqty" ng-model="user.recoveryqty" placeholder="请输入月回收量" maxlength="8"
+                 required/>
         </label>
         <div class="item text-wrap">
           <span class="input-label icon ion-ios-trash-outline "> 回收品类</span>
@@ -59,18 +59,16 @@
         </div>
         <p></p>
         <div class="padding-horizontal">
-          <button class="button button-full button-positive " ng-click="organizingdataSubmit()"
+          <button class="button full-image button-positive " ng-click="organizingdataSubmit()"
                   ng-disabled="!(organizingdataForm.$valid&&ischecked&&addresspcd)">提交
           </button>
           <p></p>
-          <a ng-href="#/{{isLogin?'tab/account':'login'}}" class="button button-full button-energized button-outline energized ">跳过,下次再完善</a>
+          <a ng-href="#/{{isLogin?'tab/account':'login'}}"
+             class="button full-image button-energized button-outline energized ">跳过,下次再完善</a>
         </div>
 
       </div>
-
-
     </form>
-
 
   </ion-content>
 
