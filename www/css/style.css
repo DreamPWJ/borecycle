@@ -198,6 +198,11 @@ a {
   font-size: 1.5rem !important;
 }
 
+input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], select[readonly], textarea[disabled], textarea[readonly]:not(.cloned-text-input) {
+  background-color: #ffffff;
+  cursor: not-allowed;
+}
+
 /* 去掉时候点击按钮灰色边框颜色*/
 .button.active, .button.activated {
   border-color: transparent !important;

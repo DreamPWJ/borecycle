@@ -58,8 +58,8 @@ angular.module('starter.controllers', [])
           NewsService.setDeviceInfo($scope.datas).success(function (data) {
             console.log(JSON.stringify(data));
             if (data.code == 1001) {
-             localStorage.setItem("jPushRegistrationID",$scope.jPushRegistrationID);
-            }else {
+              localStorage.setItem("jPushRegistrationID", $scope.jPushRegistrationID);
+            } else {
               CommonService.platformPrompt("提交设备信息到服务器失败", 'close');
             }
           })
@@ -68,7 +68,7 @@ angular.module('starter.controllers', [])
           console.log(exception);
         }
       };
-      if (ionic.Platform.isWebView() && localStorage.getItem("userid")&&!localStorage.getItem("jPushRegistrationID")) { //包含cordova插件的应用
+      if (ionic.Platform.isWebView() && localStorage.getItem("userid") && !localStorage.getItem("jPushRegistrationID")) { //包含cordova插件的应用
         window.setTimeout(getRegistrationID, 3000);
       }
 
@@ -448,7 +448,7 @@ angular.module('starter.controllers', [])
     }
   })
   //完善资料页面
-  .controller('OrganizingDataCtrl', function ($scope,$rootScope, CommonService, BoRecycle, OrderService, AccountService, AddressService) {
+  .controller('OrganizingDataCtrl', function ($scope, $rootScope, CommonService, BoRecycle, OrderService, AccountService, AddressService) {
     CommonService.customModal($scope, 'templates/modal/addressmodal.html');
     $scope.isLogin = localStorage.getItem("userid") ? true : false;//是否登录
     $scope.user = {};//定义用户对象
@@ -782,11 +782,11 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt(user.userext ? "会员类型审核通过后才能操作" : "用户设置里面完善资料后再操作", user.userext ? 'close' : 'organizingdata');
         return;
       }
-      if ( user.services.indexOf('1') != -1) {
+      if (user.services.indexOf('1') != -1) {
         CommonService.platformPrompt("信息供应者用户不能接单", 'close');
         return;
       }
-      if ((type == 1||hytype==0) && user.services.indexOf('2') != -1) {
+      if ((type == 1 || hytype == 0) && user.services.indexOf('2') != -1) {
         CommonService.platformPrompt("登记信息单接单会员身份必须是上门回收者", 'close');
         return;
       }
@@ -1053,7 +1053,7 @@ angular.module('starter.controllers', [])
   .controller('OrderDetailsCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, OrderService) {
     var user = JSON.parse(localStorage.getItem("user"));//用户信息
     $scope.type = $stateParams.type;//1.待接单 2 待处理和所有订单
-    $rootScope.orderType = $rootScope.orderType||2; //orderType类型 0.是我的回收订单 1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
+    $rootScope.orderType = $rootScope.orderType || 2; //orderType类型 0.是我的回收订单 1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
 
     if ($scope.type == 1) {
       OrderService.getDengJiDetail({djno: $stateParams.no}).success(function (data) {
@@ -1351,7 +1351,9 @@ angular.module('starter.controllers', [])
         localStorage.setItem("user", JSON.stringify(data.data));
         var services = data.data.services;
         //用户会员类型  0 无 1信息提供者  2回收者
-        localStorage.setItem("usertype", services.length == 0 ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
+        var usertype = services.length == 0 ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2;
+        localStorage.setItem("usertype", usertype);
+        $scope.usertype = usertype;
       } else {
         CommonService.platformPrompt(data.message, 'close');
       }
@@ -1479,13 +1481,13 @@ angular.module('starter.controllers', [])
 
   //地址详细列表
   .controller('MyAddressCtrl', function ($scope, $state, $rootScope, $ionicHistory, CommonService, AddressService, AccountService) {
-/*    if ($rootScope.addrlistFirst) {
-      $scope.selectAddress = function (item) {
-        $rootScope.addrlistFirst = []
-        $rootScope.addrlistFirst.push(item);
-        $ionicHistory.goBack();
-      }
-    }*/
+    /*    if ($rootScope.addrlistFirst) {
+     $scope.selectAddress = function (item) {
+     $rootScope.addrlistFirst = []
+     $rootScope.addrlistFirst.push(item);
+     $ionicHistory.goBack();
+     }
+     }*/
     $scope.addrlist = [];
 
     $scope.getAddrlist = function () {
@@ -1500,7 +1502,7 @@ angular.module('starter.controllers', [])
         if (data.data == null || data.data.length == 0) {
           $scope.isNotData = true;
           $scope.addrlist = [];
-         /* $rootScope.addrlistFirst = [];*///无交易地址的时候清除数据
+          /* $rootScope.addrlistFirst = [];*///无交易地址的时候清除数据
           return;
         }
         $scope.addrlist = data.data;

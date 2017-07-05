@@ -19,6 +19,14 @@
   color: #00ACFF;
 }
 
+.account .money button {
+  display: inline-block;
+  float: right;
+  margin-left: 1.5rem;
+  min-height: 23px;
+  line-height: 23px;
+}
+
 .account .order {
   border-bottom: 1px solid rgba(221, 221, 221, 0.5) !important;
 }
@@ -108,7 +116,7 @@
 
 }
 
-#organizingdata .item-checkbox, #information .item-checkbox, #register .services .item-checkbox,#evaluate .item-checkbox {
+#organizingdata .item-checkbox, #information .item-checkbox, #register .services .item-checkbox, #evaluate .item-checkbox {
   width: 32%;
   display: inline-block;
   margin: 0.1rem;
@@ -118,15 +126,15 @@
   background-color: #ffffff !important;
 }
 
-#organizingdata .checkbox-icon, #information .checkbox-icon, #register .services .checkbox-icon,#evaluate .checkbox-icon {
+#organizingdata .checkbox-icon, #information .checkbox-icon, #register .services .checkbox-icon, #evaluate .checkbox-icon {
   width: 20px;
   height: 20px;
 }
 
-#organizingdata .checkbox-icon:after, #information .checkbox-icon:after, #register .services .checkbox-icon:after,#evaluate .checkbox-icon:after {
+#organizingdata .checkbox-icon:after, #information .checkbox-icon:after, #register .services .checkbox-icon:after, #evaluate .checkbox-icon:after {
   width: 12px;
 }
 
-.item-checkbox .item-content{
-  padding-right: 0!important;
+.item-checkbox .item-content {
+  padding-right: 0 !important;
 }
