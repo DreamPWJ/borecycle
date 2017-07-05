@@ -9,7 +9,7 @@ angular.module('starter.controllers', [])
   //Tabs Ctrl
   .controller('TabsCtrl', function ($scope) {
     $scope.isLogin = localStorage.getItem("userid") ? true : false;//是否登录
-    $scope.usertype = localStorage.getItem("usertype")||0; //用户会员类型  0 无 1信息提供者  2回收者
+    $scope.usertype = localStorage.getItem("usertype") || 0; //用户会员类型  0 无 1信息提供者  2回收者
     //$on用于事件 接收子级数据
     $scope.$on("usertype", function (event, data) {
       localStorage.setItem("usertype", data.usertype);
@@ -783,9 +783,9 @@ angular.module('starter.controllers', [])
     $scope.jieDan = function (djno, userid, type, hytype) {
       event.preventDefault();
       /*  如果会员是1（信息提供者）,不能接单
-       如果会员是2（上门回收者）,只能接登记信息单
-       如果会员是3（货场）,只能接登记货源单
-       如果会员是4（二手商家）,只能接登记货源单
+       如果会员是2（上门回收者）,只能接登记信息单 加条件type=1或者HYType=0
+       如果会员是3（货场）,只能接登记货源单 加条件type=2且HYType=1
+       如果会员是4（二手商家）,只能接登记货源单 加条件type=2且HYType=2
        会员角色你还要判断他有没有申请通过  0 审核不通过 1 未审核 2 审核通过*/
 
       if (!user.userext || user.userext.autit != 2) {
@@ -793,21 +793,22 @@ angular.module('starter.controllers', [])
         return;
       }
       if (user.services.indexOf('1') != -1) {
-        CommonService.platformPrompt("信息供应者用户不能接单", 'close');
+        CommonService.platformPrompt("信息供应者用户不能接单,申请成为回收商", 'close');
         return;
       }
-      if ((type == 1 || hytype == 0) && user.services.indexOf('2') != -1) {
+      if ((type == 1 || hytype == 0) && user.services.indexOf('2') == -1) {
         CommonService.platformPrompt("登记信息单接单会员身份必须是上门回收者", 'close');
         return;
       }
-      if (type == 2 && hytype == 1 && user.services.indexOf('3') != -1) {
+      if (type == 2 && hytype == 1 && user.services.indexOf('3') == -1) {
         CommonService.platformPrompt("登记货源单废品接单会员身份必须是货场", 'close');
         return;
       }
-      if (type == 2 && hytype == 2 && user.services.indexOf('4') != -1) {
+      if (type == 2 && hytype == 2 && user.services.indexOf('4') == -1) {
         CommonService.platformPrompt("登记货源单二手接单会员身份必须是二手商家", 'close');
         return;
       }
+      return;
       //添加接单收货/货源归集(添加回收时明细不能为空，接单时明细为空)
       $scope.jiedandata = {
         orno: "",//接单收货单号(回收时不能为空)
@@ -1710,6 +1711,10 @@ angular.module('starter.controllers', [])
 
     //获取验证码
     $scope.getVerifyCode = function () {
+      if (!$scope.paraclass) {
+        CommonService.platformPrompt("邮箱格式输入错误或空", 'close');
+        return;
+      }
       CommonService.getVerifyCode($scope, $scope.email.email);
     }
 
@@ -1725,6 +1730,7 @@ angular.module('starter.controllers', [])
       }
 
       AccountService.authenticateEmail($scope.params).success(function (data) {
+        console.log(data);
         if (data.code == 1001) {
           CommonService.platformPrompt('绑定邮箱成功', 'accountsecurity');
         } else {
@@ -2223,39 +2229,41 @@ angular.module('starter.controllers', [])
 
 
   })
+
   //我的钱包
-  .controller('WalletCtrl',function ($scope, $rootScope,CommonService,MyWalletService) {
-    $scope.totalamount=0.00;//总金额
-    $scope.kyamount=0.00;//可用金额
-    $scope.djamount=0.00;//冻结金额
+  .controller('WalletCtrl', function ($scope, $rootScope, CommonService, MyWalletService) {
+    $scope.totalamount = 0.00;//总金额
+    $scope.kyamount = 0.00;//可用金额
+    $scope.djamount = 0.00;//冻结金额
     //是否登录
     if (!CommonService.isLogin(true)) {
       return;
     }
     //总金额
     MyWalletService.get(localStorage.getItem("userid")).success(function (data) {
-      $scope.totalamount=data.data.totalamount;
-      $scope.kyamount=data.data.cashamount;//可用金额
-      $scope.djamount=data.data.freezeamount;//冻结金额
+      $scope.totalamount = data.data.totalamount;
+      $scope.kyamount = data.data.cashamount;//可用金额
+      $scope.djamount = data.data.freezeamount;//冻结金额
     });
     //银行卡数
-    $scope.total =0;
+    $scope.total = 0;
     MyWalletService.bankget_count(localStorage.getItem("userid")).success(function (data) {
       $scope.total = data.data;
     });
   })
+
   //提现
-  .controller('CashCtrl', function ($scope, $rootScope, $state,$ionicHistory, MyWalletService,CommonService ) {
+  .controller('CashCtrl', function ($scope, $rootScope, $state, $ionicHistory, MyWalletService, CommonService) {
     //是否登录
     if (!CommonService.isLogin()) {
       return;
     }
-    $scope.subaccount={};
+    $scope.subaccount = {};
     MyWalletService.get(localStorage.getItem("userid")).success(function (data) {
-      $scope.subaccount=data.data;
+      $scope.subaccount = data.data;
     });
     $scope.verbank = false;
-    $scope.myBk={};
+    $scope.myBk = {};
     $scope.cashinfo = {};
     //银行列表
     $scope.params = {
@@ -2264,32 +2272,31 @@ angular.module('starter.controllers', [])
       userid: localStorage.getItem("userid")//用户id
     }
     MyWalletService.getbanklist($scope.params).success(function (data) {
-      if(data.data.total_count!=0){
+      if (data.data.total_count != 0) {
         $scope.BankList = data.data.data_list;
       }
       else {
         $scope.verbank = true;
       }
     });
-    $scope.changeBk=function (gt) {
-      angular.forEach($scope.BankList,function (item) {
-        if(gt==item.id){
-          $scope.myBk=item;
+    $scope.changeBk = function (gt) {
+      angular.forEach($scope.BankList, function (item) {
+        if (gt == item.id) {
+          $scope.myBk = item;
         }
       });
-      if(gt!=null)
-      {
+      if (gt != null) {
         $scope.verbank = true;
       }
     }
     $scope.addcash = function () {
-      if ($scope.BankList ==null) {
+      if ($scope.BankList == null) {
         CommonService.platformPrompt('请先添加一个银行账户', 'addbankaccount')
         $state.go('addcard');
         return;
       }
       $scope.datas = {
-        userbankid:$scope.myBk.id,
+        userbankid: $scope.myBk.id,
         userid: localStorage.getItem("userid"),
         amount: $scope.cashinfo.amount,
       };
@@ -2302,8 +2309,9 @@ angular.module('starter.controllers', [])
       })
     }
   })
+
   //交易记录
-  .controller('TransactionlistCtrl', function ($scope, $rootScope, $state,$ionicScrollDelegate,$ionicHistory,$ionicPopup, CommonService, AccountService,MyWalletService) {
+  .controller('TransactionlistCtrl', function ($scope, $rootScope, $state, $ionicScrollDelegate, $ionicHistory, $ionicPopup, CommonService, AccountService, MyWalletService) {
     //是否登录
     if (!CommonService.isLogin()) {
       return;
@@ -2319,7 +2327,7 @@ angular.module('starter.controllers', [])
       $scope.page++;
       $scope.params = {
         page: $scope.page,//页码
-        size:10,//条数
+        size: 10,//条数
         userid: localStorage.getItem("userid"),//用户id
       }
       MyWalletService.get_tradelist($scope.params).success(function (data) {
@@ -2333,7 +2341,7 @@ angular.module('starter.controllers', [])
         angular.forEach(data.data.data_list, function (item) {
           $scope.tradelist.push(item);
           //流水类型
-          item.channel= $scope.channelFmt(item.channel);
+          item.channel = $scope.channelFmt(item.channel);
         })
         $scope.total = data.data.page_count;
         $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
@@ -2343,35 +2351,36 @@ angular.module('starter.controllers', [])
       })
     }
     $scope.gettradelist(0);//产品加载刷新
-    $scope.channelFmt=function (channel) {
-      if(channel=="101")
+    $scope.channelFmt = function (channel) {
+      if (channel == "101")
         return "<span class=\"font_green\">充值</span>";
-      else if(channel=="102")
+      else if (channel == "102")
         return "<span class=\"font_097\">提现</span>";
-      else if(channel=="201")
+      else if (channel == "201")
         return "<span>支付</span>&nbsp;<span>供货计划单</span><span class=\"font_097\">货款</span>";
-      else if(channel=="202")
+      else if (channel == "202")
         return "<span>收</span>&nbsp;<span>供货计划单</span><span class=\"font_green\">货款</span>";
-      else if(channel=="203")
+      else if (channel == "203")
         return "<span>支付</span>&nbsp;<span>供货单</span><span class=\"font_097\">货款</span>";
-      else if(channel=="204")
+      else if (channel == "204")
         return "<span>收</span>&nbsp;<span>供货单</span><span class=\"font_green\">货款</span>";
-      else if(channel=="205")
+      else if (channel == "205")
         return "<span>支付</span>&nbsp;<span>卖货单</span><span class=\"font_097\">货款</span>";
-      else if(channel=="206")
+      else if (channel == "206")
         return "<span>收</span>&nbsp;<span>卖货单</span><span class=\"font_green\">货款</span>";
-      else if(channel=="207")
+      else if (channel == "207")
         return "<span>支付</span>&nbsp;<span>买货单</span><span class=\"font_097\">定金</span>";
-      else if(channel=="208")
+      else if (channel == "208")
         return "<span>收</span&nbsp;><span>买货单</span><span class=\"font_green\">定金</span>";
-      else if(channel=="301")
+      else if (channel == "301")
         return "<span>收</span>&nbsp;<span>预付款</span>";
       else
         return "<span>还</span>&nbsp;<span>预付款</span>";
     }
   })
-//我的银行卡
-  .controller('BankcardCtrl',function ($scope, $rootScope, $state, $ionicHistory, CommonService, AccountService,MyWalletService) {
+
+  //我的银行卡
+  .controller('BankcardCtrl', function ($scope, $rootScope, $state, $ionicHistory, CommonService, AccountService, MyWalletService) {
     $scope.userbanklist = [];
     $scope.page = 0;
     $scope.total = 1;
@@ -2387,8 +2396,9 @@ angular.module('starter.controllers', [])
         userid: localStorage.getItem("userid")//用户id
       }
       MyWalletService.getbanklist($scope.params).success(function (data) {
-        $scope.isNotData = false;console.log(data);
-        if (data.data.total_count==0) {
+        $scope.isNotData = false;
+        console.log(data);
+        if (data.data.total_count == 0) {
           $scope.isNotData = true;
           $rootScope.userbankliststatus = [];//无银行账号的时候清除数据
           return;
@@ -2403,13 +2413,13 @@ angular.module('starter.controllers', [])
       })
     }
     $scope.getUserBanklist(0);//收款账号加载刷新
-    $scope.setDefault=function (item) {
+    $scope.setDefault = function (item) {
       MyWalletService.setDefaultBC(item.id).success(function (data) {
-        if(data.code=1001){
-          item.isdefault=1;
+        if (data.code = 1001) {
+          item.isdefault = 1;
           CommonService.toolTip("恭喜您，操作成功！", "");
           return;
-        }else{
+        } else {
           CommonService.toolTip("操作失败，请重试！", "");
           return;
         }
@@ -2419,12 +2429,13 @@ angular.module('starter.controllers', [])
       });
     }
   })
+
   //添加银行卡
-  .controller('AddcardCtrl',function ($scope, $rootScope, $state,$ionicHistory,CommonService,$location,MyWalletService,AccountService) {
+  .controller('AddcardCtrl', function ($scope, $rootScope, $state, $ionicHistory, CommonService, $location, MyWalletService, AccountService) {
 
     //增加收款银行账号信息
     $scope.bankinfo = {};
-    $scope.bankinfo.isdefault=false;
+    $scope.bankinfo.isdefault = false;
     $scope.buttonText = '添加';
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable
@@ -2432,17 +2443,17 @@ angular.module('starter.controllers', [])
       AccountService.checkMobilePhone($scope, mobilephone);
       $state.go("bankcard");
     }
-    $scope.setDefault=function () {
-      $scope.bankinfo.isdefault=($scope.bankinfo.isdefault?false:true);
+    $scope.setDefault = function () {
+      $scope.bankinfo.isdefault = ($scope.bankinfo.isdefault ? false : true);
     }
-    $scope.sendCode=function () {
+    $scope.sendCode = function () {
       event.preventDefault();
       //按钮可用
       if ($scope.paraclass) {
         //取实名信息
         MyWalletService.get_identity(localStorage.getItem("userid")).success(function (data) {
           //console.log(data);
-          if(data.data!=null) {
+          if (data.data != null) {
             $scope.personsign = {
               "cardno": $scope.bankinfo.accountno,
               "idno": data.data.idno,
@@ -2461,7 +2472,7 @@ angular.module('starter.controllers', [])
               }
             })
           }
-          else{
+          else {
             CommonService.toolTip("为了您的账户安全，实名认证之后再绑定银行卡", "");
             return;
           }
@@ -2484,17 +2495,17 @@ angular.module('starter.controllers', [])
     //   $scope.bankinfo.isdefault = true;
     // }
     //根据输入的银行卡号获取银行信息
-    $scope.getBankinfo=function () {
-      if($scope.bankinfo.accountno&&$scope.bankinfo.accountno.length>15){
+    $scope.getBankinfo = function () {
+      if ($scope.bankinfo.accountno && $scope.bankinfo.accountno.length > 15) {
         MyWalletService.getBankInfoByCardNo($scope.bankinfo.accountno).success(function (data) {
-          if(data.code==1001&&data.data.issname){
-            $scope.bankinfo.bankname=data.data.issname;
-          }else {
-            $scope.bankinfo.bankname="";
+          if (data.code == 1001 && data.data.issname) {
+            $scope.bankinfo.bankname = data.data.issname;
+          } else {
+            $scope.bankinfo.bankname = "";
           }
         });
-      }else {
-        $scope.bankinfo.bankname="";
+      } else {
+        $scope.bankinfo.bankname = "";
       }
 
     }
@@ -2508,7 +2519,7 @@ angular.module('starter.controllers', [])
         accountname: $scope.bankinfo.accountname,	//开户人名称
         isdefault: $scope.bankinfo.isdefault ? 1 : 0, 	//是否默认0-	否（默认值）1-	是
         serviceid: $scope.bankinfo.serviceid,
-        code:$scope.bankinfo.code
+        code: $scope.bankinfo.code
       }
       MyWalletService.addbank($scope.datas).success(function (data) {
         if (data.code == 1001) {
@@ -2521,4 +2532,30 @@ angular.module('starter.controllers', [])
       })
     }
   })
-;
+
+  //充值
+  .controller('RechargeCtrl', function ($scope, CommonService, PayService) {
+
+    $scope.confirmPayment = function () { //充值
+      if (ionic.Platform.isWebView()) {
+        $scope.datas = {
+          userid: localStorage.getItem("userid"),//用户userid
+          name: JSON.parse(localStorage.getItem("user")).username,//用户名
+          price: 0.01 //支付价格
+        }
+        console.log($scope.datas);
+        PayService.aliPayRecharge($scope.datas).success(function (data) {
+          console.log(data);
+          if (data.code == 1001) {
+            PayService.aliPay(data.data);
+          } else {
+            CommonService.platformPrompt(data.message, 'close');
+          }
+
+        })
+      } else {
+        CommonService.platformPrompt("充值功能请使用APP客户端操作", 'close');
+      }
+
+    }
+  });

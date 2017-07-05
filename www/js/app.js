@@ -370,6 +370,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //绑定手机
       .state('bindingmobile', {
         url: '/bindingmobile/:status',
+        cache: false,
         templateUrl: 'templates/account/bindingmobile.html',
         controller: 'BindingMobileCtrl'
       })
@@ -377,6 +378,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //绑定邮箱
       .state('bindingemail', {
         url: '/bindingemail/:status',
+        cache: false,
         templateUrl: 'templates/account/bindingemail.html',
         controller: 'BindingEmailCtrl'
       })
@@ -462,6 +464,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/dengji/evaluate.html',
         controller: 'EvaluateCtrl'
       })
+
       //我的钱包
       .state('wallet', {
         url: '/wallet',
@@ -469,6 +472,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/wallet/index.html',
         controller: 'WalletCtrl'
       })
+
       //提现
       .state('cash', {
         url: '/cash',
@@ -490,6 +494,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/wallet/bankcard.html',
         controller: 'BankcardCtrl'
       })
+
       //添加银行卡
       .state('addcard', {
         url: '/addcard',
@@ -497,8 +502,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/wallet/addbankcard.html',
         controller: 'AddcardCtrl'
       })
-;
+
+      //充值
+      .state('recharge', {
+        url: '/recharge',
+        cache: false,
+        templateUrl: 'templates/wallet/recharge.html',
+        controller: 'RechargeCtrl'
+      })
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/tab/main');
+     $urlRouterProvider.otherwise('/tab/main');
 
   });

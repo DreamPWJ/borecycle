@@ -726,9 +726,9 @@ angular.module('starter.services', [])
       torecycle: function (user, orno, djno, type, userid, amount, name, productname, hytype) {//去收货参数封装
         event.preventDefault();
         /*  如果会员是1（信息提供者）,不能接单
-         如果会员是2（上门回收者）,只能接登记信息单
-         如果会员是3（货场）,只能接登记货源单
-         如果会员是4（二手商家）,只能接登记货源单
+         如果会员是2（上门回收者）,只能接登记信息单 type=1或者HYType=0
+         如果会员是3（货场）,只能接登记货源单 type=2且HYType=1
+         如果会员是4（二手商家）,只能接登记货源单 加条件type=2且HYType=2
          会员角色你还要判断他有没有申请通过  0 审核不通过 1 未审核 2 审核通过*/
 
 
@@ -737,18 +737,18 @@ angular.module('starter.services', [])
           return;
         }
         if (user.services.indexOf('1') != -1) {
-          CommonService.platformPrompt("信息供应者用户不能去收货", 'close');
+          CommonService.platformPrompt("信息供应者用户不能去收货,申请成为回收商", 'close');
           return;
         }
-        if ((type == 1 || hytype == 0) && user.services.indexOf('2') != -1) {
+        if ((type == 1 || hytype == 0) && user.services.indexOf('2') == -1) {
           CommonService.platformPrompt("登记信息单去收货会员身份必须是上门回收者", 'close');
           return;
         }
-        if (type == 2 && hytype == 1 && user.services.indexOf('3') != -1) {
+        if (type == 2 && hytype == 1 && user.services.indexOf('3') == -1) {
           CommonService.platformPrompt("登记货源单废品去收货会员身份必须是货场", 'close');
           return;
         }
-        if (type == 2 && hytype == 2 && user.services.indexOf('4') != -1) {
+        if (type == 2 && hytype == 2 && user.services.indexOf('4') == -1) {
           CommonService.platformPrompt("登记货源单二手去收货会员身份必须是二手商家", 'close');
           return;
         }
@@ -2310,13 +2310,13 @@ angular.module('starter.services', [])
          * docType=1) 建议商户依赖异步通知
          */
       },
-      orderAlipayPay: function (params) { //商品订单支付宝支付
+      aliPayRecharge: function (datas) { //会员支付宝充值
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise
         promise = $http({
           method: 'POST',
-          url: BoRecycle.api + "/Pay/orderAlipayPay",
-          params: params
+          url: BoRecycle.api + "/api/aop/add",
+          data: datas
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -2326,7 +2326,146 @@ angular.module('starter.services', [])
       }
     }
   })
-  .factory('MyInterceptor', function ($injector) {//设置请求头信息的地方是$httpProvider.interceptors。也就是为请求或响应注册一个拦截器。使用这种方式首先需要定义一个服务
+  .service('MyWalletService', function ($q, $http, BoRecycle) {//获取预收款订单列表   //账户管理
+    return {
+      get: function (userid) { //个人账户信息
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/subaccount/get/" + userid,
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      cash: function (datas) { //提现
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'POST',
+          url: BoRecycle.api + "/api/subaccount/cash",
+          data: datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      get_tradelist: function (params) { //获取资金交易记录
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/subaccount/get_tradelist/" + params.userid,
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      get_identity: function (userid) { // 获取用户个人实名认证信息
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/user/get_identity/" + userid,
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getbanklist: function (params) { // 获取用户个人实名认证信息
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/bank/get_list/" + params.userid,
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      bankget_count: function (userid) { // 获取用户已添加的银行卡总数
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/bank/get_count/" + userid,
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      authenticate_sign: function (datas) { //发送实名认证码，返回实名认证服务id,提交实名认证时需填写
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'POST',
+          url: BoRecycle.api + "/api/user/authenticate_sign",
+          data: datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      addbank: function (datas) { //发送实名认证码，返回实名认证服务id,提交实名认证时需填写
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'POST',
+          url: BoRecycle.api + "/api/bank/add",
+          data: datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getBankInfoByCardNo: function (cardNo) {
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/bank/get_cardinfo/" + cardNo,
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      setDefaultBC: function (bid) {
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/bank/setdefault/" + bid,
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      }
+    }
+  })
+.factory('MyInterceptor', function ($injector) {//设置请求头信息的地方是$httpProvider.interceptors。也就是为请求或响应注册一个拦截器。使用这种方式首先需要定义一个服务
 
     return {
       request: function (config) {//通过实现 request 方法拦截请求: 该方法会在 $http 发送请求道后台之前执行
@@ -2698,144 +2837,3 @@ angular.module('starter.services', [])
 
     }
   })
-  //账户管理
-  .service('MyWalletService', function ($q, $http, BoRecycle) {//获取预收款订单列表
-    return {
-      get: function (userid) { //个人账户信息
-        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-        var promise = deferred.promise;
-        promise = $http({
-          method: 'GET',
-          url: BoRecycle.api + "/api/subaccount/get/" + userid,
-        }).success(function (data) {
-          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
-        }).error(function (err) {
-          deferred.reject(err);// 声明执行失败，即服务器返回错误
-        });
-        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
-      },
-      cash: function (datas) { //提现
-        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-        var promise = deferred.promise;
-        promise = $http({
-          method: 'POST',
-          url: BoRecycle.api + "/api/subaccount/cash",
-          data: datas
-        }).success(function (data) {
-          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
-        }).error(function (err) {
-          deferred.reject(err);// 声明执行失败，即服务器返回错误
-        });
-        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
-      },
-      get_tradelist: function (params) { //获取资金交易记录
-        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-        var promise = deferred.promise;
-        promise = $http({
-          method: 'GET',
-          url: BoRecycle.api + "/api/subaccount/get_tradelist/" + params.userid,
-          params: params
-        }).success(function (data) {
-          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
-        }).error(function (err) {
-          deferred.reject(err);// 声明执行失败，即服务器返回错误
-        });
-        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
-      },
-      get_identity: function (userid) { // 获取用户个人实名认证信息
-        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-        var promise = deferred.promise;
-        promise = $http({
-          method: 'GET',
-          url: BoRecycle.api + "/api/user/get_identity/" + userid,
-        }).success(function (data) {
-          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
-        }).error(function (err) {
-          deferred.reject(err);// 声明执行失败，即服务器返回错误
-        });
-        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
-      },
-      getbanklist: function (params) { // 获取用户个人实名认证信息
-        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-        var promise = deferred.promise;
-        promise = $http({
-          method: 'GET',
-          url: BoRecycle.api + "/api/bank/get_list/" + params.userid,
-          params: params
-        }).success(function (data) {
-          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
-        }).error(function (err) {
-          deferred.reject(err);// 声明执行失败，即服务器返回错误
-        });
-        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
-      },
-      bankget_count: function (userid) { // 获取用户已添加的银行卡总数
-        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-        var promise = deferred.promise;
-        promise = $http({
-          method: 'GET',
-          url: BoRecycle.api + "/api/bank/get_count/" + userid,
-        }).success(function (data) {
-          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
-        }).error(function (err) {
-          deferred.reject(err);// 声明执行失败，即服务器返回错误
-        });
-        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
-      },
-      authenticate_sign: function (datas) { //发送实名认证码，返回实名认证服务id,提交实名认证时需填写
-        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-        var promise = deferred.promise;
-        promise = $http({
-          method: 'POST',
-          url: BoRecycle.api + "/api/user/authenticate_sign",
-          data: datas
-        }).success(function (data) {
-          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
-        }).error(function (err) {
-          deferred.reject(err);// 声明执行失败，即服务器返回错误
-        });
-        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
-      },
-      addbank: function (datas) { //发送实名认证码，返回实名认证服务id,提交实名认证时需填写
-        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-        var promise = deferred.promise;
-        promise = $http({
-          method: 'POST',
-          url: BoRecycle.api + "/api/bank/add",
-          data: datas
-        }).success(function (data) {
-          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
-        }).error(function (err) {
-          deferred.reject(err);// 声明执行失败，即服务器返回错误
-        });
-        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
-      },
-      getBankInfoByCardNo: function (cardNo) {
-        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-        var promise = deferred.promise;
-        promise = $http({
-          method: 'GET',
-          url: BoRecycle.api + "/api/bank/get_cardinfo/" + cardNo,
-        }).success(function (data) {
-          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
-        }).error(function (err) {
-          deferred.reject(err);// 声明执行失败，即服务器返回错误
-        });
-        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
-      },
-      setDefaultBC: function (bid) {
-        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-        var promise = deferred.promise;
-        promise = $http({
-          method: 'GET',
-          url: BoRecycle.api + "/api/bank/setdefault/" + bid,
-        }).success(function (data) {
-          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
-        }).error(function (err) {
-          deferred.reject(err);// 声明执行失败，即服务器返回错误
-        });
-        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
-      }
-    }
-  })
-;
