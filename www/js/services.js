@@ -381,8 +381,8 @@ angular.module('starter.services', [])
       },
       getStateName: function () {    //得到上一个路由名称方法
         var stateName = "";
-        var backView=$ionicHistory.backView();
-        if (backView && backView.stateName != "tab.account" && backView.stateName != "setting" && backView.stateName != "organizingdata" && backView.stateName != "findpassword" && backView.stateName != "register"&& backView.stateName != "order") {
+        var backView = $ionicHistory.backView();
+        if (backView && backView.stateName != "tab.account" && backView.stateName != "setting" && backView.stateName != "organizingdata" && backView.stateName != "findpassword" && backView.stateName != "register" && backView.stateName != "order" && backView.stateName != "help") {
           stateName = backView.stateName;
         }
         if (stateName) {
@@ -736,7 +736,7 @@ angular.module('starter.services', [])
           CommonService.platformPrompt(user.userext ? "会员类型审核通过后才能操作" : "用户设置里面完善资料后再操作", user.userext ? 'close' : 'organizingdata');
           return;
         }
-        if ( user.services.indexOf('1') != -1) {
+        if (user.services.indexOf('1') != -1) {
           CommonService.platformPrompt("信息供应者用户不能去收货", 'close');
           return;
         }
@@ -2699,14 +2699,14 @@ angular.module('starter.services', [])
     }
   })
   //账户管理
-  .service('MyWalletService', function ($q, $http, BoRecycle,EncodingService) {//获取预收款订单列表
+  .service('MyWalletService', function ($q, $http, BoRecycle) {//获取预收款订单列表
     return {
       get: function (userid) { //个人账户信息
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
-          url: BoRecycle.api + "/api/subaccount/get/"+ userid ,
+          url: BoRecycle.api + "/api/subaccount/get/" + userid,
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -2747,7 +2747,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
-          url: BoRecycle.api + "/api/user/get_identity/"+ userid ,
+          url: BoRecycle.api + "/api/user/get_identity/" + userid,
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -2760,7 +2760,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
-          url: BoRecycle.api + "/api/bank/get_list/"+ params.userid ,
+          url: BoRecycle.api + "/api/bank/get_list/" + params.userid,
           params: params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
@@ -2774,7 +2774,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
-          url: BoRecycle.api + "/api/bank/get_count/"+ userid ,
+          url: BoRecycle.api + "/api/bank/get_count/" + userid,
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -2810,12 +2810,12 @@ angular.module('starter.services', [])
         });
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       },
-      getBankInfoByCardNo:function (cardNo) {
+      getBankInfoByCardNo: function (cardNo) {
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
-          url: BoRecycle.api + "/api/bank/get_cardinfo/"+cardNo ,
+          url: BoRecycle.api + "/api/bank/get_cardinfo/" + cardNo,
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -2823,12 +2823,12 @@ angular.module('starter.services', [])
         });
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       },
-      setDefaultBC:function (bid) {
+      setDefaultBC: function (bid) {
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
-          url: BoRecycle.api + "/api/bank/setdefault/"+bid ,
+          url: BoRecycle.api + "/api/bank/setdefault/" + bid,
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {

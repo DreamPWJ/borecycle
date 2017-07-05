@@ -16,21 +16,44 @@
         <p>{{userdata.mobile}}</p>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
-      <a nav-direction=forward ng-href="#/order/0" class="item item-icon-left item-icon-right order ">
-        <i class="icon iconfont icon-form " style="color: #4cd964;"></i>
-        <h2>我的回收单</h2>
-        <!--  <i class="icon ion-ios-arrow-right"></i> -->
-      </a>
-      <div class="row row-no-padding light-bg  row-center text-center order-item">
-        <a nav-direction=forward ng-href="#/order/0" class="item item-icon-right col ">
-          <p>待处理订单</p>
-          <h2>{{orderSum.dclnum}}个</h2>
-          <i class="icon iconfont icon-time " style="color: #00ACFF"></i></span>
+      <div ng-if="usertype==1">
+        <a nav-direction=forward ng-href="#/wallet" class="item item-icon-left   order money">
+          <i class="icon iconfont icon-moneybag " style="color: #4cd964;"></i>
+          <h2>我的钱包
+            <button class="button button-positive" ui-sref="cash">提现</button>
+            <button class="button button-energized">充值</button>
+          </h2>
         </a>
-        <a nav-direction=forward ng-href="#/orderwarning" class="item  col expiring item-borderless">
-          <p>订单预警</p>
-          <h2>{{orderSum.yjnum}}个</h2>
+        <div class="row row-no-padding light-bg  row-center text-center order-item">
+          <a nav-direction=forward ng-href="#/wallet" class="item item-icon-right col ">
+            <p>账号余额</p>
+            <h2>{{168 | currency :'￥'}}</h2>
+            <i class="icon iconfont icon-balance " style="color: #f26604"></i></span>
+          </a>
+          <a nav-direction=forward ng-href="#/bankcard" class="item  col item-icon-right item-borderless">
+            <p>银行卡</p>
+            <h2>2张</h2>
+            <i class="icon iconfont icon-yinxingqia " style="color: #00ACFF"></i></span>
+          </a>
+        </div>
+      </div>
+
+      <div ng-if="usertype==2">
+        <a nav-direction=forward ng-href="#/order/0" class="item item-icon-left  order ">
+          <i class="icon iconfont icon-form " style="color: #4cd964;"></i>
+          <h2>我的回收单</h2>
         </a>
+        <div class="row row-no-padding light-bg  row-center text-center order-item">
+          <a nav-direction=forward ng-href="#/order/0" class="item item-icon-right col ">
+            <p>待处理订单</p>
+            <h2>{{orderSum.dclnum}}个</h2>
+            <i class="icon iconfont icon-time " style="color: #00ACFF"></i></span>
+          </a>
+          <a nav-direction=forward ng-href="#/orderwarning" class="item  col expiring item-borderless">
+            <p>订单预警</p>
+            <h2>{{orderSum.yjnum}}个</h2>
+          </a>
+        </div>
       </div>
     </div>
     <div class="list">
@@ -39,7 +62,7 @@
         <h2>我的订单</h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
-      <a nav-direction=forward ng-href="#/wallet" class="item item-icon-left item-icon-right ">
+      <a ng-if="usertype==2" nav-direction=forward ng-href="#/wallet" class="item item-icon-left item-icon-right ">
         <i class="icon iconfont icon-moneybag"></i>
         <h2>我的钱包 <span class="item-note">余额 ：￥0.00</span></h2>
         <i class="icon ion-ios-arrow-right"></i>
@@ -55,11 +78,11 @@
         <h2>我的地址</h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
-<!--      <a nav-direction=forward ng-href="" class="item item-icon-left item-icon-right ">
-        <i class="icon iconfont icon-zizhanghao"></i>
-        <h2>子账号</h2>
-        <i class="icon ion-ios-arrow-right"></i>
-      </a>-->
+      <!--      <a nav-direction=forward ng-href="" class="item item-icon-left item-icon-right ">
+              <i class="icon iconfont icon-zizhanghao"></i>
+              <h2>子账号</h2>
+              <i class="icon ion-ios-arrow-right"></i>
+            </a>-->
 
     </div>
     <div class="list">
