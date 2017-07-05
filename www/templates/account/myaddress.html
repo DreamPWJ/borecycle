@@ -16,7 +16,7 @@
     </div>
     <ion-list>
 
-      <div ng-click="selectAddress(item)" ng-repeat="item in addrlist">
+      <div  ng-repeat="item in addrlist">
         <ion-item>
           <h2>联系人 :{{item.UserName}} <span ng-if="item.Status==1"
                                            class="right-1  balanced"> ● 默认</span></h2>
@@ -24,7 +24,7 @@
           <p class="text-wrap">地址 : {{item.AddrDetailForPCC}}</p>
 
 
-          <ion-option-button class="button-assertive" ng-click="deleteAddr(item.ID,item.Status)">删除</ion-option-button>
+          <ion-option-button class="button-assertive" ng-click="deleteAddr(item.ID)">删除</ion-option-button>
           <ion-option-button class="button-positive" ng-click="updateaddress(item)">编辑</ion-option-button>
           <ion-option-button class="button-balanced" ng-click="setDefaultAddr(item.ID)" ng-if="item.Status==0">设置默认</ion-option-button>
         </ion-item>

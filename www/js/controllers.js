@@ -810,6 +810,7 @@ angular.module('starter.controllers', [])
             no: data.data,
             type: 2
           })
+          $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
         } else {
           CommonService.platformPrompt("接单失败", "close");
         }
@@ -892,7 +893,7 @@ angular.module('starter.controllers', [])
         userid: localStorage.getItem("userid"),//用户userid
         Category: "",//货物品类 多个用逗号隔开(可为空)
         HYType: "",//货物类别 0.未区分 1废料 2二手(可为空)
-        State: $scope.tabIndex == 0 ? "0,1,2,3,4,5" : "",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
+        State: $scope.tabIndex == 0 ? "1,2,3,4,5" : "",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
         longt: "", //当前经度（获取距离）(可为空)
         lat: "",//当前纬度（获取距离）(可为空)
         expiry: ""//小时 取预警数据 订单预警数据（24小时截至马上过期的（expiry=3表示取3小时内）
@@ -1472,13 +1473,13 @@ angular.module('starter.controllers', [])
 
   //地址详细列表
   .controller('MyAddressCtrl', function ($scope, $state, $rootScope, $ionicHistory, CommonService, AddressService, AccountService) {
-    if ($rootScope.addrlistFirst) {
+/*    if ($rootScope.addrlistFirst) {
       $scope.selectAddress = function (item) {
         $rootScope.addrlistFirst = []
         $rootScope.addrlistFirst.push(item);
         $ionicHistory.goBack();
       }
-    }
+    }*/
     $scope.addrlist = [];
 
     $scope.getAddrlist = function () {
@@ -1492,7 +1493,8 @@ angular.module('starter.controllers', [])
         $scope.isNotData = false;
         if (data.data == null || data.data.length == 0) {
           $scope.isNotData = true;
-          $rootScope.addrlistFirst = [];//无交易地址的时候清除数据
+          $scope.addrlist = [];
+         /* $rootScope.addrlistFirst = [];*///无交易地址的时候清除数据
           return;
         }
         $scope.addrlist = data.data;
@@ -1516,7 +1518,7 @@ angular.module('starter.controllers', [])
     }
 
     //删除用户常用地址
-    $scope.deleteAddr = function (addrid, status) {
+    $scope.deleteAddr = function (addrid) {
       if (JSON.parse(localStorage.getItem("user")).grade == 5 && status == 1) {//当会员是供货商（=5）时，默认地址不能删除
         CommonService.platformPrompt('供货商会员不能删除默认地址', 'close');
         return;

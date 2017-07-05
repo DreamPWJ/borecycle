@@ -5,7 +5,7 @@
   <ion-nav-title>
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 评价</h1>
   </ion-nav-title>
-  <form name="evaluate">
+  <form name="evaluateForm">
     <ion-content overflow-scroll="false" id="evaluate" class="has-button-footer stable-bg" has-bouncing="true">
       <div class="list ">
         <div class="item">综合评价 <span class="padding-left  evaluate-star">
@@ -59,7 +59,7 @@
 
     </ion-content>
     <div class="padding light-bg bottom-0" keyboard-attach>
-      <a class="button button-positive  full-image" ng-disabled="!evaluate.$valid" ng-click="submitevalute()">提交评价</a>
+      <a class="button button-positive  full-image" ng-disabled="!evaluateForm.$valid" ng-click="submitevalute()">提交评价</a>
     </div>
   </form>
 </ion-view>

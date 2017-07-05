@@ -5,7 +5,7 @@
   <ion-nav-title>
     <h1 class="title"><img id="logo" src="img/logo.png" alt=""/> {{status==1||status==2?'修改':'绑定'}}电子邮箱</h1>
   </ion-nav-title>
-  <form name="bindingemail">
+  <form name="bindingemailForm">
     <ion-content overflow-scroll="false" class="stable-bg has-button-footer" has-bouncing="true">
       <p></p>
       <div class="list ">
@@ -22,7 +22,7 @@
       </div>
     </ion-content>
     <div class="padding light-bg  bottom-0" keyboard-attach>
-      <a ng-disabled="!bindingemail.$valid" class="button button-positive full-image " ng-click="sendEmail()">
+      <a ng-disabled="!bindingemailForm.$valid" class="button button-positive full-image " ng-click="sendEmail()">
         {{status==1||status==2?'修改':'确认'}}绑定</a>
     </div>
   </form>

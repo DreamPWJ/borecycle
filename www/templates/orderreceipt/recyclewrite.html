@@ -5,11 +5,11 @@
   <ion-nav-title>
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 回收数量以及报价</h1>
   </ion-nav-title>
-  <form name="recyclewrite">
+  <form name="recyclewriteForm">
     <ion-content overflow-scroll="false" id="recyclewrite" class="has-button-footer stable-bg" has-bouncing="true">
       <ion-list>
-        <div ng-repeat="item in productList" ng-if="item.checked" hide-show>
-          <div ng-repeat="items in item.details" ng-if="items.checked">
+        <div ng-repeat="item in productList" ng-if="item.checked" >
+          <div ng-repeat="items in item.details" ng-if="items.checked" hide-show>
             <ion-item class="item-icon-left item-icon-right " ng-click="toggle(0)">
               <i class="icon iconfont {{item.imgurl}}"></i>
               {{items.name}}
@@ -35,7 +35,7 @@
 
     </ion-content>
     <div class="padding light-bg bottom-0" keyboard-attach>
-      <a class="button button-positive  full-image" ng-disabled="!(recyclewrite.$valid&&verify)"
+      <a class="button button-positive  full-image" ng-disabled="!(recyclewriteForm.$valid&&verify)"
          ng-click="recycleWriteNext()">提交</a>
     </div>
   </form>

@@ -5,7 +5,7 @@
   <ion-nav-title>
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> {{status==1||status==2?'修改':''}}实名认证</h1>
   </ion-nav-title>
-  <form name="realname">
+  <form name="realnameForm">
     <ion-content overflow-scroll="false" class="stable-bg   has-button-footer" has-bouncing="true">
       <div class="list padding-top">
         <label class="item item-input ">
@@ -55,7 +55,7 @@
       </div>
     </ion-content>
     <div class="padding light-bg bottom-0" keyboard-attach>
-      <button ng-disabled="!(realname.$valid&&verify)" class="button button-positive full-image "
+      <button ng-disabled="!(realnameForm.$valid&&verify)" class="button button-positive full-image "
               ng-click="addCertificationName()">
         {{status==1||status==2?'修改':'确认'}}认证
       </button>

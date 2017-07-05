@@ -5,7 +5,7 @@
   <ion-nav-title>
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> {{buttonText}}地址</h1>
   </ion-nav-title>
-  <form name="addaddress">
+  <form name="addaddressForm">
     <ion-content overflow-scroll="false" class="has-button-footer stable-bg" has-bouncing="true">
 
       <div class="list list-borderless padding-top">
@@ -43,7 +43,7 @@
 
     </ion-content>
     <div class="padding light-bg bottom-0" keyboard-attach>
-      <button ng-disabled="!(addaddress.$valid&&verify&&addresspcd)" class="button button-positive full-image "
+      <button ng-disabled="!(addaddressForm.$valid&&verify&&addresspcd)" class="button button-positive full-image "
               ng-click="dealaddresssubmit()">
         {{buttonText}}
       </button>
