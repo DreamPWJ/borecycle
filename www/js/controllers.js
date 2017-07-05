@@ -8,8 +8,12 @@ angular.module('starter.controllers', [])
 
   //Tabs Ctrl
   .controller('TabsCtrl', function ($scope) {
+    //$on用于事件 接收子级数据
+    $scope.$on("usertype", function (event, data) {
+      localStorage.setItem("usertype", data.usertype);
+      $scope.usertype = data.usertype; //用户会员类型  0 无 1信息提供者  2回收者
+    });
     $scope.isLogin = localStorage.getItem("userid") ? true : false;//是否登录
-    $scope.usertype = localStorage.getItem("usertype"); //用户会员类型  0 无 1信息提供者  2回收者
   })
 
   //APP首页面
@@ -132,7 +136,11 @@ angular.module('starter.controllers', [])
             localStorage.setItem("user", JSON.stringify(data.data));
             var services = data.data.services;
             //用户会员类型  0 无 1信息提供者  2回收者
-            localStorage.setItem("usertype", services.length == 0 ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
+            var usertype = services.length == 0 ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2;
+            localStorage.setItem("usertype", usertype);
+            $scope.usertype = usertype;
+            //向父级传数据
+            $scope.$emit("usertype", {usertype: usertype});
           } else {
             CommonService.platformPrompt(data.message, 'close');
           }
