@@ -299,6 +299,10 @@ angular.module('starter.controllers', [])
     }
     //获取验证码
     $scope.getVerifyCode = function () {
+      if (!$scope.paraclass) {
+        CommonService.platformPrompt("手机号输入错误或空", 'close');
+        return;
+      }
       CommonService.getVerifyCode($scope, $scope.user.mobile);
     }
 
@@ -384,6 +388,10 @@ angular.module('starter.controllers', [])
 
     //获取验证码
     $scope.getVerifyCode = function () {
+      if (!$scope.paraclass) {
+        CommonService.platformPrompt("手机号或邮箱输入错误或空", 'close');
+        return;
+      }
       CommonService.getVerifyCode($scope, $scope.user.account);
     }
     $scope.checkChecded = function () {
@@ -432,6 +440,10 @@ angular.module('starter.controllers', [])
 
     //获取验证码
     $scope.getVerifyCode = function () {
+      if (!$scope.paraclass) {
+        CommonService.platformPrompt("手机号或邮箱输入错误或空", 'close');
+        return;
+      }
       CommonService.getVerifyCode($scope, $scope.user.account);
     }
 
@@ -494,6 +506,10 @@ angular.module('starter.controllers', [])
     }
     //获取验证码
     $scope.getVerifyCode = function () {
+      if (!$scope.paraclass) {
+        CommonService.platformPrompt("手机号输入错误或空", 'close');
+        return;
+      }
       CommonService.getVerifyCode($scope, $scope.user.mobile);
     }
 
@@ -604,17 +620,27 @@ angular.module('starter.controllers', [])
   })
 
   //我的回收订单页面
-  .controller('OrderCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, OrderService, $timeout, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
+  .controller('OrderCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, OrderService, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
     //是否登录
     if (!CommonService.isLogin(true)) {
       return;
     }
+    var user = JSON.parse(localStorage.getItem("user"));//用户信息
+    if (!user.userext) {
+      CommonService.platformPrompt("完善资料并且申请成为回收商才能查看订单", '');
+      return;
+    }
+    if (user.services.indexOf('1') != -1) {
+      CommonService.platformPrompt("信息供应者没有权限查看订单,请申请成为回收商", '');
+      return;
+    }
+
     $scope.order = {
       showDelete: false
     };
     $rootScope.orderType = $stateParams.orderType; //orderType类型 0.是我的回收订单 1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
     $scope.tabIndex = 0;//当前tabs页
-    var user = JSON.parse(localStorage.getItem("user"));//用户信息
+
     //待接单订单
     $scope.jiedanorderList = [];
     $scope.jiedanpage = 0;
@@ -658,7 +684,18 @@ angular.module('starter.controllers', [])
         page: $scope.tabIndex == 0 ? $scope.jiedanpage : ($scope.tabIndex == 1 ? $scope.chulipage : $scope.page),//页码
         size: 5//条数
       }
+      var hytype = [];//货物类别
 
+      if (user.services.indexOf('2') != -1) {
+        hytype.push(0)
+      }
+      if (user.services.indexOf('3') != -1) {
+        hytype.push(1)
+      }
+      if (user.services.indexOf('4') != -1) {
+        hytype.push(2)
+      }
+      console.log(hytype.join(","));
       //待接单接口
       if ($scope.tabIndex == 0) {
         $scope.datas = {
@@ -667,12 +704,13 @@ angular.module('starter.controllers', [])
           ORuserid: localStorage.getItem("userid"),//接单人
           userid: $rootScope.orderType == 0 ? localStorage.getItem("userid") : "",//用户userid
           Category: "",//货物品类 多个用逗号隔开(可为空)
-          HYType: "",//货物类别 0.未区分 1废料 2二手(可为空)
+          HYType: hytype.join(","),//货物类别 0.未区分 1废料 2二手(可为空)  上门回收(2)接登记信息（0）的单;货场(3)接废料（1）二手商家（4）接二手的(2)
           State: "2,3",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
           longt: localStorage.getItem("longitude") || "", //当前经度（获取距离）(可为空)
           lat: localStorage.getItem("latitude") || "",//当前纬度（获取距离）(可为空)
           expiry: ""//小时 取预警数据 订单预警数据（24小时截至马上过期的（expiry=3表示取3小时内）
         }
+
         OrderService.getDengJiList($scope.params, $scope.datas).success(function (data) {
           console.log(data);
           $scope.isNotjiedanData = false;
@@ -710,14 +748,14 @@ angular.module('starter.controllers', [])
           Type: "",//类型1.登记信息 2.登记货源(可为空)
           userid: "",//用户userid
           Category: "",//货物品类 多个用逗号隔开(可为空)
-          HYType: "",//货物类别 0.未区分 1废料 2二手(可为空)
+          HYType: hytype.join(","),//货物类别 0.未区分 1废料 2二手(可为空) 上门回收(2)接登记信息（0）的单;货场(3)接废料（1）二手商家（4）接二手的(2)
           State: $scope.tabIndex == 1 ? "4,5" : "",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
           longt: localStorage.getItem("longitude") || "", //当前经度（获取距离）(可为空)
           lat: localStorage.getItem("latitude") || "",//当前纬度（获取距离）(可为空)
           ORNO: "",//接单单号(可为空)
           ORuserid: localStorage.getItem("userid")//接单人(不能为空)
         }
-
+        console.log($scope.datas);
         OrderService.getOrderReceiptList($scope.params, $scope.datas).success(function (data) {
             console.log(data);
             $scope.isNotchuliData = false;
@@ -771,17 +809,18 @@ angular.module('starter.controllers', [])
       $ionicSlideBoxDelegate.$getByHandle("slidebox-orderlist").slide(index)
     }
 
-    $timeout(function () {
-        if ($rootScope.orderType == 0 || $rootScope.orderType == 2) {
-          $scope.selectedTab(1);
-        } else {
-          $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
-        }
+    $scope.$on('$ionicView.afterEnter', function () {
+      if ($rootScope.orderType == 0 || $rootScope.orderType == 2) {
+        $scope.selectedTab(1);
+      } else {
+        $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
       }
-      , 50)
+    });
+
 //接单
     $scope.jieDan = function (djno, userid, type, hytype) {
       event.preventDefault();
+      var user = JSON.parse(localStorage.getItem("user"));//用户信息
       /*  如果会员是1（信息提供者）,不能接单
        如果会员是2（上门回收者）,只能接登记信息单 加条件type=1或者HYType=0
        如果会员是3（货场）,只能接登记货源单 加条件type=2且HYType=1
@@ -808,7 +847,7 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt("登记货源单二手接单会员身份必须是二手商家", 'close');
         return;
       }
-      return;
+
       //添加接单收货/货源归集(添加回收时明细不能为空，接单时明细为空)
       $scope.jiedandata = {
         orno: "",//接单收货单号(回收时不能为空)
@@ -908,7 +947,7 @@ angular.module('starter.controllers', [])
         ORuserid: "",//接单人
         userid: localStorage.getItem("userid"),//用户userid
         Category: "",//货物品类 多个用逗号隔开(可为空)
-        HYType: "",//货物类别 0.未区分 1废料 2二手(可为空)
+        HYType: "",//货物类别 0.未区分 1废料 2二手(可为空) 上门回收(2)接登记信息（0）的单;货场(3)接废料（1）二手商家（4）接二手的(2)
         State: $scope.tabIndex == 0 ? "1,2,3,4,5" : "",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
         longt: "", //当前经度（获取距离）(可为空)
         lat: "",//当前纬度（获取距离）(可为空)
@@ -1007,7 +1046,7 @@ angular.module('starter.controllers', [])
         Type: "",//类型1.登记信息 2.登记货源(可为空)
         userid: "",//用户userid
         Category: "",//货物品类 多个用逗号隔开(可为空)
-        HYType: "",//货物类别 0.未区分 1废料 2二手(可为空)
+        HYType: "",//货物类别 0.未区分 1废料 2二手(可为空) 上门回收(2)接登记信息（0）的单;货场(3)接废料（1）二手商家（4）接二手的(2)
         State: "4",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
         longt: localStorage.getItem("longitude") || "", //当前经度（获取距离）(可为空)
         lat: localStorage.getItem("latitude") || "",//当前纬度（获取距离）(可为空)
@@ -1398,7 +1437,7 @@ angular.module('starter.controllers', [])
 
   //账号信息
   .controller('AccountInfoCtrl', function ($scope, $rootScope, CommonService, AccountService, BoRecycle) {
-    $scope.isprovider = JSON.parse(localStorage.getItem("user")).grade == 5 ? true : false
+    /*    $scope.isprovider = JSON.parse(localStorage.getItem("user")).grade == 5 ? true : false*/
     AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
       if (data.code == 1001) {
         localStorage.setItem('user', JSON.stringify(data.data));
@@ -1675,6 +1714,10 @@ angular.module('starter.controllers', [])
 
     //获取验证码
     $scope.getVerifyCode = function () {
+      if (!$scope.paraclass) {
+        CommonService.platformPrompt("手机号输入错误或空", 'close');
+        return;
+      }
       CommonService.getVerifyCode($scope, $scope.user.mobile);
     }
 
@@ -1758,6 +1801,10 @@ angular.module('starter.controllers', [])
 
     //e签宝验证码
     $scope.getVerifyCode = function () {
+      if (!$scope.paraclass) {
+        CommonService.platformPrompt("手机号输入错误或空", 'close');
+        return;
+      }
       event.preventDefault();
       CommonService.countDown($scope)
       //发送实名认证码，返回实名认证服务id,提交实名认证时需填写

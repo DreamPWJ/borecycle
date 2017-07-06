@@ -27,12 +27,12 @@
         <div class="row row-no-padding light-bg  row-center text-center order-item">
           <a nav-direction=forward ng-href="#/wallet" class="item item-icon-right col ">
             <p>账号余额</p>
-            <h2>{{168 | currency :'￥'}}</h2>
+            <h2>{{orderSum.account | currency :'￥'}}</h2>
             <i class="icon iconfont icon-balance " style="color: #f26604"></i></span>
           </a>
           <a nav-direction=forward ng-href="#/bankcard" class="item  col item-icon-right item-borderless">
             <p>银行卡</p>
-            <h2>2张</h2>
+            <h2>{{orderSum.banknum}}张</h2>
             <i class="icon iconfont icon-yinxingqia " style="color: #00ACFF"></i></span>
           </a>
         </div>
@@ -64,7 +64,7 @@
       </a>
       <a ng-if="usertype==2" nav-direction=forward ng-href="#/wallet" class="item item-icon-left item-icon-right ">
         <i class="icon iconfont icon-moneybag"></i>
-        <h2>我的钱包 <span class="item-note">余额 ：￥0.00</span></h2>
+        <h2>我的钱包 <span class="item-note">余额 ：{{orderSum.account | currency :'￥'}}</span></h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
       <a nav-direction=forward ng-href="#/tab/news" class="item item-icon-left item-icon-right">

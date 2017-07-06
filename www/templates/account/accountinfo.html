@@ -27,11 +27,11 @@
         </h2>
       </a>
 
-      <div ng-if="!isprovider" class="item stable-bg item-borderless">
+      <div  class="item stable-bg item-borderless">
         <h2 class=" text-right"> <span ui-sref="organizingdata" ><i class="iconfont icon-xiangyou positive"></i> 升级成为回收商</span></h2>
       </div>
 
-      <a ng-href="#/updateuser/sex/{{userinfo.sex}}" class="item item-icon-right {{!isprovider?'item-borderless':''}}">
+      <a ng-href="#/updateuser/sex/{{userinfo.sex}}" class="item item-icon-right item-borderless">
         <h2>性别 <span class="item-note">{{userinfo.sex==0?'保密':(userinfo.sex==1?'男':'女')}}</span></h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
