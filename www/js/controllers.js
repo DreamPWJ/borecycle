@@ -2485,9 +2485,9 @@ angular.module('starter.controllers', [])
     $scope.buttonText = '添加';
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable
+    $scope.isabled=false;//是否启用银行名称输入功能
     $scope.checkphone = function (mobilephone) {//检查手机号
       AccountService.checkMobilePhone($scope, mobilephone);
-      $state.go("bankcard");
     }
     $scope.setDefault = function () {
       $scope.bankinfo.isdefault = ($scope.bankinfo.isdefault ? false : true);
@@ -2528,24 +2528,13 @@ angular.module('starter.controllers', [])
         })
       }
     }
-    // if ($rootScope.bankitem && $rootScope.bankitem.length != 0) { //修改银行信息
-    //   $scope.bankiteminfo = $rootScope.bankitem;
-    //   $scope.bankinfo.bankname = $scope.bankiteminfo.bankname;
-    //   $scope.bankinfo.accountno = $scope.bankiteminfo.accountno;
-    //   $scope.bankinfo.accountname = $scope.bankiteminfo.accountname;
-    //   $scope.bankinfo.branchname = $scope.bankiteminfo.branchname;
-    //   $scope.bankinfo.isdefault = $scope.bankiteminfo.isdefault == 1 ? true : false;
-    //   $rootScope.bankitem = [];//清空数据
-    //   $scope.buttonText = '修改';
-    // } else {
-    //   $scope.bankinfo.isdefault = true;
-    // }
     //根据输入的银行卡号获取银行信息
     $scope.getBankinfo = function () {
       if ($scope.bankinfo.accountno && $scope.bankinfo.accountno.length > 15) {
         MyWalletService.getBankInfoByCardNo($scope.bankinfo.accountno).success(function (data) {
           if (data.code == 1001 && data.data.issname) {
             $scope.bankinfo.bankname = data.data.issname;
+            $scope.isabled=true;
           } else {
             $scope.bankinfo.bankname = "";
           }
