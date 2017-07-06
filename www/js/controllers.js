@@ -2333,7 +2333,7 @@ angular.module('starter.controllers', [])
       MyWalletService.get_tradelist($scope.params).success(function (data) {
         console.log(data);
         $scope.isNotData = false;
-        if (data.data == null || data.data.data_list.length==0) {
+        if (data.data == null || data.data.data_list.length == 0) {
           $scope.isNotData = true;
           return;
         }
@@ -2534,24 +2534,43 @@ angular.module('starter.controllers', [])
 
   //充值
   .controller('RechargeCtrl', function ($scope, CommonService, PayService) {
-
+    $scope.pay = { //支付相关
+      choice: "A"//选择支付方式默认微信
+    }
     $scope.confirmPayment = function () { //充值
       if (ionic.Platform.isWebView()) {
-        $scope.datas = {
-          userid: localStorage.getItem("userid"),//用户userid
-          name: JSON.parse(localStorage.getItem("user")).username,//用户名
-          price: 0.01 //支付价格
-        }
-        console.log($scope.datas);
-        PayService.aliPayRecharge($scope.datas).success(function (data) {
-          console.log(data);
-          if (data.code == 1001) {
-            PayService.aliPay(data.data);
-          } else {
-            CommonService.platformPrompt(data.message, 'close');
+        if ($scope.pay.choice == "A") {//支付宝支付
+          $scope.datas = {
+            userid: localStorage.getItem("userid"),//用户userid
+            name: JSON.parse(localStorage.getItem("user")).username,//用户名
+            price: '0.01' //支付价格
           }
+          console.log($scope.datas);
+          PayService.aliPayRecharge($scope.datas).success(function (data) {
+            console.log(data);
+            if (data.code == 1001) {
+              PayService.aliPay(data.data);
+            } else {
+              CommonService.platformPrompt(data.message, 'close');
+            }
 
-        })
+          })
+        } else if ($scope.pay.choice == "B") {//微信支付
+          $scope.datas = {
+            userid: localStorage.getItem("userid"),//用户userid
+            name: JSON.parse(localStorage.getItem("user")).username,//用户名
+            price: '0.01' //支付价格
+          }
+          CommonService.platformPrompt("微信支付", 'close');
+          PayService.wxPayRecharge($scope.datas).success(function (data) {
+            console.log(data);
+            if (data.code == 1001) {
+              PayService.weixinPay(data.data);
+            } else {
+              CommonService.platformPrompt(data.message, 'close');
+            }
+          })
+        }
       } else {
         CommonService.platformPrompt("充值功能请使用APP客户端操作", 'close');
       }

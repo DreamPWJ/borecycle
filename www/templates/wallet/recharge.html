@@ -5,27 +5,29 @@
   <ion-nav-title>
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 充值</h1>
   </ion-nav-title>
-
-  <ion-content overflow-scroll="false" id="recharge" class="has-button-footer stable-bg" has-bouncing="true">
-    <ion-list >
-      <label class="item item-input">
-        <span class="input-label "> 充值金额</span>
-        <input type="number" name="money" ng-model="money" placeholder="请输入充值金额" required/>
-      </label>
-    </ion-list>
-    <ion-list>
-      <ion-item class="item-divider">支付方式</ion-item>
-
-      <ion-radio ng-model="pay.choice" icon="ion-android-done" ng-change="" ng-value="'A'"><i
-        class=" iconfont icon-zhifubao calm  "></i> 支付宝支付
-      </ion-radio>
-      <ion-radio ng-model="pay.choice" icon="ion-android-done" ng-change="" ng-value="'B'"><i
-        class=" iconfont icon-weixin  balanced"></i> 微信支付
-      </ion-radio>
-    </ion-list>
-  </ion-content>
-  <div class="padding light-bg bottom-0" keyboard-attach>
-    <a class="button button-positive  full-image" ng-click="confirmPayment()">充值</a>
-  </div>
-
+  <form name="rechargeForm">
+    <ion-content overflow-scroll="false" id="recharge" class="has-button-footer stable-bg">
+      <p></p>
+      <ion-list>
+        <label class="item item-input">
+          <span class="input-label "> 充值金额</span>
+          <input type="number" name="money" ng-model="money" check-form
+                 ng-change="checkForm(money,'输入充值金额错误','positivenumber','')" placeholder="请输入充值金额" required/>
+        </label>
+      </ion-list>
+      <ion-list>
+        <ion-item class="item-divider">支付方式</ion-item>
+        <ion-radio ng-model="pay.choice" icon="ion-android-done" ng-change="" ng-value="'A'"><i
+          class=" iconfont icon-zhifubao calm"></i> 支付宝支付
+        </ion-radio>
+        <ion-radio ng-model="pay.choice" icon="ion-android-done" ng-change="" ng-value="'B'"><i
+          class=" iconfont icon-weixin  balanced"></i> 微信支付
+        </ion-radio>
+      </ion-list>
+    </ion-content>
+    <div class="padding light-bg bottom-0" keyboard-attach>
+      <a class="button button-positive  full-image" ng-disabled="!(rechargeForm.$valid&&verify)"
+         ng-click="confirmPayment()">充值</a>
+    </div>
+  </form>
 </ion-view>

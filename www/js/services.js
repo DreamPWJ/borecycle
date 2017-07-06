@@ -2279,6 +2279,20 @@ angular.module('starter.services', [])
           CommonService.platformPrompt("微信支付失败: " + reason, "close");
         });
       },
+      wxPayRecharge: function (datas) { //会员微信统一下单充值
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'POST',
+          url: BoRecycle.api + "/api/aop/add",
+          data: datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
       aliPay: function (payInfo) { //支付宝原生支付
         /*
          tradeNo 这个是支付宝需要的商家支付单号，应该是一个自己生成唯一的ID号
@@ -2465,7 +2479,7 @@ angular.module('starter.services', [])
       }
     }
   })
-.factory('MyInterceptor', function ($injector) {//设置请求头信息的地方是$httpProvider.interceptors。也就是为请求或响应注册一个拦截器。使用这种方式首先需要定义一个服务
+  .factory('MyInterceptor', function ($injector) {//设置请求头信息的地方是$httpProvider.interceptors。也就是为请求或响应注册一个拦截器。使用这种方式首先需要定义一个服务
 
     return {
       request: function (config) {//通过实现 request 方法拦截请求: 该方法会在 $http 发送请求道后台之前执行
