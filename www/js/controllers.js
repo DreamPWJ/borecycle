@@ -513,7 +513,6 @@ angular.module('starter.controllers', [])
       CommonService.getVerifyCode($scope, $scope.user.mobile);
     }
 
-
     //获取省市县
     $scope.getAddressPCCList = function (item) {
       //获取省份信息
@@ -630,7 +629,7 @@ angular.module('starter.controllers', [])
       CommonService.platformPrompt("完善资料并且申请成为回收商才能查看订单", '');
       return;
     }
-    if (user.services.length==1&&user.services.indexOf('1') != -1) {
+    if (user.services.length == 1 && user.services.indexOf('1') != -1) {
       CommonService.platformPrompt("信息供应者没有权限查看订单,请申请成为回收商", '');
       return;
     }
@@ -702,7 +701,7 @@ angular.module('starter.controllers', [])
           DJNo: "",//登记单号(可为空)
           Type: "",//类型1.登记信息 2.登记货源(可为空)
           ORuserid: localStorage.getItem("userid"),//接单人
-          userid: $rootScope.orderType == 0 ? localStorage.getItem("userid") : "",//用户userid
+          userid: "",//用户userid
           Category: "",//货物品类 多个用逗号隔开(可为空)
           HYType: hytype.join(","),//货物类别 0.未区分 1废料 2二手(可为空)  上门回收(2)接登记信息（0）的单;货场(3)接废料（1）二手商家（4）接二手的(2)
           State: "2,3",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
@@ -748,7 +747,7 @@ angular.module('starter.controllers', [])
           Type: "",//类型1.登记信息 2.登记货源(可为空)
           userid: "",//用户userid
           Category: "",//货物品类 多个用逗号隔开(可为空)
-          HYType: hytype.join(","),//货物类别 0.未区分 1废料 2二手(可为空) 上门回收(2)接登记信息（0）的单;货场(3)接废料（1）二手商家（4）接二手的(2)
+          HYType: "",//货物类别 0.未区分 1废料 2二手(可为空) 上门回收(2)接登记信息（0）的单;货场(3)接废料（1）二手商家（4）接二手的(2)
           State: $scope.tabIndex == 1 ? "4,5" : "",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
           longt: localStorage.getItem("longitude") || "", //当前经度（获取距离）(可为空)
           lat: localStorage.getItem("latitude") || "",//当前纬度（获取距离）(可为空)
@@ -831,7 +830,7 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt(user.userext ? "会员类型审核通过后才能操作" : "用户设置里面完善资料后再操作", user.userext ? 'close' : 'organizingdata');
         return;
       }
-      if (user.services.length==1&&user.services.indexOf('1') != -1) {
+      if (user.services.length == 1 && user.services.indexOf('1') != -1) {
         CommonService.platformPrompt("信息供应者用户不能接单,申请成为回收商", 'close');
         return;
       }
@@ -878,6 +877,7 @@ angular.module('starter.controllers', [])
         console.log(data);
         if (data.code == 1001) {
           CommonService.platformPrompt("取消接单成功", "close");
+          $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
         } else {
           CommonService.platformPrompt(data.message, "close");
         }
@@ -907,6 +907,67 @@ angular.module('starter.controllers', [])
     }
 
   })
+
+  //我的回收订单详情页面
+  .controller('OrderDetailsCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, OrderService) {
+    var user = JSON.parse(localStorage.getItem("user"));//用户信息
+    $scope.type = $stateParams.type;//1.待接单 2 待处理和所有订单
+    $rootScope.orderType = $rootScope.orderType || 2; //orderType类型 0.是我的回收订单 1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
+
+    if ($scope.type == 1) {
+      OrderService.getDengJiDetail({djno: $stateParams.no}).success(function (data) {
+        console.log(data);
+        if (data.code == 1001) {
+          $scope.orderDetail = data.data;
+        } else {
+          CommonService.platformPrompt("获取回收单详情失败", "close");
+        }
+
+      }).then(function () {
+        $scope.getComment();
+      })
+    }
+    if ($scope.type == 2) {
+      OrderService.getOrderReceiptDetail({orno: $stateParams.no}).success(function (data) {
+        console.log(data);
+        if (data.code == 1001) {
+          $scope.orderDetail = data.data;
+        } else {
+          CommonService.platformPrompt("获取回收单详情失败", "close");
+        }
+
+      }).then(function () {
+        $scope.getComment();
+      })
+    }
+
+
+    //获取评论内容
+    $scope.getComment = function () {
+      OrderService.getComment({djno: $scope.orderDetail.djno}).success(function (data) {
+        /*    console.log(data);*/
+        $scope.commentInfo = data.data;
+
+      })
+    }
+    //去收货
+    $scope.recycle = function (orno, djno, type, userid, amount, name, productname, hytype) {
+      OrderService.torecycle(user, orno, djno, type, userid, amount, name, productname, hytype);
+    }
+
+    //导航
+    $scope.navigation = function (longitude, latitude) {
+      event.preventDefault();
+      $state.go("navigation", {longitude: longitude, latitude: latitude})
+    }
+
+
+    //去付款
+    $scope.topay = function (type, djno, orno, fromuser, touser, amount, name) {
+      OrderService.topay(type, djno, orno, fromuser, touser, amount, name);
+    }
+  })
+
 
   //我的订单页面
   .controller('MyOrderCtrl', function ($scope, $rootScope, $state, CommonService, OrderService, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
@@ -1008,7 +1069,7 @@ angular.module('starter.controllers', [])
     }
 
     //关闭订单
-    $rootScope.closeOrder = function (djno) {
+    $scope.closeOrder = function (djno) {
       event.preventDefault();
       CommonService.showConfirm('操作提示', '您是否要关闭此订单?"是"点击"确定",否则请点击"取消"', '确定', '取消', '', 'close', function () {
         OrderService.cancelDengJiOrder({djno: djno}).success(function (data) {
@@ -1023,6 +1084,43 @@ angular.module('starter.controllers', [])
       });
     }
 
+  })
+
+  //我的订单详情页面
+  .controller('MyOrderDetailsCtrl', function ($scope, $stateParams, CommonService, OrderService) {
+    $scope.getMyOrderDetail = function () {
+      OrderService.getDengJiDetail({djno: $stateParams.no}).success(function (data) {
+        console.log(data);
+        if (data.code == 1001) {
+          $scope.orderDetail = data.data;
+        } else {
+          CommonService.platformPrompt("获取订单详情失败", "close");
+        }
+
+      }).then(function () {
+        //获取评论内容
+        OrderService.getComment({djno: $scope.orderDetail.djno}).success(function (data) {
+          console.log(data);
+          $scope.commentInfo = data.data;
+        })
+      })
+    }
+    $scope.getMyOrderDetail();
+    //关闭订单
+    $scope.closeOrder = function (djno) {
+      event.preventDefault();
+      CommonService.showConfirm('操作提示', '您是否要关闭此订单?"是"点击"确定",否则请点击"取消"', '确定', '取消', '', 'close', function () {
+        OrderService.cancelDengJiOrder({djno: djno}).success(function (data) {
+          console.log(data);
+          if (data.code == 1001) {
+            $scope.getMyOrderDetail();//订单详情刷新
+            CommonService.platformPrompt("订单关闭成功", "close")
+          } else {
+            CommonService.platformPrompt("订单关闭失败", "close")
+          }
+        })
+      });
+    }
   })
 
   //我的订单预警页面
@@ -1099,85 +1197,7 @@ angular.module('starter.controllers', [])
     }
   })
 
-  //我的回收订单详情页面
-  .controller('OrderDetailsCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, OrderService) {
-    var user = JSON.parse(localStorage.getItem("user"));//用户信息
-    $scope.type = $stateParams.type;//1.待接单 2 待处理和所有订单
-    $rootScope.orderType = $rootScope.orderType || 2; //orderType类型 0.是我的回收订单 1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
 
-    if ($scope.type == 1) {
-      OrderService.getDengJiDetail({djno: $stateParams.no}).success(function (data) {
-        console.log(data);
-        if (data.code == 1001) {
-          $scope.orderDetail = data.data;
-        } else {
-          CommonService.platformPrompt("获取回收单详情失败", "close");
-        }
-
-      }).then(function () {
-        $scope.getComment();
-      })
-    }
-    if ($scope.type == 2) {
-      OrderService.getOrderReceiptDetail({orno: $stateParams.no}).success(function (data) {
-        console.log(data);
-        if (data.code == 1001) {
-          $scope.orderDetail = data.data;
-        } else {
-          CommonService.platformPrompt("获取回收单详情失败", "close");
-        }
-
-      }).then(function () {
-        $scope.getComment();
-      })
-    }
-
-
-    //获取评论内容
-    $scope.getComment = function () {
-      OrderService.getComment({djno: $scope.orderDetail.djno}).success(function (data) {
-        /*    console.log(data);*/
-        $scope.commentInfo = data.data;
-
-      })
-    }
-    //去收货
-    $scope.recycle = function (orno, djno, type, userid, amount, name, productname, hytype) {
-      OrderService.torecycle(user, orno, djno, type, userid, amount, name, productname, hytype);
-    }
-
-    //导航
-    $scope.navigation = function (longitude, latitude) {
-      event.preventDefault();
-      $state.go("navigation", {longitude: longitude, latitude: latitude})
-    }
-
-
-    //去付款
-    $scope.topay = function (type, djno, orno, fromuser, touser, amount, name) {
-      OrderService.topay(type, djno, orno, fromuser, touser, amount, name);
-    }
-  })
-
-  //我的订单详情页面
-  .controller('MyOrderDetailsCtrl', function ($scope, $stateParams, CommonService, OrderService) {
-    OrderService.getDengJiDetail({djno: $stateParams.no}).success(function (data) {
-      console.log(data);
-      if (data.code == 1001) {
-        $scope.orderDetail = data.data;
-      } else {
-        CommonService.platformPrompt("获取订单详情失败", "close");
-      }
-
-    }).then(function () {
-      //获取评论内容
-      OrderService.getComment({djno: $scope.orderDetail.djno}).success(function (data) {
-        console.log(data);
-        $scope.commentInfo = data.data;
-      })
-    })
-
-  })
 
   //我的回收录单页面
   .controller('RecycleOrderCtrl', function ($scope, $state, $stateParams, CommonService, OrderService) {
@@ -1188,6 +1208,10 @@ angular.module('starter.controllers', [])
       console.log(data);
       if (data.code == 1001) {
         $scope.productList = data.data;
+        if ($scope.productList.length == 1) {//只有一个直接默认选择
+          $scope.productList[0].checked = true;
+          $scope.ischecked = true;
+        }
       } else {
         CommonService.platformPrompt("获取产品品类失败", 'close');
       }
@@ -1202,6 +1226,7 @@ angular.module('starter.controllers', [])
         })
       })
       $scope.productList = $scope.productLists;
+
       $scope.checkChecded = function () {
         CommonService.checkChecded($scope, $scope.productList);
       }
@@ -2462,8 +2487,8 @@ angular.module('starter.controllers', [])
     $scope.setDefault = function (item) {
       MyWalletService.setDefaultBC(item.id).success(function (data) {
         if (data.code = 1001) {
-          item.isdefault = 1;
           CommonService.toolTip("恭喜您，操作成功！", "");
+          $scope.getUserBanklist(0);//收款账号加载刷新
           return;
         } else {
           CommonService.toolTip("操作失败，请重试！", "");
@@ -2485,7 +2510,7 @@ angular.module('starter.controllers', [])
     $scope.buttonText = '添加';
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable
-    $scope.isabled=false;//是否启用银行名称输入功能
+    $scope.isabled = false;//是否启用银行名称输入功能
     $scope.checkphone = function (mobilephone) {//检查手机号
       AccountService.checkMobilePhone($scope, mobilephone);
     }
@@ -2534,7 +2559,7 @@ angular.module('starter.controllers', [])
         MyWalletService.getBankInfoByCardNo($scope.bankinfo.accountno).success(function (data) {
           if (data.code == 1001 && data.data.issname) {
             $scope.bankinfo.bankname = data.data.issname;
-            $scope.isabled=true;
+            $scope.isabled = true;
           } else {
             $scope.bankinfo.bankname = "";
           }

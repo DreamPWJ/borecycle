@@ -16,9 +16,9 @@ zipalign -v 4 android-release-unsigned.apk boolv.recycle.apk
 Theme.Light.NoTitleBar.Fullscreen
 
 #支付宝支付相关
-PID: 2017061207472219
+PID: 2088721190793524
 
-cordova plugin add https://github.com/offbye/cordova-plugin-alipay.git --variable PARTNER_ID=2017061207472219
+cordova plugin add https://github.com/offbye/cordova-plugin-alipay.git --variable PARTNER_ID=2088721190793524
 
 #微信
 cordova plugin add cordova-plugin-wechat --variable wechatappid=wxb7618c43863f5a2f
