@@ -630,7 +630,7 @@ angular.module('starter.controllers', [])
       CommonService.platformPrompt("完善资料并且申请成为回收商才能查看订单", '');
       return;
     }
-    if (user.services.indexOf('1') != -1) {
+    if (user.services.length==1&&user.services.indexOf('1') != -1) {
       CommonService.platformPrompt("信息供应者没有权限查看订单,请申请成为回收商", '');
       return;
     }
@@ -831,7 +831,7 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt(user.userext ? "会员类型审核通过后才能操作" : "用户设置里面完善资料后再操作", user.userext ? 'close' : 'organizingdata');
         return;
       }
-      if (user.services.indexOf('1') != -1) {
+      if (user.services.length==1&&user.services.indexOf('1') != -1) {
         CommonService.platformPrompt("信息供应者用户不能接单,申请成为回收商", 'close');
         return;
       }
@@ -2135,7 +2135,6 @@ angular.module('starter.controllers', [])
     }).then(function () {
       angular.forEach($scope.productList, function (item) { //根据产品品类及是否统货取产品列表(最新报价)
         OrderService.getProductListIsth({grpid: item.grpid, isth: 1}).success(function (data) {
-          console.log(data);
           if (data.code == 1001) {
             var items = item;
             items.details = data.data;
@@ -2144,6 +2143,7 @@ angular.module('starter.controllers', [])
         })
       })
       $scope.productList = $scope.productLists;
+      console.log($scope.productList);
       $scope.checkChecded = function () {
         CommonService.checkChecded($scope, $scope.productList);
         $scope.recyclingCategoryName = [];//回收品类名字数组

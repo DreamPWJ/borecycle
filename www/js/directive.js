@@ -116,13 +116,37 @@ angular.module('starter.directive', [])
             scope.publicCheckForm(/^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/.test(value), value, content, isShow)
           }
         };
+
         scope.checkAtLeastOne = function (array, keystr) {  //检测相同遍历数据至少填写一个
           $rootScope.verifyLeastOne = false;
-          angular.forEach(array, function (item, index) {
+          angular.forEach(array, function (item) {
             if (item[keystr]) {
               $rootScope.verifyLeastOne = true;
             }
           })
+        }
+
+        scope.checkAtLeastOneIsSame = function (array, keystr1, keystr2) {  //两个数据 每种品类至少填写一个数据
+          $rootScope.checkAtLeastOneIsSame = false;
+          for (index in array) {
+            if (array[index].checked) {
+              for (indexs in array[index].details) {
+                if (array[index].details.length >= 2 && $rootScope.checkAtLeastOneIsSame && indexs >= 1) {
+                  continue;
+                }
+                $rootScope.checkAtLeastOneIsSame = false;
+                var items = array[index].details[indexs]
+                if (array[index].details.length >= 2 && (items[keystr1] || items[keystr2])) {
+                  $rootScope.checkAtLeastOneIsSame = true;
+                }
+                if (array[index].details.length == 1 && (items[keystr1] || items[keystr2])) {
+                  $rootScope.checkAtLeastOneIsSame = true;
+                }
+              }
+
+            }
+          }
+          console.log($rootScope.checkAtLeastOneIsSame);
         }
       }
     }

@@ -736,7 +736,7 @@ angular.module('starter.services', [])
           CommonService.platformPrompt(user.userext ? "会员类型审核通过后才能操作" : "用户设置里面完善资料后再操作", user.userext ? 'close' : 'organizingdata');
           return;
         }
-        if (user.services.indexOf('1') != -1) {
+        if (user.services.length==1&&user.services.indexOf('1') != -1) {
           CommonService.platformPrompt("信息供应者用户不能去收货,申请成为回收商", 'close');
           return;
         }
@@ -2294,14 +2294,6 @@ angular.module('starter.services', [])
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       },
       aliPay: function (payInfo) { //支付宝原生支付
-        /*
-         tradeNo 这个是支付宝需要的商家支付单号，应该是一个自己生成唯一的ID号
-         subject 这个字段会显示在支付宝付款的页面
-         body 订单详情，没找到会显示哪里
-         price 价格，支持两位小数
-         function(successResults){} 是成功之后的回调函数
-         function(errorResults){} 是失败之后的回调函数
-         */
 
         //第一步：订单在服务端签名生成订单信息，具体请参考官网进行签名处理
         var payInfo = payInfo;
@@ -2310,7 +2302,7 @@ angular.module('starter.services', [])
         cordova.plugins.AliPay.pay(payInfo, function success(e) {
 
         }, function error(e) {
-          CommonService.platformPrompt("支付宝支付失败: " + e, "close");
+          CommonService.platformPrompt("支付宝支付失败: " + JSON.stringify(e), "close");
         });
 
         //e.resultStatus  状态代码  e.result  本次操作返回的结果数据 e.memo 提示信息
@@ -2318,11 +2310,6 @@ angular.module('starter.services', [])
         //e.resultStatus  4000  订单支付失败 ;6001  用户中途取消 ;6002 网络连接出错  调用function error
         //当e.resultStatus为9000时，请去服务端验证支付结果
 
-        /**
-         * 同步返回的结果必须放置到服务端进行验证（验证的规则请看https://doc.open.alipay.com/doc2/
-         * detail.htm?spm=0.0.0.0.xdvAU6&treeId=59&articleId=103665&
-         * docType=1) 建议商户依赖异步通知
-         */
       },
       aliPayRecharge: function (datas) { //会员支付宝充值
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行

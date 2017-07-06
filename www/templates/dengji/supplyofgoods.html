@@ -57,12 +57,12 @@
             <span class="col-50">{{items.name}}废品 : <input type="number" ng-model="items.wastenum"
                                                            check-form
                                                            ng-change="checkForm(items.wastenum,'输入废品数量错误',items.unit==1?'positiveinteger':'positivenumber','')"
-                                                           ng-required="!items.secondhandnum"
+                                                           ng-keyup="checkAtLeastOneIsSame(productList,'wastenum','secondhandnum')"
                                                            style="display: inline-block;" placeholder="数量"/></span>
               <span class="col-50">{{items.name}}二手 : <input type="number" ng-model="items.secondhandnum"
-                                                             ng-required="!items.wastenum"
                                                              ng-change="checkForm(items.secondhandnum,'输入二手数量错误',items.unit==1?'positiveinteger':'positivenumber','')"
-                                                             style="display: inline-block;" placeholder="数量" /></span>
+                                                             ng-keyup="checkAtLeastOneIsSame(productList,'wastenum','secondhandnum')"
+                                                             style="display: inline-block;" placeholder="数量"/></span>
             </div>
           </ion-item>
 
@@ -71,7 +71,7 @@
       <p></p>
     </ion-content>
     <div class="padding light-bg  bottom-0" keyboard-attach>
-      <button ng-disabled="!(supplyofgoodsForm.$valid&&ischecked&&verify)"
+      <button ng-disabled="!(supplyofgoodsForm.$valid&&ischecked&&verify&&checkAtLeastOneIsSame)"
               class="button button-positive full-image "
               ng-click="supplyofgoodsSubmit()">
         提交
