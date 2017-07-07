@@ -2268,9 +2268,9 @@ angular.module('starter.services', [])
     return {
       weixinPay: function (data) {//微信原生SDK支付
         var params = {
-          partnerid: data.partnerid,     //merchant id由商户传入
-          prepayid: data.prepayid.replace("prepay_id=", ""), // prepay id
-          noncestr: data.noncestr, //随机串
+          partnerid: data.mch_id,     //merchant id由商户传入
+          prepayid: data.prepay_id, // prepay id replace("prepay_id=", "")
+          noncestr: data.nonce_str, //随机串
           timestamp: data.timestamp, //时间戳，自1970年以来的秒数
           sign: data.sign //微信签名
         };

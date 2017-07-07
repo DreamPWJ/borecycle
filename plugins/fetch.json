@@ -87,16 +87,6 @@
         "is_top_level": true,
         "variables": {}
     },
-    "cordova-plugin-wechat": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-wechat"
-        },
-        "is_top_level": true,
-        "variables": {
-            "WECHATAPPID": "wxb7618c43863f5a2f"
-        }
-    },
     "cordova-plugin-file": {
         "source": {
             "type": "registry",
@@ -209,6 +199,16 @@
         "is_top_level": true,
         "variables": {
             "WEIBO_APP_ID": "2892785162"
+        }
+    },
+    "cordova-plugin-wechat": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-wechat@2.0.0"
+        },
+        "is_top_level": true,
+        "variables": {
+            "WECHATAPPID": "wxb7618c43863f5a2f"
         }
     },
     "cordova-plugin-offbye-alipay": {

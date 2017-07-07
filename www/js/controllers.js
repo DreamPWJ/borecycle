@@ -2610,9 +2610,10 @@ angular.module('starter.controllers', [])
  /*     if (ionic.Platform.isWebView()) {*/
         if ($scope.pay.choice == "A") {//支付宝支付
           $scope.datas = {
-            userid: localStorage.getItem("userid"),//用户userid
-            name: JSON.parse(localStorage.getItem("user")).username,//用户名
-            price: 0.01 //支付价格
+            out_trade_no:new Date().getTime(),//订单号
+            subject: "测试商品名称",//商品名称
+            body:"测试商品详情",//商品详情
+            total_fee: 1 //总金额
           }
           console.log($scope.datas);
           PayService.aliPayRecharge($scope.datas).success(function (data) {
@@ -2626,9 +2627,10 @@ angular.module('starter.controllers', [])
           })
         } else if ($scope.pay.choice == "B") {//微信支付
           $scope.datas = {
-            userid: localStorage.getItem("userid"),//用户userid
-            name: JSON.parse(localStorage.getItem("user")).username,//用户名
-            price: 1 //支付价格
+            out_trade_no:new Date().getTime(),//订单号
+            subject: "测试商品名称",//商品名称
+            body:"测试商品详情",//商品详情
+            total_fee: 1 //总金额
           }
           console.log($scope.datas);
           PayService.wxPayRecharge($scope.datas).success(function (data) {
