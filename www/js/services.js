@@ -2268,7 +2268,7 @@ angular.module('starter.services', [])
     return {
       weixinPay: function (data) {//微信原生SDK支付
         var params = {
-          partnerid: data.partnerid,     //公众号名称，由商户传入
+          partnerid: data.partnerid,     //merchant id由商户传入
           prepayid: data.prepayid.replace("prepay_id=", ""), // prepay id
           noncestr: data.noncestr, //随机串
           timestamp: data.timestamp, //时间戳，自1970年以来的秒数
@@ -2284,7 +2284,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise
         promise = $http({
           method: 'POST',
-          url: BoRecycle.api + "/api/aop/add",
+          url: BoRecycle.api + "/api/aop/wxpay",
           data: datas
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了

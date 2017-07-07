@@ -21,14 +21,13 @@
           应付金额 : {{orderinfo.amount | currency:'￥'}}
         </ion-item>
         <ion-item class="item-button-right">
-          我的余额 : {{0| currency:'￥'}}<!--/余额不足-->
-          <button class="button button-balanced">充值</button>
+          我的余额 : {{orderSum.account| currency:'￥'}} {{(orderSum.account < orderinfo.amount)?'余额不足':''}}
+          <button class="button button-balanced" ui-sref="recharge">充值</button>
         </ion-item>
       </div>
     </ion-list>
     <ion-list>
       <ion-item class="item-divider">支付方式</ion-item>
-
       <ion-radio ng-model="pay.choice" icon="ion-android-done" ng-change="" ng-value="'A'"><i
         class="icon iconfont icon-xianjinzhifukuozhan balanced "></i> 现金支付
       </ion-radio>

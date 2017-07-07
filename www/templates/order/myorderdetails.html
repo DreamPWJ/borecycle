@@ -7,7 +7,6 @@
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 订单详情</h1>
   </ion-nav-title>
 
-
   <ion-content overflow-scroll="false" class="stable-bg "
                ng-class="{true:'has-button-footer'}[orderDetail.state==2||orderDetail.state==3||orderDetail.state==6]"
                id="orderdetails">
@@ -41,13 +40,36 @@
         </ion-item>
       </div>
       <p></p>
-      <div ng-if="orderDetail.details&&orderDetail.details.length!=0">
+      <div ng-if="orderDetail.djdetails">
         <ion-item class=" item-icon-right item-borderless" ng-click="toggle(1)">
-          回收清单 ( <span class="positive">交易金额 : {{orderDetail.totalprice  | currency:'￥'}}</span> )
+          登记清单
           <i ng-class="{true:'ion-ios-arrow-right',false:'ion-ios-arrow-down'}[showme1]"
              class="icon iconfont "></i>
         </ion-item>
         <div ng-hide="showme1" class="orderdetails">
+          <ion-item ng-if="orderDetail.type==2" class="text-wrap" ng-repeat="item in orderDetail.djdetails">
+            {{item.proname}} : {{item.num}} {{item.uname==1?'台':'公斤'}}
+          </ion-item>
+          <ion-item ng-if="orderDetail.type==2">
+            交货方式 : {{orderDetail.delivery==1?'上门回收':'送货上门'}}
+          </ion-item>
+          <ion-item ng-if="orderDetail.type==1">
+            活动类型 : {{orderDetail.acttype==0?'无':'以旧换新'}}
+          </ion-item>
+          <ion-item>
+            登记时间 : {{orderDetail.type==1?orderDetail.addtime:orderDetail.djdetails[0].addtime | date :'yyyy-MM-dd
+            HH:mm'}}
+          </ion-item>
+        </div>
+      </div>
+      <p></p>
+      <div ng-if="orderDetail.details&&orderDetail.details.length!=0">
+        <ion-item class=" item-icon-right item-borderless" ng-click="toggle(2)">
+          回收清单 ( <span class="positive">交易金额 : {{orderDetail.totalprice  | currency:'￥'}}</span> )
+          <i ng-class="{true:'ion-ios-arrow-right',false:'ion-ios-arrow-down'}[showme2]"
+             class="icon iconfont "></i>
+        </ion-item>
+        <div ng-hide="showme2" class="orderdetails">
           <ion-item class="text-wrap" ng-repeat="item in orderDetail.details">
             {{item.proname}} : {{item.num+item.uname}} <span ng-if="item.price">( 回收价 : {{item.price}}元/{{item.uname}}  )</span>
           </ion-item>
@@ -84,7 +106,8 @@
     </ion-list>
     <p></p>
   </ion-content>
-  <div class="row padding light-bg  bottom-0 row-horizontal-around" keyboard-attach ng-if="orderDetail.state==2||orderDetail.state==3||orderDetail.state==6">
+  <div class="row padding light-bg  bottom-0 row-horizontal-around" keyboard-attach
+       ng-if="orderDetail.state==2||orderDetail.state==3||orderDetail.state==6">
     <button class="button  button-assertive  icon iconfont icon-jian col-40  "
             style="font-size: 1rem!important;" ng-click="closeOrder(orderDetail.djno)"
             ng-if="orderDetail.state==2||orderDetail.state==3">

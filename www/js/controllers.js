@@ -748,7 +748,7 @@ angular.module('starter.controllers', [])
           userid: "",//用户userid
           Category: "",//货物品类 多个用逗号隔开(可为空)
           HYType: "",//货物类别 0.未区分 1废料 2二手(可为空) 上门回收(2)接登记信息（0）的单;货场(3)接废料（1）二手商家（4）接二手的(2)
-          State: $scope.tabIndex == 1 ? "4,5" : "",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
+          State: $scope.tabIndex == 1 ? "4,5" : "4,5,6,7",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
           longt: localStorage.getItem("longitude") || "", //当前经度（获取距离）(可为空)
           lat: localStorage.getItem("latitude") || "",//当前纬度（获取距离）(可为空)
           ORNO: "",//接单单号(可为空)
@@ -1308,6 +1308,14 @@ angular.module('starter.controllers', [])
   .controller('PaymentCtrl', function ($scope, $stateParams, CommonService, OrderService) {
     $scope.orderinfo = JSON.parse($stateParams.orderinfo);
     console.log($scope.orderinfo);
+    //获得余额
+    OrderService.getOrderSum({userid: localStorage.getItem("userid"), expiry: 6}).success(function (data) {
+      if (data.code == 1001) {
+        $scope.orderSum = data.data;
+      } else {
+        CommonService.platformPrompt(data.message, 'close');
+      }
+    })
     //确认支付
     $scope.confirmPayment = function () {
       $scope.data = {
@@ -1449,7 +1457,7 @@ angular.module('starter.controllers', [])
       }
     })
 
-//获得我的里面待处理和预警订单数
+//获得我的里面待处理和预警订单数 银行卡以及余额
     OrderService.getOrderSum({userid: localStorage.getItem("userid"), expiry: 6}).success(function (data) {
       if (data.code == 1001) {
         $scope.orderSum = data.data;
@@ -2599,12 +2607,12 @@ angular.module('starter.controllers', [])
       choice: "A"//选择支付方式默认微信
     }
     $scope.confirmPayment = function () { //充值
-      if (ionic.Platform.isWebView()) {
+ /*     if (ionic.Platform.isWebView()) {*/
         if ($scope.pay.choice == "A") {//支付宝支付
           $scope.datas = {
             userid: localStorage.getItem("userid"),//用户userid
             name: JSON.parse(localStorage.getItem("user")).username,//用户名
-            price: '0.01' //支付价格
+            price: 0.01 //支付价格
           }
           console.log($scope.datas);
           PayService.aliPayRecharge($scope.datas).success(function (data) {
@@ -2620,9 +2628,9 @@ angular.module('starter.controllers', [])
           $scope.datas = {
             userid: localStorage.getItem("userid"),//用户userid
             name: JSON.parse(localStorage.getItem("user")).username,//用户名
-            price: '0.01' //支付价格
+            price: 1 //支付价格
           }
-          CommonService.platformPrompt("微信支付", 'close');
+          console.log($scope.datas);
           PayService.wxPayRecharge($scope.datas).success(function (data) {
             console.log(data);
             if (data.code == 1001) {
@@ -2632,9 +2640,11 @@ angular.module('starter.controllers', [])
             }
           })
         }
+/*
       } else {
         CommonService.platformPrompt("充值功能请使用APP客户端操作", 'close');
       }
+*/
 
     }
   });
