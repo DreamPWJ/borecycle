@@ -2604,7 +2604,8 @@ angular.module('starter.controllers', [])
   //充值
   .controller('RechargeCtrl', function ($scope, CommonService, PayService) {
     $scope.pay = { //支付相关
-      choice: "A"//选择支付方式默认微信
+      choice: "A",//选择支付方式默认微信
+      money:""
     }
     $scope.confirmPayment = function () { //充值
  /*     if (ionic.Platform.isWebView()) {*/
@@ -2613,7 +2614,7 @@ angular.module('starter.controllers', [])
             out_trade_no:new Date().getTime(),//订单号
             subject: "测试商品名称",//商品名称
             body:"测试商品详情",//商品详情
-            total_fee: 1 //总金额
+            total_fee: $scope.pay.money //总金额
           }
           console.log($scope.datas);
           PayService.aliPayRecharge($scope.datas).success(function (data) {
@@ -2630,7 +2631,7 @@ angular.module('starter.controllers', [])
             out_trade_no:new Date().getTime(),//订单号
             subject: "测试商品名称",//商品名称
             body:"测试商品详情",//商品详情
-            total_fee: 1 //总金额
+            total_fee: $scope.pay.money  //总金额
           }
           console.log($scope.datas);
           PayService.wxPayRecharge($scope.datas).success(function (data) {
