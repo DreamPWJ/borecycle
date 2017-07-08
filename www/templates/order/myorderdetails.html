@@ -48,7 +48,7 @@
         </ion-item>
         <div ng-hide="showme1" class="orderdetails">
           <ion-item ng-if="orderDetail.type==2" class="text-wrap" ng-repeat="item in orderDetail.djdetails">
-            {{item.proname}} : {{item.num}} {{item.uname==1?'台':'公斤'}}
+            {{item.proname}} : {{item.num+item.uname}}
           </ion-item>
           <ion-item ng-if="orderDetail.type==2">
             交货方式 : {{orderDetail.delivery==1?'上门回收':'送货上门'}}
@@ -56,9 +56,10 @@
           <ion-item ng-if="orderDetail.type==1">
             活动类型 : {{orderDetail.acttype==0?'无':'以旧换新'}}
           </ion-item>
-  <!--        <ion-item>
-            登记时间 : {{orderDetail.type==1?orderDetail.addtime:orderDetail.djdetails[0].addtime | date :'yyyy-MM-dd HH:mm'}}
-          </ion-item>-->
+          <ion-item ng-if="orderDetail.type==1">
+            所属厂商 : {{orderDetail.shortename}}
+          </ion-item>
+
         </div>
       </div>
       <p></p>

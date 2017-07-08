@@ -2024,7 +2024,7 @@ angular.module('starter.controllers', [])
     $scope.dengji = {};//登记信息
     $scope.dengji.acttype = 0;//默认活动类型是0  1以旧换新 当用户选择“以旧换新”时，先判断用户有没有“完善信息”和“实名认证”，如果没有则必须先“完善信息”和“实名认证”。
     $scope.addrinfo = {};
-
+    $scope.productLists = [];//产品品类
     //获取产品品类
     OrderService.getProductList({ID: "", Name: ""}).success(function (data) {
       console.log(data);
@@ -2034,6 +2034,16 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt("获取产品品类失败", 'close');
       }
     }).then(function () {
+      angular.forEach($scope.productList, function (item) { //根据产品品类及是否统货取产品列表(最新报价)
+        OrderService.getProductListIsth({grpid: item.grpid, isth: 1}).success(function (data) {
+          if (data.code == 1001) {
+            var items = item;
+            items.details = data.data;
+            $scope.productLists.push(items);
+          }
+        })
+      })
+      $scope.productList = $scope.productLists;
       $scope.checkChecded = function () {
         $scope.recyclingCategory = [];//回收品类id数组
         $scope.recyclingCategoryName = [];//回收品类名字数组
@@ -2125,8 +2135,21 @@ angular.module('starter.controllers', [])
       $scope.dengji.manufactor = manufactor.join(",");//单选
       $scope.dengji.addrcode = $scope.addrareacountyone.ID;
       $scope.dengji.delivery = 1; //交货方式 1 上门回收(默认) 2 送货上门 登记信息直接用1
-      $scope.dengji.details = {};//添加登记货源时明细不能为空，添加登记信息时明细为空
+      $scope.dengji.details = [];//添加登记货源时明细
 
+      angular.forEach($scope.productList, function (item) {
+        if (item.checked) {//选中的品类
+          angular.forEach(item.details, function (itemitem) {
+            $scope.dengji.details.push({
+                num: 1,//台数
+                grpid: itemitem.grpid,//品类ID
+                proid: itemitem.id,//产品ID
+                proname: itemitem.name,//产品名称
+                unit: itemitem.unit//单位ID
+              })
+          })
+        }
+      })
       console.log($scope.dengji);
 
       //添加登记信息/货源信息(添加登记货源时明细不能为空，添加登记信息时明细为空)
