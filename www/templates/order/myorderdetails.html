@@ -47,8 +47,8 @@
              class="icon iconfont "></i>
         </ion-item>
         <div ng-hide="showme1" class="orderdetails">
-          <ion-item ng-if="orderDetail.type==2" class="text-wrap" ng-repeat="item in orderDetail.djdetails">
-            {{item.proname}} : {{item.num+item.uname}}
+          <ion-item  class="text-wrap" ng-repeat="item in orderDetail.djdetails">
+            {{item.proname}} : {{(orderDetail.type==2?item.num:'若干')+item.uname}}
           </ion-item>
           <ion-item ng-if="orderDetail.type==2">
             交货方式 : {{orderDetail.delivery==1?'上门回收':'送货上门'}}
@@ -56,7 +56,7 @@
           <ion-item ng-if="orderDetail.type==1">
             活动类型 : {{orderDetail.acttype==0?'无':'以旧换新'}}
           </ion-item>
-          <ion-item ng-if="orderDetail.type==1">
+          <ion-item ng-if="orderDetail.type==1&&orderDetail.shortename">
             所属厂商 : {{orderDetail.shortename}}
           </ion-item>
 
