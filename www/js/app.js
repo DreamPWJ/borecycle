@@ -445,6 +445,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //登记信息
       .state('information', {
         url: '/information',
+        cache: false,
         templateUrl: 'templates/dengji/information.html',
         controller: 'InformationCtrl'
       })
@@ -511,6 +512,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'RechargeCtrl'
       })
     // if none of the above states are matched, use this as the fallback
-     $urlRouterProvider.otherwise('/tab/main');
+    $urlRouterProvider.otherwise('/tab/main');
 
   });

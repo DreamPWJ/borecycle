@@ -2008,18 +2008,18 @@ angular.module('starter.controllers', [])
   })
 
   //登记信息
-  .controller('InformationCtrl', function ($scope, CommonService, BoRecycle, $ionicHistory, AccountService, AddressService, OrderService) {
+  .controller('InformationCtrl', function ($scope,CommonService, BoRecycle, $ionicHistory, AccountService, AddressService, OrderService) {
     //是否登录
     if (!CommonService.isLogin(true)) {
       return;
     }
-    /*
-     $scope.$on('$ionicView.afterEnter', function () { //动态清除页面缓存
+
+/*     $scope.$on('$ionicView.afterEnter', function () { //动态清除页面缓存
      if($ionicHistory.backView() && $ionicHistory.backView().stateName=="tab.main"){ //上一级路由名称
 
      }
-     })
-     */
+     })*/
+
     CommonService.customModal($scope, 'templates/modal/addressmodal.html');
     $scope.dengji = {};//登记信息
     $scope.dengji.acttype = 0;//默认活动类型是0  1以旧换新 当用户选择“以旧换新”时，先判断用户有没有“完善信息”和“实名认证”，如果没有则必须先“完善信息”和“实名认证”。

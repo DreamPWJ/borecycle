@@ -15,7 +15,7 @@ zipalign -v 4 android-release-unsigned.apk boolv.recycle.apk
 #启动全屏显示白色背景
 Theme.Light.NoTitleBar.Fullscreen
 
-#支付宝支付相关
+#支付宝支付相关       <resource-file src="src/ios/lib/AlipaySDK.bundle"/> 插件路径错了
 PID: 2088721190793524
 
 cordova plugin add https://github.com/offbye/cordova-plugin-alipay.git --variable PARTNER_ID=2088721190793524
