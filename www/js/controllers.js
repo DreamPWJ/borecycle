@@ -968,7 +968,6 @@ angular.module('starter.controllers', [])
     }
   })
 
-
   //我的订单页面
   .controller('MyOrderCtrl', function ($scope, $rootScope, $state, CommonService, OrderService, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
     $scope.tabIndex = 0;//tab默认
@@ -1196,8 +1195,6 @@ angular.module('starter.controllers', [])
       OrderService.topay(type, djno, orno, fromuser, touser, amount, name);
     }
   })
-
-
 
   //我的回收录单页面
   .controller('RecycleOrderCtrl', function ($scope, $state, $stateParams, CommonService, OrderService) {
@@ -2612,8 +2609,8 @@ angular.module('starter.controllers', [])
         if ($scope.pay.choice == "A") {//支付宝支付
           $scope.datas = {
             out_trade_no:new Date().getTime(),//订单号
-            subject: "测试商品名称",//商品名称
-            body:"测试商品详情",//商品详情
+            subject: "收收商品名称",//商品名称
+            body:"收收商品详情",//商品详情
             total_fee: $scope.pay.money //总金额
           }
           console.log($scope.datas);
@@ -2629,8 +2626,8 @@ angular.module('starter.controllers', [])
         } else if ($scope.pay.choice == "B") {//微信支付
           $scope.datas = {
             out_trade_no:new Date().getTime(),//订单号
-            subject: "测试商品名称",//商品名称
-            body:"测试商品详情",//商品详情
+            subject: "收收商品名称",//商品名称
+            body:"收收商品详情",//商品详情
             total_fee: $scope.pay.money  //总金额
           }
           console.log($scope.datas);

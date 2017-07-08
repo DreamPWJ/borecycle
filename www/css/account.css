@@ -2,7 +2,7 @@
   color: #585858;
 }
 
-.account .icon, account .iconfont {
+.account .icon, account .iconfont, #walletindex .icon, #walletindex .iconfont {
   color: #585858;
   font-size: 1.5rem;
 }
@@ -138,3 +138,16 @@
 .item-checkbox .item-content {
   padding-right: 0 !important;
 }
+
+#recharge .radio-content {
+  height: 3.8rem;
+}
+
+#recharge .iconfont {
+  font-size: 1.8rem !important;
+  vertical-align: middle;
+}
+
+#recharge .item-radio input:checked + .radio-content .item-content,#payment .item-radio input:checked + .radio-content .item-content  {
+  /* style the item content when its checked */
+  background: #ffffff; }

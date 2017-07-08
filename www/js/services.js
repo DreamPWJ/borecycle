@@ -2272,14 +2272,14 @@ angular.module('starter.services', [])
           prepayid: data.prepay_id, // prepay id replace("prepay_id=", "")
           noncestr: data.nonce_str, //随机串
           timestamp: data.timestamp, //时间戳，自1970年以来的秒数
-          sign: data.sign //微信签名
+          sign: data.sign //微信再次签名
         };
         Wechat.sendPaymentRequest(params, function () {
         }, function (reason) {
           CommonService.platformPrompt("微信支付失败: " + reason, "close");
         });
       },
-      wxPayRecharge: function (datas) { //会员微信统一下单充值
+      wxPayRecharge: function (datas) { //微信统一下单支付订单信息
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise
         promise = $http({
@@ -2294,7 +2294,6 @@ angular.module('starter.services', [])
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       },
       aliPay: function (payInfo) { //支付宝原生支付
-
         //第一步：订单在服务端签名生成订单信息，具体请参考官网进行签名处理
         var payInfo = payInfo;
 
@@ -2302,7 +2301,7 @@ angular.module('starter.services', [])
         cordova.plugins.AliPay.pay(payInfo, function success(e) {
 
         }, function error(e) {
-          CommonService.platformPrompt("支付宝支付失败: " + JSON.stringify(e), "close");
+          CommonService.platformPrompt("支付宝支付失败: " + JSON.stringify(e).memo, "close");
         });
 
         //e.resultStatus  状态代码  e.result  本次操作返回的结果数据 e.memo 提示信息
@@ -2311,7 +2310,7 @@ angular.module('starter.services', [])
         //当e.resultStatus为9000时，请去服务端验证支付结果
 
       },
-      aliPayRecharge: function (datas) { //会员支付宝充值
+      aliPayRecharge: function (datas) { //支付宝支付订单信息
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise
         promise = $http({
