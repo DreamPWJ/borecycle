@@ -127,26 +127,20 @@ angular.module('starter.directive', [])
         }
 
         scope.checkAtLeastOneIsSame = function (array, keystr1, keystr2) {  //两个数据 每种品类至少填写一个数据
-          $rootScope.checkAtLeastOneIsSame = false;
-          for (index in array) {
-            if (array[index].checked) {
-              for (indexs in array[index].details) {
-                if (array[index].details.length >= 2 && $rootScope.checkAtLeastOneIsSame && indexs >= 1) {
-                  continue;
+          var checkAtLeastOneIsSame = [];//每条记录的验证true false
+          angular.forEach(array, function (item,index) {
+            if(item.checked){
+              checkAtLeastOneIsSame[index] = false;
+              angular.forEach(item.details, function (items) {
+                if (items[keystr1] || items[keystr2]) {
+                  checkAtLeastOneIsSame[index] = true;
                 }
-                $rootScope.checkAtLeastOneIsSame = false;
-                var items = array[index].details[indexs]
-                if (array[index].details.length >= 2 && (items[keystr1] || items[keystr2])) {
-                  $rootScope.checkAtLeastOneIsSame = true;
-                }
-                if (array[index].details.length == 1 && (items[keystr1] || items[keystr2])) {
-                  $rootScope.checkAtLeastOneIsSame = true;
-                }
-              }
-
+              })
             }
-          }
-          console.log($rootScope.checkAtLeastOneIsSame);
+
+          })
+          $rootScope.checkAtLeastOneIsSame=checkAtLeastOneIsSame.indexOf(false)==-1?true:false; //有一个类别是false就是false
+
         }
       }
     }
