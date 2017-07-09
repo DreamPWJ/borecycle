@@ -481,6 +481,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/wallet/cash.html',
         controller: 'CashCtrl'
       })
+
       //交易列表
       .state('transactionlist', {
         url: '/transactionlist',
@@ -488,6 +489,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/wallet/transactionlist.html',
         controller: 'TransactionlistCtrl'
       })
+
       //我的银行卡
       .state('bankcard', {
         url: '/bankcard',

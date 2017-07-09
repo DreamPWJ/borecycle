@@ -2264,7 +2264,7 @@ angular.module('starter.services', [])
       }
     }
   })
-  .service('PayService', function ($q, $http, BoRecycle, CommonService) {
+  .service('PayService', function ($q, $http, BoRecycle, CommonService,$state) {
     return {
       weixinPay: function (data) {//微信原生SDK支付
         var params = {
@@ -2275,6 +2275,7 @@ angular.module('starter.services', [])
           sign: data.sign //微信再次签名
         };
         Wechat.sendPaymentRequest(params, function () {
+          $state.go("wallet");
         }, function (reason) {
           CommonService.platformPrompt("微信支付失败: " + reason, "close");
         });
@@ -2299,7 +2300,7 @@ angular.module('starter.services', [])
 
         //第二步：调用支付插件
         cordova.plugins.AliPay.pay(payInfo, function success(e) {
-
+          $state.go("wallet");
         }, function error(e) {
           CommonService.platformPrompt("支付宝支付失败: " + JSON.stringify(e).memo, "close");
         });

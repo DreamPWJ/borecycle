@@ -58,11 +58,11 @@
                                                            check-form
                                                            ng-change="checkForm(items.wastenum,'输入废品数量错误',items.unit==1?'positiveinteger':'positivenumber','')"
                                                            ng-keyup="checkAtLeastOneIsSame(productList,'wastenum','secondhandnum')"
-                                                           style="display: inline-block;" placeholder="数量"/></span>
+                                                            placeholder="废品数量"/></span>
               <span class="col-50">{{items.name}}二手 : <input type="number" ng-model="items.secondhandnum"
                                                              ng-change="checkForm(items.secondhandnum,'输入二手数量错误',items.unit==1?'positiveinteger':'positivenumber','')"
                                                              ng-keyup="checkAtLeastOneIsSame(productList,'wastenum','secondhandnum')"
-                                                             style="display: inline-block;" placeholder="数量"/></span>
+                                                              placeholder="二手数量"/></span>
             </div>
           </ion-item>
 

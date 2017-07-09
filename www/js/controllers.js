@@ -373,14 +373,12 @@ angular.module('starter.controllers', [])
     $scope.agreedeal = true;//同意用户协议
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable;
-    $scope.services = [{key: 1, value: "信息提供者", checked: false}, {key: 2, value: "上门回收者", checked: false}, {
+    $scope.services = [{key: 1, value: "信息提供者"}, {key: 2, value: "上门回收者"}, {
       key: 3,
-      value: "货场",
-      checked: false
+      value: "货场"
     }, {
       key: 4,
-      value: "二手商家",
-      checked: false
+      value: "二手商家"
     }];//用户类型数组
     $scope.checkphoneandemail = function (account) {//检查手机号和邮箱
       AccountService.checkMobilePhoneAndEmail($scope, account);
@@ -479,15 +477,35 @@ angular.module('starter.controllers', [])
     $scope.addrinfo = {};//地址信息
     $scope.recyclingCategory = [];//回收品类数组
 
-    $scope.services = [{key: 1, value: "信息提供者", checked: false}, {key: 2, value: "上门回收者", checked: false}, {
+    $scope.services = [{key: 1, value: "信息提供者"}, {key: 2, value: "上门回收者"}, {
       key: 3,
-      value: "货场",
-      checked: false
+      value: "货场"
     }, {
       key: 4,
-      value: "二手商家",
-      checked: false
+      value: "二手商家"
     }];
+    if (localStorage.getItem("userid")) {  //获取用户信息
+      //根据会员ID获取会员账号基本信息
+      AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (datas) {
+        console.log(datas);
+        if (datas.code == 1001) {
+          $rootScope.userdata = datas.data;
+          localStorage.setItem("user", JSON.stringify(datas.data));
+          var services = datas.data.services;
+          //用户会员类型  0 无 1信息提供者  2回收者
+          localStorage.setItem("usertype", services.length == 0 ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
+          //赋值
+          var userext = datas.data.userext;
+          $scope.user = {
+            username: userext.shopname,//姓名
+            mobile: Number(userext.shopphone),//手机号码
+            recoveryqty: userext.recovery//月回收量
+          }
+        } else {
+          CommonService.platformPrompt(datas.message, 'close');
+        }
+      })
+    }
     //获取产品品类
     OrderService.getProductList({ID: "", Name: ""}).success(function (data) {
       console.log(data);
@@ -497,8 +515,8 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt("获取产品品类失败", 'close');
       }
     }).then(function () {
-      $scope.checkChecded = function () {
-        CommonService.checkChecded($scope, $scope.productList);
+      $scope.checkChecded = function (array) {
+        CommonService.checkChecded($scope, array || $scope.productList);
       }
     })
     $scope.checkphone = function (mobilephone) {//检查手机号
@@ -573,7 +591,7 @@ angular.module('starter.controllers', [])
   })
 
   //参考价页面
-  .controller('ReferencePriceCtrl', function ($scope, $stateParams, CommonService, OrderService) {
+  .controller('ReferencePriceCtrl', function ($scope, $stateParams, CommonService, OrderService, $ionicScrollDelegate) {
     //是否登录
     /*    if (!CommonService.isLogin(true)) {
      return;
@@ -609,6 +627,7 @@ angular.module('starter.controllers', [])
     $scope.getClassify();
     //点击产品分类获取产品分类详情
     $scope.getClassifyDetails = function (index) {
+      $ionicScrollDelegate.scrollTop();
       $scope.classifyindex = index;
       $scope.classifyDetails = $scope.productList[index].details;
     }
@@ -1466,8 +1485,8 @@ angular.module('starter.controllers', [])
   })
 
   //账号信息
-  .controller('AccountInfoCtrl', function ($scope, $rootScope, CommonService, AccountService, BoRecycle) {
-    /*    $scope.isprovider = JSON.parse(localStorage.getItem("user")).grade == 5 ? true : false*/
+  .controller('AccountInfoCtrl', function ($scope, $rootScope, CommonService, AccountService) {
+
     AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
       if (data.code == 1001) {
         localStorage.setItem('user', JSON.stringify(data.data));
@@ -1492,33 +1511,13 @@ angular.module('starter.controllers', [])
 
         })
         $scope.servicesstr = $scope.services.join(",")
+        $scope.isprovider = $rootScope.userinfo.services.indexOf('2') != -1 && $rootScope.userinfo.services.indexOf('3') != -1 && $rootScope.userinfo.services.indexOf('4') != -1 ? true : false
       } else {
         CommonService.platformPrompt('获取用户信息失败', 'close');
       }
 
     })
-    //获取定位信息
-    /*    $scope.cityName = "深圳";//默认地址
-     CommonService.getLocation(function () {
-     //获取首页地理位置城市名称
-     AccountService.getCurrentCityName({
-     key: BoRecycle.gaoDeKey,
-     location: Number(localStorage.getItem("longitude")).toFixed(6) + "," + Number(localStorage.getItem("latitude")).toFixed(6)
-     }).success(function (data) {
-     console.log(data);
-     var addressComponent = data.regeocode.addressComponent;
-     $scope.cityName = addressComponent.city ? addressComponent.city.replace("市", "") : addressComponent.province.replace("市", "");
 
-     })
-     });
-     //城市选择modal
-     CommonService.customModal($scope, 'templates/modal/citymodal.html');
-     //点击选择城市
-     $scope.openCustomModal = function () {
-     $scope.city = {};//城市相关json数据
-     $scope.modal.show();
-     AccountService.selectCity($scope);
-     }*/
   })
 
   //修改用户头像图片
@@ -2008,13 +2007,13 @@ angular.module('starter.controllers', [])
   })
 
   //登记信息
-  .controller('InformationCtrl', function ($scope,CommonService, BoRecycle, $ionicHistory, AccountService, AddressService, OrderService) {
+  .controller('InformationCtrl', function ($scope, CommonService, BoRecycle, $ionicHistory, AccountService, AddressService, OrderService) {
     //是否登录
     if (!CommonService.isLogin(true)) {
       return;
     }
 
-/*     $scope.$on('$ionicView.afterEnter', function () { //动态清除页面缓存
+    /*     $scope.$on('$ionicView.afterEnter', function () { //动态清除页面缓存
      if($ionicHistory.backView() && $ionicHistory.backView().stateName=="tab.main"){ //上一级路由名称
 
      }
@@ -2141,12 +2140,12 @@ angular.module('starter.controllers', [])
         if (item.checked) {//选中的品类
           angular.forEach(item.details, function (itemitem) {
             $scope.dengji.details.push({
-                num: 1,//台数
-                grpid: itemitem.grpid,//品类ID
-                proid: itemitem.id,//产品ID
-                proname: itemitem.name,//产品名称
-                unit: itemitem.unit//单位ID
-              })
+              num: 1,//台数
+              grpid: itemitem.grpid,//品类ID
+              proid: itemitem.id,//产品ID
+              proname: itemitem.name,//产品名称
+              unit: itemitem.unit//单位ID
+            })
           })
         }
       })
@@ -2625,49 +2624,49 @@ angular.module('starter.controllers', [])
   .controller('RechargeCtrl', function ($scope, CommonService, PayService) {
     $scope.pay = { //支付相关
       choice: "A",//选择支付方式默认微信
-      money:""
+      money: ""
     }
     $scope.confirmPayment = function () { //充值
- /*     if (ionic.Platform.isWebView()) {*/
-        if ($scope.pay.choice == "A") {//支付宝支付
-          $scope.datas = {
-            out_trade_no:new Date().getTime(),//订单号
-            subject: "收收商品名称",//商品名称
-            body:"收收商品详情",//商品详情
-            total_fee: $scope.pay.money //总金额
-          }
-          console.log($scope.datas);
-          PayService.aliPayRecharge($scope.datas).success(function (data) {
-            console.log(data);
-            if (data.code == 1001) {
-              PayService.aliPay(data.data);
-            } else {
-              CommonService.platformPrompt(data.message, 'close');
-            }
-
-          })
-        } else if ($scope.pay.choice == "B") {//微信支付
-          $scope.datas = {
-            out_trade_no:new Date().getTime(),//订单号
-            subject: "收收商品名称",//商品名称
-            body:"收收商品详情",//商品详情
-            total_fee: $scope.pay.money  //总金额
-          }
-          console.log($scope.datas);
-          PayService.wxPayRecharge($scope.datas).success(function (data) {
-            console.log(data);
-            if (data.code == 1001) {
-              PayService.weixinPay(data.data);
-            } else {
-              CommonService.platformPrompt(data.message, 'close');
-            }
-          })
+      /*     if (ionic.Platform.isWebView()) {*/
+      if ($scope.pay.choice == "A") {//支付宝支付
+        $scope.datas = {
+          out_trade_no: new Date().getTime(),//订单号
+          subject: "收收商品名称",//商品名称
+          body: "收收商品详情",//商品详情
+          total_fee: $scope.pay.money //总金额
         }
-/*
-      } else {
-        CommonService.platformPrompt("充值功能请使用APP客户端操作", 'close');
+        console.log($scope.datas);
+        PayService.aliPayRecharge($scope.datas).success(function (data) {
+          console.log(data);
+          if (data.code == 1001) {
+            PayService.aliPay(data.data);
+          } else {
+            CommonService.platformPrompt(data.message, 'close');
+          }
+
+        })
+      } else if ($scope.pay.choice == "B") {//微信支付
+        $scope.datas = {
+          out_trade_no: new Date().getTime(),//订单号
+          subject: "收收商品名称",//商品名称
+          body: "收收商品详情",//商品详情
+          total_fee: $scope.pay.money  //总金额
+        }
+        console.log($scope.datas);
+        PayService.wxPayRecharge($scope.datas).success(function (data) {
+          console.log(data);
+          if (data.code == 1001) {
+            PayService.weixinPay(data.data);
+          } else {
+            CommonService.platformPrompt(data.message, 'close');
+          }
+        })
       }
-*/
+      /*
+       } else {
+       CommonService.platformPrompt("充值功能请使用APP客户端操作", 'close');
+       }
+       */
 
     }
   });

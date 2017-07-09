@@ -1,5 +1,4 @@
 <ion-view id="main">
-
   <ion-nav-buttons side="left">
     <a class="button icon iconfont icon-people  button-clear" nav-direction=forward native-ui-sref="tab.account"
     ></a>
@@ -72,9 +71,14 @@
         <p class="inline"> 我要做什么?</p>
       </a>
     </div>
+    <p></p>
     <a href="tel:400-013-0088">
-      <img ng-src="img/main/kefu.jpg" class="full-image" alt="客服电话">
+      <img ng-src="img/main/kefu.jpg" class="kefu full-image" alt="客服电话">
     </a>
+    <div ng-if="true" class="isNotDataHint">
+      <i class="icon iconfont icon-emoji"></i>
+      <p>我是有底线的</p>
+    </div>
   </ion-content>
 </ion-view>
 
