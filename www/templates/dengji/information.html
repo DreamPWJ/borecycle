@@ -32,7 +32,7 @@
 
         <label class="item item-input " ng-click="openModal()">
           <span class="input-label icon ion-ios-location-outline"> 货源地址 </span>
-          <p class="{{addresspcd?'dark':'grey'}}">{{addresspcd?addresspcd:"请选择货源地址"}}</p>
+          <p class="{{addresspcd?'dark':'grey'}}">{{addresspcd?addresspcd:(ssx?ssx:"请选择货源地址")}}</p>
         </label>
         <div class="item item-input ">
           <span class="input-label icon ion-ios-location-outline"> 详细地址</span>
@@ -68,7 +68,7 @@
       <p></p>
     </ion-content>
     <div class="padding light-bg  bottom-0" keyboard-attach>
-      <button ng-disabled="!(informationForm.$valid&&verify&&ischecked&&addresspcd)"
+      <button ng-disabled="!(informationForm.$valid&&verify&&ischecked&&(addresspcd||ssx))"
               class="button button-positive full-image "
               ng-click="informationSubmit()">
         提交

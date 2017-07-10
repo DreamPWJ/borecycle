@@ -138,7 +138,7 @@ angular.module('starter.controllers', [])
             localStorage.setItem("user", JSON.stringify(data.data));
             var services = data.data.services;
             //用户会员类型  0 无 1信息提供者  2回收者
-            var usertype = (services==null ||services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2;
+            var usertype = (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2;
             localStorage.setItem("usertype", usertype);
             $scope.usertype = usertype;
             //向父级传数据
@@ -275,8 +275,8 @@ angular.module('starter.controllers', [])
               localStorage.setItem("user", JSON.stringify(data.data));
               var services = data.data.services;
               //用户会员类型  0 无 1信息提供者  2回收者
-              localStorage.setItem("usertype",(services==null || services.length == 0 )? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
-              if (services==null  || services.length == 0) {//旧会员 完善信息
+              localStorage.setItem("usertype", (services == null || services.length == 0 ) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
+              if (services == null || services.length == 0) {//旧会员 完善信息
                 $state.go("organizingdata")
               }
             } else {
@@ -361,8 +361,8 @@ angular.module('starter.controllers', [])
             localStorage.setItem("user", JSON.stringify(data.data));
             var services = data.data.services;
             //用户会员类型  0 无 1信息提供者  2回收者
-            localStorage.setItem("usertype",(services==null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
-            if (services==null || services.length == 0) {//旧会员 完善信息
+            localStorage.setItem("usertype", (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
+            if (services == null || services.length == 0) {//旧会员 完善信息
               $state.go("organizingdata")
             }
           } else {
@@ -476,11 +476,17 @@ angular.module('starter.controllers', [])
     }
   })
   //完善资料页面
-  .controller('OrganizingDataCtrl', function ($scope, $rootScope, CommonService, BoRecycle, OrderService, AccountService, AddressService) {
+  .controller('OrganizingDataCtrl', function ($scope, $rootScope, CommonService, $ionicHistory, BoRecycle, OrderService, AccountService, AddressService) {
     CommonService.customModal($scope, 'templates/modal/addressmodal.html');
+    $scope.$on('$ionicView.beforeEnter', function () {
+      if ($ionicHistory.backView() && $ionicHistory.backView().stateName == "accountinfo") { //上一级路由名称
+        $scope.isUpgradeRecycler = true; //是从“升级成为回收商”进入
+      }
+    })
     $scope.isLogin = localStorage.getItem("userid") ? true : false;//是否登录
+
     $scope.user = {//定义用户对象
-      usertype: 1 //用户类型
+      usertype: $scope.isUpgradeRecycler ? 2 : 1 //用户类型
     };
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable
@@ -498,14 +504,14 @@ angular.module('starter.controllers', [])
           localStorage.setItem("user", JSON.stringify(datas.data));
           var services = datas.data.services;
           //用户会员类型  0 无 1信息提供者  2回收者
-          localStorage.setItem("usertype",(services==null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
+          localStorage.setItem("usertype", (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
           //赋值
           var userext = datas.data.userext;
           $scope.user = {
             username: userext.shopname,//姓名
             mobile: Number(userext.shopphone),//手机号码
             recoveryqty: userext.recovery,//月回收量
-            usertype: 1 //用户类型
+            usertype: $scope.isUpgradeRecycler ? 2 : 1  //用户类型
           }
         } else {
           CommonService.platformPrompt(datas.message, 'close');
@@ -591,7 +597,7 @@ angular.module('starter.controllers', [])
               localStorage.setItem("user", JSON.stringify(datas.data));
               var services = datas.data.services;
               //用户会员类型  0 无 1信息提供者  2回收者
-              localStorage.setItem("usertype",(services==null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
+              localStorage.setItem("usertype", (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
             } else {
               CommonService.platformPrompt(datas.message, 'close');
             }
@@ -620,7 +626,7 @@ angular.module('starter.controllers', [])
           CommonService.platformPrompt("获取产品品类失败", 'close');
         }
       }).then(function () {
-        angular.forEach($scope.productList, function (item,index) { //根据产品品类及是否统货取产品列表(最新报价)
+        angular.forEach($scope.productList, function (item, index) { //根据产品品类及是否统货取产品列表(最新报价)
           OrderService.getProductListIsth({grpid: item.grpid, isth: 0}).success(function (data) {
             if (data.code == 1001) {
               var items = item;
@@ -628,7 +634,7 @@ angular.module('starter.controllers', [])
               $scope.productLists.push(items);
             }
           }).then(function () {
-            if($scope.productList.length==index+1){
+            if ($scope.productList.length == index + 1) {
               $scope.getClassifyDetails($scope.classifyindex);
             }
           })
@@ -1461,7 +1467,7 @@ angular.module('starter.controllers', [])
         localStorage.setItem("user", JSON.stringify(data.data));
         var services = data.data.services;
         //用户会员类型  0 无 1信息提供者  2回收者
-        var usertype =(services==null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2;
+        var usertype = (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2;
         localStorage.setItem("usertype", usertype);
         $scope.usertype = usertype;
       } else {
@@ -2023,13 +2029,11 @@ angular.module('starter.controllers', [])
     if (!CommonService.isLogin(true)) {
       return;
     }
-
     /*     $scope.$on('$ionicView.afterEnter', function () { //动态清除页面缓存
      if($ionicHistory.backView() && $ionicHistory.backView().stateName=="tab.main"){ //上一级路由名称
 
      }
      })*/
-
     CommonService.customModal($scope, 'templates/modal/addressmodal.html');
     $scope.dengji = {};//登记信息
     $scope.dengji.acttype = 0;//默认活动类型是0  1以旧换新 当用户选择“以旧换新”时，先判断用户有没有“完善信息”和“实名认证”，如果没有则必须先“完善信息”和“实名认证”。
@@ -2103,11 +2107,22 @@ angular.module('starter.controllers', [])
           location: Number(localStorage.getItem("longitude")).toFixed(6) + "," + Number(localStorage.getItem("latitude")).toFixed(6)
         }).success(function (data) {
           var addressComponent = data.regeocode.addressComponent;
+          $scope.ssx = addressComponent.province + addressComponent.city + addressComponent.district;//省市县
           $scope.dengji.addrdetail = addressComponent.township + addressComponent.streetNumber.street;
+        }).then(function () {
+          AddressService.getAddressBySSX({ssx: $scope.dengji.ssx}).success(function (data) {
+            console.log(data);
+            if (data.code == 1001) {
+              $scope.addrareacountyone = data.data;
+            } else {
+              CommonService.platformPrompt("匹配收收地址数据失败","close")
+            }
+          })
         })
       })
 
     }
+    $scope.location();//自动定位
     //实现单选
     $scope.multipleChoice = function (array, item) {
       angular.forEach(array, function (child) {

@@ -67,10 +67,7 @@
   height: 5rem !important;
 }
 
-.bar-positive {
-  /*  background-color: transparent;*/
-  background-image: none !important;
-}
+
 
 #main .topbj {
   background: url(../img/main/topbj.jpg) 100% 100%;
@@ -104,7 +101,7 @@
 }
 
 #main .main-list a {
-  padding: 1.2rem 1.2rem;
+  padding: 1.2rem 0rem 1.2rem 1.2rem;
 }
 
 #main .main-list a h5, #main .main-list a p {

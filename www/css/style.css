@@ -203,6 +203,11 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
   cursor: not-allowed;
 }
 
+.bar-positive {
+  /*  background-color: transparent;*/
+  background-image: none !important;
+}
+
 /* 去掉时候点击按钮灰色边框颜色*/
 .button.active, .button.activated {
   border-color: transparent !important;
