@@ -620,7 +620,7 @@ angular.module('starter.controllers', [])
           CommonService.platformPrompt("获取产品品类失败", 'close');
         }
       }).then(function () {
-        angular.forEach($scope.productList, function (item) { //根据产品品类及是否统货取产品列表(最新报价)
+        angular.forEach($scope.productList, function (item,index) { //根据产品品类及是否统货取产品列表(最新报价)
           OrderService.getProductListIsth({grpid: item.grpid, isth: 0}).success(function (data) {
             if (data.code == 1001) {
               var items = item;
@@ -628,11 +628,11 @@ angular.module('starter.controllers', [])
               $scope.productLists.push(items);
             }
           }).then(function () {
-            $scope.getClassifyDetails($scope.classifyindex);
+            if($scope.productList.length==index+1){
+              $scope.getClassifyDetails($scope.classifyindex);
+            }
           })
         })
-        $scope.productList = $scope.productLists;
-
       })
     }
     $scope.getClassify();
