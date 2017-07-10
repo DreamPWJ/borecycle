@@ -199,7 +199,7 @@
   opacity: 1;
 }
 
-#supplyofgoods .jiaohuo label span {
+#supplyofgoods .jiaohuo label span ,.usertype label span{
   display: inline-block;
   margin-left: 1rem;
   width: 6rem;
@@ -211,11 +211,11 @@
   border-radius: 0.5rem;
 }
 
-#supplyofgoods .jiaohuo input {
+#supplyofgoods .jiaohuo input,.usertype input {
   display: none;
 }
 
-#supplyofgoods .jiaohuo input:checked + span {
+#supplyofgoods .jiaohuo input:checked + span, .usertype input:checked + span{
   background-color: #00ACFF;
   color: #ffffff;
 }

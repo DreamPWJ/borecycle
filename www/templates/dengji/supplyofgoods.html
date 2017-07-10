@@ -28,15 +28,12 @@
           <i class="icon iconfont icon-shouhuo "></i>
           <div class="row row-center row-no-padding">
             <h2>交货方式</h2>
-            <label ng-click="goods.delivery=1" for="shangmen" class="">
-              <input type="checkbox" id="shangmen" ng-model="item.checked" ng-checked="goods.delivery==1"
-              >
+            <label ng-click="goods.delivery=1" for="shangmen" >
+              <input type="checkbox" id="shangmen" ng-checked="goods.delivery==1">
               <span>上门回收</span>
             </label>
-            <label ng-click="goods.delivery=2" for="songluo" ng-click="goods.delivery=2">
-              <input type="checkbox" id="songluo" ng-model="item.checked"
-                     ng-checked="goods.delivery==2"
-              >
+            <label ng-click="goods.delivery=2" for="songluo" >
+              <input type="checkbox" id="songluo"  ng-checked="goods.delivery==2">
               <span>送货上门</span>
             </label>
           </div>

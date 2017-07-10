@@ -50,8 +50,17 @@
           <p class="text-right item-note"><a class="positive  icon ion-ios-help-outline" ng-href="#/help/25"
                                              nav-direction=forward> 什么是用户类型</a></p>
         </ion-item>
-
-        <div class="services padding light-bg text-wrap ">
+        <ion-item class="item-divider light-bg text-center usertype">
+          <label ng-click="user.usertype=1" for="xinxi" >
+            <input type="checkbox" id="xinxi"  ng-checked="user.usertype==1">
+            <span>信息提供者</span>
+          </label>
+          <label ng-click="user.usertype=2" for="huishou">
+            <input type="checkbox" id="huishou"  ng-checked="user.usertype==2">
+            <span>回收商</span>
+          </label>
+        </ion-item>
+        <div class="services padding light-bg text-wrap " ng-if="user.usertype==2">
           <ion-checkbox class="item-borderless checkbox-positive " ng-click="checkChecded(services)"
                         ng-repeat="item in services" ng-model="item.checked">
             {{item.value}}
@@ -60,7 +69,7 @@
         <p></p>
         <div class="padding-horizontal">
           <button class="button full-image button-positive " ng-click="organizingdataSubmit()"
-                  ng-disabled="!(organizingdataForm.$valid&&ischecked&&addresspcd)">提交
+                  ng-disabled="!(organizingdataForm.$valid&&(user.usertype==1?true:ischecked)&&addresspcd)">提交
           </button>
           <p></p>
           <a ng-href="#/{{isLogin?'tab/account':'login'}}"

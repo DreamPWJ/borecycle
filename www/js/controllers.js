@@ -369,17 +369,14 @@ angular.module('starter.controllers', [])
 
   //注册页面
   .controller('RegisterCtrl', function ($scope, $state, CommonService, AccountService) {
-    $scope.user = {};//定义用户对象
+    $scope.user = {//定义用户对象
+      usertype: 1 //用户类型
+    };
     $scope.agreedeal = true;//同意用户协议
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable;
-    $scope.services = [{key: 1, value: "信息提供者"}, {key: 2, value: "上门回收者"}, {
-      key: 3,
-      value: "货场"
-    }, {
-      key: 4,
-      value: "二手商家"
-    }];//用户类型数组
+    $scope.services = [{key: 2, value: "上门回收者"}, {key: 3, value: "货场"}, {key: 4, value: "二手商家"}];//用户类型数组
+
     $scope.checkphoneandemail = function (account) {//检查手机号和邮箱
       AccountService.checkMobilePhoneAndEmail($scope, account);
     }
@@ -407,15 +404,20 @@ angular.module('starter.controllers', [])
       }
 
       $scope.user.services = [];//用户类型数组key
-      angular.forEach($scope.services, function (item) {
-        if (item.checked) {
-          $scope.user.services.push(item.key)
-        }
-      })
+      if ($scope.user.usertype == 2) {
+        angular.forEach($scope.services, function (item) {
+          if (item.checked) {
+            $scope.user.services.push(item.key)
+          }
+        })
+      } else {
+        $scope.user.services.push(1)
+      }
 
       $scope.user.client = ionic.Platform.isWebView() ? 0 : (ionic.Platform.is('android') ? 1 : 2);
       $scope.user.openID = localStorage.getItem("openid") || "";//微信openID
       console.log($scope.user);
+
       AccountService.register($scope.user).success(function (data) {
         if (data.code == 1001) {
           $state.go('organizingdata');
@@ -471,19 +473,16 @@ angular.module('starter.controllers', [])
   .controller('OrganizingDataCtrl', function ($scope, $rootScope, CommonService, BoRecycle, OrderService, AccountService, AddressService) {
     CommonService.customModal($scope, 'templates/modal/addressmodal.html');
     $scope.isLogin = localStorage.getItem("userid") ? true : false;//是否登录
-    $scope.user = {};//定义用户对象
+    $scope.user = {//定义用户对象
+      usertype: 1 //用户类型
+    };
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable
     $scope.addrinfo = {};//地址信息
     $scope.recyclingCategory = [];//回收品类数组
 
-    $scope.services = [{key: 1, value: "信息提供者"}, {key: 2, value: "上门回收者"}, {
-      key: 3,
-      value: "货场"
-    }, {
-      key: 4,
-      value: "二手商家"
-    }];
+    $scope.services = [{key: 2, value: "上门回收者"}, {key: 3, value: "货场"}, {key: 4, value: "二手商家"}];
+
     if (localStorage.getItem("userid")) {  //获取用户信息
       //根据会员ID获取会员账号基本信息
       AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (datas) {
@@ -499,7 +498,8 @@ angular.module('starter.controllers', [])
           $scope.user = {
             username: userext.shopname,//姓名
             mobile: Number(userext.shopphone),//手机号码
-            recoveryqty: userext.recovery//月回收量
+            recoveryqty: userext.recovery,//月回收量
+            usertype: 1 //用户类型
           }
         } else {
           CommonService.platformPrompt(datas.message, 'close');
@@ -546,17 +546,22 @@ angular.module('starter.controllers', [])
 
     //完善资料提交
     $scope.organizingdataSubmit = function () {
+
       if ($scope.verifycode != $scope.user.code) {
         CommonService.platformPrompt("输入的验证码不正确", 'close');
         return;
       }
 
       $scope.user.services = [];//用户类型数组key
-      angular.forEach($scope.services, function (item) {
-        if (item.checked) {
-          $scope.user.services.push(item.key)
-        }
-      })
+      if ($scope.user.usertype == 2) {
+        angular.forEach($scope.services, function (item) {
+          if (item.checked) {
+            $scope.user.services.push(item.key)
+          }
+        })
+      } else {
+        $scope.user.services.push(1);
+      }
 
       angular.forEach($scope.productList, function (item) {
         if (item.checked) {
