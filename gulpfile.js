@@ -38,7 +38,7 @@ gulp.task('autoprefixer', function () {
  css link前后添加   <!-- build:css css/all.css -->     <!-- endbuild -->
  js script  前后添加  <!-- build:js js/all.js -->  <!-- endbuild -->*/
 gulp.task('mergeMiniJsCss', function () {
-  return gulp.src('./www/index.html')
+  return gulp.src(['./www/index.html','./www/manifest.json','./www/service-worker.js'])
     .pipe(useref())
     // 当是css文件时候压缩
     .pipe(gulpIf('*.css', minifyCss()))
@@ -73,13 +73,14 @@ gulp.task('minImages', function(){
 
 /*复制html*/
 gulp.task('copyHtml', function () {
-  return gulp.src('./www/templates/**/*.html')      //复制的文件
+  return gulp.src('./www/templates/**')      //复制的文件
     .pipe(gulp.dest('./borecycle/templates/'));  //输出文件夹
 });
 
 /*复制fonts*/
 gulp.task('copyFonts', function () {
   return gulp.src('./www/fonts/**')      //复制的文件
+    .pipe(minifyCss())    //执行压缩
     .pipe(gulp.dest('./borecycle/fonts/'));  //输出文件夹
 });
 
@@ -88,6 +89,7 @@ gulp.task('copyLib', function () {
   return gulp.src('./www/lib/**')      //复制的文件
     .pipe(gulp.dest('./borecycle/lib/'));  //输出文件夹
 });
+
 /*执行压缩前，先删除文件夹里的内容*/
 gulp.task('clean', function (cb) {
   del(['./borecycle/css', './borecycle/js'], cb);
