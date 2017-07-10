@@ -10,7 +10,7 @@
 
       <div class="list">
         <div class="item text-wrap">
-          <span class="block icon ion-ios-color-filter-outline "> 货物品类</span>
+          <span class="block icon ion-ios-color-filter-outline padding-bottom"> 货物品类</span>
           <ion-checkbox ng-repeat="item in productList" class="item-borderless checkbox-positive"
                         ng-click="checkChecded()"
                         ng-model="item.checked">
@@ -44,7 +44,7 @@
         </div>
 
         <div class="item text-wrap">
-                    <span class="block  iconfont icon-changshang "
+                    <span class="block  iconfont icon-changshang padding-bottom"
                           style="font-size: 0.9rem!important;"> 所属厂商</span>
           <ion-checkbox name="manufacteList" class="item-borderless checkbox-positive" ng-repeat="item in manufacteList"
                         ng-model="item.checked" ng-change="multipleChoice(manufacteList,item)">
@@ -53,7 +53,7 @@
 
         </div>
         <div class="item text-wrap">
-                    <span class="block  iconfont icon-xzcplx "
+                    <span class="block  iconfont icon-xzcplx padding-bottom"
                           style="font-size: 0.9rem!important;"> 活动类型</span>
           <ion-checkbox class="item-borderless checkbox-positive" ng-checked="dengji.acttype==0"
                         ng-click="dengji.acttype=0">无

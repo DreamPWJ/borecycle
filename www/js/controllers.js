@@ -138,7 +138,7 @@ angular.module('starter.controllers', [])
             localStorage.setItem("user", JSON.stringify(data.data));
             var services = data.data.services;
             //用户会员类型  0 无 1信息提供者  2回收者
-            var usertype = services.length == 0 ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2;
+            var usertype = (services==null ||services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2;
             localStorage.setItem("usertype", usertype);
             $scope.usertype = usertype;
             //向父级传数据
@@ -275,8 +275,8 @@ angular.module('starter.controllers', [])
               localStorage.setItem("user", JSON.stringify(data.data));
               var services = data.data.services;
               //用户会员类型  0 无 1信息提供者  2回收者
-              localStorage.setItem("usertype", services.length == 0 ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
-              if (services.length == 0) {//旧会员 完善信息
+              localStorage.setItem("usertype",(services==null || services.length == 0 )? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
+              if (services==null  || services.length == 0) {//旧会员 完善信息
                 $state.go("organizingdata")
               }
             } else {
@@ -361,8 +361,8 @@ angular.module('starter.controllers', [])
             localStorage.setItem("user", JSON.stringify(data.data));
             var services = data.data.services;
             //用户会员类型  0 无 1信息提供者  2回收者
-            localStorage.setItem("usertype", services.length == 0 ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
-            if (services.length == 0) {//旧会员 完善信息
+            localStorage.setItem("usertype",(services==null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
+            if (services==null || services.length == 0) {//旧会员 完善信息
               $state.go("organizingdata")
             }
           } else {
@@ -498,7 +498,7 @@ angular.module('starter.controllers', [])
           localStorage.setItem("user", JSON.stringify(datas.data));
           var services = datas.data.services;
           //用户会员类型  0 无 1信息提供者  2回收者
-          localStorage.setItem("usertype", services.length == 0 ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
+          localStorage.setItem("usertype",(services==null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
           //赋值
           var userext = datas.data.userext;
           $scope.user = {
@@ -591,7 +591,7 @@ angular.module('starter.controllers', [])
               localStorage.setItem("user", JSON.stringify(datas.data));
               var services = datas.data.services;
               //用户会员类型  0 无 1信息提供者  2回收者
-              localStorage.setItem("usertype", services.length == 0 ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
+              localStorage.setItem("usertype",(services==null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
             } else {
               CommonService.platformPrompt(datas.message, 'close');
             }
@@ -1461,7 +1461,7 @@ angular.module('starter.controllers', [])
         localStorage.setItem("user", JSON.stringify(data.data));
         var services = data.data.services;
         //用户会员类型  0 无 1信息提供者  2回收者
-        var usertype = services.length == 0 ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2;
+        var usertype =(services==null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2;
         localStorage.setItem("usertype", usertype);
         $scope.usertype = usertype;
       } else {
