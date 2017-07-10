@@ -876,6 +876,7 @@ angular.module('starter.services', [])
         }
         //获取最后一级地址信息 关闭modal
         if (item.Level == 3) {
+          $scope.addrareacountyone={};
           $scope.addresspcd = item.MergerName;
           $scope.addrareacountyone = item;
           $scope.modal.hide();

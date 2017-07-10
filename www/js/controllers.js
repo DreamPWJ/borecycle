@@ -505,13 +505,16 @@ angular.module('starter.controllers', [])
           var services = datas.data.services;
           //用户会员类型  0 无 1信息提供者  2回收者
           localStorage.setItem("usertype", (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
+          if((services.length == 1 && services.indexOf('1') != -1&&datas.data.userext==null)){ //如果是信息供应者完善资料
+            $scope.isInfoProvider = true;
+          }
           //赋值
           var userext = datas.data.userext;
           $scope.user = {
             username: userext.shopname,//姓名
             mobile: Number(userext.shopphone),//手机号码
             recoveryqty: userext.recovery,//月回收量
-            usertype: $scope.isUpgradeRecycler ? 2 : 1  //用户类型
+            usertype: $scope.isUpgradeRecycler ?($scope.isInfoProvider?1:2): 1  //用户类型
           }
         } else {
           CommonService.platformPrompt(datas.message, 'close');
@@ -1511,6 +1514,7 @@ angular.module('starter.controllers', [])
         var certstate = data.data.certstate;//获取认证状态参数
         //ubstr(start,length)表示从start位置开始，截取length长度的字符串
         $scope.phonestatus = certstate.substr(0, 1);//手机认证状态码
+        $scope.usertype=$rootScope.userinfo.services==null||$rootScope.userinfo.services.length==0?1:($rootScope.userinfo.userext==null?2:3);//会员类型 1.老会员没有完善资料 2. 新会员 没有完善资料 3.其他
         $scope.services = [];
         angular.forEach($rootScope.userinfo.services, function (item) {
           if (item == 1) {
@@ -1528,7 +1532,7 @@ angular.module('starter.controllers', [])
 
         })
         $scope.servicesstr = $scope.services.join(",")
-        $scope.isprovider = $rootScope.userinfo.services.indexOf('2') != -1 && $rootScope.userinfo.services.indexOf('3') != -1 && $rootScope.userinfo.services.indexOf('4') != -1 ? true : false
+        $scope.isprovider =$rootScope.userinfo.services.indexOf('2') != -1 && $rootScope.userinfo.services.indexOf('3') != -1 && $rootScope.userinfo.services.indexOf('4') != -1 ? true : false
       } else {
         CommonService.platformPrompt('获取用户信息失败', 'close');
       }
@@ -2110,7 +2114,7 @@ angular.module('starter.controllers', [])
           $scope.ssx = addressComponent.province + addressComponent.city + addressComponent.district;//省市县
           $scope.dengji.addrdetail = addressComponent.township + addressComponent.streetNumber.street;
         }).then(function () {
-          AddressService.getAddressBySSX({ssx: $scope.dengji.ssx}).success(function (data) {
+          AddressService.getAddressBySSX({ssx: $scope.ssx}).success(function (data) {
             console.log(data);
             if (data.code == 1001) {
               $scope.addrareacountyone = data.data;
