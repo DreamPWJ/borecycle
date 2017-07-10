@@ -290,6 +290,12 @@ angular.module('starter.controllers', [])
 
   //手机验证登录页面
   .controller('MobileLoginCtrl', function ($scope, $state, $rootScope, $interval, CommonService, MainService, AccountService) {
+    //删除记住用户信息
+    localStorage.removeItem("userid");
+    localStorage.removeItem("usersecret");
+    localStorage.removeItem("user");
+    localStorage.removeItem("usertype");
+
     $scope.user = {};//提前定义用户对象
     $scope.agreedeal = true;//同意用户协议
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
@@ -1470,11 +1476,11 @@ angular.module('starter.controllers', [])
     }).then(function () {
       if (WeiXinService.isWeiXin()) { //如果是微信
         $scope.isWeiXin = true;
-        CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract, BoRecycle.mobApi + '/help/22', '');
+        CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract, BoRecycle.mobApi + '/#/help/22', '');
       }
       //调用分享面板
       $scope.shareActionSheet = function (type) {
-        CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract, BoRecycle.mobApi + '/help/22', '', type);
+        CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract, BoRecycle.mobApi + '/#/help/22', '', type);
       }
     })
 
@@ -1986,11 +1992,11 @@ angular.module('starter.controllers', [])
       }).then(function () {
         if (WeiXinService.isWeiXin()) { //如果是微信
           $scope.isWeiXin = true;
-          CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract, BoRecycle.mobApi + '/help/' + id, '');
+          CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract, BoRecycle.mobApi + '/#/help/' + id, '');
         }
         //调用分享面板
         $scope.shareActionSheet = function (type) {
-          CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract, BoRecycle.mobApi + '/help/' + id, '', type);
+          CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract, BoRecycle.mobApi + '/#/help/' + id, '', type);
         }
       })
     }
@@ -2638,7 +2644,9 @@ angular.module('starter.controllers', [])
           out_trade_no: new Date().getTime(),//订单号
           subject: "收收商品名称",//商品名称
           body: "收收商品详情",//商品详情
-          total_fee: $scope.pay.money //总金额
+          total_fee: $scope.pay.money, //总金额
+          userid: localStorage.getItem("userid"),//用户userid
+          name: JSON.parse(localStorage.getItem("user")).username//用户名
         }
         console.log($scope.datas);
         PayService.aliPayRecharge($scope.datas).success(function (data) {
@@ -2655,7 +2663,9 @@ angular.module('starter.controllers', [])
           out_trade_no: new Date().getTime(),//订单号
           subject: "收收商品名称",//商品名称
           body: "收收商品详情",//商品详情
-          total_fee: $scope.pay.money  //总金额
+          total_fee: $scope.pay.money,  //总金额
+          userid: localStorage.getItem("userid"),//用户userid
+          name: JSON.parse(localStorage.getItem("user")).username//用户名
         }
         console.log($scope.datas);
         PayService.wxPayRecharge($scope.datas).success(function (data) {

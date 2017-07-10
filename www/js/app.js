@@ -98,6 +98,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       function resume() {
         if (window.plugins.jPushPlugin.isPlatformIOS()) {
           window.plugins.jPushPlugin.setBadge(0);
+          window.plugins.jPushPlugin.resetBadge();
           window.plugins.jPushPlugin.setApplicationIconBadgeNumber(0);
         } else if (device.platform == "Android") {
           window.plugins.jPushPlugin.setLatestNotificationNum(3);
@@ -135,9 +136,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     //设置默认返回按钮的文字
     $ionicConfigProvider.backButton.previousTitleText(false).text('');
 
-    $ionicConfigProvider.views.maxCache(15);
-    $ionicConfigProvider.views.transition('platform');
-    $ionicConfigProvider.views.forwardCache(true); // 缓存下一页
+    // $ionicConfigProvider.views.maxCache(15);
+    // $ionicConfigProvider.views.transition('platform');
+    // $ionicConfigProvider.views.forwardCache(true); // 缓存下一页
 
     // false 默认所有的滚动使用native，会比js的滚动快很多，并且很平滑 ; 安卓使用,ios不使用
     $ionicConfigProvider.scrolling.jsScrolling(false);
@@ -409,6 +410,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //用户密码登录页面
       .state('login', {
         url: '/login',
+        cache: false,
         templateUrl: 'templates/login.html',
         controller: 'LoginCtrl'
       })
@@ -416,6 +418,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //手机验证登录页面
       .state('mobilelogin', {
         url: '/mobilelogin',
+        cache: false,
         templateUrl: 'templates/account/mobilelogin.html',
         controller: 'MobileLoginCtrl'
       })
@@ -423,6 +426,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //注册页面
       .state('register', {
         url: '/register',
+        cache: false,
         templateUrl: 'templates/account/register.html',
         controller: 'RegisterCtrl'
       })
@@ -430,6 +434,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //找回密码
       .state('findpassword', {
         url: '/findpassword',
+        cache: false,
         templateUrl: 'templates/account/findpassword.html',
         controller: 'FindPasswordCtrl'
       })
