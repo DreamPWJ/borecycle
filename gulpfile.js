@@ -80,7 +80,7 @@ gulp.task('copyHtml', function () {
 /*复制fonts*/
 gulp.task('copyFonts', function () {
   return gulp.src('./www/fonts/**')      //复制的文件
-    .pipe(minifyCss())    //执行压缩
+/*    .pipe(minifyCss()) */   //执行压缩
     .pipe(gulp.dest('./borecycle/fonts/'));  //输出文件夹
 });
 
