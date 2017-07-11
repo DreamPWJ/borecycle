@@ -2628,16 +2628,16 @@ angular.module('starter.controllers', [])
     $scope.confirmPayment = function () { //充值
       /*     if (ionic.Platform.isWebView()) {*/
       if ($scope.pay.choice == "A") {//支付宝支付
-        $scope.datas = {
+        $scope.alidatas = {
           out_trade_no: new Date().getTime(),//订单号
-          subject: "收收商品名称",//商品名称
-          body: "收收商品详情",//商品详情
+          subject: "收收充值",//商品名称
+          body: "收收充值详情",//商品详情
           total_fee: $scope.pay.money, //总金额
           userid: localStorage.getItem("userid"),//用户userid
           name: JSON.parse(localStorage.getItem("user")).username//用户名
         }
-        console.log($scope.datas);
-        PayService.aliPayRecharge($scope.datas).success(function (data) {
+        console.log($scope.alidatas);
+        PayService.aliPayRecharge($scope.alidatas).success(function (data) {
           console.log(data);
           if (data.code == 1001) {
             PayService.aliPay(data.data);
@@ -2647,16 +2647,16 @@ angular.module('starter.controllers', [])
 
         })
       } else if ($scope.pay.choice == "B") {//微信支付
-        $scope.datas = {
+        $scope.wxdatas = {
           out_trade_no: new Date().getTime(),//订单号
-          subject: "收收商品名称",//商品名称
-          body: "收收商品详情",//商品详情
+          subject: "收收充值",//商品名称
+          body: "收收充值详情",//商品详情
           total_fee: $scope.pay.money,  //总金额
           userid: localStorage.getItem("userid"),//用户userid
           name: JSON.parse(localStorage.getItem("user")).username//用户名
         }
-        console.log($scope.datas);
-        PayService.wxPayRecharge($scope.datas).success(function (data) {
+        console.log($scope.wxdatas);
+        PayService.wxPayRecharge($scope.wxdatas).success(function (data) {
           console.log(data);
           if (data.code == 1001) {
             PayService.weixinPay(data.data);

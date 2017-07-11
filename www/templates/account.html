@@ -57,12 +57,13 @@
       </div>
     </div>
     <div class="list">
-      <a nav-direction=forward ng-href="#/myorder" class="item item-icon-left item-icon-right order ">
+      <a nav-direction=forward ng-href="#/myorder" class="item item-icon-left item-icon-right  ">
         <i class="icon iconfont icon-form "></i>
         <h2>我的订单</h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
-      <a ng-if="usertype==2||usertype==0" nav-direction=forward ng-href="#/wallet" class="item item-icon-left item-icon-right ">
+      <a ng-if="usertype==2||usertype==0" nav-direction=forward ng-href="#/wallet"
+         class="item item-icon-left item-icon-right ">
         <i class="icon iconfont icon-moneybag"></i>
         <h2>我的钱包 <span class="item-note">余额 ：{{orderSum.account | currency :'￥'}}</span></h2>
         <i class="icon ion-ios-arrow-right"></i>
@@ -78,11 +79,6 @@
         <h2>我的地址</h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
-      <!--      <a nav-direction=forward ng-href="" class="item item-icon-left item-icon-right ">
-              <i class="icon iconfont icon-zizhanghao"></i>
-              <h2>子账号</h2>
-              <i class="icon ion-ios-arrow-right"></i>
-            </a>-->
 
     </div>
     <div class="list">
