@@ -2370,6 +2370,8 @@ angular.module('starter.controllers', [])
     if (!CommonService.isLogin(true)) {
       return;
     }
+    $scope.ut=localStorage.getItem("usertype");
+    console.log(localStorage.getItem("usertype"));
     //总金额
     MyWalletService.get(localStorage.getItem("userid")).success(function (data) {
       $scope.totalamount = data.data.totalamount;
