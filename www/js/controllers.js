@@ -2478,14 +2478,16 @@ angular.module('starter.controllers', [])
     }
     $scope.getColor=function (state) {
       switch (state){
-        case "00":
-          return "green";
-        case "01":
+        case "成功":
           return "calm";
-        case "02":
-          return "calm";
-        case "03":
+        case "失败":
           return "assertive";
+        case "取消":
+          return "assertive";
+        case "处理中":
+          return "green";
+        default:
+          return "";
       }
     }
     $scope.gettradelist(0);//产品加载刷新
