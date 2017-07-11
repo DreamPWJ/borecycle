@@ -3,6 +3,7 @@
   top: 0.4rem;
   width: 1.8rem;
   height: 1.8rem;
+  display:none;
 }
 
 #orderlist, #myorderlist {

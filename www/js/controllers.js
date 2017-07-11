@@ -305,10 +305,7 @@ angular.module('starter.controllers', [])
     }
     //获取验证码
     $scope.getVerifyCode = function () {
-      if (!$scope.paraclass) {
-        CommonService.platformPrompt("手机号输入错误或空", 'close');
-        return;
-      }
+
       CommonService.getVerifyCode($scope, $scope.user.mobile);
     }
 
@@ -389,10 +386,7 @@ angular.module('starter.controllers', [])
 
     //获取验证码
     $scope.getVerifyCode = function () {
-      if (!$scope.paraclass) {
-        CommonService.platformPrompt("手机号或邮箱输入错误或空", 'close');
-        return;
-      }
+
       CommonService.getVerifyCode($scope, $scope.user.account);
     }
     $scope.checkChecded = function () {
@@ -446,10 +440,7 @@ angular.module('starter.controllers', [])
 
     //获取验证码
     $scope.getVerifyCode = function () {
-      if (!$scope.paraclass) {
-        CommonService.platformPrompt("手机号或邮箱输入错误或空", 'close');
-        return;
-      }
+
       CommonService.getVerifyCode($scope, $scope.user.account);
     }
 
@@ -539,10 +530,7 @@ angular.module('starter.controllers', [])
     }
     //获取验证码
     $scope.getVerifyCode = function () {
-      if (!$scope.paraclass) {
-        CommonService.platformPrompt("手机号输入错误或空", 'close');
-        return;
-      }
+
       CommonService.getVerifyCode($scope, $scope.user.mobile);
     }
 
@@ -1116,7 +1104,7 @@ angular.module('starter.controllers', [])
             $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
             CommonService.platformPrompt("订单关闭成功", "close")
           } else {
-            CommonService.platformPrompt("订单关闭失败", "close")
+            CommonService.platformPrompt(data.message, "close")
           }
         })
       });
@@ -1154,7 +1142,7 @@ angular.module('starter.controllers', [])
             $scope.getMyOrderDetail();//订单详情刷新
             CommonService.platformPrompt("订单关闭成功", "close")
           } else {
-            CommonService.platformPrompt("订单关闭失败", "close")
+            CommonService.platformPrompt(data.message, "close")
           }
         })
       });
@@ -1372,7 +1360,7 @@ angular.module('starter.controllers', [])
             type: 2
           })
         } else {
-          CommonService.platformPrompt("回收付款失败", "close")
+          CommonService.platformPrompt(data.message, "close")
         }
       })
     }
@@ -1700,7 +1688,7 @@ angular.module('starter.controllers', [])
         if (data.code == 1001) {
           CommonService.platformPrompt('恭喜您 地址信息' + $scope.buttonText + '成功', '');
         } else {
-          CommonService.platformPrompt('地址信息' + $scope.buttonText + '失败', 'close');
+          CommonService.platformPrompt(data.message, 'close');
         }
       })
 
@@ -1764,10 +1752,7 @@ angular.module('starter.controllers', [])
 
     //获取验证码
     $scope.getVerifyCode = function () {
-      if (!$scope.paraclass) {
-        CommonService.platformPrompt("手机号输入错误或空", 'close');
-        return;
-      }
+
       CommonService.getVerifyCode($scope, $scope.user.mobile);
     }
 
@@ -1785,7 +1770,7 @@ angular.module('starter.controllers', [])
         if (data.code == 1001) {
           CommonService.platformPrompt('绑定手机号成功', 'accountsecurity');
         } else {
-          CommonService.platformPrompt('绑定手机号失败', 'close');
+          CommonService.platformPrompt(data.message, 'close');
         }
 
       })
@@ -1804,10 +1789,7 @@ angular.module('starter.controllers', [])
 
     //获取验证码
     $scope.getVerifyCode = function () {
-      if (!$scope.paraclass) {
-        CommonService.platformPrompt("邮箱格式输入错误或空", 'close');
-        return;
-      }
+
       CommonService.getVerifyCode($scope, $scope.email.email);
     }
 
@@ -1827,7 +1809,7 @@ angular.module('starter.controllers', [])
         if (data.code == 1001) {
           CommonService.platformPrompt('绑定邮箱成功', 'accountsecurity');
         } else {
-          CommonService.platformPrompt('绑定邮箱失败', 'close');
+          CommonService.platformPrompt(data.message, 'close');
         }
       })
     }
@@ -1851,10 +1833,7 @@ angular.module('starter.controllers', [])
 
     //e签宝验证码
     $scope.getVerifyCode = function () {
-      if (!$scope.paraclass) {
-        CommonService.platformPrompt("手机号输入错误或空", 'close');
-        return;
-      }
+
       event.preventDefault();
       CommonService.countDown($scope)
       //发送实名认证码，返回实名认证服务id,提交实名认证时需填写
@@ -1927,7 +1906,7 @@ angular.module('starter.controllers', [])
           user.certstate = certstate.join(''); //将数组转换成字符串
           localStorage.setItem('user', JSON.stringify(user));
         } else {
-          CommonService.platformPrompt('实名认证失败', 'close');
+          CommonService.platformPrompt(data.message, 'close');
         }
       })
 
@@ -1962,7 +1941,7 @@ angular.module('starter.controllers', [])
         if (data.code == 1001) {
           CommonService.platformPrompt('提交反馈成功', '');
         } else {
-          CommonService.platformPrompt('提交反馈失败', 'close');
+          CommonService.platformPrompt(data.message, 'close');
         }
       })
     }
@@ -2189,7 +2168,7 @@ angular.module('starter.controllers', [])
         if (data.code == 1001) {
           CommonService.platformPrompt("登记信息提交成功", 'myorder');
         } else {
-          CommonService.platformPrompt("登记信息提交失败", 'close');
+          CommonService.platformPrompt(data.message, 'close');
         }
 
       })
@@ -2311,7 +2290,7 @@ angular.module('starter.controllers', [])
           if (data.code == 1001) {
             CommonService.platformPrompt("登记货源提交成功", 'myorder');
           } else {
-            CommonService.platformPrompt("登记货源提交失败", 'close');
+            CommonService.platformPrompt(data.message, 'close');
           }
 
         })
@@ -2352,7 +2331,7 @@ angular.module('starter.controllers', [])
         if (data.code == 1001) {
           CommonService.platformPrompt('恭喜您 评价成功', '');
         } else {
-          CommonService.platformPrompt('评价提交失败', 'close');
+          CommonService.platformPrompt(data.message, 'close');
         }
 
       })

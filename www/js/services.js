@@ -172,7 +172,7 @@ angular.module('starter.services', [])
       },
       shareActionSheet: function (title, desc, link, imgUrl, type) { //分享功能
         if (imgUrl == null || imgUrl == "") { //默认分享图片链接
-          imgUrl = "http://www.boolv.com/images/logo.png";
+          imgUrl = "http://f.boolv.com/logo/boolv.recycle.s.png";
         }
         CommonService = this;
         if (ionic.Platform.isWebView()) {
@@ -422,7 +422,7 @@ angular.module('starter.services', [])
             $scope.paracont = second + "s后重试";
             second--;
           }
-        }, 1000, 100);
+        }, 1000, 122);
       },
       getVerifyCode: function ($scope, account) {//获取验证码
         event.preventDefault();
