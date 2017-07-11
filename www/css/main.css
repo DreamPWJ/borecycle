@@ -67,8 +67,6 @@
   height: 5rem !important;
 }
 
-
-
 #main .topbj {
   background: url(../img/main/topbj.jpg) 100% 100%;
   background-size: cover;
@@ -244,6 +242,11 @@
 #referenceprice .col-25 .item {
   text-align: center;
   padding-left: 0;
+  padding-right: 0;
+}
+
+#referenceprice .col-25 .item h2 {
+  font-size: 0.9rem !important;
 }
 
 .classify-selected h2 {

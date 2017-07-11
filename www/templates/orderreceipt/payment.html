@@ -21,7 +21,7 @@
           应付金额 : {{orderinfo.amount | currency:'￥'}}
         </ion-item>
         <ion-item class="item-button-right">
-          我的余额 : {{orderSum.account| currency:'￥'}} {{(orderSum.account < orderinfo.amount)?'余额不足':''}}
+          我的余额 : {{orderSum.account| currency:'￥'}} {{(orderSum.account < orderinfo.amount)?' (余额不足)':''}}
           <button class="button button-balanced" ui-sref="recharge">充值</button>
         </ion-item>
       </div>
@@ -37,7 +37,7 @@
     </ion-list>
   </ion-content>
   <div class="padding light-bg bottom-0" keyboard-attach>
-    <a class="button button-positive  full-image" ng-click="confirmPayment()">确认付款</a>
+    <a class="button button-positive  full-image" ng-disabled="orderSum.account < orderinfo.amount" ng-click="confirmPayment()">确认付款</a>
   </div>
 
 </ion-view>

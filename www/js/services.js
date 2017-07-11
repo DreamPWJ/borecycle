@@ -382,7 +382,7 @@ angular.module('starter.services', [])
       getStateName: function () {    //得到上一个路由名称方法
         var stateName = "";
         var backView = $ionicHistory.backView();
-        if (backView && backView.stateName != "tab.account" && backView.stateName != "setting" && backView.stateName != "organizingdata" && backView.stateName != "findpassword" && backView.stateName != "register" && backView.stateName != "order" && backView.stateName != "help") {
+        if (backView && backView.stateName != "tab.account" && backView.stateName != "login"&& backView.stateName != "setting" && backView.stateName != "organizingdata" && backView.stateName != "findpassword" && backView.stateName != "register" && backView.stateName != "order" && backView.stateName != "help") {
           stateName = backView.stateName;
         }
         if (stateName) {
@@ -2317,7 +2317,7 @@ angular.module('starter.services', [])
         cordova.plugins.AliPay.pay(payInfo, function success(e) {
           $state.go("wallet");
         }, function error(e) {
-          CommonService.platformPrompt("支付宝支付失败: " + JSON.stringify(e).memo, "close");
+          CommonService.platformPrompt("支付宝支付失败: " + e.memo, "close");
         });
 
         //e.resultStatus  状态代码  e.result  本次操作返回的结果数据 e.memo 提示信息

@@ -53,8 +53,8 @@
           <ion-item ng-if="orderDetail.type==2">
             交货方式 : {{orderDetail.delivery==1?'上门回收':'送货上门'}}
           </ion-item>
-          <ion-item ng-if="orderDetail.type==1">
-            活动类型 : {{orderDetail.acttype==0?'无':'以旧换新'}}
+          <ion-item ng-if="orderDetail.type==1&&orderDetail.acttype==1">
+            活动类型 : 以旧换新
           </ion-item>
           <ion-item ng-if="orderDetail.type==1&&orderDetail.shortename">
             所属厂商 : {{orderDetail.shortename}}

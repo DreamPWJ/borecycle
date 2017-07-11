@@ -277,7 +277,7 @@ angular.module('starter.controllers', [])
               //用户会员类型  0 无 1信息提供者  2回收者
               localStorage.setItem("usertype", (services == null || services.length == 0 ) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
               if (services == null || services.length == 0) {//旧会员 完善信息
-                $state.go("organizingdata")
+                CommonService.platformPrompt("旧会员请先完善资料", 'organizingdata');
               }
             } else {
               CommonService.platformPrompt(data.message, 'close');
@@ -363,7 +363,7 @@ angular.module('starter.controllers', [])
             //用户会员类型  0 无 1信息提供者  2回收者
             localStorage.setItem("usertype", (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
             if (services == null || services.length == 0) {//旧会员 完善信息
-              $state.go("organizingdata")
+              CommonService.platformPrompt("旧会员请先完善资料", 'organizingdata');
             }
           } else {
             CommonService.platformPrompt(data.message, 'close');
@@ -905,7 +905,7 @@ angular.module('starter.controllers', [])
           })
           $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
         } else {
-          CommonService.platformPrompt("接单失败", "close");
+          CommonService.platformPrompt(data.message, "close");
         }
       })
 
