@@ -466,8 +466,16 @@ angular.module('starter.controllers', [])
 
     }
   })
+
   //完善资料页面
   .controller('OrganizingDataCtrl', function ($scope, $rootScope, CommonService, $ionicHistory, BoRecycle, OrderService, AccountService, AddressService) {
+    //上传图片数组集合
+    $scope.imageList = [];
+    $scope.ImgsPicAddr = [];//图片信息数组
+    $scope.uploadActionSheet = function () {
+      CommonService.uploadActionSheet($scope, 'User', true);
+    }
+
     CommonService.customModal($scope, 'templates/modal/addressmodal.html');
     $scope.$on('$ionicView.beforeEnter', function () {
       if ($ionicHistory.backView() && $ionicHistory.backView().stateName == "accountinfo") { //上一级路由名称
@@ -502,8 +510,8 @@ angular.module('starter.controllers', [])
           //赋值
           var userext = datas.data.userext;
           $scope.user = {
-            username: userext.shopname,//姓名
-            mobile: Number(userext.shopphone),//手机号码
+            username: userext.name,//姓名
+            mobile: Number(userext.phone),//手机号码
             recoveryqty: userext.recovery,//月回收量
             usertype: $scope.isUpgradeRecycler ? ($scope.isInfoProvider ? 1 : 2) : 1  //用户类型
           }
@@ -512,7 +520,7 @@ angular.module('starter.controllers', [])
         }
       })
     }
-    //获取产品品类
+//获取产品品类
     OrderService.getProductList({ID: "", Name: ""}).success(function (data) {
       console.log(data);
       if (data.code == 1001) {
@@ -528,26 +536,26 @@ angular.module('starter.controllers', [])
     $scope.checkphone = function (mobilephone) {//检查手机号
       AccountService.checkMobilePhone($scope, mobilephone);
     }
-    //获取验证码
+//获取验证码
     $scope.getVerifyCode = function () {
 
       CommonService.getVerifyCode($scope, $scope.user.mobile);
     }
 
-    //获取省市县
+//获取省市县
     $scope.getAddressPCCList = function (item) {
       //获取省份信息
       AddressService.getAddressPCCList($scope, item);
     }
 
 
-    //打开选择省市县modal
+//打开选择省市县modal
     $scope.openModal = function () {
       $scope.modal.show();
       $scope.getAddressPCCList();
     }
 
-    //完善资料提交
+//完善资料提交
     $scope.organizingdataSubmit = function () {
 
       if ($scope.verifycode != $scope.user.code) {
@@ -574,6 +582,7 @@ angular.module('starter.controllers', [])
       $scope.user.userid = localStorage.getItem("userid");//用户id
       $scope.user.grps = $scope.recyclingCategory.join(",");
       $scope.user.addrcode = $scope.addrareacountyone.ID;
+      $scope.user.img = $scope.ImgsPicAddr[0]; //证件照地址
       console.log($scope.user);
 
       AccountService.setUserInfo($scope.user).success(function (data) {
@@ -596,6 +605,16 @@ angular.module('starter.controllers', [])
         }
       })
     }
+    $scope.bigImage = false;    //初始默认大图是隐藏的
+    $scope.hideBigImage = function () {
+      $scope.bigImage = false;
+    };
+    //点击图片放大
+    $scope.shouBigImage = function (imageName) {  //传递一个参数（图片的URl）
+      $scope.Url = imageName;                   //$scope定义一个变量Url，这里会在大图出现后再次点击隐藏大图使用
+      $scope.bigImage = true;                   //显示大图
+    };
+
   })
 
   //参考价页面
@@ -651,13 +670,16 @@ angular.module('starter.controllers', [])
     if (!CommonService.isLogin(true)) {
       return;
     }
+    CommonService.showConfirm('收收提示', '尊敬的用户,您好！完善资料并且申请成为回收商才能查看订单！', '完善资料', '暂不完善', 'organizingdata', '');
+
     var user = JSON.parse(localStorage.getItem("user"));//用户信息
     if (!user.userext) {
-      CommonService.platformPrompt("完善资料并且申请成为回收商才能查看订单", '');
+      CommonService.showConfirm('收收提示', '尊敬的用户,您好！完善资料并且申请成为回收商才能查看订单！', '完善资料', '暂不完善', 'organizingdata', '');
       return;
     }
+
     if (user.services.length == 1 && user.services.indexOf('1') != -1) {
-      CommonService.platformPrompt("信息供应者没有权限查看订单,请申请成为回收商", '');
+      CommonService.showConfirm('收收提示', '尊敬的用户,您好！信息供应者没有权限查看订单,请申请成为回收商！', '申请回收商', '暂不申请', 'organizingdata', '');
       return;
     }
 
@@ -2349,7 +2371,7 @@ angular.module('starter.controllers', [])
     if (!CommonService.isLogin(true)) {
       return;
     }
-    $scope.ut=localStorage.getItem("usertype");
+    $scope.ut = localStorage.getItem("usertype");
     console.log(localStorage.getItem("usertype"));
     //总金额
     MyWalletService.get(localStorage.getItem("userid")).success(function (data) {

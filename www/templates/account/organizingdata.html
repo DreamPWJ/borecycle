@@ -10,34 +10,34 @@
     <form name="organizingdataForm">
       <div class="list">
         <div ng-if="!isInfoProvider">
-        <ion-item class="item-divider " >
-          用户类型
-          <p class="text-right item-note"><a class="positive  icon ion-ios-help-outline" ng-href="#/help/25"
-                                             nav-direction=forward> 什么是用户类型</a></p>
-        </ion-item>
-        <ion-item ng-if="!isUpgradeRecycler" class="item-divider light-bg text-center usertype">
-          <label ng-click="user.usertype=1" for="xinxi" >
-            <input type="checkbox" id="xinxi"  ng-checked="user.usertype==1">
-            <span>信息提供者</span>
-          </label>
-          <label ng-click="user.usertype=2" for="huishou">
-            <input type="checkbox" id="huishou"  ng-checked="user.usertype==2">
-            <span>回收商</span>
-          </label>
-        </ion-item>
-        <div class="services padding light-bg text-wrap " ng-if="user.usertype==2">
-          <ion-checkbox class="item-borderless checkbox-positive " ng-click="checkChecded(services)"
-                        ng-repeat="item in services" ng-model="item.checked">
-            {{item.value}}
-          </ion-checkbox>
-        </div>
+          <ion-item class="item-divider ">
+            用户类型
+            <p class="text-right item-note"><a class="positive  icon ion-ios-help-outline" ng-href="#/help/25"
+                                               nav-direction=forward> 什么是用户类型</a></p>
+          </ion-item>
+          <ion-item ng-if="!isUpgradeRecycler" class="item-divider light-bg text-center usertype">
+            <label ng-click="user.usertype=1" for="xinxi">
+              <input type="checkbox" id="xinxi" ng-checked="user.usertype==1">
+              <span>信息提供者</span>
+            </label>
+            <label ng-click="user.usertype=2" for="huishou">
+              <input type="checkbox" id="huishou" ng-checked="user.usertype==2">
+              <span>回收商</span>
+            </label>
+          </ion-item>
+          <div class="services padding light-bg text-wrap " ng-if="user.usertype==2">
+            <ion-checkbox class="item-borderless checkbox-positive " ng-click="checkChecded(services)"
+                          ng-repeat="item in services" ng-model="item.checked">
+              {{item.value}}
+            </ion-checkbox>
+          </div>
         </div>
         <label class="item item-input">
           <span class="input-label icon ion-ios-person-outline"> 姓名</span>
           <input type="text" name="username" ng-model="user.username" placeholder="请输入真实姓名" required/>
         </label>
         <label class="item item-input">
-          <span class="input-label icon ion-ios-telephone-outline"> 手机号码</span>
+          <span class="input-label icon ion-iphone"> 手机号码</span>
           <input type="number" name="mobile" ng-model="user.mobile" ng-keyup="checkphone(user.mobile)"
                  maxlength="11" placeholder="请输入真实的手机号码" required/>
         </label>
@@ -51,12 +51,12 @@
           </span>
         </div>
         </button>
-        <label class="item item-input">
-          <span class="input-label icon ion-ios-calculator-outline"> 月回收量</span>
+        <label ng-if="!isInfoProvider" class="item item-input">
+          <span class="input-label icon ion-ios-download-outline"> 月回收量</span>
           <input type="number" name="recoveryqty" ng-model="user.recoveryqty" placeholder="请输入月回收量" maxlength="8"
                  required/>
         </label>
-        <div class="item text-wrap">
+        <div ng-if="!isInfoProvider" class="item text-wrap">
           <span class="block icon ion-ios-trash-outline padding-bottom"> 回收品类</span>
           <ion-checkbox ng-repeat="item in productList" class="item-borderless checkbox-positive"
                         ng-click="checkChecded()" ng-model="item.checked">
@@ -64,11 +64,35 @@
           </ion-checkbox>
 
         </div>
+        <label ng-if="isInfoProvider" class="item item-input">
+          <span class="input-label icon ion-ios-home-outline"> 企业名称</span>
+          <input type="text" name="shopname" ng-model="user.shopname" placeholder="请输入门店名称" maxlength="10"
+                 required/>
+        </label>
+        <label ng-if="isInfoProvider" class="item item-input">
+          <span class="input-label icon ion-ios-telephone-outline"> 联系电话</span>
+          <input type="number" name="shopphone" ng-model="user.shopphone" check-form
+                 ng-blur="checkForm(user.shopphone,'手机号输入错误','mobilephone','')" placeholder="请输入门店联系电话"
+                 required/>
+        </label>
         <label class="item item-input " ng-click="openModal()">
-          <span class="input-label icon ion-ios-location-outline"> 回收区域 </span>
+          <span class="input-label icon ion-ios-location-outline"> {{isInfoProvider?'企业地址':'回收区域'}}  </span>
           <p class="{{addresspcd?'dark':'grey'}}">{{addresspcd?addresspcd:"请选择回收区域"}}</p>
         </label>
-
+        <div ng-if="isInfoProvider">
+          <div class="item item-input ">
+            <span class="input-label"> 上传工作证 </span>
+            <input type="text" placeholder="请参考示例" class="col-60 " style="background-color: #FFFFFF" readonly>
+            <i ng-click="uploadActionSheet()" class="icon iconfont icon-add positive"></i>
+          </div>
+          <div class="row  row-wrap padding-top grey">
+            <span class="padding">示例 ：</span>
+            <img ng-click="shouBigImage('img/account/employeecard.jpg')" ng-src="img/account/employeecard.jpg"
+                 alt="上传工作证示例"
+                 style="height: 12rem"
+                 class="col-80 padding">
+          </div>
+        </div>
         <p></p>
         <div class="padding-horizontal">
           <button class="button full-image button-positive " ng-click="organizingdataSubmit()"
@@ -83,6 +107,9 @@
     </form>
 
   </ion-content>
-
+  <div ng-if="bigImage" class="popover-backdrop dark-bg pic-has-header" ng-click="hideBigImage()">
+    <img class="full-image"
+         ng-src="{{Url}}"/>
+  </div>
 </ion-view>
 

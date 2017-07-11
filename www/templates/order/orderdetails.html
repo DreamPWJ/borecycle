@@ -1,12 +1,14 @@
 <ion-view>
   <ion-nav-buttons side="left">
-    <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back ui-sref="order({orderType:orderType})"></button>
+    <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back
+            ui-sref="order({orderType:orderType})"></button>
   </ion-nav-buttons>
   <ion-nav-title>
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 回收单详情</h1>
   </ion-nav-title>
 
-  <ion-content overflow-scroll="false" class="stable-bg " ng-class="{true:'has-button-footer'}[orderDetail.state<=4||orderDetail.state==5]" id="orderdetails">
+  <ion-content overflow-scroll="false" class="stable-bg "
+               ng-class="{true:'has-button-footer'}[orderDetail.state<=4||orderDetail.state==5]" id="orderdetails">
     <ion-list hide-show>
       <ion-item class=" item-icon-right" ng-click="toggle(0)">
         {{type==1?orderDetail.djno:orderDetail.orno}} 状态 : <span
@@ -26,7 +28,11 @@
         </ion-item>
         <ion-item class="text-wrap item-icon-right">
           联系地址 : {{orderDetail.addrdetail }}({{orderDetail.area.MergerName}})
-          <i ng-click="navigation(orderDetail.longitude,orderDetail.latitude)" class="icon iconfont icon-daohang1 positive"></i>
+          <i ng-click="navigation(orderDetail.longitude,orderDetail.latitude)"
+             class="icon iconfont icon-daohang1 positive"></i>
+        </ion-item>
+        <ion-item ng-if="orderDetail.addtime!='0001-01-01T00:00:00'">
+          登记时间 : {{orderDetail.addtime |date :'yyyy-MM-dd HH:mm'}}
         </ion-item>
         <ion-item ng-if="orderDetail.oraddtime!='0001-01-01T00:00:00'">
           接单时间 : {{orderDetail.oraddtime |date :'yyyy-MM-dd HH:mm'}}
@@ -40,7 +46,7 @@
              class="icon iconfont "></i>
         </ion-item>
         <div ng-hide="showme1" class="orderdetails">
-          <ion-item  class="text-wrap" ng-repeat="item in orderDetail.djdetails">
+          <ion-item class="text-wrap" ng-repeat="item in orderDetail.djdetails">
             {{item.proname}} : {{(orderDetail.type==2?item.num:'若干')+item.uname}}
           </ion-item>
           <ion-item ng-if="orderDetail.type==2">
@@ -64,7 +70,8 @@
         </ion-item>
         <div ng-hide="showme2" class="orderdetails">
           <ion-item class="text-wrap" ng-repeat="item in orderDetail.details">
-            {{item.proname}} : {{item.num+item.uname}} <span ng-if="item.price">( 回收价 : {{item.price}}元/{{item.uname}} )</span>
+            {{item.proname}} : {{item.num+item.uname}} <span
+            ng-if="item.price">( 回收价 : {{item.price}}元/{{item.uname}} )</span>
           </ion-item>
           <ion-item>
             回收时间 : {{orderDetail.details[0].addtime | date :'yyyy-MM-dd HH:mm'}}
@@ -98,13 +105,15 @@
     </ion-list>
     <p></p>
   </ion-content>
-  <div  class="row padding light-bg  bottom-0 row-horizontal-around" keyboard-attach ng-if="orderDetail.state<=4||orderDetail.state==5">
+  <div class="row padding light-bg  bottom-0 row-horizontal-around" keyboard-attach
+       ng-if="orderDetail.state<=4||orderDetail.state==5">
     <button ng-if="orderDetail.state==4" class="button  button-balanced  icon iconfont icon-huishou col-40  "
             style="font-size: 1rem!important;"
             ng-click="recycle(orderDetail.orno,orderDetail.djno,orderDetail.type,orderDetail.userid,orderDetail.totalprice,orderDetail.name,orderDetail.category,orderDetail.hytype)">
       去收货
     </button>
-    <button ng-if="orderDetail.state<=4"  class="button button-positive icon iconfont icon-daohang1 col-40" style="font-size: 1rem!important;"
+    <button ng-if="orderDetail.state<=4" class="button button-positive icon iconfont icon-daohang1 col-40"
+            style="font-size: 1rem!important;"
             ng-click="navigation(orderDetail.longitude,orderDetail.latitude)">
       导航
     </button>
