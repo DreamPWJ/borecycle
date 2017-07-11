@@ -15,14 +15,16 @@
     <div class=" content">
       <ion-item collection-repeat="item in tradelist " class="item"
                 nav-direction=forward>
-        <h2 style="height: 25px; "><span
-          style="{{item.flag==0?'color:red;font-size: 16px; font-weight: bold':'color:#0938F7;font-size: 16px; font-weight: bold'}}">
-            {{item.flag==1?(item.amount | currency :''):"-"+(item.amount | currency :'')}}</span>
-          <p class="f-right"><span ng-bind-html="item.channel"></span></p></h2>
+        <div class="row row-no-padding" style="height: 25px; ">
+          <h2 class="col" style="{{item.flag==0?'color:#0938F7;font-size: 16px; font-weight: bold':'color:red;font-size: 16px; font-weight: bold'}}">
+            {{item.flag==1?"-"+(item.amount | currency :''):(item.amount | currency :'')}}</h2>
+          <span class="col" ng-class="getColor(item.state)">{{item.state_str}}</span>
+          <p class="f-right"><span ng-bind-html="item.channel_str"></span></p>
+        </div>
 
-        <p style="height: 25px;">余额：<span class="text-left">{{item.preamount | currency :''}}</span>
+        <span class="col">余额：<span class="text-left">{{item.preamount | currency :''}}</span>
           <span class="item-note icon icon-left">{{item.createtime  | date : 'yyyy-MM-dd'}}</span>
-        </p>
+        </span>
       </ion-item>
     </div>
     <p class="text-center" ng-if="total > page">

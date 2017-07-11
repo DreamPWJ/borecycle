@@ -2468,43 +2468,27 @@ angular.module('starter.controllers', [])
         }
         angular.forEach(data.data.data_list, function (item) {
           $scope.tradelist.push(item);
-          //流水类型
-          item.channel = $scope.channelFmt(item.channel);
         })
         $scope.total = data.data.page_count;
         $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
-      })
+      });
+    }
+    $scope.getColor=function (state) {
+      switch (state){
+        case "00":
+          return "green";
+        case "01":
+          return "calm";
+        case "02":
+          return "calm";
+        case "03":
+          return "assertive";
+      }
     }
     $scope.gettradelist(0);//产品加载刷新
-    $scope.channelFmt = function (channel) {
-      if (channel == "101")
-        return "<span class=\"font_green\">充值</span>";
-      else if (channel == "102")
-        return "<span class=\"font_097\">提现</span>";
-      else if (channel == "201")
-        return "<span>支付</span>&nbsp;<span>供货计划单</span><span class=\"font_097\">货款</span>";
-      else if (channel == "202")
-        return "<span>收</span>&nbsp;<span>供货计划单</span><span class=\"font_green\">货款</span>";
-      else if (channel == "203")
-        return "<span>支付</span>&nbsp;<span>供货单</span><span class=\"font_097\">货款</span>";
-      else if (channel == "204")
-        return "<span>收</span>&nbsp;<span>供货单</span><span class=\"font_green\">货款</span>";
-      else if (channel == "205")
-        return "<span>支付</span>&nbsp;<span>卖货单</span><span class=\"font_097\">货款</span>";
-      else if (channel == "206")
-        return "<span>收</span>&nbsp;<span>卖货单</span><span class=\"font_green\">货款</span>";
-      else if (channel == "207")
-        return "<span>支付</span>&nbsp;<span>买货单</span><span class=\"font_097\">定金</span>";
-      else if (channel == "208")
-        return "<span>收</span&nbsp;><span>买货单</span><span class=\"font_green\">定金</span>";
-      else if (channel == "301")
-        return "<span>收</span>&nbsp;<span>预付款</span>";
-      else
-        return "<span>还</span>&nbsp;<span>预付款</span>";
-    }
   })
 
   //我的银行卡
