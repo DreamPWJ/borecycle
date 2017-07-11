@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.boolv.recycle" version="0.7.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.boolv.recycle" version="0.8.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>收收</name>
-  <description>博绿网是专注于再生资源回收再利用行业，为行业上下游客户提供货源、渠道、资金、信息的第三方服务平台。网站以直卖模式为创新点，为上游回收商提供直卖到拆解企业的交易服务，为下游拆解企业提供直买的货源整合服务，上下游直接对接解决行业物流成本高、回收效率低、货源渠道受限、资金流通不畅等问题，为行业发展搭建直通桥梁，牵手上下游两端客户，齐头并进，共建循环经济、物资再生的新形态
+  <description>博绿网是专注于再生资源回收再利用行业，为行业上下游客户提供货源、渠道、资金、信息的第三方服务平台。网站以直卖模式为创新点，为上游回收商提供直卖到拆解企业的交易服务，为下游拆解企业提供直买的货源整合服务，上下游直接对接解决行业物流成本高、回收效率低、货源渠道受限、资金流通不畅等问题，为行业发展搭建直通桥梁，牵手上下游两端客户，齐头并进，共建循环经济、物资再生的新形态&#xD;
   </description>
   <author email="service@boolv.com" href="http://hs.api.boolv.com/">博绿网Team</author>
   <content src="index.html"/>
@@ -23,8 +23,7 @@
   <preference name="ShowSplashScreenSpinner" value="false"/>
   <preference name="FadeSplashScreen" value="false"/>
   <preference name="orientation" value="portrait"/>
-  <preference name="REDIRECTURI" value="YOUR_REDIRECT_URL" /> <!-- YOUR_REDIRECT_URL替换为你在开放平台上设置的redirecturi-->
-
+  <preference name="REDIRECTURI" value="http://sns.whalecloud.com/sina2/callback"/>
   <platform name="android">
     <allow-intent href="market:*"/>
     <icon src="resources\android\icon\drawable-ldpi-icon.png" density="ldpi"/>
@@ -33,12 +32,12 @@
     <icon src="resources\android\icon\drawable-xhdpi-icon.png" density="xhdpi"/>
     <icon src="resources\android\icon\drawable-xxhdpi-icon.png" density="xxhdpi"/>
     <icon src="resources\android\icon\drawable-xxxhdpi-icon.png" density="xxxhdpi"/>
-    <splash src="resources/android/splash/drawable-port-ldpi-screen.png" density="port-ldpi"/>
-    <splash src="resources/android/splash/drawable-port-mdpi-screen.png" density="port-mdpi"/>
-    <splash src="resources/android/splash/drawable-port-hdpi-screen.png" density="port-hdpi"/>
-    <splash src="resources/android/splash/drawable-port-xhdpi-screen.png" density="port-xhdpi"/>
-    <splash src="resources/android/splash/drawable-port-xxhdpi-screen.png" density="port-xxhdpi"/>
-    <splash src="resources/android/splash/drawable-port-xxxhdpi-screen.png" density="port-xxxhdpi"/>
+    <splash src="resources\android\splash\drawable-port-ldpi-screen.png" density="port-ldpi"/>
+    <splash src="resources\android\splash\drawable-port-mdpi-screen.png" density="port-mdpi"/>
+    <splash src="resources\android\splash\drawable-port-hdpi-screen.png" density="port-hdpi"/>
+    <splash src="resources\android\splash\drawable-port-xhdpi-screen.png" density="port-xhdpi"/>
+    <splash src="resources\android\splash\drawable-port-xxhdpi-screen.png" density="port-xxhdpi"/>
+    <splash src="resources\android\splash\drawable-port-xxxhdpi-screen.png" density="port-xxxhdpi"/>
   </platform>
   <platform name="ios">
     <allow-intent href="itms:*"/>
@@ -75,4 +74,5 @@
   <plugin name="cordova-plugin-statusbar" spec="2.2.1"/>
   <plugin name="cordova-plugin-device" spec="1.1.4"/>
   <plugin name="cordova-plugin-splashscreen" spec="~4.0.1"/>
+  <icon src="resources\android\icon\drawable-xhdpi-icon.png"/>
 </widget>
