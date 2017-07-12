@@ -472,20 +472,21 @@ angular.module('starter.controllers', [])
     //上传图片数组集合
     $scope.imageList = [];
     $scope.ImgsPicAddr = [];//图片信息数组
+    $scope.isInfoProvider = true; //老用户和信息供应者未完善资料
     $scope.uploadActionSheet = function () {
       CommonService.uploadActionSheet($scope, 'User', true);
     }
 
     CommonService.customModal($scope, 'templates/modal/addressmodal.html');
-    $scope.$on('$ionicView.beforeEnter', function () {
-      if ($ionicHistory.backView() && $ionicHistory.backView().stateName == "accountinfo") { //上一级路由名称
-        $scope.isUpgradeRecycler = true; //是从“升级成为回收商”进入
-      }
-    })
+    /*    $scope.$on('$ionicView.beforeEnter', function () {
+     if ($ionicHistory.backView() && $ionicHistory.backView().stateName == "accountinfo") { //上一级路由名称
+     $scope.isUpgradeRecycler = true; //是从“升级成为回收商”进入
+     }
+     })*/
     $scope.isLogin = localStorage.getItem("userid") ? true : false;//是否登录
 
     $scope.user = {//定义用户对象
-      usertype: $scope.isUpgradeRecycler ? 2 : 1 //用户类型
+      usertype: 1 //用户类型默认
     };
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable
@@ -503,18 +504,24 @@ angular.module('starter.controllers', [])
           localStorage.setItem("user", JSON.stringify(datas.data));
           var services = datas.data.services;
           //用户会员类型  0 无 1信息提供者  2回收者
-          localStorage.setItem("usertype", (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
-          if ((services.length == 1 && services.indexOf('1') != -1 && datas.data.userext == null)) { //如果是信息供应者完善资料
-            $scope.isInfoProvider = true; //信息供应者
+          var usertype = (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2
+          localStorage.setItem("usertype", usertype);
+
+          if((usertype==1&& datas.data.userext != null)||usertype==2){
+            $scope.isInfoProvider = false;
+            $scope.isUpgradeRecycler= true; //升级成为回收商
           }
           //赋值
           var userext = datas.data.userext;
-          $scope.user = {
-            username: userext.name,//姓名
-            mobile: Number(userext.phone),//手机号码
-            recoveryqty: userext.recovery,//月回收量
-            usertype: $scope.isUpgradeRecycler ? ($scope.isInfoProvider ? 1 : 2) : 1  //用户类型
+          if(userext!=null){
+            $scope.user = {
+              username: userext.name,//姓名
+              mobile: Number(userext.phone),//手机号码
+              recoveryqty: userext.recovery,//月回收量
+              usertype:usertype //用户类型
+            }
           }
+
         } else {
           CommonService.platformPrompt(datas.message, 'close');
         }
