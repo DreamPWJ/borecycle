@@ -28,11 +28,11 @@
         <i ng-if="usertype!=3" class="icon ion-ios-arrow-right"></i>
       </a>
 
-      <div ng-if="!(isprovider||usertype==1)" class="item stable-bg item-borderless">
+      <div ng-if="usertype==0||usertype==1" class="item stable-bg item-borderless">
         <h2 class=" text-right"> <span ui-sref="organizingdata" ><i class="iconfont icon-xiangyou positive"></i> 升级成为回收商</span></h2>
       </div>
 
-      <a ng-href="#/updateuser/sex/{{userinfo.sex}}" class="item item-icon-right {{!(isprovider||usertype==1)?'item-borderless':''}}">
+      <a ng-href="#/updateuser/sex/{{userinfo.sex}}" class="item item-icon-right {{(usertype==0||usertype==1)?'item-borderless':''}}">
         <h2>性别 <span class="item-note">{{userinfo.sex==0?'保密':(userinfo.sex==1?'男':'女')}}</span></h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>

@@ -277,7 +277,7 @@ angular.module('starter.controllers', [])
               //用户会员类型  0 无 1信息提供者  2回收者
               localStorage.setItem("usertype", (services == null || services.length == 0 ) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
               if (services == null || services.length == 0) {//旧会员 完善信息
-                CommonService.platformPrompt("旧会员请先完善资料", 'organizingdata');
+                CommonService.showConfirm('收收提示', '尊敬的用户,您好！旧会员请先完善资料！', '完善资料', '暂不完善', 'organizingdata', 'close');
               }
             } else {
               CommonService.platformPrompt(data.message, 'close');
@@ -360,7 +360,7 @@ angular.module('starter.controllers', [])
             //用户会员类型  0 无 1信息提供者  2回收者
             localStorage.setItem("usertype", (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
             if (services == null || services.length == 0) {//旧会员 完善信息
-              CommonService.platformPrompt("旧会员请先完善资料", 'organizingdata');
+              CommonService.showConfirm('收收提示', '尊敬的用户,您好！旧会员请先完善资料！', '完善资料', '暂不完善', 'organizingdata', 'close');
             }
           } else {
             CommonService.platformPrompt(data.message, 'close');
@@ -885,7 +885,7 @@ angular.module('starter.controllers', [])
        会员角色你还要判断他有没有申请通过  0 审核不通过 1 未审核 2 审核通过*/
 
       if (!user.userext || user.userext.autit != 2) {
-        CommonService.platformPrompt(user.userext ? "会员类型审核通过后才能操作" : "用户设置里面完善资料后再操作", user.userext ? 'close' : 'organizingdata');
+        CommonService.platformPrompt("会员类型审核通过后才能操作", 'close');
         return;
       }
       if (user.services.length == 1 && user.services.indexOf('1') != -1) {
@@ -1553,7 +1553,7 @@ angular.module('starter.controllers', [])
 
         })
         $scope.servicesstr = $scope.services.join(",")
-        $scope.isprovider = $rootScope.userinfo.services.indexOf('2') != -1 && $rootScope.userinfo.services.indexOf('3') != -1 && $rootScope.userinfo.services.indexOf('4') != -1 ? true : false
+      //  $scope.isprovider = $rootScope.userinfo.services.indexOf('2') != -1 && $rootScope.userinfo.services.indexOf('3') != -1 && $rootScope.userinfo.services.indexOf('4') != -1 ? true : false
       } else {
         CommonService.platformPrompt('获取用户信息失败', 'close');
       }
@@ -2156,11 +2156,11 @@ angular.module('starter.controllers', [])
       if ($scope.dengji.acttype == 1) {//当用户选择“以旧换新”时，先判断用户有没有“完善信息”和“实名认证”，如果没有则必须先“完善信息”和“实名认证”
         var user = JSON.parse(localStorage.getItem("user"));
         if (user.services == null || user.services.length == 0) { //没有完善信息
-          CommonService.platformPrompt("以旧换新类型必须先完善资料", 'organizingdata');
+          CommonService.showConfirm('收收提示', '尊敬的用户,您好！以旧换新类型必须先完善资料！', '完善资料', '暂不完善', 'organizingdata', 'close');
           return;
         }
         if (user.certstate.substr(3, 1) != 2) { //没有实名认证
-          CommonService.platformPrompt("以旧换新类型必须先实名认证", 'realname', {status: 0});
+          CommonService.showConfirm('收收提示', '尊敬的用户,您好！以旧换新类型必须先实名认证！', '实名认证', '暂不认证', 'realname', 'close','',{status: 0});
           return;
         }
       }

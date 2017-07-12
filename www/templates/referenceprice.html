@@ -20,7 +20,7 @@
         <div id="classify-scroll-content" ng-style="{height:scrollContentHeight}">
           <ion-list>
             <ion-item  ng-repeat="item in classifyDetails">
-              <p class="text-wrap"> {{item.name}} <span class="positive item-note">{{item.price | currency :''}}  元/{{item.unit==1?'台':'公斤'}}</span></p>
+              <p class="text-wrap" > {{item.name}} <span class="positive" style="position: absolute;right: 0.3rem;">{{item.price | currency :''}}  元/{{item.unit==1?'台':'公斤'}}</span></p>
             </ion-item>
           </ion-list>
 
