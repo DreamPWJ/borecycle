@@ -9,7 +9,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
   .run(function ($ionicPlatform, $rootScope, $location, $ionicHistory, $cordovaToast, $cordovaNetwork, CommonService, $state) {
     $ionicPlatform.ready(function () {
-
+     // localStorage.setItem("isStart", true);//记录首页启动轮播展示图已经展示
 
       if (window.StatusBar) {
         //状态栏颜色设置
@@ -197,6 +197,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             controller: 'MainCtrl'
           }
         }
+      })
+
+      //APP初次启动轮播图片
+      .state('start', {
+        url: '/start',
+        templateUrl: 'templates/start.html',
+        controller: 'StartCtrl'
       })
 
       //参考价页面
@@ -519,6 +526,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'RechargeCtrl'
       })
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/tab/main');
-
+    //动态判断是否显示初始化页面
+    if (localStorage.getItem('isStart')) {
+      $urlRouterProvider.otherwise('/tab/main');
+    } else {
+      $urlRouterProvider.otherwise('start');
+    }
   });

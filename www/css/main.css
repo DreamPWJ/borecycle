@@ -259,6 +259,11 @@
   padding-right: 16px !important;
 }
 
+#start, #start img {
+  width: 100%;
+  height: 100%;
+}
+
 #panel {
   position: fixed;
   background-color: #ffffff;

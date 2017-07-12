@@ -221,6 +221,20 @@ angular.module('starter.controllers', [])
 
   })
 
+  //APP初次启动轮播图片
+  .controller('StartCtrl', function ($scope, $state) {
+    console.log(screen.width); //屏幕的宽度
+    console.log(screen.height);//屏幕的高度
+    var width=screen.width;//屏幕的宽度
+    var height=screen.height;//屏幕的宽度
+    if(width){
+      $scope.imgname="Default@2x~iphone"
+    }
+    $scope.tomain = function () {
+      $state.go('tab.main',{}, {reload: true});
+    }
+  })
+
   //用户密码登录页面
   .controller('LoginCtrl', function ($scope, $state, $rootScope, $interval, CommonService, MainService, AccountService) {
     //删除记住用户信息
@@ -472,7 +486,7 @@ angular.module('starter.controllers', [])
     //上传图片数组集合
     $scope.imageList = [];
     $scope.ImgsPicAddr = [];//图片信息数组
-    $scope.usertype=0;//默认旧会员
+    $scope.usertype = 0;//默认旧会员
     $scope.uploadActionSheet = function () {
       CommonService.uploadActionSheet($scope, 'User', true);
     }
@@ -506,7 +520,7 @@ angular.module('starter.controllers', [])
           //用户会员类型  0 无 1信息提供者  2回收者
           var usertype = (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2
           localStorage.setItem("usertype", usertype);
-          $scope.usertype=usertype;
+          $scope.usertype = usertype;
           $scope.isOrganizingData = datas.data.userext == null ? false : true;//是否完善资料
 
           if ((usertype == 1 && datas.data.userext != null) || usertype == 2) {
@@ -925,7 +939,11 @@ angular.module('starter.controllers', [])
             type: 2
           })
           $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
-        } else {
+        }
+        if (data.code == 1005) { //接单的时候返回值是1005,就跳转到“待处理”页面
+          $scope.selectedTab(1);
+        }
+        else {
           CommonService.platformPrompt(data.message, "close");
         }
       })
