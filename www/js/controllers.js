@@ -277,7 +277,7 @@ angular.module('starter.controllers', [])
               //用户会员类型  0 无 1信息提供者  2回收者
               localStorage.setItem("usertype", (services == null || services.length == 0 ) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
               if (services == null || services.length == 0) {//旧会员 完善信息
-                CommonService.showConfirm('收收提示', '尊敬的用户,您好！旧会员请先完善资料！', '完善资料', '暂不完善', 'organizingdata', 'close');
+                CommonService.showConfirm('收收提示', '尊敬的用户,您好！旧会员需完善资料后才能进行更多的操作！', '完善资料', '暂不完善', 'organizingdata', 'close');
               }
             } else {
               CommonService.platformPrompt(data.message, 'close');
@@ -360,7 +360,7 @@ angular.module('starter.controllers', [])
             //用户会员类型  0 无 1信息提供者  2回收者
             localStorage.setItem("usertype", (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
             if (services == null || services.length == 0) {//旧会员 完善信息
-              CommonService.showConfirm('收收提示', '尊敬的用户,您好！旧会员请先完善资料！', '完善资料', '暂不完善', 'organizingdata', 'close');
+              CommonService.showConfirm('收收提示', '尊敬的用户,您好！旧会员需完善资料后才能进行更多的操作！', '完善资料', '暂不完善', 'organizingdata', 'close');
             }
           } else {
             CommonService.platformPrompt(data.message, 'close');
@@ -472,7 +472,7 @@ angular.module('starter.controllers', [])
     //上传图片数组集合
     $scope.imageList = [];
     $scope.ImgsPicAddr = [];//图片信息数组
-    $scope.isInfoProvider = true; //老用户和信息供应者未完善资料
+    $scope.usertype=0;//默认旧会员
     $scope.uploadActionSheet = function () {
       CommonService.uploadActionSheet($scope, 'User', true);
     }
@@ -506,19 +506,21 @@ angular.module('starter.controllers', [])
           //用户会员类型  0 无 1信息提供者  2回收者
           var usertype = (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2
           localStorage.setItem("usertype", usertype);
+          $scope.usertype=usertype;
+          $scope.isOrganizingData = datas.data.userext == null ? false : true;//是否完善资料
 
-          if((usertype==1&& datas.data.userext != null)||usertype==2){
+          if ((usertype == 1 && datas.data.userext != null) || usertype == 2) {
             $scope.isInfoProvider = false;
-            $scope.isUpgradeRecycler= true; //升级成为回收商
+            $scope.isUpgradeRecycler = true; //升级成为回收商
           }
           //赋值
           var userext = datas.data.userext;
-          if(userext!=null){
+          if (userext != null) {
             $scope.user = {
               username: userext.name,//姓名
               mobile: Number(userext.phone),//手机号码
               recoveryqty: userext.recovery,//月回收量
-              usertype:usertype //用户类型
+              usertype: usertype //用户类型
             }
           }
 
@@ -1535,7 +1537,10 @@ angular.module('starter.controllers', [])
         var certstate = data.data.certstate;//获取认证状态参数
         //ubstr(start,length)表示从start位置开始，截取length长度的字符串
         $scope.phonestatus = certstate.substr(0, 1);//手机认证状态码
-        $scope.usertype = $rootScope.userinfo.services == null || $rootScope.userinfo.services.length == 0 ? 1 : ($rootScope.userinfo.userext == null ? 2 : 3);//会员类型 1.老会员没有完善资料 2. 新会员 没有完善资料 3.其他
+        var services = $rootScope.userinfo.services;
+        var usertype = (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2;//用户会员类型  0 无 1信息提供者  2回收商
+        $scope.usertype = usertype;//会员类型
+        $scope.isOrganizingData = $rootScope.userinfo.userext == null ? false : true;//是否完善资料
         $scope.services = [];
         angular.forEach($rootScope.userinfo.services, function (item) {
           if (item == 1) {
@@ -1553,7 +1558,7 @@ angular.module('starter.controllers', [])
 
         })
         $scope.servicesstr = $scope.services.join(",")
-      //  $scope.isprovider = $rootScope.userinfo.services.indexOf('2') != -1 && $rootScope.userinfo.services.indexOf('3') != -1 && $rootScope.userinfo.services.indexOf('4') != -1 ? true : false
+        //  $scope.isprovider = $rootScope.userinfo.services.indexOf('2') != -1 && $rootScope.userinfo.services.indexOf('3') != -1 && $rootScope.userinfo.services.indexOf('4') != -1 ? true : false
       } else {
         CommonService.platformPrompt('获取用户信息失败', 'close');
       }
@@ -1880,6 +1885,8 @@ angular.module('starter.controllers', [])
         console.log(JSON.stringify(data));
         if (data.code == 1001) {
           $scope.serviceId = data.data.serviceId;//e签宝服务id
+        } else {
+          CommonService.platformPrompt(data.message, 'close')
         }
       })
     }
@@ -1900,7 +1907,7 @@ angular.module('starter.controllers', [])
           $scope.realname = data.data;
 
         } else {
-          CommonService.platformPrompt('获取实名认证信息失败', 'close');
+          CommonService.platformPrompt(data.message, 'close');
         }
 
       })
@@ -2156,11 +2163,11 @@ angular.module('starter.controllers', [])
       if ($scope.dengji.acttype == 1) {//当用户选择“以旧换新”时，先判断用户有没有“完善信息”和“实名认证”，如果没有则必须先“完善信息”和“实名认证”
         var user = JSON.parse(localStorage.getItem("user"));
         if (user.services == null || user.services.length == 0) { //没有完善信息
-          CommonService.showConfirm('收收提示', '尊敬的用户,您好！以旧换新类型必须先完善资料！', '完善资料', '暂不完善', 'organizingdata', 'close');
+          CommonService.showConfirm('登记提示', '尊敬的用户,您好！选择以旧换新类型必须先完善资料后才能操作！', '完善资料', '暂不完善', 'organizingdata', 'close');
           return;
         }
         if (user.certstate.substr(3, 1) != 2) { //没有实名认证
-          CommonService.showConfirm('收收提示', '尊敬的用户,您好！以旧换新类型必须先实名认证！', '实名认证', '暂不认证', 'realname', 'close','',{status: 0});
+          CommonService.showConfirm('登记提示', '尊敬的用户,您好！选择以旧换新类型必须先实名认证后才能操作！', '实名认证', '暂不认证', 'realname', 'close', '', {status: 0});
           return;
         }
       }
