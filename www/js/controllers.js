@@ -505,7 +505,7 @@ angular.module('starter.controllers', [])
           //用户会员类型  0 无 1信息提供者  2回收者
           localStorage.setItem("usertype", (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
           if ((services.length == 1 && services.indexOf('1') != -1 && datas.data.userext == null)) { //如果是信息供应者完善资料
-            $scope.isInfoProvider = true;
+            $scope.isInfoProvider = true; //信息供应者
           }
           //赋值
           var userext = datas.data.userext;
@@ -562,7 +562,10 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt("输入的验证码不正确", 'close');
         return;
       }
-
+      if ($scope.ImgsPicAddr.length == 0 && isInfoProvider) {
+        CommonService.platformPrompt("请先上传工作证后再提交", 'close');
+        return;
+      }
       $scope.user.services = [];//用户类型数组key
       if ($scope.user.usertype == 2) {
         angular.forEach($scope.services, function (item) {
@@ -670,7 +673,6 @@ angular.module('starter.controllers', [])
     if (!CommonService.isLogin(true)) {
       return;
     }
-    CommonService.showConfirm('收收提示', '尊敬的用户,您好！完善资料并且申请成为回收商才能查看订单！', '完善资料', '暂不完善', 'organizingdata', '');
 
     var user = JSON.parse(localStorage.getItem("user"));//用户信息
     if (!user.userext) {
@@ -1264,9 +1266,11 @@ angular.module('starter.controllers', [])
     }).then(function () {
       angular.forEach($scope.productList, function (item) { //根据产品品类及是否统货取产品列表(最新报价)
         OrderService.getProductListIsth({grpid: item.grpid, isth: 0}).success(function (data) {
-          if (data.code == 1001) {
+          $scope.data = data;
+        }).then(function () {
+          if ($scope.data.code == 1001) {
             var items = item;
-            items.details = data.data;
+            items.details = $scope.data.data;
             $scope.productLists.push(items);
           }
         })
@@ -2055,9 +2059,11 @@ angular.module('starter.controllers', [])
     }).then(function () {
       angular.forEach($scope.productList, function (item) { //根据产品品类及是否统货取产品列表(最新报价)
         OrderService.getProductListIsth({grpid: item.grpid, isth: 1}).success(function (data) {
-          if (data.code == 1001) {
+          $scope.data = data;
+        }).then(function () {
+          if ($scope.data.code == 1001) {
             var items = item;
-            items.details = data.data;
+            items.details = $scope.data.data;
             $scope.productLists.push(items);
           }
         })
@@ -2220,14 +2226,17 @@ angular.module('starter.controllers', [])
     }).then(function () {
       angular.forEach($scope.productList, function (item) { //根据产品品类及是否统货取产品列表(最新报价)
         OrderService.getProductListIsth({grpid: item.grpid, isth: 1}).success(function (data) {
-          if (data.code == 1001) {
+          $scope.data = data;
+        }).then(function () {
+          if ($scope.data.code == 1001) {
             var items = item;
-            items.details = data.data;
+            items.details = $scope.data.data;
             $scope.productLists.push(items);
           }
         })
       })
       $scope.productList = $scope.productLists;
+
       console.log($scope.productList);
       $scope.checkChecded = function () {
         CommonService.checkChecded($scope, $scope.productList);

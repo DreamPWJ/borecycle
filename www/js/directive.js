@@ -66,6 +66,7 @@ angular.module('starter.directive', [])
       restrict: 'A',
       link: function (scope, element, attrs) {
         $rootScope.commonService = CommonService;
+        $rootScope.verifyarray = [];
         $rootScope.verify = true;
         $rootScope.verifyarray[scope.$id] = true;
         scope.publicCheckForm = function (regular, value, content, isshowtip) { //验证公共部分封装

@@ -54,7 +54,7 @@
         <label ng-if="!isInfoProvider" class="item item-input">
           <span class="input-label icon ion-ios-download-outline"> 月回收量</span>
           <input type="number" name="recoveryqty" ng-model="user.recoveryqty" placeholder="请输入月回收量" maxlength="8"
-                 required/>
+                 ng-required="!isInfoProvider"/>
         </label>
         <div ng-if="!isInfoProvider" class="item text-wrap">
           <span class="block icon ion-ios-trash-outline padding-bottom"> 回收品类</span>
@@ -67,13 +67,13 @@
         <label ng-if="isInfoProvider" class="item item-input">
           <span class="input-label icon ion-ios-home-outline"> 企业名称</span>
           <input type="text" name="shopname" ng-model="user.shopname" placeholder="请输入门店名称" maxlength="10"
-                 required/>
+                 ng-required="isInfoProvider"    />
         </label>
         <label ng-if="isInfoProvider" class="item item-input">
           <span class="input-label icon ion-ios-telephone-outline"> 联系电话</span>
           <input type="number" name="shopphone" ng-model="user.shopphone" check-form
                  ng-blur="checkForm(user.shopphone,'手机号输入错误','mobilephone','')" placeholder="请输入门店联系电话"
-                 required/>
+                 ng-required="isInfoProvider"    />
         </label>
         <label class="item item-input " ng-click="openModal()">
           <span class="input-label icon ion-ios-location-outline"> {{isInfoProvider?'企业地址':'回收区域'}}  </span>
