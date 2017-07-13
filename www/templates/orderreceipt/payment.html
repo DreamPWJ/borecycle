@@ -20,7 +20,7 @@
         <ion-item>
           应付金额 : {{orderinfo.amount | currency:'￥'}}
         </ion-item>
-        <ion-item class="item-button-right">
+        <ion-item class="item-button-right" ng-if="orderinfo.type==2">
           我的余额 : {{orderSum.account| currency:'￥'}} {{(orderSum.account < orderinfo.amount)?' (余额不足)':''}}
           <button class="button button-balanced" ui-sref="recharge">充值</button>
         </ion-item>
@@ -28,16 +28,16 @@
     </ion-list>
     <ion-list>
       <ion-item class="item-divider">支付方式</ion-item>
-      <ion-radio ng-model="pay.choice" icon="ion-android-done" ng-change="" ng-value="'A'"><i
+      <ion-radio ng-model="pay.choice" icon="ion-android-done" ng-change="" ng-value="'1'"><i
         class="icon iconfont icon-xianjinzhifukuozhan balanced "></i> 现金支付
       </ion-radio>
-      <ion-radio ng-model="pay.choice" icon="ion-android-done" ng-change="" ng-value="'B'"><i
+      <ion-radio ng-model="pay.choice" icon="ion-android-done" ng-if="orderinfo.type==2" ng-change="" ng-value="'2'"><i
         class="icon iconfont icon-zaixianzhifu calm "></i> 在线支付
       </ion-radio>
     </ion-list>
   </ion-content>
   <div class="padding light-bg bottom-0" keyboard-attach>
-    <a class="button button-positive  full-image" ng-disabled="orderSum.account < orderinfo.amount" ng-click="confirmPayment()">确认付款</a>
+    <a class="button button-positive  full-image" ng-disabled="(orderinfo.type==2&&orderSum.account < orderinfo.amount)" ng-click="confirmPayment()">确认付款</a>
   </div>
 
 </ion-view>

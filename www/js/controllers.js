@@ -538,7 +538,10 @@ angular.module('starter.controllers', [])
               username: userext.name,//姓名
               mobile: Number(userext.phone),//手机号码
               recoveryqty: userext.recovery || '',//月回收量
-              usertype: $scope.isUpgradeRecycler ? 2 : usertype //用户类型
+              usertype: $scope.isUpgradeRecycler ? 2 : usertype, //用户类型
+              shopname: userext.shopname,//企业名称
+              shopphone: userext.shopphone,//企业电话
+              addrdetail: userext.addrdetail //企业详细地址
             }
           }
 
@@ -1398,6 +1401,10 @@ angular.module('starter.controllers', [])
   .controller('PaymentCtrl', function ($scope, $stateParams, CommonService, OrderService) {
     $scope.orderinfo = JSON.parse($stateParams.orderinfo);
     console.log($scope.orderinfo);
+    $scope.pay = { //支付相关
+      choice: 1,//选择支付方式默认支付方式1. 现金支付2. 在线支付
+    }
+
     //获得余额
     OrderService.getOrderSum({userid: localStorage.getItem("userid"), expiry: 6}).success(function (data) {
       if (data.code == 1001) {
@@ -1414,7 +1421,8 @@ angular.module('starter.controllers', [])
         fromuser: $scope.orderinfo.fromuser,//付款方
         touser: $scope.orderinfo.touser,//收款方
         amount: $scope.orderinfo.amount,//订单金额
-        fwamount: 0//服务费金额
+        fwamount: 0,//服务费金额
+        paymentmethod:$scope.pay.choice //支付方式1.	现金支付2.	在线支付
       }
       console.log($scope.data);
       //回收付款
