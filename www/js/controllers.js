@@ -216,19 +216,16 @@ angular.module('starter.controllers', [])
 //在首页中清除导航历史退栈
     $scope.$on('$ionicView.afterEnter', function () {
       $ionicHistory.clearHistory();
-
     })
 
   })
 
   //APP初次启动轮播图片
-  .controller('StartCtrl', function ($scope, $state) {
-    console.log(screen.width); //屏幕的宽度
-    console.log(screen.height);//屏幕的高度
-    var width = screen.width;//屏幕的宽度
-    var height = screen.height;//屏幕的宽度
+  .controller('StartCtrl', function ($scope, $state, BoRecycle) {
+    var width = window.screen.width * window.devicePixelRatio;//屏幕的宽分辨率
+    var height = window.screen.height * window.devicePixelRatio;//屏幕的高分辨率
     if (width) {
-      $scope.imgname = "Default@2x~iphone"
+      $scope.imgname = BoRecycle.imgUrl + "/Default@2x~iphone"
     }
     $scope.tomain = function () {
       $state.go('tab.main', {}, {reload: true});
@@ -1422,7 +1419,7 @@ angular.module('starter.controllers', [])
         touser: $scope.orderinfo.touser,//收款方
         amount: $scope.orderinfo.amount,//订单金额
         fwamount: 0,//服务费金额
-        paymentmethod:$scope.pay.choice //支付方式1.	现金支付2.	在线支付
+        paymentmethod: $scope.pay.choice //支付方式1.	现金支付2.	在线支付
       }
       console.log($scope.data);
       //回收付款
