@@ -248,9 +248,9 @@ angular.module('starter.controllers', [])
       AccountService.getIsInvite({account: account}).success(function (data) {
         console.log(data);
         if (data.code == 1001) {
-          $scope.isInvite = true;
-        } else {
           $scope.isInvite = false;
+        } else {
+          $scope.isInvite = true;
         }
       })
     }
@@ -336,9 +336,9 @@ angular.module('starter.controllers', [])
       AccountService.getIsInvite({account: account}).success(function (data) {
         console.log(data);
         if (data.code == 1001) {
-          $scope.isInvite = true;
-        } else {
           $scope.isInvite = false;
+        } else {
+          $scope.isInvite = true;
         }
       })
     }
@@ -453,6 +453,7 @@ angular.module('starter.controllers', [])
       AccountService.register($scope.user).success(function (data) {
         if (data.code == 1001) {
           $rootScope.registerUserType = $scope.user.type;
+          $rootScope.isPhoneRegister=(/^1(3|4|5|7|8)\d{9}$/.test($scope.user.account))
           $state.go('organizingdata');
         }
         CommonService.platformPrompt(data.message, 'close');
@@ -518,6 +519,7 @@ angular.module('starter.controllers', [])
       if ($ionicHistory.backView() && $ionicHistory.backView().stateName == "register") { //上一级路由名称
         $scope.usertype = $rootScope.registerUserType; //是从注册页面进入
         $scope.user.usertype = $rootScope.registerUserType;
+        $scope.isPhoneRegister=$rootScope.isPhoneRegister;
       }
     })
     $scope.isLogin = localStorage.getItem("userid") ? true : false;//是否登录
@@ -550,7 +552,7 @@ angular.module('starter.controllers', [])
           //赋值
           var userext = datas.data.userext;
           if (userext != null) {
-            AccountService.checkMobilePhone($scope, userext.phone);
+            $scope.isPhoneRegister=AccountService.checkMobilePhone($scope, userext.phone);
             $scope.user = {
               username: userext.name,//姓名
               mobile: Number(userext.phone),//手机号码
@@ -2746,7 +2748,7 @@ angular.module('starter.controllers', [])
   //充值
   .controller('RechargeCtrl', function ($scope, CommonService, PayService) {
     $scope.pay = { //支付相关
-      choice: "A",//选择支付方式默认微信
+      choice: "B",//选择支付方式默认
       money: ""
     }
     $scope.confirmPayment = function () { //充值
