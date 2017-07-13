@@ -80,7 +80,7 @@
 
           <label class="item item-input " ng-click="openModal()">
             <span class="input-label icon ion-ios-location-outline"> {{user.usertype==1?'企业地址':'地区'}}  </span>
-            <p class="{{addresspcd?'dark':'grey'}}">{{addresspcd?addresspcd:(ssx?ssx:"请选择地区")}}</p>
+            <p class="{{(addresspcd||ssx)?'dard':'grey'}}">{{addresspcd?addresspcd:(ssx?ssx:"请选择地区")}}</p>
           </label>
 
           <label ng-if="user.usertype==1" class="item item-input ">
@@ -110,7 +110,7 @@
           <p></p>
           <div class="padding-horizontal">
             <button class="button full-image button-positive " ng-click="organizingdataSubmit()"
-                    ng-disabled="!(organizingdataForm.$valid&&(user.usertype==1?true:ischecked)&&(addresspcd||ssx))">提交
+                    ng-disabled="!(organizingdataForm.$valid&&verify&&(user.usertype==1?true:ischecked)&&(addresspcd||ssx))">提交
             </button>
             <p></p>
             <a ng-href="#/{{isLogin?'tab/account':'login'}}"

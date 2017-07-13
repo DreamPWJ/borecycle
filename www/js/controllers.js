@@ -549,10 +549,10 @@ angular.module('starter.controllers', [])
             // $scope.isInfoProvider = false;
             $scope.isUpgradeRecycler = true; //升级成为回收商
           }
+          $scope.isPhoneRegister=AccountService.checkMobilePhone($scope, datas.data.mobile);
           //赋值
           var userext = datas.data.userext;
           if (userext != null) {
-            $scope.isPhoneRegister=AccountService.checkMobilePhone($scope, userext.phone);
             $scope.user = {
               username: userext.name,//姓名
               mobile: Number(userext.phone),//手机号码

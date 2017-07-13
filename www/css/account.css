@@ -48,7 +48,7 @@
   font-size: 9px;
   -webkit-transform: rotate(-45deg);
   transform: rotate(-45deg);
-  right: -3px;
+  right: 0px;
   bottom: 5px;
   z-index: 2000;
 }
@@ -56,14 +56,16 @@
 .account .expiring:after {
   content: '';
   position: absolute;
-  width: 0;
+  width: 0px;
   height: 0;
-  border-bottom: 2.2rem solid #ef473a;
-  border-left: 2.2rem solid transparent;
-  right: 0;
-  bottom: 0;
+  border-bottom: 2.3rem solid #ef473a;
+  border-left: 2.3rem solid transparent;
+  right: 1px;
+  bottom: 0px;
 }
-
+.order-item .col:last-child{
+  height: 52px!important;
+}
 .city .item, .city .item-divider {
   font-size: 12px;
   font-family: "Microsoft YaHei";
