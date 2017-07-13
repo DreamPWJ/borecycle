@@ -9,7 +9,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
   .run(function ($ionicPlatform, $rootScope, $location, $ionicHistory, $cordovaToast, $cordovaNetwork, CommonService, $state) {
     $ionicPlatform.ready(function () {
-      localStorage.setItem("isStart", false);//记录首页启动轮播展示图已经展示
+   // localStorage.setItem("isStart", true);//记录首页启动轮播展示图已经展示
 
       if (window.StatusBar) {
         //状态栏颜色设置
@@ -527,9 +527,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       })
     // if none of the above states are matched, use this as the fallback
     //动态判断是否显示初始化页面
-    if (localStorage.getItem('isStart')) {
+/*    if (localStorage.getItem('isStart')) {*/
       $urlRouterProvider.otherwise('/tab/main');
-    } else {
+    /* } else {
       $urlRouterProvider.otherwise('start');
-    }
+    }*/
   });
