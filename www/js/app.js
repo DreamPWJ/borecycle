@@ -9,7 +9,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
   .run(function ($ionicPlatform, $rootScope, $location, $ionicHistory, $cordovaToast, $cordovaNetwork, CommonService, $state) {
     $ionicPlatform.ready(function () {
-     // localStorage.setItem("isStart", true);//记录首页启动轮播展示图已经展示
+      localStorage.setItem("isStart", false);//记录首页启动轮播展示图已经展示
 
       if (window.StatusBar) {
         //状态栏颜色设置

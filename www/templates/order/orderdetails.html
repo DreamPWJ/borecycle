@@ -107,6 +107,11 @@
   </ion-content>
   <div class="row padding light-bg  bottom-0 row-horizontal-around" keyboard-attach
        ng-if="orderDetail.state<=4||orderDetail.state==5">
+    <button ng-if="orderDetail.state==2||orderDetail.state==3" class="button  button-balanced  icon iconfont icon-formfill col-40  "
+            style="font-size: 1rem!important;"
+            ng-click="jieDan(orderDetail.djno,orderDetail.userid,orderDetail.type,orderDetail.hytype)">
+      接单
+    </button>
     <button ng-if="orderDetail.state==4" class="button  button-balanced  icon iconfont icon-huishou col-40  "
             style="font-size: 1rem!important;"
             ng-click="recycle(orderDetail.orno,orderDetail.djno,orderDetail.type,orderDetail.userid,orderDetail.totalprice,orderDetail.name,orderDetail.category,orderDetail.hytype)">

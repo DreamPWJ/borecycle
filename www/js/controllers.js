@@ -225,13 +225,13 @@ angular.module('starter.controllers', [])
   .controller('StartCtrl', function ($scope, $state) {
     console.log(screen.width); //屏幕的宽度
     console.log(screen.height);//屏幕的高度
-    var width=screen.width;//屏幕的宽度
-    var height=screen.height;//屏幕的宽度
-    if(width){
-      $scope.imgname="Default@2x~iphone"
+    var width = screen.width;//屏幕的宽度
+    var height = screen.height;//屏幕的宽度
+    if (width) {
+      $scope.imgname = "Default@2x~iphone"
     }
     $scope.tomain = function () {
-      $state.go('tab.main',{}, {reload: true});
+      $state.go('tab.main', {}, {reload: true});
     }
   })
 
@@ -385,7 +385,7 @@ angular.module('starter.controllers', [])
   })
 
   //注册页面
-  .controller('RegisterCtrl', function ($scope, $state, CommonService, AccountService) {
+  .controller('RegisterCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
     $scope.user = {//定义用户对象
       usertype: 1 //用户类型
     };
@@ -434,6 +434,7 @@ angular.module('starter.controllers', [])
 
       AccountService.register($scope.user).success(function (data) {
         if (data.code == 1001) {
+          $rootScope.registerUserType = $scope.user.type;
           $state.go('organizingdata');
         }
         CommonService.platformPrompt(data.message, 'close');
@@ -487,21 +488,23 @@ angular.module('starter.controllers', [])
     $scope.imageList = [];
     $scope.ImgsPicAddr = [];//图片信息数组
     $scope.usertype = 0;//默认旧会员
+    $scope.user = {//定义用户对象
+      usertype: 0 //用户类型默认
+    };
+    // $scope.isInfoProvider = true;
     $scope.uploadActionSheet = function () {
       CommonService.uploadActionSheet($scope, 'User', true);
     }
 
     CommonService.customModal($scope, 'templates/modal/addressmodal.html');
-    /*    $scope.$on('$ionicView.beforeEnter', function () {
-     if ($ionicHistory.backView() && $ionicHistory.backView().stateName == "accountinfo") { //上一级路由名称
-     $scope.isUpgradeRecycler = true; //是从“升级成为回收商”进入
-     }
-     })*/
+    $scope.$on('$ionicView.beforeEnter', function () {
+      if ($ionicHistory.backView() && $ionicHistory.backView().stateName == "register") { //上一级路由名称
+        $scope.usertype = $rootScope.registerUserType; //是从注册页面进入
+        $scope.user.usertype = $rootScope.registerUserType;
+      }
+    })
     $scope.isLogin = localStorage.getItem("userid") ? true : false;//是否登录
 
-    $scope.user = {//定义用户对象
-      usertype: 1 //用户类型默认
-    };
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable
     $scope.addrinfo = {};//地址信息
@@ -524,17 +527,18 @@ angular.module('starter.controllers', [])
           $scope.isOrganizingData = datas.data.userext == null ? false : true;//是否完善资料
 
           if ((usertype == 1 && datas.data.userext != null) || usertype == 2) {
-            $scope.isInfoProvider = false;
+            // $scope.isInfoProvider = false;
             $scope.isUpgradeRecycler = true; //升级成为回收商
           }
           //赋值
           var userext = datas.data.userext;
           if (userext != null) {
+            AccountService.checkMobilePhone($scope, userext.phone);
             $scope.user = {
               username: userext.name,//姓名
               mobile: Number(userext.phone),//手机号码
-              recoveryqty: userext.recovery,//月回收量
-              usertype: usertype //用户类型
+              recoveryqty: userext.recovery || '',//月回收量
+              usertype: $scope.isUpgradeRecycler ? 2 : usertype //用户类型
             }
           }
 
@@ -549,7 +553,7 @@ angular.module('starter.controllers', [])
       if (data.code == 1001) {
         $scope.productList = data.data;
       } else {
-        CommonService.platformPrompt("获取产品品类失败", 'close');
+        CommonService.platformPrompt(data.message, 'close');
       }
     }).then(function () {
       $scope.checkChecded = function (array) {
@@ -559,9 +563,9 @@ angular.module('starter.controllers', [])
     $scope.checkphone = function (mobilephone) {//检查手机号
       AccountService.checkMobilePhone($scope, mobilephone);
     }
+
 //获取验证码
     $scope.getVerifyCode = function () {
-
       CommonService.getVerifyCode($scope, $scope.user.mobile);
     }
 
@@ -585,7 +589,7 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt("输入的验证码不正确", 'close');
         return;
       }
-      if ($scope.ImgsPicAddr.length == 0 && isInfoProvider) {
+      if ($scope.ImgsPicAddr.length == 0 && $scope.user.usertype == 1) {
         CommonService.platformPrompt("请先上传工作证后再提交", 'close');
         return;
       }
@@ -613,7 +617,12 @@ angular.module('starter.controllers', [])
 
       AccountService.setUserInfo($scope.user).success(function (data) {
         console.log(data);
-        CommonService.platformPrompt(data.message, data.code == 1001 ? (localStorage.getItem("userid") ? '' : 'login') : 'close');
+        if (data.code == 1001) {
+          CommonService.platformPrompt("完善资料提交成功", localStorage.getItem("userid") ? '' : 'login');
+        } else {
+          CommonService.platformPrompt(datas.message, 'close');
+        }
+
         if (data.code == 1001 && localStorage.getItem("userid")) {  //更新用户信息
           //根据会员ID获取会员账号基本信息
           AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (datas) {
@@ -624,8 +633,6 @@ angular.module('starter.controllers', [])
               var services = datas.data.services;
               //用户会员类型  0 无 1信息提供者  2回收者
               localStorage.setItem("usertype", (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
-            } else {
-              CommonService.platformPrompt(datas.message, 'close');
             }
           })
         }
@@ -659,7 +666,7 @@ angular.module('starter.controllers', [])
         if (data.code == 1001) {
           $scope.productList = data.data;
         } else {
-          CommonService.platformPrompt("获取产品品类失败", 'close');
+          CommonService.platformPrompt(data.message, 'close');
         }
       }).then(function () {
         angular.forEach($scope.productList, function (item, index) { //根据产品品类及是否统货取产品列表(最新报价)
@@ -891,7 +898,7 @@ angular.module('starter.controllers', [])
     });
 
 //接单
-    $scope.jieDan = function (djno, userid, type, hytype) {
+    $rootScope.jieDan = function (djno, userid, type, hytype) {
       event.preventDefault();
       var user = JSON.parse(localStorage.getItem("user"));//用户信息
       /*  如果会员是1（信息提供者）,不能接单
@@ -998,7 +1005,7 @@ angular.module('starter.controllers', [])
         if (data.code == 1001) {
           $scope.orderDetail = data.data;
         } else {
-          CommonService.platformPrompt("获取回收单详情失败", "close");
+          CommonService.platformPrompt(data.message, "close");
         }
 
       }).then(function () {
@@ -1011,7 +1018,7 @@ angular.module('starter.controllers', [])
         if (data.code == 1001) {
           $scope.orderDetail = data.data;
         } else {
-          CommonService.platformPrompt("获取回收单详情失败", "close");
+          CommonService.platformPrompt(data.message, "close");
         }
 
       }).then(function () {
@@ -1028,6 +1035,12 @@ angular.module('starter.controllers', [])
 
       })
     }
+
+    //接单
+    $scope.jieDan = function (djno, userid, type, hytype) {
+      $rootScope.jieDan(djno, userid, type, hytype)
+    }
+
     //去收货
     $scope.recycle = function (orno, djno, type, userid, amount, name, productname, hytype) {
       OrderService.torecycle(user, orno, djno, type, userid, amount, name, productname, hytype);
@@ -1171,7 +1184,7 @@ angular.module('starter.controllers', [])
         if (data.code == 1001) {
           $scope.orderDetail = data.data;
         } else {
-          CommonService.platformPrompt("获取订单详情失败", "close");
+          CommonService.platformPrompt(data.message, "close");
         }
 
       }).then(function () {
@@ -1288,7 +1301,7 @@ angular.module('starter.controllers', [])
           $scope.ischecked = true;
         }
       } else {
-        CommonService.platformPrompt("获取产品品类失败", 'close');
+        CommonService.platformPrompt(data.message, 'close');
       }
     }).then(function () {
       angular.forEach($scope.productList, function (item) { //根据产品品类及是否统货取产品列表(最新报价)
@@ -2086,7 +2099,7 @@ angular.module('starter.controllers', [])
       if (data.code == 1001) {
         $scope.productList = data.data;
       } else {
-        CommonService.platformPrompt("获取产品品类失败", 'close');
+        CommonService.platformPrompt(data.message, 'close');
       }
     }).then(function () {
       angular.forEach($scope.productList, function (item) { //根据产品品类及是否统货取产品列表(最新报价)
@@ -2125,7 +2138,7 @@ angular.module('starter.controllers', [])
             $scope.manufacteList = data.data
             $scope.manufacteList.unshift({id: "", shortename: '无'});//追加到第一位
           } else {
-            CommonService.platformPrompt("获取品类所属厂商失败", 'close');
+            CommonService.platformPrompt(data.message, 'close');
           }
         })
       }
@@ -2160,7 +2173,7 @@ angular.module('starter.controllers', [])
             if (data.code == 1001) {
               $scope.addrareacountyone = data.data;
             } else {
-              CommonService.platformPrompt("匹配收收地址数据失败", "close")
+              CommonService.platformPrompt(data.message, "close")
             }
           })
         })
@@ -2253,7 +2266,7 @@ angular.module('starter.controllers', [])
       if (data.code == 1001) {
         $scope.productList = data.data;
       } else {
-        CommonService.platformPrompt("获取产品品类失败", 'close');
+        CommonService.platformPrompt(data.message, 'close');
       }
     }).then(function () {
       angular.forEach($scope.productList, function (item) { //根据产品品类及是否统货取产品列表(最新报价)
