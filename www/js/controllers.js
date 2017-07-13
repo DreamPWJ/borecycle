@@ -2572,7 +2572,7 @@ angular.module('starter.controllers', [])
     }
     $scope.addcash = function () {
       if (!$rootScope.defaultBank) {
-        CommonService.platformPrompt('请先添加一个银行账户', 'addbankaccount')
+        CommonService.platformPrompt('请先添加一个银行账户', 'addbankaccount');
         $state.go('addcard');
         return;
       }
@@ -2582,10 +2582,9 @@ angular.module('starter.controllers', [])
         amount: $scope.cashinfo.amount,
       };
       MyWalletService.cash($scope.datas).success(function (data) {
-        console.log(data);
         if (data.code == 1001) {
           $rootScope.defaultBank=null;
-          CommonService.showAlert('', '<p>恭喜您！</p><p>操作成功，平台审核后打入指定账号，请注意查收！</p>', 'wallet');
+          CommonService.showAlert('', '<p>恭喜您！</p><p>操作成功，工作日24小时之内到账，请注意查收！</p>', 'wallet');
         } else {
           CommonService.platformPrompt('提现失败', 'close');
         }
@@ -2664,7 +2663,6 @@ angular.module('starter.controllers', [])
     $scope.page = 0;
     $scope.total = 1;
     $scope.selectThis=function (item) {
-
       if($rootScope.defaultBank){
         $rootScope.defaultBank=item;
         $state.go("cash");
@@ -2701,6 +2699,10 @@ angular.module('starter.controllers', [])
     }
     $scope.getUserBanklist(0);//收款账号加载刷新
     $scope.setDefault = function (item) {
+      //防止事件冒泡
+      if($rootScope.defaultBank){
+        return;
+      }
       MyWalletService.setDefaultBC(item.id).success(function (data) {
         if (data.code = 1001) {
           CommonService.toolTip("恭喜您，操作成功！", "");
