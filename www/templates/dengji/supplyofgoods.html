@@ -51,7 +51,7 @@
               <!--<i class="icon iconfont {{item.imgurl}}"></i>--> {{item.name}}
             </div>
             <div class="row padding-left padding-right" ng-repeat="items in item.details" style="border-bottom: solid 1px #efefef;"><!--{{items.name}}废品 :{{items.name}}二手 :-->
-             <input type="number" class="col row-no-padding" ng-model="items.wastenum" style="border-right: solid 1px #dedede;padding-left: 10px;height: 26px;"
+             <input type="number" class="col row-no-padding" ng-model="items.wastenum" style="border-right: solid 1px #dedede;border-radius:0;padding-left: 10px;height: 26px;"
                                                            check-form
                                                            ng-change="checkForm(items.wastenum,'输入废品数量错误',items.unit==1?'positiveinteger':'positivenumber','')"
                                                            ng-keyup="checkAtLeastOneIsSame(productList,'wastenum','secondhandnum')"
