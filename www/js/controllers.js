@@ -550,6 +550,10 @@ angular.module('starter.controllers', [])
             $scope.isUpgradeRecycler = true; //升级成为回收商
           }
           $scope.isPhoneRegister=AccountService.checkMobilePhone($scope, datas.data.mobile);
+
+          if($scope.isPhoneRegister){ //赋值
+            $scope.user.mobile=Number(datas.data.mobile);
+          }
           //赋值
           var userext = datas.data.userext;
           if (userext != null) {
@@ -559,7 +563,7 @@ angular.module('starter.controllers', [])
               recoveryqty: userext.recovery || '',//月回收量
               usertype: $scope.isUpgradeRecycler ? 2 : usertype, //用户类型
               shopname: userext.shopname,//企业名称
-              shopphone: userext.shopphone,//企业电话
+              shopphone:userext.shopphone? Number(userext.shopphone):'',//企业电话
               addrdetail: userext.addrdetail //企业详细地址
             }
           }
@@ -2069,7 +2073,7 @@ angular.module('starter.controllers', [])
   })
 
   //帮助信息共用模板
-  .controller('HelpCtrl', function ($scope, $rootScope, $stateParams, $state, BoRecycle, CommonService, AccountService, WeiXinService) {
+  .controller('HelpCtrl', function ($scope, $rootScope, $stateParams, $state, BoRecycle, CommonService,MainService, AccountService, WeiXinService) {
     //调出分享面板
     CommonService.customModal($scope, 'templates/modal/share.html');
 

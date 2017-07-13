@@ -31,8 +31,9 @@
             <h2 class="positive">{{item.addrdetail}}</h2>
             <p class="text-wrap">交易品类 : {{item.category}}  <span class="balanced">{{item.hytype==0?'':(item.hytype==1?'废品':'二手')}}</span>
               <span class="jiedan balanced item-note" ng-click="jieDan(item.djno,item.userid,item.type,item.hytype)"><i
-                class="iconfont icon-formfill"></i>接单</span></p>
+                class="iconfont icon-formfill"></i> 接单</span></p>
             <p class="text-wrap ">{{item.name}} {{item.motel | hidepartinfo : 'phone'}} 距离:{{item.distance}} </p>
+
           </a>
 
         </ion-list>
@@ -57,15 +58,15 @@
               ng-if="item.state>=5"> 状态 : {{item.strstate}}</span></p>
             <p> <span class="item-note pending  "><span ng-if="item.state<=4" class="energized"
                                                         ng-click="relation(item.motel)"><i
-              class="iconfont icon-phone"></i>联系他</span>
+              class="iconfont icon-phone"></i> 联系他</span>
              <span ng-if="item.state==4" class="balanced"
                    ng-click="recycle(item.orno,item.djno,item.type,item.userid,item.totalprice,item.name,item.category,item.hytype)"><i
-               class="iconfont icon-huishou"></i>去收货</span>
+               class="iconfont icon-huishou"></i> 去收货</span>
                       <span ng-if="item.state==5" class="balanced"
                             ng-click="topay(item.type,item.djno,item.orno,item.oruserid,item.userid,item.totalprice,item.name)"><i
-                        class="iconfont icon-sponsor"></i>去付款</span><span
+                        class="iconfont icon-sponsor"></i> 去付款</span><span
                 class="positive" ng-if="item.state<=4" ng-click="navigation(item.longitude,item.latitude)"><i
-                class="iconfont icon-daohang1"></i>导航</span></span></p>
+                class="iconfont icon-daohang1"></i> 导航</span></span></p>
             <ion-reorder-button class="iconfont icon-jian " ng-click="cancelOrder(item.orno)"></ion-reorder-button>
           </ion-item>
         </ion-list>
@@ -94,15 +95,15 @@
                 <span> 状态 : {{item.strstate}}</span></p>
               <p><span class="item-note pending  "><span ng-if="item.state<=4" class="energized"
                                                          ng-click="relation(item.motel)"><i
-                class="iconfont icon-phone"></i>联系他</span>
+                class="iconfont icon-phone"></i> 联系他</span>
              <span ng-if="item.state==4" class="balanced"
                    ng-click="recycle(item.orno,item.djno,item.type,item.userid,item.totalprice,item.name,item.category,item.hytype)"><i
-               class="iconfont icon-huishou"></i>去收货</span>
+               class="iconfont icon-huishou"></i> 去收货</span>
                 <span ng-if="item.state==5" class="balanced"
                       ng-click="topay(item.type,item.djno,item.orno,item.oruserid,item.userid,item.totalprice,item.name)"><i
-                  class="iconfont icon-sponsor"></i>去付款</span>
+                  class="iconfont icon-sponsor"></i> 去付款</span>
                <span class="positive" ng-if="item.state<=4" ng-click="navigation(item.longitude,item.latitude)"><i
-                 class="iconfont icon-daohang1"></i>导航</span> </span></p>
+                 class="iconfont icon-daohang1"></i> 导航</span> </span></p>
             </a>
           </ion-list>
           <ion-infinite-scroll on-infinite="getOrderList()" ng-if="total > page" immediate-check="false">

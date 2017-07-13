@@ -23,11 +23,12 @@
 
 #orderlist .jiedan, #orderlist .pending, #orderwarning .pending, #myorderlist .close {
   margin-top: 0.2rem !important;
+  padding:5px 4px ;
 }
 
 #orderlist .jiedan i, #orderlist .pending i, #orderwarning .pending i, #myorderlist .close i {
   vertical-align: text-bottom;
-  margin-left: 0.5rem;
+  margin-left: 0.8rem;
 }
 
 .tab-largen.tab-item {
