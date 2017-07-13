@@ -74,13 +74,13 @@
           <label ng-if="user.usertype==1" class="item item-input">
             <span class="input-label icon ion-ios-telephone-outline"> 联系电话</span>
             <input type="number" name="shopphone" ng-model="user.shopphone" check-form
-                   ng-blur="checkForm(user.shopphone,'手机或电话号码输入错误','phoneandtel','')" placeholder="请输入门店联系电话"
+                   ng-blur="checkForm(user.shopphone,'手机或电话号码输入格式错误','phoneandtel','')" placeholder="请输入门店联系电话"
                    ng-required="user.usertype==1"/>
           </label>
 
           <label class="item item-input " ng-click="openModal()">
-            <span class="input-label icon ion-ios-location-outline"> {{user.usertype==1?'企业地址':'回收区域'}}  </span>
-            <p class="{{addresspcd?'dark':'grey'}}">{{addresspcd?addresspcd:"请选择回收区域"}}</p>
+            <span class="input-label icon ion-ios-location-outline"> {{user.usertype==1?'企业地址':'地区'}}  </span>
+            <p class="{{addresspcd?'dark':'grey'}}">{{addresspcd?addresspcd:"请选择地区"}}</p>
           </label>
 
           <label ng-if="user.usertype==1" class="item item-input ">

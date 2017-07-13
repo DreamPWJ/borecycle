@@ -948,6 +948,7 @@ angular.module('starter.controllers', [])
           $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
         }
         if (data.code == 1005) { //接单的时候返回值是1005,就跳转到“待处理”页面
+          CommonService.platformPrompt(data.message, "close");
           $scope.selectedTab(1);
         }
         else {
