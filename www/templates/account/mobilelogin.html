@@ -15,7 +15,7 @@
       <div class="list">
         <label class="item item-input">
           <span class="input-label icon ion-ios-telephone-outline"> 手机号</span>
-          <input type="number" name="mobile" ng-model="user.mobile" ng-keyup="checkphone(user.mobile)" maxlength="11"
+          <input type="number" name="mobile" ng-model="user.mobile" ng-keyup="checkphone(user.mobile)" ng-blur="getIsInvite(user.mobile)" maxlength="11"
                  placeholder="手机号码" required/>
         </label>
 
@@ -27,6 +27,11 @@
                     ng-click="getVerifyCode()">{{paracont}}</button>
           </span>
         </div>
+        <label ng-if="isInvite" class="item item-input">
+          <span class="input-label icon ion-ios-unlocked-outline" > 邀请码</span>
+          <input type="number" ng-model="user.invitecode" check-form
+                 placeholder="请输入邀请码" ng-required="isInvite"  maxlength="6"/>
+        </label>
 
         <ion-checkbox class=" stable-bg item-borderless checkbox-positive" ng-model="agreedeal" ng-checked="true">
           同意登录协议

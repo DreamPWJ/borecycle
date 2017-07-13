@@ -33,14 +33,18 @@
                  placeholder="请确保和上面密码一致" required/>
         </label>
         <div class="item item-input">
-          <span class="input-label icon ion-ios-locked-outline"> 验证码 </span>
+          <span class="input-label icon ion-ios-unlocked-outline"> 验证码 </span>
           <span class="row row-no-padding">
           <input type="number" class="col-55" placeholder="请输入验证码" ng-model="user.code" required/>
             <button class="button button-small button-positive  col-33 " ng-disabled="!paraclass"
                     ng-click="getVerifyCode()">{{paracont}}</button>
           </span>
         </div>
-
+        <label class="item item-input">
+          <span class="input-label icon ion-ios-unlocked-outline" > 邀请码</span>
+          <input type="number" ng-model="user.invitecode" check-form
+                 placeholder="请输入邀请码" required  maxlength="6"/>
+        </label>
         <ion-item class="item-divider light-bg">
           用户类型
           <p class="text-right item-note"><a class="positive  icon ion-ios-help-outline" ng-href="#/help/25"

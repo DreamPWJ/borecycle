@@ -242,6 +242,18 @@ angular.module('starter.controllers', [])
 
     $scope.user = {};//提前定义用户对象
     $scope.agreedeal = true;//同意用户协议
+
+    //根据会员账号检查是否需要邀请码
+    $scope.getIsInvite = function (account) {
+      AccountService.getIsInvite({account: account}).success(function (data) {
+        console.log(data);
+        if (data.code == 1001) {
+          $scope.isInvite = true;
+        } else {
+          $scope.isInvite = false;
+        }
+      })
+    }
     $scope.loginSubmit = function () {
       $scope.user.openID = localStorage.getItem("openid") || "";//微信openID
       $scope.user.client = ionic.Platform.isWebView() ? 0 : (ionic.Platform.is('android') ? 1 : 2);
@@ -319,6 +331,17 @@ angular.module('starter.controllers', [])
       CommonService.getVerifyCode($scope, $scope.user.mobile);
     }
 
+    //根据会员账号检查是否需要邀请码
+    $scope.getIsInvite = function (account) {
+      AccountService.getIsInvite({account: account}).success(function (data) {
+        console.log(data);
+        if (data.code == 1001) {
+          $scope.isInvite = true;
+        } else {
+          $scope.isInvite = false;
+        }
+      })
+    }
     $scope.loginSubmit = function () {
       if ($scope.verifycode != $scope.user.code) {
         CommonService.platformPrompt("输入的验证码不正确", 'close');
@@ -1939,10 +1962,10 @@ angular.module('starter.controllers', [])
       }
       AccountService.authenticateSign($scope.params).success(function (data) {
         console.log(JSON.stringify(data));
-        if (data.code == 1001) {
+        if (data.data.serviceId != null) {
           $scope.serviceId = data.data.serviceId;//e签宝服务id
         } else {
-          CommonService.platformPrompt(data.message, 'close')
+          CommonService.platformPrompt(data.data.msg, 'close')
         }
       })
     }
