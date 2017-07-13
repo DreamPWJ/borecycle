@@ -15,7 +15,7 @@
       <p>无银行账号</p>
     </div>
     <div class="list">
-      <div class="card gold-bg padding" ng-repeat="item in userbanklist">
+      <div class="card gold-bg padding" ng-repeat="item in userbanklist" ng-click="selectThis(item)">
         <div class="row gold-bg no-border padding-top padding-bottom">
           <div class="col-15">
             <span class="assertive light-bg border-radius-50"
@@ -26,11 +26,14 @@
             <div style="font-size: 1.2rem;">{{item.bankname}}</div>
             <div style="font-size: 0.8rem;">{{item.branchname}}</div>
           </div>
-          <div class="col text-right">
+          <div class="col text-right" ng-if="!defaultBank">
             <span ng-if="item.isdefault==0" class="calm" ng-click="setDefault(item)"><i class="ion-ios-gear"
                                                                                         style="font-size: 1.1rem;"></i>&nbsp;设为默认</span>
             <span ng-if="item.isdefault==1" class="calm"><i class="ion-android-radio-button-on"
                                                             style="font-size: 1.1rem;"></i>&nbsp;默认</span>
+          </div>
+          <div class="col text-right" ng-if="defaultBank">
+            <span class="calm" ng-click="setDefault(item)"><i class="ion-ios-circle-outline" style="font-size: 1.1rem;"></i>&nbsp;选择</span>
           </div>
         </div>
         <div class="text-center dark padding-bottom" style="font-size: 1.3rem;">

@@ -2548,6 +2548,11 @@ angular.module('starter.controllers', [])
     if (!CommonService.isLogin()) {
       return;
     }
+    $scope.isAll=false;//是否全部提现
+    //判断是否存在默认银行对象
+    if(!$rootScope.defaultBank){
+      $rootScope.defaultBank;//默认银行对象
+    }
     $scope.subaccount = {};
     MyWalletService.get(localStorage.getItem("userid")).success(function (data) {
       $scope.subaccount = data.data;
@@ -2555,48 +2560,47 @@ angular.module('starter.controllers', [])
     $scope.verbank = false;
     $scope.myBk = {};
     $scope.cashinfo = {};
-    //银行列表
-    $scope.params = {
-      page: 1,//页码
-      size: 100,//条数
-      userid: localStorage.getItem("userid")//用户id
-    }
-    MyWalletService.getbanklist($scope.params).success(function (data) {
-      if (data.data.total_count != 0) {
-        $scope.BankList = data.data.data_list;
-      }
-      else {
-        $scope.verbank = true;
+    //获取默认银行
+    MyWalletService.getDefaultBank(localStorage.getItem("userid")).success(function (data) {
+      if(data.code==1001){
+        $rootScope.defaultBank=data.data;
       }
     });
-    $scope.changeBk = function (gt) {
-      angular.forEach($scope.BankList, function (item) {
-        if (gt == item.id) {
-          $scope.myBk = item;
-        }
-      });
-      if (gt != null) {
-        $scope.verbank = true;
-      }
+    $scope.allCash=function () {
+      $scope.isAll=true;
+      $scope.cashinfo.amount=$scope.subaccount.cashamount;
     }
     $scope.addcash = function () {
-      if ($scope.BankList == null) {
+      if (!$rootScope.defaultBank) {
         CommonService.platformPrompt('请先添加一个银行账户', 'addbankaccount')
         $state.go('addcard');
         return;
       }
       $scope.datas = {
-        userbankid: $scope.myBk.id,
+        userbankid: $rootScope.defaultBank.id,
         userid: localStorage.getItem("userid"),
         amount: $scope.cashinfo.amount,
       };
       MyWalletService.cash($scope.datas).success(function (data) {
+        console.log(data);
         if (data.code == 1001) {
+          $rootScope.defaultBank=null;
           CommonService.showAlert('', '<p>恭喜您！</p><p>操作成功，平台审核后打入指定账号，请注意查收！</p>', 'wallet');
         } else {
           CommonService.platformPrompt('提现失败', 'close');
         }
-      })
+      });
+    }
+    //选择或添加银行卡
+    $scope.selectCard=function () {
+      if (!$rootScope.defaultBank) {
+        $rootScope.defaultBank={};
+        $state.go('addcard');
+        return;
+      }else {
+        $state.go('bankcard');
+        return;
+      }
     }
   })
 
@@ -2659,6 +2663,14 @@ angular.module('starter.controllers', [])
     $scope.userbanklist = [];
     $scope.page = 0;
     $scope.total = 1;
+    $scope.selectThis=function (item) {
+
+      if($rootScope.defaultBank){
+        $rootScope.defaultBank=item;
+        $state.go("cash");
+        return;
+      }
+    }
     $scope.getUserBanklist = function () {
       if (arguments != [] && arguments[0] == 0) {
         $scope.page = 0;
@@ -2787,9 +2799,17 @@ angular.module('starter.controllers', [])
       }
       MyWalletService.addbank($scope.datas).success(function (data) {
         if (data.code == 1001) {
-          CommonService.showAlert('', '<p>恭喜您！</p><p>账户信息' + $scope.buttonText + '成功！</p>', '');
-          $state.go("/bankcard");
-          return;
+          CommonService.showAlert('', '<p>恭喜您！</p><p>银行卡' + $scope.buttonText + '成功！</p>', '');
+          if($rootScope.defaultBank){
+            $rootScope.defaultBank=$scope.datas;
+            $rootScope.defaultBank.id=data.date;
+            $state.go("cash");
+            return;
+          }else{
+            $state.go("/bankcard");
+            return;
+          }
+
         } else {
           CommonService.platformPrompt(data.message, 'close');
         }

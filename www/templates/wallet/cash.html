@@ -8,32 +8,35 @@
   <form name="formaddcash">
     <ion-content overflow-scroll="false" class="has-button-footer stable-bg " has-bouncing="true">
       <p></p>
-      <div class="list">
+      <div class="card">
+        <label class="item item-icon-right" ng-click="selectCard()">
+        <span class="input-label"><span class="padding-right">银行卡 : </span>
+            <!--<select ng-if="BankList.length>0" ng-model="myBk" ng-options="g.id as g.accountno for g in BankList track by g.id"-->
+                    <!--ng-change="changeBk(myBk)" required>-->
+              <!--<option value="">请选择银行卡</option>-->
+          <!--</select>-->
+          <span class="calm" style="font-weight: bold">{{defaultBank?defaultBank.bankname+"（"+defaultBank.accountno.substring(defaultBank.accountno.length-4)+")":"请添加银行"}}</span>
+          <i class="icon" ng-class="defaultBank?'ion-ios-arrow-forward':'ion-ios-plus-empty'"></i>
+       </span>
+        </label>
         <label class="item item-input ">
           <span class="input-label">可提现金额 : </span>
           {{subaccount.cashamount}} 元
         </label>
-        <p></p>
-        <label class="item item-input item-select">
-        <span class="input-label"><span class="padding-right">提现账号 : </span>
-            <select ng-model="myBk" ng-options="g.id as g.accountno for g in BankList track by g.id"
-                    ng-change="changeBk(myBk)" required>
-              <option value="">请选择银行卡</option>
-          </select>
-       </span>
-        </label>
         <label class="item item-input ">
           <span class="input-label">提现金额 : </span>
           <input type="number" placeholder="请输入提现金额" ng-model="cashinfo.amount" check-form
-                 ng-change="checkForm(cashinfo.amount,'提现金额不能超过提现金额','maxvaule',subaccount.cashamount)"
+                 ng-change="checkForm(cashinfo.amount,'提现金额不能超过提现金额','maxvaule','',true,subaccount.cashamount)"
                  ng-maxlength="10" required/>
         </label>
-        <p></p>
-
+        <p class="text-right padding-right padding-top" ng-class="isAll?'calm':'grey'" ng-click="allCash()">
+          <i ng-class="isAll?'ion-ios-checkmark':'ion-ios-circle-outline'" class=""></i>
+          全部提现
+        </p>
       </div>
     </ion-content>
     <div class="padding light-bg  bottom-0" keyboard-attach>
-      <a ng-disabled="!(formaddcash.$valid&&verify&&verbank)" class="button button-positive full-image "
+      <a ng-disabled="!(formaddcash.$valid&&verify&&defaultBank)" class="button button-positive full-image "
          ng-click="addcash()">提现</a>
     </div>
   </form>
