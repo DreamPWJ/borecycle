@@ -333,3 +333,6 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
 .skyblue-bg{
 background-color: #1296db;
 }
+#helpContent>p{
+  padding: 0 20px;
+}
