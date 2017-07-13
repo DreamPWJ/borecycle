@@ -316,7 +316,6 @@ angular.module('starter.controllers', [])
     }
     //获取验证码
     $scope.getVerifyCode = function () {
-
       CommonService.getVerifyCode($scope, $scope.user.mobile);
     }
 
@@ -397,7 +396,6 @@ angular.module('starter.controllers', [])
 
     //获取验证码
     $scope.getVerifyCode = function () {
-
       CommonService.getVerifyCode($scope, $scope.user.account);
     }
     $scope.checkChecded = function () {
@@ -452,7 +450,6 @@ angular.module('starter.controllers', [])
 
     //获取验证码
     $scope.getVerifyCode = function () {
-
       CommonService.getVerifyCode($scope, $scope.user.account);
     }
 
@@ -582,6 +579,31 @@ angular.module('starter.controllers', [])
       $scope.getAddressPCCList();
     }
 
+    //获取当前位置 定位
+    $scope.location = function () {
+      CommonService.getLocation(function () {
+        //当前位置 定位
+        AccountService.getCurrentCityName({
+          key: BoRecycle.gaoDeKey,
+          location: Number(localStorage.getItem("longitude")).toFixed(6) + "," + Number(localStorage.getItem("latitude")).toFixed(6)
+        }).success(function (data) {
+          var addressComponent = data.regeocode.addressComponent;
+          $scope.ssx = addressComponent.province + addressComponent.city + addressComponent.district;//省市县
+          $scope.user.addrdetail = addressComponent.township + addressComponent.streetNumber.street;
+        }).then(function () {
+          AddressService.getAddressBySSX({ssx: $scope.ssx}).success(function (data) {
+            console.log(data);
+            if (data.code == 1001) {
+              $scope.addrareacountyone = data.data;
+            } else {
+              CommonService.platformPrompt(data.message, "close")
+            }
+          })
+        })
+      })
+
+    }
+    $scope.location();//自动定位
 //完善资料提交
     $scope.organizingdataSubmit = function () {
 
@@ -1400,7 +1422,7 @@ angular.module('starter.controllers', [])
     $scope.orderinfo = JSON.parse($stateParams.orderinfo);
     console.log($scope.orderinfo);
     $scope.pay = { //支付相关
-      choice: 1,//选择支付方式默认支付方式1. 现金支付2. 在线支付
+      choice: 1//选择支付方式默认支付方式1. 现金支付2. 在线支付
     }
 
     //获得余额
@@ -1827,7 +1849,6 @@ angular.module('starter.controllers', [])
 
     //获取验证码
     $scope.getVerifyCode = function () {
-
       CommonService.getVerifyCode($scope, $scope.user.mobile);
     }
 
@@ -1864,7 +1885,6 @@ angular.module('starter.controllers', [])
 
     //获取验证码
     $scope.getVerifyCode = function () {
-
       CommonService.getVerifyCode($scope, $scope.email.email);
     }
 
@@ -1908,7 +1928,6 @@ angular.module('starter.controllers', [])
 
     //e签宝验证码
     $scope.getVerifyCode = function () {
-
       event.preventDefault();
       CommonService.countDown($scope)
       //发送实名认证码，返回实名认证服务id,提交实名认证时需填写

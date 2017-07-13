@@ -18,7 +18,7 @@
         <div class="item item-input">
           <span class="row row-no-padding">
           <input type="number" class="col-65" placeholder="验证码" ng-model="user.code" required/>
-            <button class="button button-small button-positive  col-33 " ng-class="{false:'button-outline'}[paraclass]"
+            <button class="button button-small button-positive  col-33 " ng-disabled="!paraclass"
                     ng-click="getVerifyCode()">{{paracont}}</button>
           </span>
         </div>

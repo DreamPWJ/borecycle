@@ -382,7 +382,7 @@ angular.module('starter.services', [])
       getStateName: function () {    //得到上一个路由名称方法
         var stateName = "";
         var backView = $ionicHistory.backView();
-        if (backView && backView.stateName != "tab.account" && backView.stateName != "login"&& backView.stateName != "setting" && backView.stateName != "organizingdata" && backView.stateName != "findpassword" && backView.stateName != "register" && backView.stateName != "order" && backView.stateName != "help") {
+        if (backView && backView.stateName != "tab.account" && backView.stateName != "login" && backView.stateName != "setting" && backView.stateName != "organizingdata" && backView.stateName != "findpassword" && backView.stateName != "register" && backView.stateName != "order" && backView.stateName != "help") {
           stateName = backView.stateName;
         }
         if (stateName) {
@@ -409,7 +409,7 @@ angular.module('starter.services', [])
           _self.type = null;
         }, 3000);
       },
-      countDown: function ($scope) {//60s倒计时
+      countDown: function ($scope) {//120s倒计时
         var second = 120,
           timePromise = undefined;
         timePromise = $interval(function () {
@@ -876,7 +876,7 @@ angular.module('starter.services', [])
         }
         //获取最后一级地址信息 关闭modal
         if (item.Level == 3) {
-          $scope.addrareacountyone={};
+          $scope.addrareacountyone = {};
           $scope.addresspcd = item.MergerName;
           $scope.addrareacountyone = item;
           $scope.modal.hide();
@@ -1059,6 +1059,19 @@ angular.module('starter.services', [])
           method: 'POST',
           url: BoRecycle.api + "/api/user/login_mobile",
           data: datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getIsInvite: function (params) { //根据会员账号检查是否需要邀请码
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/user/get_isinvite/" + params.account,
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
