@@ -41,41 +41,41 @@
       <div ng-if="usertype==2">
         <a nav-direction=forward ng-href="#/order/0" class="item item-icon-left  order ">
           <i class="icon iconfont icon-form " style="color: #4cd964;"></i>
-          <h2>我的回收单</h2>
+          <h2>已接订单</h2>
         </a>
         <div class="row row-no-padding light-bg  row-center text-center order-item">
           <a nav-direction=forward ng-href="#/order/0" class="item item-icon-right col ">
-            <p>待处理订单</p>
+            <p>待处理</p>
             <h2>{{orderSum.dclnum}}个</h2>
             <i class="icon iconfont icon-time " style="color: #00ACFF"></i></span>
           </a>
           <a nav-direction=forward ng-href="#/orderwarning" class="item  col expiring item-borderless">
-            <p>订单预警</p>
+            <p>预警</p>
             <h2>{{orderSum.yjnum}}个</h2>
           </a>
         </div>
       </div>
     </div>
-    <div class="list">
-      <a nav-direction=forward ng-href="#/myorder" class="item item-icon-left item-icon-right  ">
-        <i class="icon iconfont icon-form "></i>
-        <h2>我的订单</h2>
+    <div class="list" id="myaccount1">
+      <a nav-direction=forward ng-href="#/myorder" class="item item-icon-left item-icon-right">
+        <i class="icon iconfont icon-form" style="color: #11c1f3"></i>
+        <h2>我登记的信息及货源</h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
       <a ng-if="usertype==2||usertype==0" nav-direction=forward ng-href="#/wallet"
          class="item item-icon-left item-icon-right ">
-        <i class="icon iconfont icon-moneybag"></i>
+        <i class="icon iconfont icon-moneybag" style="color: #FFD700"></i>
         <h2>我的钱包 <span class="item-note">余额 ：{{orderSum.account | currency :'￥'}}</span></h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
       <a nav-direction=forward ng-href="#/tab/news" class="item item-icon-left item-icon-right">
-        <i class="icon iconfont icon-mark"></i>
+        <i class="icon iconfont icon-mark" style="color: #0ab66a"></i>
         <h2>消息</h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
 
       <a nav-direction=forward ng-href="#/myaddress" class="item item-icon-left item-icon-right">
-        <i class="icon iconfont icon-location"></i>
+        <i class="icon iconfont icon-location" style="color: #ef473a"></i>
         <h2>我的地址</h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
@@ -83,17 +83,17 @@
     </div>
     <div class="list">
       <a nav-direction=forward class="item item-icon-left item-icon-right " ng-href="#/help/22">
-        <i class="icon iconfont icon-guanyuwomen"></i>
+        <i class="icon iconfont icon-guanyuwomen" style="color: #ffc900"></i>
         <h2>关于我们</h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
       <a nav-direction=forward class="item item-icon-left item-icon-right" ng-click="modal.show()">
-        <i class="icon iconfont icon-share"></i>
+        <i class="icon iconfont icon-share" style="color: #4cae4c"></i>
         <h2>分享给我的朋友</h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
       <a nav-direction=forward ng-href="#/setting" class="item item-icon-left item-icon-right ">
-        <i class="icon iconfont icon-settings"></i>
+        <i class="icon iconfont icon-settings" style="color: #1b6d85"></i>
         <h2>设置</h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>

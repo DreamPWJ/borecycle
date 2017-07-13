@@ -16,10 +16,10 @@
       <ion-item collection-repeat="item in tradelist " class="item"
                 nav-direction=forward>
         <div class="row row-no-padding" style="height: 25px; ">
-          <h2 class="col" style="{{item.flag==0?'color:#0938F7;font-size: 16px; font-weight: bold':'color:red;font-size: 16px; font-weight: bold'}}">
+          <h2 class="col-30 text-left" style="{{item.flag==0?'color:#0938F7;font-size: 16px; font-weight: bold':'color:red;font-size: 16px; font-weight: bold'}}">
             {{item.flag==1?"-"+(item.amount | currency :''):(item.amount | currency :'')}}</h2>
-          <span class="col" ng-class="getColor(item.state_str)">{{item.state_str}}</span>
-          <p class="f-right"><span ng-bind-html="item.channel_str"></span></p>
+          <span class="col-30" ng-class="getColor(item.state_str)">{{item.state_str}}</span>
+          <p  class="col-40 text-right" class="f-right"><span ng-bind-html="item.channel_str"></span></p>
         </div>
 
         <span class="col">余额：<span class="text-left">{{item.preamount | currency :''}}</span>
