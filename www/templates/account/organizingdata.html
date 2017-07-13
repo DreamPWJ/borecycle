@@ -60,7 +60,7 @@
           <div ng-if="user.usertype==2" class="item text-wrap">
             <span class="block icon ion-ios-trash-outline padding-bottom"> 回收品类</span>
             <ion-checkbox ng-repeat="item in productList" class="item-borderless checkbox-positive"
-                          ng-click="checkChecded()" ng-model="item.checked">
+                          ng-click="checkChecded1(productList)" ng-model="item.checked">
               {{item.name}}
             </ion-checkbox>
 
@@ -83,11 +83,13 @@
             <p class="{{(addresspcd||ssx)?'dard':'grey'}}">{{addresspcd?addresspcd:(ssx?ssx:"请选择地区")}}</p>
           </label>
 
-          <label ng-if="user.usertype==1" class="item item-input ">
+          <div ng-if="user.usertype==1" class="item item-input ">
             <span class="input-label icon ion-ios-location-outline"> 详细地址</span>
-            <textarea class="col-60" rows="1" ng-model="user.addrdetail" placeholder="请输入街道门牌号等详细地址"
+            <textarea class="col-50" rows="1" ng-model="user.addrdetail" placeholder="请输入街道门牌号等详细地址"
                       ng-required="user.usertype==1"></textarea>
-          </label>
+            <div class="positive padding-left" ng-click="openNearAddrModal()"><i class="icon iconfont icon-locationfill"></i>定位
+            </div>
+          </div>
 
           <div ng-if="user.usertype==1">
             <div class="item item-input ">
@@ -110,7 +112,7 @@
           <p></p>
           <div class="padding-horizontal">
             <button class="button full-image button-positive " ng-click="organizingdataSubmit()"
-                    ng-disabled="!(organizingdataForm.$valid&&verify&&(user.usertype==1?true:ischecked)&&(addresspcd||ssx))">提交
+                    ng-disabled="!(organizingdataForm.$valid&&(user.usertype==1?verify:true)&&(user.usertype==1?true:(ischecked&&ischecked1))&&(addresspcd||ssx))">提交
             </button>
             <p></p>
             <a ng-href="#/{{isLogin?'tab/account':'login'}}"

@@ -1,0 +1,20 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-positive">
+    <button class="button button-clear icon ion-ios-arrow-left" ng-click="modal1.hide()"></button>
+    <h1 class="title">附近地址</h1>
+  </ion-header-bar>
+  <ion-content overflow-scroll="false">
+    <ion-list>
+      <div ng-if="addresspois==null||addresspois.length==0" class="isNotDataHint">
+        <i class="icon ion-android-notifications"></i>
+        <p>无法获取附近地址</p>
+      </div>
+      <ion-item class="item-icon-left" ng-click="getAddressPois(item.name)"
+                ng-repeat="item in addresspois">
+        <i class="icon iconfont icon-time"></i>
+        {{item.name}}
+        <p>{{item.address}}</p>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-modal-view>

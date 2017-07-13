@@ -453,7 +453,7 @@ angular.module('starter.controllers', [])
       AccountService.register($scope.user).success(function (data) {
         if (data.code == 1001) {
           $rootScope.registerUserType = $scope.user.type;
-          $rootScope.isPhoneRegister=(/^1(3|4|5|7|8)\d{9}$/.test($scope.user.account))
+          $rootScope.isPhoneRegister = (/^1(3|4|5|7|8)\d{9}$/.test($scope.user.account))
           $state.go('organizingdata');
         }
         CommonService.platformPrompt(data.message, 'close');
@@ -515,11 +515,12 @@ angular.module('starter.controllers', [])
     }
 
     CommonService.customModal($scope, 'templates/modal/addressmodal.html');
+    CommonService.customModal($scope, 'templates/modal/nearbyaddressmodal.html', 1);
     $scope.$on('$ionicView.beforeEnter', function () {
       if ($ionicHistory.backView() && $ionicHistory.backView().stateName == "register") { //上一级路由名称
         $scope.usertype = $rootScope.registerUserType; //是从注册页面进入
         $scope.user.usertype = $rootScope.registerUserType;
-        $scope.isPhoneRegister=$rootScope.isPhoneRegister;
+        $scope.isPhoneRegister = $rootScope.isPhoneRegister;
       }
     })
     $scope.isLogin = localStorage.getItem("userid") ? true : false;//是否登录
@@ -549,10 +550,10 @@ angular.module('starter.controllers', [])
             // $scope.isInfoProvider = false;
             $scope.isUpgradeRecycler = true; //升级成为回收商
           }
-          $scope.isPhoneRegister=AccountService.checkMobilePhone($scope, datas.data.mobile);
+          $scope.isPhoneRegister = AccountService.checkMobilePhone($scope, datas.data.mobile);
 
-          if($scope.isPhoneRegister){ //赋值
-            $scope.user.mobile=Number(datas.data.mobile);
+          if ($scope.isPhoneRegister) { //赋值
+            $scope.user.mobile = Number(datas.data.mobile);
           }
           //赋值
           var userext = datas.data.userext;
@@ -563,7 +564,7 @@ angular.module('starter.controllers', [])
               recoveryqty: userext.recovery || '',//月回收量
               usertype: $scope.isUpgradeRecycler ? 2 : usertype, //用户类型
               shopname: userext.shopname,//企业名称
-              shopphone:userext.shopphone? Number(userext.shopphone):'',//企业电话
+              shopphone: userext.shopphone ? Number(userext.shopphone) : '',//企业电话
               addrdetail: userext.addrdetail //企业详细地址
             }
           }
@@ -583,7 +584,20 @@ angular.module('starter.controllers', [])
       }
     }).then(function () {
       $scope.checkChecded = function (array) {
-        CommonService.checkChecded($scope, array || $scope.productList);
+        $scope.ischecked = false;
+        angular.forEach(array, function (item) {
+          if (item.checked) {
+            $scope.ischecked = true;
+          }
+        })
+      }
+      $scope.checkChecded1 = function (array) {
+        $scope.ischecked1 = false;
+        angular.forEach(array, function (item) {
+          if (item.checked) {
+            $scope.ischecked1 = true;
+          }
+        })
       }
     })
     $scope.checkphone = function (mobilephone) {//检查手机号
@@ -607,6 +621,16 @@ angular.module('starter.controllers', [])
       $scope.modal.show();
       $scope.getAddressPCCList();
     }
+    //打开附近地址modal
+    $scope.openNearAddrModal = function () {
+      $scope.modal1.show();
+    }
+
+    // 选择打开附近地址
+    $scope.getAddressPois = function (addrname) {
+      $scope.user.addrdetail = addrname;
+      $scope.modal1.hide();
+    }
 
     //获取当前位置 定位
     $scope.location = function () {
@@ -614,8 +638,13 @@ angular.module('starter.controllers', [])
         //当前位置 定位
         AccountService.getCurrentCityName({
           key: BoRecycle.gaoDeKey,
-          location: Number(localStorage.getItem("longitude")).toFixed(6) + "," + Number(localStorage.getItem("latitude")).toFixed(6)
+          location: Number(localStorage.getItem("longitude")).toFixed(6) + "," + Number(localStorage.getItem("latitude")).toFixed(6),
+          radius: 2000,//	查询POI的半径范围。取值范围：0~3000,单位：米
+          extensions: 'all',//返回结果控制
+          batch: false, //batch=true为批量查询。batch=false为单点查询
+          roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
         }).success(function (data) {
+          $scope.addresspois = data.regeocode.pois;
           var addressComponent = data.regeocode.addressComponent;
           $scope.ssx = addressComponent.province + addressComponent.city + addressComponent.district;//省市县
           $scope.user.addrdetail = addressComponent.township + addressComponent.streetNumber.street;
@@ -2073,7 +2102,7 @@ angular.module('starter.controllers', [])
   })
 
   //帮助信息共用模板
-  .controller('HelpCtrl', function ($scope, $rootScope, $stateParams, $state, BoRecycle, CommonService,MainService, AccountService, WeiXinService) {
+  .controller('HelpCtrl', function ($scope, $rootScope, $stateParams, $state, BoRecycle, CommonService, MainService, AccountService, WeiXinService) {
     //调出分享面板
     CommonService.customModal($scope, 'templates/modal/share.html');
 
@@ -2143,9 +2172,11 @@ angular.module('starter.controllers', [])
      }
      })*/
     CommonService.customModal($scope, 'templates/modal/addressmodal.html');
+    CommonService.customModal($scope, 'templates/modal/nearbyaddressmodal.html', 1);
     $scope.dengji = {};//登记信息
     $scope.dengji.acttype = 0;//默认活动类型是0  1以旧换新 当用户选择“以旧换新”时，先判断用户有没有“完善信息”和“实名认证”，如果没有则必须先“完善信息”和“实名认证”。
     $scope.addrinfo = {};
+    $scope.addresspois = [];//附近地址数组
     $scope.productLists = [];//产品品类
     //获取产品品类
     OrderService.getProductList({ID: "", Name: ""}).success(function (data) {
@@ -2210,15 +2241,32 @@ angular.module('starter.controllers', [])
       $scope.modal.show();
       $scope.getAddressPCCList();
     }
+
+    //打开附近地址modal
+    $scope.openNearAddrModal = function () {
+      $scope.modal1.show();
+    }
+
+    // 选择打开附近地址
+    $scope.getAddressPois = function (addrname) {
+      $scope.dengji.addrdetail = addrname;
+      $scope.modal1.hide();
+    }
+
     //获取当前位置 定位
     $scope.location = function () {
       CommonService.getLocation(function () {
         //当前位置 定位
         AccountService.getCurrentCityName({
           key: BoRecycle.gaoDeKey,
-          location: Number(localStorage.getItem("longitude")).toFixed(6) + "," + Number(localStorage.getItem("latitude")).toFixed(6)
+          location: Number(localStorage.getItem("longitude")).toFixed(6) + "," + Number(localStorage.getItem("latitude")).toFixed(6),
+          radius: 2000,//	查询POI的半径范围。取值范围：0~3000,单位：米
+          extensions: 'all',//返回结果控制
+          batch: false, //batch=true为批量查询。batch=false为单点查询
+          roadlevel: 0//可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
         }).success(function (data) {
           var addressComponent = data.regeocode.addressComponent;
+          $scope.addresspois = data.regeocode.pois;
           $scope.ssx = addressComponent.province + addressComponent.city + addressComponent.district;//省市县
           $scope.dengji.addrdetail = addressComponent.township + addressComponent.streetNumber.street;
         }).then(function () {
