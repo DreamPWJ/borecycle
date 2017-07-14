@@ -104,26 +104,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           window.plugins.jPushPlugin.clearAllNotification();
         }
       }
+
       // System events
       document.addEventListener("resume", resume, false);
 
-      //打开通知
-      var onOpenNotification = function (event) {
-        try {
-          var alertContent;
-          if (device.platform == "Android") {
-            alertContent = event.alert;
-          } else {
-            alertContent = event.aps.alert;
-          }
-          alert("open Notification:" + alertContent);
-          /*$state.go("myorderdetails", {no: 1});*///订单详情
-        } catch (exception) {
-          console.log("JPushPlugin:onOpenNotification" + exception);
-        }
-      };
-      //点击极光推送跳转到相应页面
-      document.addEventListener("jpush.openNotification", onOpenNotification, false)
+      //点击极光推送跳转到相应页面/点击通知栏的回调
+      document.addEventListener("jpush.openNotification", function (data) {
+        var BLNo = data.extras.BLNo; //订单号
+        $state.go("myorderdetails", {no: BLNo});//订单详情
+      }, false)
 
       //调试模式，这样报错会在应用中弹出一个遮罩层显示错误信息
       //window.plugins.jPushPlugin.setDebugMode(true);
