@@ -96,7 +96,7 @@
   width: 100%;
   bottom: 0;
   -webkit-box-shadow: 0px 0px 20px #ddd;
-          box-shadow: 0px 0px 20px #ddd
+  box-shadow: 0px 0px 20px #ddd
 }
 
 .has-button-footer {
@@ -104,24 +104,57 @@
 }
 
 /*修改覆盖弹出框默认样式*/
-.show-alert .popup, .show-confirm .popup {
+
+.show-alert .popup, .show-confirm .popup, .show-updateconfirm .popup {
   text-align: center;
   background-color: #fff !important;
+  border-radius: 0.5rem;
 }
 
-.show-alert .popup .popup-head, .show-confirm .popup .popup-head {
+.show-alert .popup .popup-head, .show-confirm .popup .popup-head, .show-updateconfirm .popup .popup-head {
   border: none;
+  height: 1.6rem !important;
+  min-height: 1.6rem !important;
 }
 
-.show-alert .popup .popup-body p, .show-confirm .popup .popup-body p {
+.show-alert .popup .popup-title, .show-confirm .popup .popup-title, .show-updateconfirm .popup .popup-title {
+  line-height: 0.2rem;
+  color: #585858;
+}
+
+/*.show-alert .popup .popup-body, .show-confirm .popup .popup-body, .show-updateconfirm .popup .popup-body {
+
+}*/
+
+.show-alert .popup .popup-buttons, .show-confirm .popup .popup-buttons, .show-updateconfirm .popup .popup-buttons {
+  min-height: 2.6rem !important;
+  padding: 0;
+  border-top: 1px solid rgba(221, 221, 221, 0.3) !important;
+
+}
+
+.show-alert .button, .show-confirm .button, .show-updateconfirm .button {
   margin: 0;
   padding: 0;
+  bottom: 0rem;
+  height: 2.6rem !important;
+  min-height: 2.6rem !important;
+  background-color: #ffffff;
+
 }
 
-.show-alert .button, .show-confirm .button,.show-updateconfirm .button {
-  bottom: -0.6rem;
-  height: 2.2rem !important;
-  min-height: 2.2rem !important;
+.show-alert .button:first-child, .show-confirm .button:first-child, .show-updateconfirm .button:first-child {
+  color: #33cd5f;
+  border-radius: 0 0 0rem 0.5rem;
+}
+
+.show-alert .button:last-child, .show-confirm .button:last-child, .show-updateconfirm .button:last-child {
+  border-radius: 0 0 0.5rem 0rem;
+}
+
+.show-alert .button:nth-child(2), .show-confirm .button:nth-child(2), .show-updateconfirm .button:nth-child(2) {
+  border-left: 1px solid rgba(221, 221, 221, 0.3);
+  color: #00ACFF !important;
 }
 
 /*修改覆盖ActionSheet框默认样式*/
@@ -309,30 +342,56 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
 .iconfont {
   font-size: 1.5rem !important;
 }
+
 /*自定义图标样式*/
-.icon-balance-40:before { content: "\e635";line-height: 0.8;font-size: 40px;color: #FFD700; }
-.icon-gongshangyinhang-23:before { content: "\e610";font-size: 2.3rem;line-height: 40px; }
-.icon-pinganyinhang-23:before{ content: "\e61e"; font-size: 2.3rem;line-height: 40px;}
-/*自定义样式*/
-.f-right{float: right;}
-.gold{
+.icon-balance-40:before {
+  content: "\e635";
+  line-height: 0.8;
+  font-size: 40px;
   color: #FFD700;
 }
-.gold-bg{
+
+.icon-gongshangyinhang-23:before {
+  content: "\e610";
+  font-size: 2.3rem;
+  line-height: 40px;
+}
+
+.icon-pinganyinhang-23:before {
+  content: "\e61e";
+  font-size: 2.3rem;
+  line-height: 40px;
+}
+
+/*自定义样式*/
+.f-right {
+  float: right;
+}
+
+.gold {
+  color: #FFD700;
+}
+
+.gold-bg {
   background-color: #FFD700;
 }
-.green{
+
+.green {
   color: #0ab66a;
 }
-.green-bg{
+
+.green-bg {
   background-color: #0ab66a;
 }
-.skyblue{
+
+.skyblue {
   color: #1296db;
 }
-.skyblue-bg{
-background-color: #1296db;
+
+.skyblue-bg {
+  background-color: #1296db;
 }
-#helpContent>p{
+
+#helpContent > p {
   padding: 0 20px;
 }

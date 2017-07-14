@@ -3,7 +3,7 @@
   top: 0.4rem;
   width: 1.8rem;
   height: 1.8rem;
-  display:none;
+  display: none;
 }
 
 #orderlist, #myorderlist {
@@ -23,7 +23,7 @@
 
 #orderlist .jiedan, #orderlist .pending, #orderwarning .pending, #myorderlist .close {
   margin-top: 0.2rem !important;
-  padding:5px 4px ;
+  padding: 5px 4px;
 }
 
 #orderlist .jiedan i, #orderlist .pending i, #orderwarning .pending i, #myorderlist .close i {
@@ -136,13 +136,14 @@
 }
 
 #main .isNotDataHint .iconfont {
-  font-size: 3rem!important;
+  font-size: 3rem !important;
 }
 
 #main .isNotDataHint p {
   margin: 0;
   padding-top: 0.3rem;
 }
+
 #share .row .iconfont {
   font-size: 2rem !important;
 
@@ -196,7 +197,7 @@
   opacity: 1;
 }
 
-#supplyofgoods .jiaohuo label span ,.usertype label span{
+#supplyofgoods .jiaohuo label span, .usertype label span {
   display: inline-block;
   margin-left: 1rem;
   width: 6rem;
@@ -208,11 +209,11 @@
   border-radius: 0.5rem;
 }
 
-#supplyofgoods .jiaohuo input,.usertype input {
+#supplyofgoods .jiaohuo input, .usertype input {
   display: none;
 }
 
-#supplyofgoods .jiaohuo input:checked + span, .usertype input:checked + span{
+#supplyofgoods .jiaohuo input:checked + span, .usertype input:checked + span {
   background-color: #00ACFF;
   color: #ffffff;
 }
@@ -228,17 +229,9 @@
   height: calc(100% + 1rem);
 }
 
-.show-updateconfirm .popup .popup-head {
-  border-bottom: 1px solid #dddddd;
-}
-
 .pic-has-header {
   top: 44px !important;
   background-color: #000000 !important;
-}
-
-.show-updateconfirm .popup .popup-head {
-  border-bottom: 1px solid #dddddd;
 }
 
 #referenceprice .col-25 .item {
