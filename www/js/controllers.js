@@ -506,6 +506,7 @@ angular.module('starter.controllers', [])
     $scope.imageList = [];
     $scope.ImgsPicAddr = [];//图片信息数组
     $scope.usertype = 0;//默认旧会员
+    $scope.addresspois = [];//附近地址数组
     $scope.user = {//定义用户对象
       usertype: 0 //用户类型默认
     };
@@ -627,9 +628,21 @@ angular.module('starter.controllers', [])
     }
 
     // 选择打开附近地址
-    $scope.getAddressPois = function (addrname) {
-      $scope.user.addrdetail = addrname;
+    $scope.getAddressPois = function (item) {
+      $scope.user.addrdetail = item.name;
       $scope.modal1.hide();
+    }
+
+    //关键字搜索：通过用POI的关键字进行条件搜索，例如：肯德基、朝阳公园等；同时支持设置POI类型搜索，例如：银行称
+    $scope.getPlaceBySearch = function (addrname) {
+      AccountService.getPlaceBySearch({
+        key: BoRecycle.gaoDeKey,
+        keywords: addrname,//查询关键词
+        city:$scope.city||"深圳",
+        extensions: 'all'//返回结果控制
+      }).success(function (data) {
+        $scope.addresspois = data.pois;
+      })
     }
 
     //获取当前位置 定位
@@ -639,13 +652,14 @@ angular.module('starter.controllers', [])
         AccountService.getCurrentCityName({
           key: BoRecycle.gaoDeKey,
           location: Number(localStorage.getItem("longitude")).toFixed(6) + "," + Number(localStorage.getItem("latitude")).toFixed(6),
-          radius: 2000,//	查询POI的半径范围。取值范围：0~3000,单位：米
+          radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
           extensions: 'all',//返回结果控制
           batch: false, //batch=true为批量查询。batch=false为单点查询
           roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
         }).success(function (data) {
-          $scope.addresspois = data.regeocode.pois;
           var addressComponent = data.regeocode.addressComponent;
+          $scope.addresspois = data.regeocode.pois;
+          $scope.city = addressComponent.city;
           $scope.ssx = addressComponent.province + addressComponent.city + addressComponent.district;//省市县
           $scope.user.addrdetail = addressComponent.township + addressComponent.streetNumber.street;
         }).then(function () {
@@ -2248,9 +2262,24 @@ angular.module('starter.controllers', [])
     }
 
     // 选择打开附近地址
-    $scope.getAddressPois = function (addrname) {
-      $scope.dengji.addrdetail = addrname;
+    $scope.getAddressPois = function (item) {
+      $scope.dengji.addrdetail = item.name;
+      $scope.longitude=item.location.split(",")[0];//经度
+      $scope.latitude=item.location.split(",")[1];//纬度
       $scope.modal1.hide();
+    }
+
+    //关键字搜索：通过用POI的关键字进行条件搜索，例如：肯德基、朝阳公园等；同时支持设置POI类型搜索，例如：银行称
+    $scope.getPlaceBySearch = function (addrname) {
+      AccountService.getPlaceBySearch({
+        key: BoRecycle.gaoDeKey,
+        keywords: addrname,//查询关键词
+        city:$scope.city||"深圳",
+        extensions: 'all'//返回结果控制
+      }).success(function (data) {
+        console.log(data);
+        $scope.addresspois = data.pois;
+      })
     }
 
     //获取当前位置 定位
@@ -2260,13 +2289,14 @@ angular.module('starter.controllers', [])
         AccountService.getCurrentCityName({
           key: BoRecycle.gaoDeKey,
           location: Number(localStorage.getItem("longitude")).toFixed(6) + "," + Number(localStorage.getItem("latitude")).toFixed(6),
-          radius: 2000,//	查询POI的半径范围。取值范围：0~3000,单位：米
+          radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
           extensions: 'all',//返回结果控制
           batch: false, //batch=true为批量查询。batch=false为单点查询
           roadlevel: 0//可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
         }).success(function (data) {
           var addressComponent = data.regeocode.addressComponent;
           $scope.addresspois = data.regeocode.pois;
+          $scope.city = addressComponent.city;
           $scope.ssx = addressComponent.province + addressComponent.city + addressComponent.district;//省市县
           $scope.dengji.addrdetail = addressComponent.township + addressComponent.streetNumber.street;
         }).then(function () {
@@ -2311,11 +2341,12 @@ angular.module('starter.controllers', [])
           manufactor.push(item.id);
         }
       })
+
       $scope.dengji.type = 1;//类型 1.	登记信息 2.	登记货源
       $scope.dengji.hytype = 0;//物类别 0.未区分 1废料 2二手 (登记信息时为0)
       $scope.dengji.userid = localStorage.getItem("userid");//登记人userid
-      $scope.dengji.longitude = localStorage.getItem("longitude") || $scope.addrareacountyone.Lng || 0;//经度 默认为0   地址表里有经纬度值 如果没值现在的地区取经纬度
-      $scope.dengji.latitude = localStorage.getItem("latitude") || $scope.addrareacountyone.Lat || 0;//纬度 默认为0 地址表里有经纬度值 如果没值现在的地区取经纬度
+      $scope.dengji.longitude =$scope.longitude || localStorage.getItem("longitude") || $scope.addrareacountyone.Lng || 0;//经度 默认为0   地址表里有经纬度值 如果没值现在的地区取经纬度
+      $scope.dengji.latitude =$scope.latitude || localStorage.getItem("latitude") || $scope.addrareacountyone.Lat || 0;//纬度 默认为0 地址表里有经纬度值 如果没值现在的地区取经纬度
       $scope.dengji.category = $scope.recyclingCategoryName.join(",");//货物品类 多个用逗号隔开
       $scope.dengji.manufactor = manufactor.join(",");//单选
       $scope.dengji.addrcode = $scope.addrareacountyone.ID;
