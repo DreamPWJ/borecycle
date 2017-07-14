@@ -41,7 +41,7 @@
       <p></p>
       <div ng-if="orderDetail.djdetails">
         <ion-item class=" item-icon-right item-borderless" ng-click="toggle(1)">
-          登记清单
+          登记{{orderDetail.type==1?'信息':'货源'}}
           <i ng-class="{true:'ion-ios-arrow-right',false:'ion-ios-arrow-down'}[showme1]"
              class="icon iconfont "></i>
         </ion-item>
@@ -58,7 +58,9 @@
           <ion-item ng-if="orderDetail.type==1&&orderDetail.shortename">
             所属厂商 : {{orderDetail.shortename}}
           </ion-item>
-
+          <ion-item ng-if="orderDetail.paymentmethod">
+            支付类型 : {{orderDetail.paymentmethod==1?'现金支付':'在线支付'}}
+          </ion-item>
         </div>
       </div>
       <p></p>
