@@ -14,7 +14,7 @@
     </div>
 
     <ion-list>
-      <ion-item ng-href="" ng-repeat="item in newsList | orderBy : item.createdate ">
+      <ion-item ng-href="#/myorderdetails/{{item.relateno}}" ng-repeat="item in newsList | orderBy : item.createdate ">
         <h2><i class="icon iconfont icon-markfill " style="font-size: 1rem!important;" ng-class="{true:'energized',false:'grey'}[item.look==0]"></i>
           {{item.title}}  <span class="item-note right-1">{{item.createdate | date:'yyyy-MM-dd HH:mm'}}</span></h2>
         <p style="padding-left: 1.1rem;">{{item.look==0?'未读':'已读'}}</p>

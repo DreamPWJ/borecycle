@@ -9,7 +9,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
   .run(function ($ionicPlatform, $rootScope, $location, $ionicHistory, $cordovaToast, $cordovaNetwork, CommonService, $state) {
     $ionicPlatform.ready(function () {
-   // localStorage.setItem("isStart", true);//记录首页启动轮播展示图已经展示
+      // localStorage.setItem("isStart", true);//记录首页启动轮播展示图已经展示
 
       if (window.StatusBar) {
         //状态栏颜色设置
@@ -93,8 +93,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       } catch (e) {
         console.log(e);
       }
-      // System events
-      document.addEventListener("resume", resume, false);
+
       function resume() {
         if (window.plugins.jPushPlugin.isPlatformIOS()) {
           window.plugins.jPushPlugin.setBadge(0);
@@ -105,12 +104,26 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           window.plugins.jPushPlugin.clearAllNotification();
         }
       }
+      // System events
+      document.addEventListener("resume", resume, false);
 
+      //打开通知
+      var onOpenNotification = function (event) {
+        try {
+          var alertContent;
+          if (device.platform == "Android") {
+            alertContent = event.alert;
+          } else {
+            alertContent = event.aps.alert;
+          }
+          alert("open Notification:" + alertContent);
+          /*$state.go("myorderdetails", {no: 1});*///订单详情
+        } catch (exception) {
+          console.log("JPushPlugin:onOpenNotification" + exception);
+        }
+      };
       //点击极光推送跳转到相应页面
-      document.addEventListener("jpush.openNotification", function (data) {
-        /*   alert(JSON.stringify(data))*/
-        /*$state.go("myorderdetails", {no: 1});*///订单详情
-      }, false)
+      document.addEventListener("jpush.openNotification", onOpenNotification, false)
 
       //调试模式，这样报错会在应用中弹出一个遮罩层显示错误信息
       //window.plugins.jPushPlugin.setDebugMode(true);
@@ -527,9 +540,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       })
     // if none of the above states are matched, use this as the fallback
     //动态判断是否显示初始化页面
-/*    if (localStorage.getItem('isStart')) {*/
-      $urlRouterProvider.otherwise('/tab/main');
+    /*    if (localStorage.getItem('isStart')) {*/
+    $urlRouterProvider.otherwise('/tab/main');
     /* } else {
-      $urlRouterProvider.otherwise('start');
-    }*/
+     $urlRouterProvider.otherwise('start');
+     }*/
   });
