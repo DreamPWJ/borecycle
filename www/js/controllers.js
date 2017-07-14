@@ -82,15 +82,17 @@ angular.module('starter.controllers', [])
       if ($ionicPlatform.is('android')) {//android系统自动更新软件版本
         $scope.versionparams = {
           ID: 3,//编码 ,等于空时取所有
-          Name: '博回收',//软件名称（中文）
+          Name: '',//软件名称（中文）
           NameE: '',//软件名称（英文）
           Enable: 1 //是否启用 1启用 2禁用
         }
         AccountService.getVersionsList($scope.versionparams).success(function (data) {
           console.log(data);
-          $scope.versions = data.data.data_list[0];
-          if (BoRecycle.version < $scope.versions.vercode) {
-            AccountService.showUpdateConfirm($scope.versions.remark, $scope.versions.attached, $scope.versions.vercode);
+          if (data.code == 1001) {
+            $scope.versions = data.data.data_list[0];
+            if (BoRecycle.version < $scope.versions.vercode) {
+              AccountService.showUpdateConfirm($scope.versions.remark, $scope.versions.attached, $scope.versions.vercode);
+            }
           }
         })
       }
@@ -221,12 +223,28 @@ angular.module('starter.controllers', [])
   })
 
   //APP初次启动轮播图片
-  .controller('StartCtrl', function ($scope, $state, BoRecycle) {
+  .controller('StartCtrl', function ($scope, $state, BoRecycle, $ionicPlatform, $timeout, $ionicSlideBoxDelegate) {
     var width = window.screen.width * window.devicePixelRatio;//屏幕的宽分辨率
     var height = window.screen.height * window.devicePixelRatio;//屏幕的高分辨率
-    if (width) {
-      $scope.imgname = BoRecycle.imgUrl + "/Default@2x~iphone"
+    $scope.imgname = [];
+    if ($ionicPlatform.is('android')) {//android设备
+      $scope.imgname.push(BoRecycle.imgUrl + "/drawable-port-xxhdpi-screen.png")
+      if (width) {
+        $scope.imgname.push(BoRecycle.imgUrl + "/drawable-port-xxhdpi-screen.png")
+      }
     }
+    if ($ionicPlatform.is('ios')) { //ios设备
+      $scope.imgname.push(BoRecycle.imgUrl + "/Default@2x~iphone")
+      if (width) {
+        $scope.imgname.push(BoRecycle.imgUrl + "/Default@2x~iphone")
+      }
+    }
+    //ng-repeat遍历生成一个个slide块的时候，执行完成页面是空白的 手动在渲染之后更新一下，在控制器注入$ionicSlideBoxDelegate，然后渲染数据之后
+    $timeout(function () {
+      $ionicSlideBoxDelegate.$getByHandle("startslideboximgs").update();
+    }, 100)
+
+    //去首页
     $scope.tomain = function () {
       $state.go('tab.main', {}, {reload: true});
     }
@@ -638,7 +656,7 @@ angular.module('starter.controllers', [])
       AccountService.getPlaceBySearch({
         key: BoRecycle.gaoDeKey,
         keywords: addrname,//查询关键词
-        city:$scope.city||"深圳",
+        city: $scope.city || "深圳",
         extensions: 'all'//返回结果控制
       }).success(function (data) {
         $scope.addresspois = data.pois;
@@ -1402,7 +1420,7 @@ angular.module('starter.controllers', [])
           }
         })
       })
-     // $scope.productList = $scope.productLists;
+      // $scope.productList = $scope.productLists;
 
       $scope.checkChecded = function () {
         CommonService.checkChecded($scope, $scope.productList);
@@ -2205,7 +2223,7 @@ angular.module('starter.controllers', [])
         })
       })
 
-     // $scope.productList = $scope.productLists;
+      // $scope.productList = $scope.productLists;
 
       $scope.checkChecded = function () {
         $scope.recyclingCategory = [];//回收品类id数组
@@ -2256,8 +2274,8 @@ angular.module('starter.controllers', [])
     // 选择打开附近地址
     $scope.getAddressPois = function (item) {
       $scope.dengji.addrdetail = item.name;
-      $scope.longitude=item.location.split(",")[0];//经度
-      $scope.latitude=item.location.split(",")[1];//纬度
+      $scope.longitude = item.location.split(",")[0];//经度
+      $scope.latitude = item.location.split(",")[1];//纬度
       $scope.modal1.hide();
     }
 
@@ -2266,7 +2284,7 @@ angular.module('starter.controllers', [])
       AccountService.getPlaceBySearch({
         key: BoRecycle.gaoDeKey,
         keywords: addrname,//查询关键词
-        city:$scope.city||"深圳",
+        city: $scope.city || "深圳",
         extensions: 'all'//返回结果控制
       }).success(function (data) {
         console.log(data);
@@ -2337,8 +2355,8 @@ angular.module('starter.controllers', [])
       $scope.dengji.type = 1;//类型 1.	登记信息 2.	登记货源
       $scope.dengji.hytype = 0;//物类别 0.未区分 1废料 2二手 (登记信息时为0)
       $scope.dengji.userid = localStorage.getItem("userid");//登记人userid
-      $scope.dengji.longitude =$scope.longitude || localStorage.getItem("longitude") || $scope.addrareacountyone.Lng || 0;//经度 默认为0   地址表里有经纬度值 如果没值现在的地区取经纬度
-      $scope.dengji.latitude =$scope.latitude || localStorage.getItem("latitude") || $scope.addrareacountyone.Lat || 0;//纬度 默认为0 地址表里有经纬度值 如果没值现在的地区取经纬度
+      $scope.dengji.longitude = $scope.longitude || localStorage.getItem("longitude") || $scope.addrareacountyone.Lng || 0;//经度 默认为0   地址表里有经纬度值 如果没值现在的地区取经纬度
+      $scope.dengji.latitude = $scope.latitude || localStorage.getItem("latitude") || $scope.addrareacountyone.Lat || 0;//纬度 默认为0 地址表里有经纬度值 如果没值现在的地区取经纬度
       $scope.dengji.category = $scope.recyclingCategoryName.join(",");//货物品类 多个用逗号隔开
       $scope.dengji.manufactor = manufactor.join(",");//单选
       $scope.dengji.addrcode = $scope.addrareacountyone.ID;
@@ -2405,7 +2423,7 @@ angular.module('starter.controllers', [])
           }
         })
       })
-    //  $scope.productList = $scope.productLists;
+      //  $scope.productList = $scope.productLists;
 
       $scope.checkChecded = function () {
         CommonService.checkChecded($scope, $scope.productList);
@@ -2569,9 +2587,9 @@ angular.module('starter.controllers', [])
     if (!CommonService.isLogin()) {
       return;
     }
-    $scope.isAll=false;//是否全部提现
+    $scope.isAll = false;//是否全部提现
     //判断是否存在默认银行对象
-    if(!$rootScope.defaultBank){
+    if (!$rootScope.defaultBank) {
       $rootScope.defaultBank;//默认银行对象
     }
     $scope.subaccount = {};
@@ -2582,16 +2600,16 @@ angular.module('starter.controllers', [])
     $scope.myBk = {};
     $scope.cashinfo = {};
     //当默认银行对象为空时获取默认银行
-    if(!$rootScope.defaultBank){
+    if (!$rootScope.defaultBank) {
       MyWalletService.getDefaultBank(localStorage.getItem("userid")).success(function (data) {
-        if(data.code==1001){
-          $rootScope.defaultBank=data.data;
+        if (data.code == 1001) {
+          $rootScope.defaultBank = data.data;
         }
       });
     }
-    $scope.allCash=function () {
-      $scope.isAll=true;
-      $scope.cashinfo.amount=$scope.subaccount.cashamount;
+    $scope.allCash = function () {
+      $scope.isAll = true;
+      $scope.cashinfo.amount = $scope.subaccount.cashamount;
     }
     $scope.addcash = function () {
       if (!$rootScope.defaultBank) {
@@ -2606,7 +2624,7 @@ angular.module('starter.controllers', [])
       };
       MyWalletService.cash($scope.datas).success(function (data) {
         if (data.code == 1001) {
-          $rootScope.defaultBank=null;
+          $rootScope.defaultBank = null;
           CommonService.showAlert('', '<p>恭喜您！</p><p>操作成功，工作日24小时之内到账，请注意查收！</p>', 'wallet');
         } else {
           CommonService.platformPrompt('提现失败', 'close');
@@ -2614,12 +2632,12 @@ angular.module('starter.controllers', [])
       });
     }
     //选择或添加银行卡
-    $scope.selectCard=function () {
+    $scope.selectCard = function () {
       if (!$rootScope.defaultBank) {
-        $rootScope.defaultBank={};
+        $rootScope.defaultBank = {};
         $state.go('addcard');
         return;
-      }else {
+      } else {
         $state.go('bankcard');
         return;
       }
@@ -2685,9 +2703,9 @@ angular.module('starter.controllers', [])
     $scope.userbanklist = [];
     $scope.page = 0;
     $scope.total = 1;
-    $scope.selectThis=function (item) {
-      if($rootScope.defaultBank){
-        $rootScope.defaultBank=item;
+    $scope.selectThis = function (item) {
+      if ($rootScope.defaultBank) {
+        $rootScope.defaultBank = item;
         $state.go("cash");
         return;
       }
@@ -2723,7 +2741,7 @@ angular.module('starter.controllers', [])
     $scope.getUserBanklist(0);//收款账号加载刷新
     $scope.setDefault = function (item) {
       //防止事件冒泡
-      if($rootScope.defaultBank){
+      if ($rootScope.defaultBank) {
         return;
       }
       MyWalletService.setDefaultBC(item.id).success(function (data) {
@@ -2764,7 +2782,7 @@ angular.module('starter.controllers', [])
       if ($scope.paraclass) {
         //取实名信息
         MyWalletService.get_identity(localStorage.getItem("userid")).success(function (data) {
-       ;
+          ;
           if (data.data != null) {
             $scope.personsign = {
               "cardno": $scope.bankinfo.accountno,
@@ -2824,12 +2842,12 @@ angular.module('starter.controllers', [])
       MyWalletService.addbank($scope.datas).success(function (data) {
         if (data.code == 1001) {
           CommonService.showAlert('', '<p>恭喜您！</p><p>银行卡' + $scope.buttonText + '成功！</p>', '');
-          if($rootScope.defaultBank){
-            $rootScope.defaultBank=$scope.datas;
-            $rootScope.defaultBank.id=data.date;
+          if ($rootScope.defaultBank) {
+            $rootScope.defaultBank = $scope.datas;
+            $rootScope.defaultBank.id = data.date;
             $state.go("cash");
             return;
-          }else{
+          } else {
             $state.go("/bankcard");
             return;
           }

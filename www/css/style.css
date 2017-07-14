@@ -118,7 +118,7 @@
   padding: 0;
 }
 
-.show-alert .button, .show-confirm .button {
+.show-alert .button, .show-confirm .button,.show-updateconfirm .button {
   bottom: -0.6rem;
   height: 2.2rem !important;
   min-height: 2.2rem !important;

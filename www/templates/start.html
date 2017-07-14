@@ -1,10 +1,8 @@
 <ion-view hide-nav-bar="true">
 
-    <ion-slide-box  id="start" show-pager="false">
-      <ion-slide><img ng-src="img/start/1.png" alt=""  /></ion-slide>
-      <ion-slide><img ng-src="img/start/2.png" alt="" /></ion-slide>
-      <ion-slide><img ng-src="img/start/3.png" alt=""  /></ion-slide>
-      <ion-slide><img ng-src="img/start/4.png" alt="" ng-click="tomain()"  on-swipe-left="tomain()" /></ion-slide>
+    <ion-slide-box  id="start" show-pager="false" delegate-handle="startslideboximgs">
+      <ion-slide ng-click="tomain()"  ng-repeat="item in imgname" >
+      <img ng-src="{{item}}" alt="引导页"  /></ion-slide>
     </ion-slide-box>
 
 </ion-view>
