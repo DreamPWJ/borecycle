@@ -28,7 +28,7 @@
       </ion-list>
       <p></p>
       <ion-list>
-        <div ng-repeat="item in productList" ng-if="item.checked" hide-show>
+        <div ng-repeat="item in productLists" ng-if="item.checked" hide-show>
           <ion-item class="item-icon-left item-icon-right item-borderless" ng-click="toggle(1)">
             <i class="icon iconfont {{item.imgurl}}"></i>
             {{item.details[$index].no}}

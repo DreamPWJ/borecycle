@@ -46,7 +46,7 @@
              class="icon iconfont "></i>
         </ion-item>
         <div ng-hide="showme1">
-          <ion-item ng-repeat="item in productList" ng-if="item.checked" class="row-no-padding">
+          <ion-item ng-repeat="item in productLists" ng-if="item.checked" class="row-no-padding">
             <div class="padding-left padding-top" style="font-weight: bold;padding-left: 20px;">
               <!--<i class="icon iconfont {{item.imgurl}}"></i>--> {{item.name}}
             </div>
@@ -54,11 +54,11 @@
              <input type="number" class="col row-no-padding" ng-model="items.wastenum" style="border-right: solid 1px #dedede;border-radius:0;padding-left: 10px;height: 26px;"
                                                            check-form
                                                            ng-change="checkForm(items.wastenum,'输入废品数量错误',items.unit==1?'positiveinteger':'positivenumber','')"
-                                                           ng-keyup="checkAtLeastOneIsSame(productList,'wastenum','secondhandnum')"
+                                                           ng-keyup="checkAtLeastOneIsSame(productLists,'wastenum','secondhandnum')"
                                                             placeholder="废品数量"/>
                <input type="number" class="col row-no-padding" ng-model="items.secondhandnum" style="padding-left: 20px;height: 26px;"
                                                              ng-change="checkForm(items.secondhandnum,'输入二手数量错误',items.unit==1?'positiveinteger':'positivenumber','')"
-                                                             ng-keyup="checkAtLeastOneIsSame(productList,'wastenum','secondhandnum')"
+                                                             ng-keyup="checkAtLeastOneIsSame(productLists,'wastenum','secondhandnum')"
                                                               placeholder="二手数量"/>
             </div>
           </ion-item>

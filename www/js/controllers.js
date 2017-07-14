@@ -1410,7 +1410,7 @@ angular.module('starter.controllers', [])
           }
         })
       })
-      $scope.productList = $scope.productLists;
+     // $scope.productList = $scope.productLists;
 
       $scope.checkChecded = function () {
         CommonService.checkChecded($scope, $scope.productList);
@@ -1422,7 +1422,7 @@ angular.module('starter.controllers', [])
     $scope.recycleNext = function () {
       $state.go("recyclewrite", {
         orderinfo: JSON.stringify($scope.orderinfo),
-        item: JSON.stringify($scope.productList)
+        item: JSON.stringify($scope.productLists)
       })
     }
   })
@@ -2213,7 +2213,7 @@ angular.module('starter.controllers', [])
         })
       })
 
-      $scope.productList = $scope.productLists;
+     // $scope.productList = $scope.productLists;
 
       $scope.checkChecded = function () {
         $scope.recyclingCategory = [];//回收品类id数组
@@ -2353,7 +2353,7 @@ angular.module('starter.controllers', [])
       $scope.dengji.delivery = 1; //交货方式 1 上门回收(默认) 2 送货上门 登记信息直接用1
       $scope.dengji.details = [];//添加登记货源时明细
 
-      angular.forEach($scope.productList, function (item) {
+      angular.forEach($scope.productLists, function (item) {
         if (item.checked) {//选中的品类
           angular.forEach(item.details, function (itemitem) {
             $scope.dengji.details.push({
@@ -2413,9 +2413,8 @@ angular.module('starter.controllers', [])
           }
         })
       })
-      $scope.productList = $scope.productLists;
+    //  $scope.productList = $scope.productLists;
 
-      console.log($scope.productList);
       $scope.checkChecded = function () {
         CommonService.checkChecded($scope, $scope.productList);
         $scope.recyclingCategoryName = [];//回收品类名字数组
@@ -2432,7 +2431,7 @@ angular.module('starter.controllers', [])
 
     //登记货源提交
     $scope.supplyofgoodsSubmit = function () {
-      console.log($scope.productList);
+      console.log($scope.productLists);
       //获取当前用户默认地址
       AddressService.getDefualtAddr({userid: localStorage.getItem("userid")}).success(function (data) {
         console.log(data);
@@ -2448,7 +2447,7 @@ angular.module('starter.controllers', [])
         var user = JSON.parse(localStorage.getItem("user"));
 
         //获取废旧和二手 填写的num数据
-        angular.forEach($scope.productList, function (item) {
+        angular.forEach($scope.productLists, function (item) {
           if (item.checked) {//选中的品类
             angular.forEach(item.details, function (itemitem) {
               if (itemitem.wastenum) { //废旧数据
