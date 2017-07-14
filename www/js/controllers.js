@@ -2581,12 +2581,14 @@ angular.module('starter.controllers', [])
     $scope.verbank = false;
     $scope.myBk = {};
     $scope.cashinfo = {};
-    //获取默认银行
-    MyWalletService.getDefaultBank(localStorage.getItem("userid")).success(function (data) {
-      if(data.code==1001){
-        $rootScope.defaultBank=data.data;
-      }
-    });
+    //当默认银行对象为空时获取默认银行
+    if(!$rootScope.defaultBank){
+      MyWalletService.getDefaultBank(localStorage.getItem("userid")).success(function (data) {
+        if(data.code==1001){
+          $rootScope.defaultBank=data.data;
+        }
+      });
+    }
     $scope.allCash=function () {
       $scope.isAll=true;
       $scope.cashinfo.amount=$scope.subaccount.cashamount;

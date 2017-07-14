@@ -20,13 +20,13 @@
        </span>
         </label>
         <label class="item item-input ">
-          <span class="input-label">可提现金额 : </span>
+          <span class="input-label">可用金额 : </span>
           {{subaccount.cashamount}} 元
         </label>
         <label class="item item-input ">
           <span class="input-label">提现金额 : </span>
           <input type="number" placeholder="请输入提现金额" ng-model="cashinfo.amount" check-form
-                 ng-change="checkForm(cashinfo.amount,'提现金额不能超过提现金额','maxvaule','',true,subaccount.cashamount)"
+                 ng-change="checkForm(cashinfo.amount,'提现金额不能超过可用金额','maxvaule','提现',true,subaccount.cashamount)"
                  ng-maxlength="10" required/>
         </label>
         <p class="text-right padding-right padding-top" ng-class="isAll?'calm':'grey'" ng-click="allCash()">

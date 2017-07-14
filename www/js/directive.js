@@ -119,7 +119,7 @@ angular.module('starter.directive', [])
           if (type == 'identitycard') {//验证身份证号
             scope.publicCheckForm(/^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/.test(value), value, content, isShow)
           }
-          if(type=='maxvaule'){
+          if(type=='maxvaule'&&regular=='提现'){
             if(value>maxvalue){
               scope.publicCheckForm('', 0, content, isShow);
             }else if(value<=0){
