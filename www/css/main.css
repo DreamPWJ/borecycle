@@ -149,51 +149,50 @@
 
 }
 
-#supplyofgoods .iconfont, #recycleorder .iconfont, #recyclewrite .iconfont {
-  color: #00ACFF;
-}
 
-#supplyofgoods .select-category label, #recycleorder .select-category label {
+
+#supplyofgoods .select-category label, #recycleorder .select-category label, #information .select-category label {
   position: relative;
 
 }
 
-#supplyofgoods .select-category .iconfont, #recycleorder .select-category .iconfont {
+#supplyofgoods .select-category .iconfont, #recycleorder .select-category .iconfont, #information .select-category .iconfont {
   font-size: 1.8rem !important;
+  color: #585858;
 }
 
-#supplyofgoods .select-category label span, #recycleorder .select-category label span {
+#supplyofgoods .select-category label span, #recycleorder .select-category label span , #information .select-category label span{
   opacity: 0;
 }
 
-#supplyofgoods .select-category label span:before, #recycleorder .select-category label span:before {
-  content: '已选';
+#supplyofgoods .select-category label span:before, #recycleorder .select-category label span:before , #information .select-category label span:before{
+  content: '\2714';
   position: absolute;
   color: #ffffff;
-  font-size: 9px;
-  -webkit-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-  right: 0;
-  bottom: 0.9rem;
+  font-size: 10px;
+/*  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg)*/;
+  right: 0.1rem;
+  top: 0;
   z-index: 2000;
 }
 
-#supplyofgoods .select-category label span:after, #recycleorder .select-category label span:after {
+#supplyofgoods .select-category label span:after, #recycleorder .select-category label span:after , #information .select-category label span:after {
   content: '';
   position: absolute;
   width: 0;
   height: 0;
-  border-bottom: 1.8rem solid #00ACFF;
-  border-left: 1.8rem solid transparent;
+  border-top: 1.6rem solid #00ACFF;
+  border-left: 1.6rem solid transparent;
   right: 0;
-  bottom: 0.8rem;
+  top: 0;
 }
 
-#supplyofgoods .select-category input, #recycleorder .select-category input {
+#supplyofgoods .select-category input, #recycleorder .select-category input , #information .select-category input{
   display: none;
 }
 
-#supplyofgoods .select-category input:checked + span, #recycleorder .select-category input:checked + span {
+#supplyofgoods .select-category input:checked + span, #recycleorder .select-category input:checked + span, #information .select-category input:checked + span {
   opacity: 1;
 }
 

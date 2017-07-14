@@ -24,7 +24,7 @@
           回收品类 : {{orderDetail.category}}
         </ion-item>
         <ion-item>
-          联系电话 : {{orderDetail.motel}}
+          联系电话 : {{type==1?(orderDetail.motel | hidepartinfo : 'phone'):orderDetail.motel }}
         </ion-item>
         <ion-item class="text-wrap item-icon-right">
           联系地址 : {{orderDetail.addrdetail }}({{orderDetail.area.MergerName}})

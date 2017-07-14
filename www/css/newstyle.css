@@ -1,0 +1,14 @@
+
+.border-left {
+  border-left: 4px solid #00ACFF;
+  padding: 0 0 0 0.6rem !important;
+
+}
+
+.border-top {
+  border-top: 1px solid rgba(221, 221, 221, 0.3) !important;
+}
+
+.border-bottom {
+  border-bottom: 1px solid rgba(221, 221, 221, 0.3) !important;
+}
