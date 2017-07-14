@@ -856,7 +856,7 @@ angular.module('starter.controllers', [])
 
       $scope.params = {
         page: $scope.tabIndex == 0 ? $scope.jiedanpage : ($scope.tabIndex == 1 ? $scope.chulipage : $scope.page),//页码
-        size: 5//条数
+        size: 20//条数
       }
       var hytype = [];//货物类别
 
@@ -869,7 +869,7 @@ angular.module('starter.controllers', [])
       if (user.services.indexOf('4') != -1) {
         hytype.push(2)
       }
-      console.log(hytype.join(","));
+
       //待接单接口
       if ($scope.tabIndex == 0) {
         $scope.datas = {
@@ -1033,7 +1033,6 @@ angular.module('starter.controllers', [])
         details: {} //接单回收记录明细数据
       }
       OrderService.addOrderReceipt($scope.jiedandata).success(function (data) {
-        console.log(data);
         if (data.code == 1001) {
           CommonService.showConfirm('接单提示', '尊敬的用户,您好！恭喜您,接单成功！订单有效期为24小时,请您务必在24小时之内上门回收！', '查看订单', '继续接单', 'orderdetails', 'close', '', {
             no: data.data,
@@ -1054,7 +1053,6 @@ angular.module('starter.controllers', [])
 //在待处理订单中 取消订单
     $scope.cancelOrder = function (orno) {
       OrderService.cancelOrderReceipt({orno: orno}).success(function (data) {
-        console.log(data);
         if (data.code == 1001) {
           CommonService.platformPrompt("取消接单成功", "close");
           $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
@@ -1096,7 +1094,6 @@ angular.module('starter.controllers', [])
 
     if ($scope.type == 1) {
       OrderService.getDengJiDetail({djno: $stateParams.no}).success(function (data) {
-        console.log(data);
         if (data.code == 1001) {
           $scope.orderDetail = data.data;
         } else {
@@ -1109,7 +1106,6 @@ angular.module('starter.controllers', [])
     }
     if ($scope.type == 2) {
       OrderService.getOrderReceiptDetail({orno: $stateParams.no}).success(function (data) {
-        console.log(data);
         if (data.code == 1001) {
           $scope.orderDetail = data.data;
         } else {
@@ -1125,7 +1121,6 @@ angular.module('starter.controllers', [])
     //获取评论内容
     $scope.getComment = function () {
       OrderService.getComment({djno: $scope.orderDetail.djno}).success(function (data) {
-        /*    console.log(data);*/
         $scope.commentInfo = data.data;
 
       })
@@ -1185,7 +1180,7 @@ angular.module('starter.controllers', [])
 
       $scope.params = {
         page: $scope.tabIndex == 0 ? $scope.unfinishedpage : $scope.page,//页码
-        size: 5//条数
+        size: 20//条数
       }
       $scope.datas = {
         DJNo: "",//登记单号(可为空)
@@ -1258,7 +1253,6 @@ angular.module('starter.controllers', [])
       event.preventDefault();
       CommonService.showConfirm('操作提示', '您是否要关闭此订单?"是"点击"确定",否则请点击"取消"', '确定', '取消', '', 'close', function () {
         OrderService.cancelDengJiOrder({djno: djno}).success(function (data) {
-          console.log(data);
           if (data.code == 1001) {
             $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
             CommonService.platformPrompt("订单关闭成功", "close")
@@ -1285,7 +1279,6 @@ angular.module('starter.controllers', [])
       }).then(function () {
         //获取评论内容
         OrderService.getComment({djno: $scope.orderDetail.djno}).success(function (data) {
-          console.log(data);
           $scope.commentInfo = data.data;
         })
       })
@@ -1296,7 +1289,6 @@ angular.module('starter.controllers', [])
       event.preventDefault();
       CommonService.showConfirm('操作提示', '您是否要关闭此订单?"是"点击"确定",否则请点击"取消"', '确定', '取消', '', 'close', function () {
         OrderService.cancelDengJiOrder({djno: djno}).success(function (data) {
-          console.log(data);
           if (data.code == 1001) {
             $scope.getMyOrderDetail();//订单详情刷新
             CommonService.platformPrompt("订单关闭成功", "close")
@@ -1322,7 +1314,7 @@ angular.module('starter.controllers', [])
       $scope.page++;
       $scope.params = {
         page: $scope.page,//页码
-        size: 5//条数
+        size: 20//条数
       }
       $scope.datas = {
         DJNo: "",//登记单号(可为空)
@@ -1337,7 +1329,7 @@ angular.module('starter.controllers', [])
         ORuserid: localStorage.getItem("userid"),//接单人(不能为空)
         expiry: 6 //小时 取预警数据 订单预警数据（24小时截至马上过期的（expiry=3表示取3小时内））
       }
-      console.log(JSON.stringify($scope.datas));
+
       OrderService.getOrderReceiptList($scope.params, $scope.datas).success(function (data) {
         console.log(data);
         $scope.isNotData = false;
@@ -1431,7 +1423,7 @@ angular.module('starter.controllers', [])
   .controller('RecycleWriteCtrl', function ($scope, $state, $stateParams, CommonService, OrderService) {
     $scope.productList = JSON.parse($stateParams.item);
     $scope.orderinfo = JSON.parse($stateParams.orderinfo);
-    console.log($scope.orderinfo);
+
 
     //回收录单提交付款
     var details = [];
@@ -1492,7 +1484,7 @@ angular.module('starter.controllers', [])
   //付款页面
   .controller('PaymentCtrl', function ($scope, $stateParams, CommonService, OrderService) {
     $scope.orderinfo = JSON.parse($stateParams.orderinfo);
-    console.log($scope.orderinfo);
+
     $scope.pay = { //支付相关
       choice: 1//选择支付方式默认支付方式1. 现金支付2. 在线支付
     }
@@ -1571,7 +1563,7 @@ angular.module('starter.controllers', [])
       $scope.page++;
       $scope.params = {
         page: $scope.page,//页码
-        size: 5,//条数
+        size: 20,//条数
         userid: localStorage.getItem("userid")//用户id
       }
       NewsService.getNewsList($scope.params).success(function (data) {
@@ -2225,7 +2217,7 @@ angular.module('starter.controllers', [])
             $scope.recyclingCategoryName.push(item.name);
           }
         })
-        console.log($scope.recyclingCategoryName.join(","));
+
         OrderService.getListManufacte({
           ShorteName: '',
           Name: '',
@@ -2431,7 +2423,7 @@ angular.module('starter.controllers', [])
 
     //登记货源提交
     $scope.supplyofgoodsSubmit = function () {
-      console.log($scope.productLists);
+
       //获取当前用户默认地址
       AddressService.getDefualtAddr({userid: localStorage.getItem("userid")}).success(function (data) {
         console.log(data);
@@ -2558,7 +2550,6 @@ angular.module('starter.controllers', [])
       return;
     }
     $scope.ut = localStorage.getItem("usertype");
-    console.log(localStorage.getItem("usertype"));
     //总金额
     MyWalletService.get(localStorage.getItem("userid")).success(function (data) {
       $scope.totalamount = data.data.totalamount;
@@ -2650,7 +2641,7 @@ angular.module('starter.controllers', [])
       $scope.page++;
       $scope.params = {
         page: $scope.page,//页码
-        size: 10,//条数
+        size: 20,//条数
         userid: localStorage.getItem("userid"),//用户id
       }
       MyWalletService.get_tradelist($scope.params).success(function (data) {
@@ -2707,7 +2698,7 @@ angular.module('starter.controllers', [])
       $scope.page++;
       $scope.params = {
         page: $scope.page,//页码
-        size: 5,//条数
+        size: 20,//条数
         userid: localStorage.getItem("userid")//用户id
       }
       MyWalletService.getbanklist($scope.params).success(function (data) {
@@ -2771,7 +2762,7 @@ angular.module('starter.controllers', [])
       if ($scope.paraclass) {
         //取实名信息
         MyWalletService.get_identity(localStorage.getItem("userid")).success(function (data) {
-          //console.log(data);
+       ;
           if (data.data != null) {
             $scope.personsign = {
               "cardno": $scope.bankinfo.accountno,
@@ -2781,7 +2772,6 @@ angular.module('starter.controllers', [])
             }
             $scope.bankinfo.accountname = data.data.name;
             MyWalletService.authenticate_sign($scope.personsign).success(function (data1) {
-              //console.log(data1);
               if (data1.data.errCode == "0") {
                 //120s倒计时
                 CommonService.countDown($scope);
