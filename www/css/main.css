@@ -70,11 +70,11 @@
 }
 
 #main .topbj {
-  /*  background: url(../img/main/topbj.jpg) 100% 100%;*/
-  background-color: #00ACFF;
+  background: url(../img/main/topbj.png) 100% 100%;
+  /*  background-color: #00ACFF;*/
   background-size: cover;
-  height: 15rem;
-  padding-top: 0.2rem;
+  height: 17rem;
+  padding-top: 2rem;
 }
 
 #main .total {
@@ -208,7 +208,7 @@
   font-size: 0.9rem !important;
 }
 
-.classify-selected  {
+.classify-selected {
   border-left: 3px solid #00ACFF !important;
   color: #00ACFF;
 }
