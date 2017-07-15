@@ -8,28 +8,28 @@
   <ion-nav-buttons side="right">
     <a class="button button-clear icon iconfont icon-add" ng-href="#/addcard"></a>
   </ion-nav-buttons>
-  <ion-content overflow-scroll="false" class="stable-bg  " has-bouncing="true">
+  <ion-content overflow-scroll="false" style="background: #212f3c" has-bouncing="true" id="bankcard">
     <ion-refresher on-refresh="getUserBanklist(0)" pulling-text="下拉更新"></ion-refresher>
     <div ng-if="isNotData" class="isNotDataHint">
       <i class="iconfont icon-xiaoxi"></i>
-      <p>无银行账号</p>
+      <p>无银行卡</p>
     </div>
-    <div class="list">
-      <div class="card gold-bg padding" ng-repeat="item in userbanklist" ng-click="selectThis(item)">
-        <div class="row gold-bg no-border padding-top padding-bottom">
+    <div ng-repeat="item in userbanklist">
+      <div class="card padding" style="{{'background:'+item.color}}" ng-click="selectThis(item)">
+        <div class="row no-border padding-top padding-bottom">
           <div class="col-15">
-            <span class="assertive light-bg border-radius-50"
-                  style="width: 40px;height: 40px;display: block;padding: 1px;"><i
-              class="iconfont icon-pinganyinhang-23"></i></span>
+            <span class="light-bg border-radius-50" style="width: 45px;height: 45px;display: block;line-height: 45px;text-align:center;padding: 1px;color:{{item.color}}">
+              <i class="iconfont" ng-class="item.logo"></i>
+            </span>
           </div>
           <div class="col-50 dark">
             <div style="font-size: 1.2rem;">{{item.bankname}}</div>
             <div style="font-size: 0.8rem;">{{item.branchname}}</div>
           </div>
           <div class="col text-right" ng-if="!defaultBank">
-            <span ng-if="item.isdefault==0" class="calm" ng-click="setDefault(item)"><i class="ion-ios-gear"
+            <span ng-if="item.isdefault==0" class="light" ng-click="setDefault(item)"><i class="ion-ios-gear"
                                                                                         style="font-size: 1.1rem;"></i>&nbsp;设为默认</span>
-            <span ng-if="item.isdefault==1" class="calm"><i class="ion-android-radio-button-on"
+            <span ng-if="item.isdefault==1" class="light"><i class="ion-android-radio-button-on"
                                                             style="font-size: 1.1rem;"></i>&nbsp;默认</span>
           </div>
           <div class="col text-right" ng-if="defaultBank">
@@ -39,8 +39,10 @@
         <div class="text-center dark padding-bottom" style="font-size: 1.3rem;">
           {{item.accountno|splitBandCardNumberFilter}}
         </div>
-      </div>
-    </div>
+      </div></div>
+    <a href="#/addcard" class="item light no-border border-bottom row-no-padding padding-left"style="background: #212f3c;margin: 0 10px;padding: 0 0 10px 10px;">
+      <i class="ion-plus-round">&nbsp;&nbsp;添加银行卡</i>
 
+    </a>
   </ion-content>
 </ion-view>

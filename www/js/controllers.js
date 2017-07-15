@@ -2702,6 +2702,12 @@ angular.module('starter.controllers', [])
     $scope.userbanklist = [];
     $scope.page = 0;
     $scope.total = 1;
+    $scope.blc=[];//银行logo及颜色
+    //获取银行卡logo等信息
+    MyWalletService.getBankLogo().success(function (data) {
+      $scope.blc=data;
+    });
+
     $scope.selectThis = function (item) {
       if ($rootScope.defaultBank) {
         $rootScope.defaultBank = item;
@@ -2729,6 +2735,19 @@ angular.module('starter.controllers', [])
           return;
         }
         angular.forEach(data.data.data_list, function (item) {
+          angular.forEach($scope.blc,function (item2) {
+            if(item.bankname==item2.name){
+              item.logo=item2.logo;
+              item.color=item2.color;
+            }else if(item.bankname.indexOf(item2.name)>=0||item2.name.indexOf(item.bankname)>=0){
+              item.logo=item2.logo;
+              item.color=item2.color;
+            }
+          });
+          if(!item.logo){
+            item.logo=$scope.blc[$scope.blc.length-1].logo;
+            item.color=$scope.blc[$scope.blc.length-1].color;
+          }
           $scope.userbanklist.push(item);
         })
         $scope.total = data.data.page_count;
