@@ -86,10 +86,9 @@
   border: 1px solid #00ACFF;
 }
 
-.item-small{
-  padding: 8px 16px!important;
+.item-small {
+  padding: 8px 16px !important;
 }
-
 
 #organizingdata .item-checkbox, #information .item-checkbox, #register .services .item-checkbox, #evaluate .item-checkbox {
   width: 32%;
@@ -103,8 +102,8 @@
 }
 
 #organizingdata .checkbox-icon, #information .checkbox-icon, #register .services .checkbox-icon, #evaluate .checkbox-icon {
-  margin-left: -0.8rem!important;
-  margin-top: 0.3rem!important;
+  margin-left: -0.8rem !important;
+  margin-top: 0.3rem !important;
   width: 20px;
   height: 20px;
 }
@@ -115,4 +114,14 @@
 
 .item-checkbox .item-content {
   padding-right: 0 !important;
+}
+
+#news .status {
+  display: inline-block;
+  font-size: 0.7rem;
+  color: #f26604;
+  border: 1px solid #f26604;
+  padding: 0 2px;
+  border-radius: 2px;
+  margin: -0.1rem 0.2rem 0.2rem;
 }

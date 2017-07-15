@@ -6,7 +6,7 @@
     <h1 class="title"><img id="logo" src="img/logo.png" alt=""/> 消息中心</h1>
   </ion-nav-title>
 
-  <ion-content overflow-scroll="false" class="stable-bg " has-bouncing="true">
+  <ion-content overflow-scroll="false" class="stable-bg " id="news" has-bouncing="true">
     <ion-refresher on-refresh="newslist(0)" pulling-text="下拉更新"></ion-refresher>
     <div ng-if="isNotData" class="isNotDataHint">
       <i class=" iconfont icon-xiaoxi"></i>
@@ -16,8 +16,7 @@
     <ion-list>
       <ion-item ng-href="#/myorderdetails/{{item.relateno}}" ng-repeat="item in newsList | orderBy : item.createdate ">
         <h2><i class="icon iconfont icon-markfill " style="font-size: 1rem!important;" ng-class="{true:'energized',false:'grey'}[item.look==0]"></i>
-          {{item.title}}  <span class="item-note right-1">{{item.createdate | date:'yyyy-MM-dd HH:mm'}}</span></h2>
-        <p style="padding-left: 1.1rem;">{{item.look==0?'未读':'已读'}}</p>
+          {{item.title}}   <span class="status" >{{item.look==0?'未读':'已读'}}</span>  <span class="item-note right-1">{{item.createdate | date:'yyyy-MM-dd HH:mm'}}</span></h2>
         <p style="padding-left: 1.1rem; white-space: normal;">{{item.content}}</p>
         <ion-option-button class="button-balanced" ng-click="updateNewsLook(item.look==0?1:0,item.id)">
           {{item.look==1?'未读':'已读'}}
