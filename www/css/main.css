@@ -70,10 +70,11 @@
 }
 
 #main .topbj {
-  background: url(../img/main/topbj.jpg) 100% 100%;
+  /*  background: url(../img/main/topbj.jpg) 100% 100%;*/
+  background-color: #00ACFF;
   background-size: cover;
   height: 15rem;
-  padding-top: 1.2rem;
+  padding-top: 0.2rem;
 }
 
 #main .total {
@@ -83,7 +84,8 @@
   border-radius: 50%;
   padding-top: 3rem;
   border: 3px solid rgba(255, 255, 255, 0.6);
-
+  -webkit-box-shadow: 0px 1px 2px rgba(136, 136, 136, 0.5);
+  box-shadow: 0px 1px 2px rgba(136, 136, 136, 0.5);
 }
 
 #main .total .num {
@@ -95,17 +97,27 @@
   white-space: nowrap;
 }
 
-#main .sub-total h3 {
+#main .sub-total {
+  margin-top: 1rem;
+}
+
+#main .sub-total p:first-child {
   color: #FFFFFF;
-  margin: 0;
+  font-size: 1.3rem;
+  margin: 0 0 0.1rem 0;
+
+}
+
+#main .main-list {
+  text-align: center;
 }
 
 #main .main-list a {
-  padding: 1.2rem 0rem 1.2rem 1.2rem;
+  padding: 1rem;
 }
 
 #main .main-list a h5, #main .main-list a p {
-  margin: 0;
+  margin: 0.3rem;
 }
 
 #main .main-list a p {
@@ -149,35 +161,37 @@
 
 }
 
-
-
-#supplyofgoods .select-category label, #recycleorder .select-category label, #information .select-category label {
+.select-category label {
   position: relative;
+  display: inline-block;;
+  margin-bottom: 0.3rem;
+  width: 90%;
+  height: 4rem;
 
 }
 
-#supplyofgoods .select-category .iconfont, #recycleorder .select-category .iconfont, #information .select-category .iconfont {
+.select-category .iconfont {
   font-size: 1.8rem !important;
   color: #585858;
 }
 
-#supplyofgoods .select-category label span, #recycleorder .select-category label span , #information .select-category label span{
+.select-category label span {
   opacity: 0;
 }
 
-#supplyofgoods .select-category label span:before, #recycleorder .select-category label span:before , #information .select-category label span:before{
+.select-category label span:before {
   content: '\2714';
   position: absolute;
   color: #ffffff;
   font-size: 10px;
-/*  -webkit-transform: rotate(-45deg);
-  transform: rotate(-45deg)*/;
-  right: 0.1rem;
+  /*  -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg)*/;
+  right: 0;
   top: 0;
   z-index: 2000;
 }
 
-#supplyofgoods .select-category label span:after, #recycleorder .select-category label span:after , #information .select-category label span:after {
+.select-category label span:after {
   content: '';
   position: absolute;
   width: 0;
@@ -188,12 +202,20 @@
   top: 0;
 }
 
-#supplyofgoods .select-category input, #recycleorder .select-category input , #information .select-category input{
+.select-category input {
   display: none;
 }
 
-#supplyofgoods .select-category input:checked + span, #recycleorder .select-category input:checked + span, #information .select-category input:checked + span {
+.select-category input:checked + label > span {
   opacity: 1;
+}
+
+.select-category input:checked + label > p {
+  color: #00ACFF !important;
+}
+
+.select-category input:checked + label {
+  border: 1px solid #00ACFF;
 }
 
 #supplyofgoods .jiaohuo label span, .usertype label span {

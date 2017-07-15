@@ -10,57 +10,45 @@
 
       <ion-list hide-show>
         <ion-item class="item-divider light-bg item-icon-right border-bottom  padding-top" ng-click="toggle(0)">
-        <h2 class="border-left">选择品类</h2>
+          <h2 class="border-left">选择品类</h2>
           <i ng-class="{true:'ion-ios-arrow-right',false:'ion-ios-arrow-down'}[showme]"
-             class="icon iconfont "></i>
+             class="icon  iconfont"></i>
         </ion-item>
         <div ng-hide="showme" class="row row-center row-wrap text-center light-bg select-category padding-top">
-          <label ng-repeat="item in productList" ng-click="checkChecded()" for="{{item.imgurl}}" class="col-20"><i
-            class="iconfont {{item.imgurl}}"></i>
-            <p>{{item.name}}</p>
+          <div ng-click="checkChecded()" ng-repeat="item in productList" class="col-25">
             <input type="checkbox" id="{{item.imgurl}}" ng-model="item.checked">
-            <span></span>
-          </label>
+            <label for="{{item.imgurl}}"><i
+              class="iconfont {{item.imgurl}}"></i>
+              <p>{{item.name}}</p>
+              <span></span>
+            </label>
+          </div>
         </div>
         <p></p>
-        <label class="item item-input">
-          <span class="input-label icon ion-ios-person-outline"> 联系人</span>
-          <input type="text" name="name" ng-maxlength="10" ng-model="dengji.name" placeholder="请输入联系人姓名" required/>
+        <label class="item item-input item-borderless">
+          <input type="text" name="name" ng-maxlength="10" ng-model="dengji.name" placeholder="姓名" required/>
         </label>
         <label class="item item-input">
-          <span class="input-label icon ion-ios-telephone-outline"> 手机号码</span>
           <input type="number" name="motel" ng-model="dengji.motel" check-form
                  ng-blur="checkForm(dengji.motel,'手机号输入错误','mobilephone','')"
-                 ng-maxlength="11" placeholder="请输入联系人手机号码" ng-pattern="/^1(3|4|5|7|8)\d{9}$/" required/>
+                 ng-maxlength="11" placeholder="手机号" ng-pattern="/^1(3|4|5|7|8)\d{9}$/" required/>
         </label>
 
-
-        <label class="item item-input " ng-click="openModal()">
-          <span class="input-label icon ion-ios-location-outline"> 货源地址 </span>
-          <p class="{{(addresspcd||ssx)?'dark':'grey'}}">{{addresspcd?addresspcd:(ssx?ssx:"请选择货源地址")}}</p>
+        <label class="item item-input " style="background-color: #FFFFFF" ng-click="openModal()">
+          <input class="{{(addresspcd||ssx)?'dark':'grey'}}" type="text"
+                 placeholder="{{addresspcd?addresspcd:(ssx?ssx:'货源省市区')}}" class="col-60 " readonly>
         </label>
-        <div class="item item-input ">
-          <span class="input-label icon ion-ios-location-outline"> 详细地址</span>
-          <textarea class="col-50" rows="1" ng-model="dengji.addrdetail" placeholder="输入街道门牌号等详细地址"
-          ></textarea>
+        <div class="item item-input">
+          <input type="text" name="addrdetail" class="col-70" ng-model="dengji.addrdetail" placeholder="详细地址(详细到门牌号)"/>
           <div class="positive padding-left" ng-click="openNearAddrModal()"><i
-            class="icon iconfont icon-locationfill"></i>定位
+            class="icon iconfont icon-locationfill"></i>附近地址
           </div>
 
         </div>
-
+        <p></p>
+        <ion-item class="item-divider light-bg item-borderless">
+          <h2 class="border-left">活动类型</h2></ion-item>
         <div class="item text-wrap">
-                    <span class="block  iconfont icon-changshang padding-bottom"
-                          style="font-size: 0.9rem!important;"> 所属厂商</span>
-          <ion-checkbox name="manufacteList" class="item-borderless checkbox-positive" ng-repeat="item in manufacteList"
-                        ng-model="item.checked" ng-change="multipleChoice(manufacteList,item)">
-            {{item.shortename}}
-          </ion-checkbox>
-
-        </div>
-        <div class="item text-wrap">
-                    <span class="block  iconfont icon-xzcplx padding-bottom"
-                          style="font-size: 0.9rem!important;"> 活动类型</span>
           <ion-checkbox class="item-borderless checkbox-positive" ng-checked="dengji.acttype==0"
                         ng-click="dengji.acttype=0">无
           </ion-checkbox>
@@ -68,8 +56,20 @@
                         ng-click="dengji.acttype=1">以旧换新
           </ion-checkbox>
 
-
         </div>
+          <p></p>
+          <ion-item class="item-divider light-bg item-borderless">
+            <h2 class="border-left">所属厂商</h2></ion-item>
+          <div class="item text-wrap">
+            <ion-checkbox name="manufacteList" class="item-borderless checkbox-positive"
+                          ng-repeat="item in manufacteList"
+                          ng-model="item.checked" ng-change="multipleChoice(manufacteList,item)">
+              {{item.shortename}}
+            </ion-checkbox>
+
+          </div>
+
+
       </ion-list>
       <p></p>
     </ion-content>
