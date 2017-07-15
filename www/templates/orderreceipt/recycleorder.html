@@ -10,15 +10,15 @@
   <form name="recycleorderForm">
     <ion-content overflow-scroll="false" class="stable-bg has-button-footer" id="recycleorder">
       <ion-list hide-show>
-        <ion-item class="item-divider light-bg item-icon-right border-bottom  padding-top" ng-click="toggle(0)">
+        <ion-item class="item-divider item-divider-bg item-icon-right border-bottom  padding-top" ng-click="toggle(0)">
           <h2 class="border-left">选择品类</h2>
           <i ng-class="{true:'ion-ios-arrow-right',false:'ion-ios-arrow-down'}[showme]"
              class="icon  iconfont"></i>
         </ion-item>
         <div ng-hide="showme" class="row row-center row-wrap text-center light-bg select-category padding-top">
-          <div ng-repeat="item in productList" class="col-25">
+          <div ng-repeat="item in productList" class="col-25" ng-click="checkChecded()">
             <input type="checkbox" id="{{item.imgurl}}" ng-model="item.checked">
-            <label ng-click="checkChecded()" for="{{item.imgurl}}" ><i
+            <label  for="{{item.imgurl}}" ><i
               class="iconfont {{item.imgurl}}"></i>
               <span></span>
               <p>{{item.name}}</p>

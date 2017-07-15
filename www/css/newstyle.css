@@ -12,7 +12,9 @@
 .border-bottom {
   border-bottom: 1px solid rgba(221, 221, 221, 0.3) !important;
 }
-
+.item-divider-bg{
+  background-color:#F0F0F0!important;
+}
 .item-divider h2 {
   font-size: 0.9rem !important;
 }
