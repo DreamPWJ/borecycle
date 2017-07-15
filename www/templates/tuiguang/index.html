@@ -1,0 +1,16 @@
+<ion-view>
+  <ion-nav-buttons side="left">
+    <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back ng-click="$ionicGoBack()"></button>
+  </ion-nav-buttons>
+  <ion-nav-title>
+    <h1 class="title"><img id="logo" src="img/logo.png" alt=""/> 邀请朋友</h1>
+  </ion-nav-title>
+
+  <ion-content overflow-scroll="true" class="light-bg has-subfooter text-center" style="padding: 50% 0;font-weight: bolder;font-size: 3.5rem;font-family: 'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif" has-bouncing="true">
+    {{invitecode}}
+  </ion-content>
+  <div class="padding light-bg  bottom-0" keyboard-attach>
+    <a ng-disabled="userdata.promoter!=1" class="button button-positive full-image icon ion-ios-loop-strong"
+       ng-click="getCode()">获取邀请码</a>
+  </div>
+</ion-view>

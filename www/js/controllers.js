@@ -285,6 +285,7 @@ angular.module('starter.controllers', [])
           CommonService.getStateName();   //跳转页面
         } else {
           CommonService.platformPrompt(data.message, 'close');
+          return;
         }
 
       }).then(function () {
@@ -2910,4 +2911,26 @@ angular.module('starter.controllers', [])
        */
 
     }
-  });
+  })
+//生成邀请码
+  .controller('tuiguangCtrl',function ($scope,$rootScope,AccountService,CommonService) {
+    //是否登录
+    if (!CommonService.isLogin()) {
+      return;
+    }
+    if(!$rootScope.userdata||$rootScope.userdata.promoter!=1){
+      CommonService.platformPrompt("很抱歉，您不是收收的推广用户！", 'close');
+      $state.go("tab.account")
+      return;
+    }
+    $scope.invitecode;//邀请码
+    //获取邀请码
+    $scope.getCode=function () {
+      AccountService.getInvitecode(localStorage.getItem("userid")).success(function (data) {
+        $scope.invitecode=data.data;
+      }).error(function (err) {
+        $scope.invitecode="迷失在沙漠中，请重新生成！";
+      });
+    }
+  })
+;
