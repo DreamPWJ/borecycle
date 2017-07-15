@@ -527,6 +527,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/wallet/recharge.html',
         controller: 'RechargeCtrl'
       })
+    //生成邀请码
+      .state('tuiguang', {
+        url: '/tuiguang',
+        cache: false,
+        templateUrl: 'templates/tuiguang/index.html',
+        controller: 'tuiguangCtrl'
+      })
     // if none of the above states are matched, use this as the fallback
     //动态判断是否显示初始化页面
     /*    if (localStorage.getItem('isStart')) {*/
