@@ -1,17 +1,17 @@
 <ion-view>
   <ion-nav-buttons side="left">
-    <button class="button button-clear iconfont icon-homefill" nav-direction=back native-ui-sref="tab.main"></button>
+    <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back native-ui-sref="tab.main"></button>
   </ion-nav-buttons>
   <ion-nav-title>
-    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 我的</h1>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 我的收收</h1>
   </ion-nav-title>
 
   <ion-content overflow-scroll="false" class="stable-bg account " has-bouncing="true">
     <div class="list  ">
-      <a nav-direction=forward ng-href="#/accountinfo" class="item item-avatar item-icon-right">
+      <a nav-direction=forward ng-href="#/accountinfo" class="item item-positive item-avatar   item-icon-right user" >
         <img ng-src="{{userdata.userfigure||img/head.jpg}}" class="border-radius-50" alt=""
              onerror="this.src='img/head.jpg'">
-        <h2 ng-class={true:'padding-top'}[userdata.username==null&&userdata.nickname==null]>
+        <h2  ng-class={true:'padding-top'}[userdata.username==null&&userdata.nickname==null]>
           {{userdata.username||userdata.nickname}}</h2>
         <p>{{userdata.mobile}}</p>
         <i class="icon ion-ios-arrow-right"></i>
@@ -65,7 +65,7 @@
       <a ng-if="usertype==2||usertype==0" nav-direction=forward ng-href="#/wallet"
          class="item item-icon-left item-icon-right ">
         <i class="icon iconfont icon-moneybag" style="color: #FFD700"></i>
-        <h2>我的钱包 <span class="item-note">余额 ：{{orderSum.account | currency :'￥'}}</span></h2>
+        <h2>我的钱包 <span class="item-note ">余额 ：<span class="balanced">{{orderSum.account | currency :'￥'}}</span></span></h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
       <a nav-direction=forward ng-href="#/tab/news" class="item item-icon-left item-icon-right">

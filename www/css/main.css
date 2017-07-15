@@ -139,7 +139,7 @@
   vertical-align: middle;
 }
 
-#main .isNotDataHint {
+/*#main .isNotDataHint {
   width: 100%;
   height: 100%;
   color: rgba(128, 128, 128, 0.2);
@@ -154,68 +154,11 @@
 #main .isNotDataHint p {
   margin: 0;
   padding-top: 0.3rem;
-}
+}*/
 
 #share .row .iconfont {
   font-size: 2rem !important;
 
-}
-
-.select-category label {
-  position: relative;
-  display: inline-block;;
-  margin-bottom: 0.3rem;
-  width: 90%;
-  height: 4rem;
-
-}
-
-.select-category .iconfont {
-  font-size: 1.8rem !important;
-  color: #585858;
-}
-
-.select-category label span {
-  opacity: 0;
-}
-
-.select-category label span:before {
-  content: '\2714';
-  position: absolute;
-  color: #ffffff;
-  font-size: 10px;
-  /*  -webkit-transform: rotate(-45deg);
-    transform: rotate(-45deg)*/;
-  right: 0;
-  top: 0;
-  z-index: 2000;
-}
-
-.select-category label span:after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 0;
-  border-top: 1.6rem solid #00ACFF;
-  border-left: 1.6rem solid transparent;
-  right: 0;
-  top: 0;
-}
-
-.select-category input {
-  display: none;
-}
-
-.select-category input:checked + label > span {
-  opacity: 1;
-}
-
-.select-category input:checked + label > p {
-  color: #00ACFF !important;
-}
-
-.select-category input:checked + label {
-  border: 1px solid #00ACFF;
 }
 
 #supplyofgoods .jiaohuo label span, .usertype label span {
@@ -265,7 +208,7 @@
   font-size: 0.9rem !important;
 }
 
-.classify-selected h2 {
+.classify-selected  {
   border-left: 3px solid #00ACFF !important;
   color: #00ACFF;
 }

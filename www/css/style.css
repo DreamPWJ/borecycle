@@ -211,8 +211,8 @@ a {
   text-align: center;
 }
 
-.isNotDataHint i {
-  font-size: 5rem;
+.isNotDataHint i,.isNotDataHint .iconfont {
+  font-size: 5rem!important;
 }
 
 .isNotDataHint p {

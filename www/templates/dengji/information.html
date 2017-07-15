@@ -38,8 +38,8 @@
           <input class="{{(addresspcd||ssx)?'dark':'grey'}}" type="text"
                  placeholder="{{addresspcd?addresspcd:(ssx?ssx:'货源省市区')}}" class="col-60 " readonly>
         </label>
-        <div class="item item-input">
-          <input type="text" name="addrdetail" class="col-70" ng-model="dengji.addrdetail" placeholder="详细地址(详细到门牌号)"/>
+        <div class="item item-input border-bottom-none">
+          <input type="text" name="addrdetail" class="col-70 " ng-model="dengji.addrdetail" placeholder="详细地址(详细到门牌号)"/>
           <div class="positive padding-left" ng-click="openNearAddrModal()"><i
             class="icon iconfont icon-locationfill"></i>附近地址
           </div>
@@ -48,7 +48,7 @@
         <p></p>
         <ion-item class="item-divider light-bg item-borderless">
           <h2 class="border-left">活动类型</h2></ion-item>
-        <div class="item text-wrap">
+        <div class="item item-small text-wrap border-bottom-none">
           <ion-checkbox class="item-borderless checkbox-positive" ng-checked="dengji.acttype==0"
                         ng-click="dengji.acttype=0">无
           </ion-checkbox>
@@ -57,17 +57,17 @@
           </ion-checkbox>
 
         </div>
-          <p></p>
-          <ion-item class="item-divider light-bg item-borderless">
-            <h2 class="border-left">所属厂商</h2></ion-item>
-          <div class="item text-wrap">
-            <ion-checkbox name="manufacteList" class="item-borderless checkbox-positive"
-                          ng-repeat="item in manufacteList"
-                          ng-model="item.checked" ng-change="multipleChoice(manufacteList,item)">
-              {{item.shortename}}
-            </ion-checkbox>
+        <p></p>
+        <ion-item class="item-divider light-bg item-borderless">
+          <h2 class="border-left">所属厂商</h2></ion-item>
+        <div class="item item-small text-wrap border-bottom-none">
+          <ion-checkbox name="manufacteList" class="item-borderless checkbox-positive"
+                        ng-repeat="item in manufacteList"
+                        ng-model="item.checked" ng-change="multipleChoice(manufacteList,item)">
+            {{item.shortename}}
+          </ion-checkbox>
 
-          </div>
+        </div>
 
 
       </ion-list>

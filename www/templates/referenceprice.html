@@ -1,6 +1,6 @@
 <ion-view>
   <ion-nav-buttons side="left">
-    <button class="button button-clear iconfont icon-homefill" nav-direction=back native-ui-sref="tab.main"></button>
+    <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back native-ui-sref="tab.main"></button>
   </ion-nav-buttons>
   <ion-nav-title>
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 参考价</h1>
@@ -11,6 +11,7 @@
       <ion-list class="list-borderless ">
         <ion-item ng-class="{false:'stable-bg',true:'classify-selected'}[classifyindex==$index]"
                   ng-click="getClassifyDetails($index)" ng-repeat="item in productList">
+          <i class="icon iconfont {{item.imgurl}}"></i>
           <h2 class="text-wrap"> {{item.name}}</h2>
         </ion-item>
       </ion-list>
@@ -20,7 +21,7 @@
         <div id="classify-scroll-content" ng-style="{height:scrollContentHeight}">
           <ion-list>
             <ion-item  ng-repeat="item in classifyDetails">
-              <p class="text-wrap" > {{item.name}} <span class=" nowrap" style="position: absolute;right: 0.3rem;"><span class="energized ">{{item.price | currency :''}} </span> 元/{{item.unit==1?'台':'公斤'}}</span></p>
+              <p class="text-wrap" > {{item.name}} <span class=" nowrap" style="position: absolute;right: 0.3rem;"><span style="font-size: 1rem;" class="energized ">{{item.price | currency :''}} </span> 元/{{item.unit==1?'台':'公斤'}}</span></p>
             </ion-item>
           </ion-list>
 

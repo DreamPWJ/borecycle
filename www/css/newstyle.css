@@ -9,16 +9,110 @@
   border-top: 1px solid rgba(221, 221, 221, 0.3) !important;
 }
 
+.border-bottom-none {
+  border-bottom: none;
+}
+
 .border-bottom {
   border-bottom: 1px solid rgba(221, 221, 221, 0.3) !important;
 }
-.item-divider-bg{
-  background-color:#F0F0F0!important;
+
+.item-divider-bg {
+  background-color: #F0F0F0 !important;
 }
+
 .item-divider h2 {
   font-size: 0.9rem !important;
 }
 
 .item-divider h2, .item-divider .iconfont, item-divider .icon {
   color: #585858 !important;
+}
+
+.select-category label {
+  position: relative;
+  display: inline-block;;
+  margin-bottom: 0.3rem;
+  width: 90%;
+  height: 4rem;
+
+}
+
+.select-category .iconfont {
+  font-size: 1.8rem !important;
+  color: #585858;
+}
+
+.select-category label span {
+  opacity: 0;
+}
+
+.select-category label span:before {
+  content: '✔';
+  position: absolute;
+  color: #fff !important;
+  font-size: 10px;
+  /*  -webkit-transform: rotate(-45deg);
+      transform: rotate(-45deg);*/
+  right: 0;
+  top: 0;
+  z-index: 2000;
+}
+
+.select-category label span:after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-top: 1.6rem solid #00ACFF;
+  border-left: 1.6rem solid transparent;
+  right: 0;
+  top: 0;
+}
+
+.select-category input {
+  display: none;
+}
+
+.select-category input:checked + label > span {
+  opacity: 1;
+}
+
+.select-category input:checked + label > p {
+  color: #00ACFF !important;
+}
+
+.select-category input:checked + label {
+  border: 1px solid #00ACFF;
+}
+
+.item-small{
+  padding: 8px 16px!important;
+}
+
+
+#organizingdata .item-checkbox, #information .item-checkbox, #register .services .item-checkbox, #evaluate .item-checkbox {
+  width: 32%;
+  display: inline-block;
+  margin: 0.1rem;
+  padding: 3px 0 0 26px;
+  height: 1.8rem;
+  line-height: 1.8rem;
+  font-size: 0.8rem !important;
+  background-color: #ffffff !important;
+}
+
+#organizingdata .checkbox-icon, #information .checkbox-icon, #register .services .checkbox-icon, #evaluate .checkbox-icon {
+  margin-left: -0.8rem!important;
+  margin-top: 0.3rem!important;
+  width: 20px;
+  height: 20px;
+}
+
+#organizingdata .checkbox-icon:after, #information .checkbox-icon:after, #register .services .checkbox-icon:after, #evaluate .checkbox-icon:after {
+  width: 12px;
+}
+
+.item-checkbox .item-content {
+  padding-right: 0 !important;
 }
