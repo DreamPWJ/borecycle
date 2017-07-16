@@ -110,6 +110,7 @@
 
 #main .main-list {
   text-align: center;
+  padding-top: 1rem;
 }
 
 #main .main-list a {
@@ -139,22 +140,10 @@
   vertical-align: middle;
 }
 
-/*#main .isNotDataHint {
-  width: 100%;
-  height: 100%;
-  color: rgba(128, 128, 128, 0.2);
-  padding-top: 5%;
-  text-align: center;
-}
+#main .kefu{
+height: 5rem;
 
-#main .isNotDataHint .iconfont {
-  font-size: 3rem !important;
 }
-
-#main .isNotDataHint p {
-  margin: 0;
-  padding-top: 0.3rem;
-}*/
 
 #share .row .iconfont {
   font-size: 2rem !important;

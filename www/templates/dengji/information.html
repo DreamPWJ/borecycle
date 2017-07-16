@@ -39,7 +39,7 @@
                  placeholder="{{addresspcd?addresspcd:(ssx?ssx:'货源省市区')}}" class="col-60 " readonly>
         </label>
         <div class="item item-input border-bottom-none">
-          <input type="text" name="addrdetail" class="col-70 " ng-model="dengji.addrdetail" placeholder="详细地址(详细到门牌号)"/>
+          <input type="text" name="addrdetail" class="col-70 " ng-model="dengji.addrdetail" placeholder="详细地址(详细到门牌号)" required/>
           <div class="positive padding-left" ng-click="openNearAddrModal()"><i
             class="icon iconfont icon-locationfill"></i>附近地址
           </div>
@@ -59,7 +59,7 @@
         </div>
         <p></p>
         <ion-item class="item-divider light-bg item-borderless">
-          <h2 class="border-left">所属厂商</h2></ion-item>
+          <h2 class="border-left">所属厂商 (非必选项)</h2></ion-item>
         <div ng-if="manufacteList" class="item item-small text-wrap border-bottom-none">
           <ion-checkbox name="manufacteList" class="item-borderless checkbox-positive"
                         ng-repeat="item in manufacteList"

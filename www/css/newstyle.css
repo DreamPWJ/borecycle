@@ -45,17 +45,18 @@
 
 .select-category label span {
   opacity: 0;
+  color: #fff !important;
 }
 
 .select-category label span:before {
-  content: '✔';
+  content: '已选';
   position: absolute;
   color: #fff !important;
   font-size: 10px;
-  /*  -webkit-transform: rotate(-45deg);
-      transform: rotate(-45deg);*/
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
   right: 0;
-  top: 0;
+  top: 2px;
   z-index: 2000;
 }
 
