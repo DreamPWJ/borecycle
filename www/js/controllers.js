@@ -2736,10 +2736,7 @@ angular.module('starter.controllers', [])
         }
         angular.forEach(data.data.data_list, function (item) {
           angular.forEach($scope.blc,function (item2) {
-            if(item.bankname==item2.name){
-              item.logo=item2.logo;
-              item.color=item2.color;
-            }else if(item.bankname.indexOf(item2.name)>=0||item2.name.indexOf(item.bankname)>=0){
+            if(item.bankname.indexOf(item2.name)>=0||item2.name.indexOf(item.bankname)>=0){
               item.logo=item2.logo;
               item.color=item2.color;
             }
@@ -2756,7 +2753,7 @@ angular.module('starter.controllers', [])
         $scope.$broadcast('scroll.infiniteScrollComplete');
       })
     }
-    $scope.getUserBanklist(0);//收款账号加载刷新
+    $scope.getUserBanklist();//收款账号加载刷新
     $scope.setDefault = function (item) {
       //防止事件冒泡
       if ($rootScope.defaultBank) {

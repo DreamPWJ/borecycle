@@ -17,12 +17,12 @@
     <div ng-repeat="item in userbanklist">
       <div class="card padding" style="{{'background:'+item.color}}" ng-click="selectThis(item)">
         <div class="row no-border padding-top padding-bottom">
-          <div class="col-15">
+          <div class="col-17">
             <span class="light-bg border-radius-50" style="width: 45px;height: 45px;display: block;line-height: 45px;text-align:center;padding: 1px;color:{{item.color}}">
               <i class="iconfont" ng-class="item.logo"></i>
             </span>
           </div>
-          <div class="col-50 dark">
+          <div class="col-48 dark">
             <div style="font-size: 1.2rem;">{{item.bankname}}</div>
             <div style="font-size: 0.8rem;">{{item.branchname}}</div>
           </div>
