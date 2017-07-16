@@ -21,14 +21,37 @@
   border-bottom: 2px solid #00ACFF;
 }
 
-#orderlist .jiedan, #orderlist .pending, #orderwarning .pending, #myorderlist .close {
+#orderlist .jiedan {
+  border: 1px solid #00ACFF;
+  color: #00ACFF;
+  border-radius: 2px;
+  padding: 0.2rem 1rem !important;
+}
+
+.bhytype:not(:empty) {
+  border: 1px solid #33cd5f;
+  font-size: 0.6rem;
+  padding: 0px 5px;
+  color: #33cd5f;
+}
+
+.ehytype:not(:empty) {
+  border: 1px solid #f26604;
+  font-size: 0.6rem;
+  padding: 0px 5px;
+  color:#f26604;
+}
+.pending{
+  border-top: 2px solid rgba(221, 221, 221, 0.3);
+  padding: 0.6rem 0;
+}
+ #myorderlist .close {
   margin-top: 0.2rem !important;
   padding: 5px 4px;
 }
 
 #orderlist .jiedan i, #orderlist .pending i, #orderwarning .pending i, #myorderlist .close i {
   vertical-align: text-bottom;
-  margin-left: 0.8rem;
 }
 
 .tab-largen.tab-item {
@@ -140,8 +163,8 @@
   vertical-align: middle;
 }
 
-#main .kefu{
-height: 5rem;
+#main .kefu {
+  height: 5rem;
 
 }
 

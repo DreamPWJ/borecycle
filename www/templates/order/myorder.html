@@ -26,8 +26,8 @@
           <a ng-href="#/myorderdetails/{{item.djno}}" class="item " ng-repeat="item in unfinishedorderList ">
             <h2 class="positive">货主 : {{item.name}} {{item.motel| hidepartinfo : 'phone'}} 状态 :
               <span class="{{item.state>=4?'balanced':(item.state>=6?'energized':'')}} "> {{item.strstate}}</span></h2>
-            <p class="text-wrap">交易品类 : {{item.category}}
-              <span class="close assertive item-note" ng-click="closeOrder(item.djno)"
+            <p class="text-wrap">交易品类 : {{item.category}} <span class=" {{item.hytype==1?'bhytype':'ehytype'}} ">{{item.hytype==0?'':(item.hytype==1?'废品':'二手')}}</span>
+              <span class="close assertive item-note right-1" ng-click="closeOrder(item.djno)"
                     ng-if="item.state==2||item.state==3"><i class="iconfont icon-jian"></i>关闭</span></p>
             <p class="text-wrap " ng-if="item.state<=3">下单时间 : {{item.addtime | date :'yyyy-MM-dd HH:mm'}}</p>
             <p class="text-wrap " ng-if="item.state>=4"><span class="balanced">接单人 : {{item.orname}} </span>接单时间 : {{item.oraddtime | date :'yyyy-MM-dd HH:mm'}}</p>
@@ -51,8 +51,8 @@
           <a ng-href="#/myorderdetails/{{item.djno}}" class="item " ng-repeat="item in orderList ">
             <h2 class="positive">货主 : {{item.name}} {{item.motel| hidepartinfo : 'phone'}} 状态
               :<span class="{{item.state>=4?'balanced':(item.state>=6?'energized':'')}} "> {{item.strstate}}</span></h2>
-            <p class="text-wrap">交易品类 : {{item.category}}
-              <span class="close assertive item-note" ng-click="closeOrder(item.djno)"
+            <p class="text-wrap">交易品类 : {{item.category}} <span class=" {{item.hytype==1?'bhytype':'ehytype'}} ">{{item.hytype==0?'':(item.hytype==1?'废品':'二手')}}</span>
+              <span class="close assertive item-note right-1" ng-click="closeOrder(item.djno)"
                     ng-if="item.state==2||item.state==3"><i class="iconfont icon-jian"></i>关闭</span></p>
             <span class="close royal item-note" ui-sref="evaluate({no:item.djno,type:item.type})"
                   ng-if="item.state==6"><i
