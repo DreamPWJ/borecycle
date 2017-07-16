@@ -11,9 +11,9 @@
   </ion-nav-buttons>
   <ion-tabs id="orderlist-tab" class="tabs-light tabs-top" delegate-handle="my-handle-orderlist">
     <div class="row row-horizontal-around text-center">
-      <span class="col-33 {{tabIndex==0?'active':''}}" ng-click="selectedTab(0)">待接单 </span>
-      <span class="col-33 {{tabIndex==1?'active':''}}" ng-click="selectedTab(1)">待处理</span>
-      <span class="col-33 {{tabIndex==2?'active':''}}" ng-click="selectedTab(2)">所有订单</span>
+      <span class="col-25 {{tabIndex==0?'active':''}}" ng-click="selectedTab(0)">待接单 </span>
+      <span class="col-25 {{tabIndex==1?'active':''}}" ng-click="selectedTab(1)">待处理</span>
+      <span class="col-25 {{tabIndex==2?'active':''}}" ng-click="selectedTab(2)">所有订单</span>
     </div>
   </ion-tabs>
   <ion-slide-box show-pager="false" on-slide-changed="slideChanged($index)" delegate-handle="slidebox-orderlist"
@@ -30,7 +30,7 @@
           <a ng-href="#/orderdetails/{{item.djno}}/1" class="item " ng-repeat="item in jiedanorderList | orderBy:'range'">
             <h2 class="positive">{{item.addrdetail}}</h2>
             <p class="text-wrap">交易品类 : {{item.category}}  <span class="balanced">{{item.hytype==0?'':(item.hytype==1?'废品':'二手')}}</span>
-              <span class="jiedan balanced item-note" ng-click="jieDan(item.djno,item.userid,item.type,item.hytype)"><i
+              <span class="jiedan balanced item-note right-1" ng-click="jieDan(item.djno,item.userid,item.type,item.hytype)"><i
                 class="iconfont icon-formfill"></i> 接单</span></p>
             <p class="text-wrap ">{{item.name}} {{item.motel | hidepartinfo : 'phone'}} 距离:{{item.distance}} </p>
 

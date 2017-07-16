@@ -1,17 +1,17 @@
 <ion-view>
-  <ion-nav-buttons side="left">
-    <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back native-ui-sref="tab.main"></button>
-  </ion-nav-buttons>
+  <!--  <ion-nav-buttons side="left">
+      <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back native-ui-sref="tab.main"></button>
+    </ion-nav-buttons>-->
   <ion-nav-title>
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 我的收收</h1>
   </ion-nav-title>
 
   <ion-content overflow-scroll="true" class="stable-bg account " has-bouncing="true">
     <div class="list  ">
-      <a nav-direction=forward ng-href="#/accountinfo" class="item item-positive item-avatar   item-icon-right user" >
+      <a nav-direction=forward ng-href="#/accountinfo" class="item item-positive item-avatar   item-icon-right user">
         <img ng-src="{{userdata.userfigure||img/head.jpg}}" class="border-radius-50" alt=""
              onerror="this.src='img/head.jpg'">
-        <h2  ng-class={true:'padding-top'}[userdata.username==null&&userdata.nickname==null]>
+        <h2 ng-class={true:'padding-top'}[userdata.username==null&&userdata.nickname==null]>
           {{userdata.username||userdata.nickname}}</h2>
         <p>{{userdata.mobile}}</p>
         <i class="icon ion-ios-arrow-right"></i>
@@ -27,12 +27,12 @@
         <div class="row row-no-padding light-bg  row-center text-center order-item">
           <a nav-direction=forward ng-href="#/wallet" class="item item-icon-right col ">
             <p>账号余额</p>
-            <h2>{{orderSum.account | currency :'￥'}}</h2>
+            <h2 style="color: #f26604">{{orderSum.account | currency :'￥'}}</h2>
             <i class="icon iconfont icon-balance " style="color: #f26604"></i></span>
           </a>
           <a nav-direction=forward ng-href="#/bankcard" class="item  col item-icon-right item-borderless">
             <p>银行卡</p>
-            <h2>{{orderSum.banknum}}张</h2>
+            <h2 style="color: #f26604">{{orderSum.banknum}}</h2>
             <i class="icon iconfont icon-yinxingqia " style="color: #00ACFF"></i></span>
           </a>
         </div>
@@ -46,12 +46,12 @@
         <div class="row row-no-padding light-bg  row-center text-center order-item">
           <a nav-direction=forward ng-href="#/order/0" class="item item-icon-right col ">
             <p>待处理</p>
-            <h2>{{orderSum.dclnum}}个</h2>
+            <h2 style="color: #f26604">{{orderSum.dclnum}}</h2>
             <i class="icon iconfont icon-time " style="color: #00ACFF"></i></span>
           </a>
           <a nav-direction=forward ng-href="#/orderwarning" class="item  col expiring item-borderless">
             <p>预警</p>
-            <h2>{{orderSum.yjnum}}个</h2>
+            <h2 style="color: #f26604">{{orderSum.yjnum}}</h2>
           </a>
         </div>
       </div>
@@ -65,7 +65,8 @@
       <a ng-if="usertype==2||usertype==0" nav-direction=forward ng-href="#/wallet"
          class="item item-icon-left item-icon-right ">
         <i class="icon iconfont icon-moneybag" style="color: #FFD700"></i>
-        <h2>我的钱包 <span class="item-note ">余额 ：<span class="balanced">{{orderSum.account | currency :'￥'}}</span></span></h2>
+        <h2>我的钱包 <span class="item-note ">余额 ：<span class="balanced">{{orderSum.account | currency :'￥'}}</span></span>
+        </h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
       <a nav-direction=forward ng-href="#/tab/news" class="item item-icon-left item-icon-right">
@@ -80,7 +81,8 @@
         <i class="icon ion-ios-arrow-right"></i>
       </a>
 
-      <a nav-direction=forward ng-href="#/tuiguang" ng-if="userdata.promoter==1" class="item item-icon-left item-icon-right">
+      <a nav-direction=forward ng-href="#/tuiguang" ng-if="userdata.promoter==1"
+         class="item item-icon-left item-icon-right">
         <i class="icon iconfont ion-person-add" style="color: #4cae4c"></i>
         <h2>邀请朋友</h2>
         <i class="icon ion-ios-arrow-right"></i>
