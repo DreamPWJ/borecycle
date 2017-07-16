@@ -19,19 +19,20 @@
       <div class="row col-60 padding-bottom">
         <div class="light col" style="font-size: 30px;">{{totalamount|currency:"￥"}}</div>
       </div>
+      <p></p>
     </div>
-    <div class="text-center light-bg padding-top">
-      <div class="row row-no-padding padding-bottom">
-        <div class="col" style="border-right-style:dashed;border-right-width: 1px;border-right-color: #cdcdcd;">
-          <div style="font-size: 0.8rem;">可用余额</div>
-          <div style="font-size: 1.5rem;padding-bottom: 5px;">{{kyamount|number:2}}</div>
-        </div>
-        <div class="col">
-          <div style="font-size: 0.8rem;">{{ut<=1?"待入账金额":"冻结金额"}}</div>
-          <div style="font-size: 1.5rem;padding-bottom: 5px;">{{djamount|number:2}}</div>
-        </div>
-      </div>
-    </div>
+    <!--<div class="text-center light-bg padding-top">-->
+      <!--<div class="row row-no-padding padding-bottom">-->
+        <!--<div class="col" style="border-right-style:dashed;border-right-width: 1px;border-right-color: #cdcdcd;">-->
+          <!--<div style="font-size: 0.8rem;">可用余额</div>-->
+          <!--<div style="font-size: 1.5rem;padding-bottom: 5px;">{{kyamount|number:2}}</div>-->
+        <!--</div>-->
+        <!--<div class="col">-->
+          <!--<div style="font-size: 0.8rem;">{{ut<=1?"待入账金额":"冻结金额"}}</div>-->
+          <!--<div style="font-size: 1.5rem;padding-bottom: 5px;">{{djamount|number:2}}</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
     <div class="list padding-top">
       <a nav-direction=forward ng-href="#/recharge" class="item item-icon-left item-icon-right ">
         <i class="icon iconfont icon-chongzhi" style="color: #11c1f3"></i>
