@@ -1138,7 +1138,7 @@ angular.module('starter.controllers', [])
       })
 
     }
-//在待处理订单中 取消订单
+//在回收订单中 取消订单
     $scope.cancelOrder = function (orno) {
       OrderService.cancelOrderReceipt({orno: orno}).success(function (data) {
         if (data.code == 1001) {
@@ -1179,34 +1179,36 @@ angular.module('starter.controllers', [])
     var user = JSON.parse(localStorage.getItem("user"));//用户信息
     $scope.type = $stateParams.type;//1.待接单 2 待处理和所有订单
     $rootScope.orderType = $rootScope.orderType || 2; //orderType类型 0.是我的回收订单 1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
+    $scope.getOrderListDetails = function () {
+      if ($scope.type == 1) {
+        OrderService.getDengJiDetail({djno: $stateParams.no}).success(function (data) {
+          console.log(data);
+          if (data.code == 1001) {
+            $scope.orderDetail = data.data;
+          } else {
+            CommonService.platformPrompt(data.message, "close");
+          }
 
-    if ($scope.type == 1) {
-      OrderService.getDengJiDetail({djno: $stateParams.no}).success(function (data) {
-        console.log(data);
-        if (data.code == 1001) {
-          $scope.orderDetail = data.data;
-        } else {
-          CommonService.platformPrompt(data.message, "close");
-        }
+        }).then(function () {
+          $scope.getComment();
+        })
+      }
+      if ($scope.type == 2) {
+        OrderService.getOrderReceiptDetail({orno: $stateParams.no}).success(function (data) {
+          console.log(data);
+          if (data.code == 1001) {
+            $scope.orderDetail = data.data;
+          } else {
+            CommonService.platformPrompt(data.message, "close");
+          }
 
-      }).then(function () {
-        $scope.getComment();
-      })
+        }).then(function () {
+          $scope.getComment();
+        })
+      }
     }
-    if ($scope.type == 2) {
-      OrderService.getOrderReceiptDetail({orno: $stateParams.no}).success(function (data) {
-        console.log(data);
-        if (data.code == 1001) {
-          $scope.orderDetail = data.data;
-        } else {
-          CommonService.platformPrompt(data.message, "close");
-        }
 
-      }).then(function () {
-        $scope.getComment();
-      })
-    }
-
+    $scope.getOrderListDetails();
 
     //获取评论内容
     $scope.getComment = function () {
@@ -1236,6 +1238,18 @@ angular.module('starter.controllers', [])
     //去付款
     $scope.topay = function (type, djno, orno, fromuser, touser, amount, name) {
       OrderService.topay(type, djno, orno, fromuser, touser, amount, name);
+    }
+
+    //在回收订单中 取消订单
+    $scope.cancelOrder = function (djno) {
+      OrderService.cancelOrderReceipt({orno: djno}).success(function (data) {
+        if (data.code == 1001) {
+          CommonService.platformPrompt("取消接单成功", "close");
+          $scope.getOrderListDetails();//详情刷新
+        } else {
+          CommonService.platformPrompt(data.message, "close");
+        }
+      })
     }
   })
 

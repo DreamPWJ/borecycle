@@ -74,8 +74,7 @@
                 class="iconfont icon-sponsor"></i> 去付款</span><span
                 class="positive" ng-if="item.state<=4" ng-click="navigation(item.longitude,item.latitude)"><i
                 class="iconfont icon-daohang1"></i> 导航</span>
-              <span
-                class="assertive" ng-click="cancelOrder(item.orno)"><i
+              <span class="assertive" ng-if="item.state==4" ng-click="cancelOrder(item.orno)"><i
                 class="iconfont icon-jian"></i> 取消</span>
             </p>
             <p></p>
@@ -116,7 +115,8 @@
                   class="iconfont icon-sponsor"></i> 去付款</span><span
                   class="positive" ng-if="item.state<=4" ng-click="navigation(item.longitude,item.latitude)"><i
                   class="iconfont icon-daohang1"></i> 导航</span>
-
+                <span class="assertive" ng-if="item.state==4" ng-click="cancelOrder(item.orno)"><i
+                  class="iconfont icon-jian"></i> 取消</span>
               </p>
               <p></p>
             </div>
