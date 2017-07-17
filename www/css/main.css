@@ -66,9 +66,10 @@
 }
 
 .tab-largen.tab-item {
+  margin: 0 0.6rem;
   position: relative;
-  max-width: 58px !important;
-  height: 58px !important;
+  max-width: 56px !important;
+  height: 56px !important;
   line-height: 22px !important;
   background-color: #00ACFF !important;
   color: #ffffff !important;

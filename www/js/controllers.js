@@ -658,6 +658,8 @@ angular.module('starter.controllers', [])
               shopphone: userext.shopphone ? Number(userext.shopphone) : '',//企业电话
               addrdetail: userext.addrdetail //企业详细地址
             }
+          }else {
+            $scope.user.usertype= $scope.isUpgradeRecycler ? 2 : usertype //用户类型
           }
 
         } else {
