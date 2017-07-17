@@ -2790,12 +2790,7 @@ angular.module('starter.controllers', [])
     $scope.page = 0;
     $scope.total = 1;
     $scope.blc = [];//银行logo及颜色
-    //获取银行卡logo等信息
-    MyWalletService.getBankLogo().success(function (data) {
-      angular.forEach(data,function (item) {
-        $scope.blc.push(item);
-      });
-    });
+
     if(!$ionicHistory.backView()||$ionicHistory.backView().stateName!="cash"){
       $rootScope.defaultBank=null;
     }
@@ -2825,19 +2820,27 @@ angular.module('starter.controllers', [])
           $rootScope.userbankliststatus = [];//无银行账号的时候清除数据
           return;
         }
-        angular.forEach(data.data.data_list, function (item) {
-          angular.forEach($scope.blc, function (item2) {
-            if (item.bankname.indexOf(item2.name) >= 0 || item2.name.indexOf(item.bankname) >= 0) {
-              item.logo = item2.logo;
-              item.color = item2.color;
-            }
+        //获取银行卡logo等信息
+        MyWalletService.getBankLogo().success(function (data) {
+          angular.forEach(data,function (item) {
+            $scope.blc.push(item);
           });
-          if (!item.logo) {
-            item.logo = "icon-yinhang";
-            item.color = "#4e8bed";
-          }
-          $scope.userbanklist.push(item);
-        });
+        }).then(function () {
+          angular.forEach(data.data.data_list, function (item) {
+            angular.forEach($scope.blc, function (item2) {
+              if (item.bankname.indexOf(item2.name) >= 0 || item2.name.indexOf(item.bankname) >= 0) {
+                item.logo = item2.logo;
+                item.color = item2.color;
+              }
+            });
+            if (!item.logo) {
+              item.logo = "icon-yinhang";
+              item.color = "#4e8bed";
+            }
+            $scope.userbanklist.push(item);
+          });
+        })
+
         $scope.total = data.data.page_count;
         $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
       }).finally(function () {
