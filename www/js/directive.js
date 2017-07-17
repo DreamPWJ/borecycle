@@ -70,12 +70,8 @@ angular.module('starter.directive', [])
         $rootScope.verify = true;
         $rootScope.verifyarray[scope.$id] = true;
         scope.publicCheckForm = function (regular, value, content, isshowtip) { //验证公共部分封装
+          console.log(regular);
           if (regular) {
-            /*            if(!attrs.required&&!value){//非必填项 清空不验证
-             $rootScope.verifyarray[scope.$id] = true;
-             $rootScope.verify = true;
-             return;
-             }*/
             if (value == 0) {
               $rootScope.verifyarray[scope.$id] = false;
               $rootScope.verify = false;
@@ -89,15 +85,21 @@ angular.module('starter.directive', [])
               }
             });
           } else {
-            if (value || value == 0) {
+            if (value == 0) {
               if (isshowtip) {
                 $rootScope.commonService.toolTip(content, '');
               }
               $rootScope.verifyarray[scope.$id] = false;
               $rootScope.verify = false;
             }
-            if (!value) { //非必填清空不再验证 可下一步
+            if (!attrs.required && value == null) {//非必填项 清空不验证
               $rootScope.verifyarray[scope.$id] = true;
+              $rootScope.verify = true;
+              angular.forEach($rootScope.verifyarray, function (item) {
+                if (!item) {
+                  $rootScope.verify = false;
+                }
+              });
             }
           }
         }
