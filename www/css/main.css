@@ -149,11 +149,10 @@
 
 #main .main-list {
   text-align: center;
-  padding-top: 1rem;
 }
 
 #main .main-list a {
-  padding: 1rem;
+  padding: 2rem 1rem 1rem 1rem;
 }
 
 #main .main-list a h5, #main .main-list a p {
@@ -187,6 +186,9 @@
 #share .row .iconfont {
   font-size: 2rem !important;
 
+}
+.padding-top-2{
+  padding-top: 2rem;
 }
 
 #supplyofgoods .jiaohuo label span, .usertype label span {
