@@ -1,0 +1,19 @@
+<ion-view>
+  <ion-nav-buttons side="left">
+    <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back ng-click="$ionicGoBack()"></button>
+  </ion-nav-buttons>
+  <ion-nav-title>
+    <h1 class="title"><img id="logo" src="img/logo.png" alt=""/>信息费标准</h1>
+  </ion-nav-title>
+
+  <ion-content overflow-scroll="false" class="stable-bg " id="news" has-bouncing="true">
+    <!--<ion-refresher on-refresh="" pulling-text="下拉更新"></ion-refresher>-->
+    <div id="classify-scroll-content">
+      <ion-list>
+        <ion-item  ng-repeat="item in infeels">
+          <p class="padding-right" > {{item.grpname}} <span class=" nowrap" style="position: absolute;right:1rem;"><span class="calm ">{{ut==1?item.provider_cost*1:item.platform_cost*1+item.provider_cost*1 }} </span> 元/台</span></p>
+        </ion-item>
+      </ion-list>
+    </div>
+  </ion-content>
+</ion-view>

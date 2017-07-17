@@ -3044,4 +3044,17 @@ angular.module('starter.controllers', [])
       });
     }
   })
+  //信息费标准
+  .controller('infeeCtrl',function ($scope, $rootScope, NewsService, CommonService) {
+    //是否登录
+    if (!CommonService.isLogin()) {
+      return;
+    }
+    $scope.ut=localStorage.removeItem("usertype");
+    NewsService.getInfo_fee().success(function (data) {
+      console.log(data);
+      $scope.infeels=data.data;
+    });
+    console.log($scope.infeels);
+  })
 ;

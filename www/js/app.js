@@ -533,6 +533,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/tuiguang/index.html',
         controller: 'tuiguangCtrl'
       })
+      //信息费标准
+      .state('infee', {
+        url: '/infee',
+        cache: true,
+        templateUrl: 'templates/infofee.html',
+        controller: 'infeeCtrl'
+      })
     // if none of the above states are matched, use this as the fallback
     //动态判断是否显示初始化页面
     if (localStorage.getItem('isStart')) {
