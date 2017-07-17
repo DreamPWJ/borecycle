@@ -30,6 +30,7 @@
 
 .bhytype:not(:empty) {
   border: 1px solid #33cd5f;
+  border-radius: 2px;
   font-size: 0.6rem;
   padding: 0px 5px;
   color: #33cd5f;
@@ -37,15 +38,18 @@
 
 .ehytype:not(:empty) {
   border: 1px solid #f26604;
+  border-radius: 2px;
   font-size: 0.6rem;
   padding: 0px 5px;
-  color:#f26604;
+  color: #f26604;
 }
-.pending{
+
+.pending {
   border-top: 2px solid rgba(221, 221, 221, 0.3);
   padding: 0.6rem 0;
 }
- #myorderlist .close {
+
+#myorderlist .close {
   margin-top: 0.2rem !important;
   padding: 5px 4px;
 }
@@ -176,12 +180,12 @@
 #supplyofgoods .jiaohuo label span, .usertype label span {
   display: inline-block;
   margin-left: 1rem;
-  width: 6rem;
-  height: 2rem;
+  padding: 0 0.5rem;
+  height: 1.8rem;
   border: 1px solid #00ACFF;
   color: #00ACFF;
   text-align: center;
-  line-height: 2rem;
+  line-height: 1.8rem;
   border-radius: 0.5rem;
 }
 
