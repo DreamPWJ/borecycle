@@ -2792,7 +2792,9 @@ angular.module('starter.controllers', [])
     $scope.blc = [];//银行logo及颜色
     //获取银行卡logo等信息
     MyWalletService.getBankLogo().success(function (data) {
-      $scope.blc = data;
+      angular.forEach(data,function (item) {
+        $scope.blc.push(item);
+      });
     });
     if(!$ionicHistory.backView()||$ionicHistory.backView().stateName!="cash"){
       $rootScope.defaultBank=null;
@@ -2831,8 +2833,8 @@ angular.module('starter.controllers', [])
             }
           });
           if (!item.logo) {
-            item.logo = $scope.blc[$scope.blc.length - 1].logo;
-            item.color = $scope.blc[$scope.blc.length - 1].color;
+            item.logo = "icon-yinhang";
+            item.color = "#4e8bed";
           }
           $scope.userbanklist.push(item);
         });
