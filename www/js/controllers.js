@@ -2332,7 +2332,7 @@ angular.module('starter.controllers', [])
           if (data.code == 1001) {
             $scope.manufacteList = [];
             $scope.manufacteList = data.data
-            $scope.manufacteList.unshift({id: "", shortename: '无'});//追加到第一位
+      /*      $scope.manufacteList.unshift({id: "", shortename: '无'});*///追加到第一位
           } else {
             CommonService.platformPrompt(data.message, 'close');
           }
