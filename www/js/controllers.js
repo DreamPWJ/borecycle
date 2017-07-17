@@ -2785,7 +2785,7 @@ angular.module('starter.controllers', [])
   })
 
   //我的银行卡
-  .controller('BankcardCtrl', function ($scope, $rootScope, $state, $ionicHistory, CommonService, AccountService, MyWalletService) {
+  .controller('BankcardCtrl', function ($scope, $rootScope, $state, $ionicHistory,$ionicScrollDelegate, CommonService, AccountService, MyWalletService) {
     $scope.userbanklist = [];
     $scope.page = 0;
     $scope.total = 1;
@@ -2794,7 +2794,9 @@ angular.module('starter.controllers', [])
     MyWalletService.getBankLogo().success(function (data) {
       $scope.blc = data;
     });
-
+    if(!$ionicHistory.backView()||$ionicHistory.backView().stateName!="cash"){
+      $rootScope.defaultBank=null;
+    }
     $scope.selectThis = function (item) {
       if ($rootScope.defaultBank) {
         $rootScope.defaultBank = item;
@@ -2833,14 +2835,15 @@ angular.module('starter.controllers', [])
             item.color = $scope.blc[$scope.blc.length - 1].color;
           }
           $scope.userbanklist.push(item);
-        })
+        });
         $scope.total = data.data.page_count;
+        $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
       })
     }
-    $scope.getUserBanklist();//收款账号加载刷新
+    $scope.getUserBanklist(0);//收款账号加载刷新
     $scope.setDefault = function (item) {
       //防止事件冒泡
       if ($rootScope.defaultBank) {
@@ -2884,7 +2887,6 @@ angular.module('starter.controllers', [])
       if ($scope.paraclass) {
         //取实名信息
         MyWalletService.get_identity(localStorage.getItem("userid")).success(function (data) {
-          ;
           if (data.data != null) {
             $scope.personsign = {
               "cardno": $scope.bankinfo.accountno,

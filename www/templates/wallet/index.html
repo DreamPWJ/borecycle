@@ -7,19 +7,30 @@
   </ion-nav-title>
 
   <ion-content overflow-scroll="false" class="stable-bg " id="walletindex" has-bouncing="true">
-    <div class="text-center positive-bg second-list padding-top padding-bottom">
+    <div class="positive-bg second-list padding-top padding-bottom">
       <div class="padding-bottom"></div>
       <div class="padding-bottom"></div>
       <div class="row col-40 f-right padding-top">
         <div class="icon iconfont icon-balance-40 col"></div>
       </div>
-      <div class="row col-60 padding-top padding-bottom">
+      <div class="row col-60 padding-top padding-bottom text-center">
         <div class="light col padding-bottom">账户总余额</div>
       </div>
-      <div class="row col-60 padding-bottom">
+      <div class="row col-60 padding-bottom text-center">
         <div class="light col" style="font-size: 30px;">{{totalamount|currency:"￥"}}</div>
-      </div>
-      <p></p>
+      </div><p></p>
+    </div>
+    <div class="light-bg">
+      <a nav-direction=forward ng-href="#/recharge" class="item item-icon-left item-icon-right ">
+        <i class="icon iconfont icon-chongzhi" style="color: #11c1f3"></i>
+        <h2>充值</h2>
+        <i class="icon ion-ios-arrow-right"></i>
+      </a>
+      <a nav-direction=forward ng-href="#/cash" class="item item-icon-left item-icon-right">
+        <i class="icon iconfont icon-tixian" style="color:#33cd5f"></i>
+        <h2>提现</h2>
+        <i class="icon ion-ios-arrow-right"></i>
+      </a>
     </div>
     <!--<div class="text-center light-bg padding-top">-->
       <!--<div class="row row-no-padding padding-bottom">-->
@@ -34,17 +45,6 @@
       <!--</div>-->
     <!--</div>-->
     <div class="list padding-top">
-      <a nav-direction=forward ng-href="#/recharge" class="item item-icon-left item-icon-right ">
-        <i class="icon iconfont icon-chongzhi" style="color: #11c1f3"></i>
-        <h2>充值</h2>
-        <i class="icon ion-ios-arrow-right"></i>
-      </a>
-      <a nav-direction=forward ng-href="#/cash" class="item item-icon-left item-icon-right">
-        <i class="icon iconfont icon-tixian" style="color:#33cd5f"></i>
-        <h2>提现</h2>
-        <i class="icon ion-ios-arrow-right"></i>
-      </a>
-      <p></p>
       <a nav-direction=forward ng-href="#/bankcard" class="item item-icon-left item-icon-right no-border">
         <i class="icon iconfont icon-yinxingqia" style="color:#FFD700"></i>
         <h2>银行卡<span class="item-note dark">{{total}}张</span></h2>

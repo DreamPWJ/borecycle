@@ -10,7 +10,7 @@
   </ion-nav-buttons>
   <ion-content overflow-scroll="false" style="background: #212f3c" has-bouncing="true" id="bankcard">
     <ion-refresher on-refresh="getUserBanklist(0)" pulling-text="下拉更新"></ion-refresher>
-    <div ng-if="isNotData" class="isNotDataHint">
+    <div ng-if="isNotBCData" class="isNotDataHint">
       <i class="iconfont icon-xiaoxi"></i>
       <p>无银行卡</p>
     </div>
@@ -23,7 +23,7 @@
             </span>
           </div>
           <div class="col-48 dark">
-            <div style="font-size: 1.2rem;">{{item.bankname}}</div>
+            <div style="font-size: 1.2rem;">{{item.bankname+y}}</div>
             <div style="font-size: 0.8rem;">{{item.branchname}}</div>
           </div>
           <div class="col text-right" ng-if="!defaultBank">
