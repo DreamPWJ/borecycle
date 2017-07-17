@@ -62,27 +62,27 @@
 
               <!--           <ion-reorder-button class="iconfont icon-jian " ng-click="cancelOrder(item.orno)"></ion-reorder-button>-->
             </ion-item>
-            <p ng-if="item.state<=4||item.state==5" class="row row-no-padding pending row-center row-horizontal-around light-bg "><span ng-if="item.state<=4"
-                                                                                                   class="energized"
-                                                                                                   ng-click="relation(item.motel)"><i
-              class="iconfont icon-phone"></i> 联系他</span>
+            <p ng-if="item.state<=4||item.state==5||item.orstate==2 || item.orstate==3"
+               class="row row-no-padding pending row-center row-horizontal-around light-bg ">
+              <span ng-if="item.state<=4" class="energized" ng-click="relation(item.motel)"><i
+                class="iconfont icon-phone"></i> 联系他</span>
               <span ng-if="item.state==4" class="balanced"
                     ng-click="recycle(item.orno,item.djno,item.type,item.userid,item.totalprice,item.name,item.category,item.hytype)"><i
                 class="iconfont icon-huishou"></i> 去收货</span>
               <span ng-if="item.state==5" class="balanced"
-                    ng-click="topay(item.type,item.djno,item.orno,item.oruserid,item.userid,item.totalprice,item.name)"><i
+                    ng-click="topay(item.type,item.djno,item.orno,item.oruserid,item.userid,item.totalprice,item.name,item.informationmoney)"><i
                 class="iconfont icon-sponsor"></i> 去付款</span><span
-                class="positive" ng-if="item.state<=4" ng-click="navigation(item.longitude,item.latitude)"><i
-                class="iconfont icon-daohang1"></i> 导航</span>
-              <span class="assertive" ng-if="item.state==4" ng-click="cancelOrder(item.orno)"><i
+              class="positive" ng-if="item.state<=4" ng-click="navigation(item.longitude,item.latitude)"><i
+              class="iconfont icon-daohang1"></i> 导航</span>
+              <span class="assertive" ng-if="item.orstate==2 || item.orstate==3" ng-click="cancelOrder(item.orno)"><i
                 class="iconfont icon-jian"></i> 取消</span>
             </p>
             <p></p>
           </div>
         </ion-list>
-<!--        <p ng-if="chuliorderList.length!=0" class="text-center padding-top grey"><i
-          class="icon ion-information-circled"></i>
-          点击列表右上角按钮可取消接单</p>-->
+        <!--        <p ng-if="chuliorderList.length!=0" class="text-center padding-top grey"><i
+                  class="icon ion-information-circled"></i>
+                  点击列表右上角按钮可取消接单</p>-->
         <ion-infinite-scroll on-infinite="getOrderList()" ng-if="chulitotal > chulipage" immediate-check="false">
       </ion-content>
     </ion-slide>
@@ -104,7 +104,8 @@
                 <p class="text-wrap ">{{item.name}} {{item.motel | hidepartinfo : 'phone'}} 距离:{{item.distance}}
                   <span> 状态 : {{item.strstate}}</span></p>
               </a>
-              <p ng-if="item.state<=4||item.state==5" class="row row-no-padding pending row-center row-horizontal-around light-bg "><span
+              <p ng-if="item.state<=4||item.state==5 || item.orstate==2 || item.orstate==3"
+                 class="row row-no-padding pending row-center row-horizontal-around light-bg "><span
                 ng-if="item.state<=4" class="energized" ng-click="relation(item.motel)"><i
                 class="iconfont icon-phone"></i> 联系他</span>
                 <span ng-if="item.state==4" class="balanced"
@@ -115,7 +116,7 @@
                   class="iconfont icon-sponsor"></i> 去付款</span><span
                   class="positive" ng-if="item.state<=4" ng-click="navigation(item.longitude,item.latitude)"><i
                   class="iconfont icon-daohang1"></i> 导航</span>
-                <span class="assertive" ng-if="item.state==4" ng-click="cancelOrder(item.orno)"><i
+                <span class="assertive" ng-if="item.orstate==2 || item.orstate==3" ng-click="cancelOrder(item.orno)"><i
                   class="iconfont icon-jian"></i> 取消</span>
               </p>
               <p></p>

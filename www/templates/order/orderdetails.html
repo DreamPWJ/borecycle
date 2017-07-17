@@ -61,6 +61,9 @@
           <ion-item ng-if="orderDetail.paymentmethod">
             支付类型 : {{orderDetail.paymentmethod==1?'现金支付':'在线支付'}}
           </ion-item>
+          <ion-item ng-if="(orderType==0||orderType==2)&&orderDetail.type==1&&orderDetail.order_amount.info_amount">
+            扣除信息费 : {{(orderDetail.order_amount.info_amount + orderDetail.order_amount.service_amount)| currency:'￥'}}
+          </ion-item>
         </div>
       </div>
       <p></p>
@@ -112,7 +115,7 @@
     <button ng-if="orderDetail.orstate==2||orderDetail.orstate==3"
             class="button button-assertive icon iconfont icon-jian col-30"
             style="font-size: 1rem!important;"
-            ng-click="cancelOrder(orderDetail.djno)">
+            ng-click="cancelOrder(orderDetail.orno)">
       关闭
     </button>
     <button ng-if="orderDetail.state==2||orderDetail.state==3"
@@ -133,7 +136,7 @@
     </button>
     <button ng-if="orderDetail.state==5" class="button button-energized icon iconfont icon-sponsor col-30 "
             style="font-size: 1rem!important;"
-            ng-click="topay(orderDetail.type,orderDetail.djno,orderDetail.orno,orderDetail.oruserid,orderDetail.userid,orderDetail.totalprice,orderDetail.name)">
+            ng-click="topay(orderDetail.type,orderDetail.djno,orderDetail.orno,orderDetail.oruserid,orderDetail.userid,orderDetail.totalprice,orderDetail.name,orderDetail.informationmoney)">
       去付款
     </button>
   </div>

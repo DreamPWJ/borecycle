@@ -71,6 +71,11 @@ angular.module('starter.directive', [])
         $rootScope.verifyarray[scope.$id] = true;
         scope.publicCheckForm = function (regular, value, content, isshowtip) { //验证公共部分封装
           if (regular) {
+            /*            if(!attrs.required&&!value){//非必填项 清空不验证
+             $rootScope.verifyarray[scope.$id] = true;
+             $rootScope.verify = true;
+             return;
+             }*/
             if (value == 0) {
               $rootScope.verifyarray[scope.$id] = false;
               $rootScope.verify = false;
@@ -119,12 +124,12 @@ angular.module('starter.directive', [])
           if (type == 'identitycard') {//验证身份证号
             scope.publicCheckForm(/^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/.test(value), value, content, isShow)
           }
-          if(type=='maxvaule'&&regular=='提现'){
-            if(value>maxvalue){
+          if (type == 'maxvaule' && regular == '提现') {
+            if (value > maxvalue) {
               scope.publicCheckForm('', 0, content, isShow);
-            }else if(value<=0){
+            } else if (value <= 0) {
               scope.publicCheckForm(false, 0, "提现金额必须为正数！", isShow);
-            }else {
+            } else {
               scope.publicCheckForm(true, value, "", false);
             }
 
@@ -142,8 +147,8 @@ angular.module('starter.directive', [])
 
         scope.checkAtLeastOneIsSame = function (array, keystr1, keystr2) {  //两个数据 每种品类至少填写一个数据
           var checkAtLeastOneIsSame = [];//每条记录的验证true false
-          angular.forEach(array, function (item,index) {
-            if(item.checked){
+          angular.forEach(array, function (item, index) {
+            if (item.checked) {
               checkAtLeastOneIsSame[index] = false;
               angular.forEach(item.details, function (items) {
                 if (items[keystr1] || items[keystr2]) {
@@ -153,7 +158,7 @@ angular.module('starter.directive', [])
             }
 
           })
-          $rootScope.checkAtLeastOneIsSame=checkAtLeastOneIsSame.indexOf(false)==-1?true:false; //有一个类别是false就是false
+          $rootScope.checkAtLeastOneIsSame = checkAtLeastOneIsSame.indexOf(false) == -1 ? true : false; //有一个类别是false就是false
 
         }
       }

@@ -763,7 +763,7 @@ angular.module('starter.services', [])
         }
         $state.go("recycleorder", {orderinfo: JSON.stringify(json)});
       },
-      topay: function (type, djno, orno, fromuser, touser, amount, name) {//去付款参数封装
+      topay: function (type, djno, orno, fromuser, touser, amount, name,informationmoney) {//去付款参数封装
         event.preventDefault();
         CommonService = this;
         var json = {
@@ -773,7 +773,8 @@ angular.module('starter.services', [])
           fromuser: fromuser,
           touser: touser,
           amount: amount,
-          name: name
+          name: name,
+          informationmoney:informationmoney
         }
         $state.go("payment", {orderinfo: JSON.stringify(json)})
       }
@@ -1468,7 +1469,7 @@ angular.module('starter.services', [])
               });
               $ionicLoading.hide();
             }, function (err) {
-              $cordovaToast.showLongCenter("收收APP下载失败," + err);
+              $cordovaToast.showLongCenter("收收APP下载失败," + JSON.stringify(err));
               $ionicLoading.hide();
               return;
             }, function (progress) {

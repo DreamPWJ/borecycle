@@ -1168,8 +1168,8 @@ angular.module('starter.controllers', [])
     }
 
 //去付款
-    $scope.topay = function (type, djno, orno, fromuser, touser, amount, name) {
-      OrderService.topay(type, djno, orno, fromuser, touser, amount, name);
+    $scope.topay = function (type, djno, orno, fromuser, touser, amount, name,informationmoney) {
+      OrderService.topay(type, djno, orno, fromuser, touser, amount, name,informationmoney);
     }
 
   })
@@ -1236,8 +1236,8 @@ angular.module('starter.controllers', [])
 
 
     //去付款
-    $scope.topay = function (type, djno, orno, fromuser, touser, amount, name) {
-      OrderService.topay(type, djno, orno, fromuser, touser, amount, name);
+    $scope.topay = function (type, djno, orno, fromuser, touser, amount, name,informationmoney) {
+      OrderService.topay(type, djno, orno, fromuser, touser, amount, name,informationmoney);
     }
 
     //在回收订单中 取消订单
@@ -1473,8 +1473,8 @@ angular.module('starter.controllers', [])
     }
 
     //去付款
-    $scope.topay = function (type, djno, orno, fromuser, touser, amount, name) {
-      OrderService.topay(type, djno, orno, fromuser, touser, amount, name);
+    $scope.topay = function (type, djno, orno, fromuser, touser, amount, name,informationmoney) {
+      OrderService.topay(type, djno, orno, fromuser, touser, amount, name,informationmoney);
     }
   })
 
@@ -2288,6 +2288,7 @@ angular.module('starter.controllers', [])
     $scope.addrinfo = {};
     $scope.addresspois = [];//附近地址数组
     $scope.productLists = [];//产品品类
+    $scope.imgUrl=BoRecycle.imgUrl;//图片路径
     //获取产品品类
     OrderService.getProductList({ID: "", Name: ""}).success(function (data) {
       console.log(data);

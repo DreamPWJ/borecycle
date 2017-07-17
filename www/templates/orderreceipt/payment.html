@@ -20,6 +20,9 @@
         <ion-item>
           应付金额 : {{orderinfo.amount | currency:'￥'}}
         </ion-item>
+        <ion-item ng-if="orderinfo.type==1&&orderinfo.informationmoney">
+          预计信息费金额 : {{orderinfo.informationmoney | currency:'￥'}}
+        </ion-item>
         <ion-item class="item-button-right" ng-if="orderinfo.type==2&&pay.choice==2">
           我的余额 : {{orderSum.account| currency:'￥'}} {{(orderSum.account < orderinfo.amount)?' (余额不足)':''}}
           <button class="button button-balanced" ui-sref="recharge">充值</button>

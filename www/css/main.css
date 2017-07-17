@@ -28,6 +28,11 @@
   padding: 0.2rem 1rem !important;
 }
 
+#orderlist .jiedan:active,#orderlist .jiedan:hover  {
+  color: #fff;
+  background-color:#00ACFF ;
+}
+
 .bhytype:not(:empty) {
   border: 1px solid #33cd5f;
   border-radius: 2px;
@@ -48,7 +53,9 @@
   border-top: 2px solid rgba(221, 221, 221, 0.3);
   padding: 0.6rem 0;
 }
-
+.manufacteList img{
+  width: 38%;
+}
 #myorderlist .close {
   margin-top: 0.2rem !important;
   padding: 5px 4px;
@@ -172,10 +179,10 @@
   vertical-align: middle;
 }
 
-#main .kefu {
+/*#main .kefu {
   height: 5rem;
 
-}
+}*/
 
 #share .row .iconfont {
   font-size: 2rem !important;

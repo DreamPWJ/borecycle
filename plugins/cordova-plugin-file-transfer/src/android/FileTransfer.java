@@ -65,6 +65,8 @@ import org.json.JSONObject;
 import android.net.Uri;
 import android.os.Build;
 import android.webkit.CookieManager;
+import org.apache.cordova.PermissionHelper;
+import android.Manifest;
 
 public class FileTransfer extends CordovaPlugin {
 
@@ -178,12 +180,15 @@ public class FileTransfer extends CordovaPlugin {
         if (action.equals("upload") || action.equals("download")) {
             String source = args.getString(0);
             String target = args.getString(1);
-
+          if(hasPermisssion()) {
             if (action.equals("upload")) {
-                upload(source, target, args, callbackContext);
+              upload(source, target, args, callbackContext);
             } else {
-                download(source, target, args, callbackContext);
+              download(source, target, args, callbackContext);
             }
+          }else {
+            PermissionHelper.requestPermissions(this, 0, permissions);
+          }
             return true;
         } else if (action.equals("abort")) {
             String objectId = args.getString(0);
@@ -1028,4 +1033,14 @@ public class FileTransfer extends CordovaPlugin {
             });
         }
     }
+  public boolean hasPermisssion() {
+    for(String p : permissions)
+    {
+      if(!PermissionHelper.hasPermission(this, p))
+      {
+        return false;
+      }
+    }
+    return true;
+  }
 }
