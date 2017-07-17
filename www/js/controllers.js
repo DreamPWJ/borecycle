@@ -228,15 +228,86 @@ angular.module('starter.controllers', [])
     var height = window.screen.height * window.devicePixelRatio;//屏幕的高分辨率
     $scope.imgname = [];
     if ($ionicPlatform.is('android')) {//android设备
-      $scope.imgname.push(BoRecycle.imgUrl + "/drawable-port-xxhdpi-screen.png")
-      if (width) {
-        $scope.imgname.push(BoRecycle.imgUrl + "/drawable-port-xxhdpi-screen.png")
+      if (width == 240 || height == 320) {
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/1/drawable-port-ldpi-screen.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/2/drawable-port-ldpi-screen.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/3/drawable-port-ldpi-screen.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/4/drawable-port-ldpi-screen.png")
+      } else if (width == 320 || height == 480) {
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/1/drawable-port-mdpi-screen.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/2/drawable-port-mdpi-screen.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/3/drawable-port-mdpi-screen.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/4/drawable-port-mdpi-screen.png")
+      } else if (width == 480 || height == 800) {
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/1/drawable-port-hdpi-screen.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/2/drawable-port-hdpi-screen.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/3/drawable-port-hdpi-screen.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/4/drawable-port-hdpi-screen.png")
+      } else if (width == 720 || height == 1280) {
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/1/drawable-port-xhdpi-screen.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/2/drawable-port-xhdpi-screen.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/3/drawable-port-xhdpi-screen.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/4/drawable-port-xhdpi-screen.png")
+      } else if (width == 1080 || height == 1920) {
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/1/drawable-port-xxhdpi-screen.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/2/drawable-port-xxhdpi-screen.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/3/drawable-port-xxhdpi-screen.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/4/drawable-port-xxhdpi-screen.png")
+      } else if (width == 2160 || height == 3840) {
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/1/drawable-port-xxxhdpi-screen.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/2/drawable-port-xxxhdpi-screen.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/3/drawable-port-xxxhdpi-screen.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/4/drawable-port-xxxhdpi-screen.png")
+      } else {
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/1/drawable-port-xxhdpi-screen.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/2/drawable-port-xxhdpi-screen.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/3/drawable-port-xxhdpi-screen.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/4/drawable-port-xxhdpi-screen.png")
       }
     }
     if ($ionicPlatform.is('ios')) { //ios设备
-      $scope.imgname.push(BoRecycle.imgUrl + "/Default@2x~iphone")
-      if (width) {
-        $scope.imgname.push(BoRecycle.imgUrl + "/Default@2x~iphone")
+
+      if (width == 320 || height == 480) {
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/1/Default~iphone.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/2/Default~iphone.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/3/Default~iphone.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/4/Default~iphone.png")
+      } else if (width == 640 || height == 960) {
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/1/Default@2x~iphone.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/2/Default@2x~iphone.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/3/Default@2x~iphone.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/4/Default@2x~iphone.png")
+      } else if (width == 640 || height == 1136) {
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/1/Default-568h@2x~iphone.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/2/Default-568h@2x~iphone.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/3/Default-568h@2x~iphone.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/4/Default-568h@2x~iphone.png")
+      } else if (width == 750 || height == 1134) {
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/1/Default-667h.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/2/Default-667h.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/3/Default-667h.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/4/Default-667h.png")
+      } else if (width == 1242 || height == 2208) {
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/1/Default-736h.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/2/Default-736h.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/3/Default-736h.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/4/Default-736h.png")
+      } else if (width == 768 || height == 1024) {
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/1/Default-Portrait~ipad.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/2/Default-Portrait~ipad.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/3/Default-Portrait~ipad.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/4/Default-Portrait~ipad.png")
+      } else if (width == 1536 || height == 2048) {
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/1/Default-Portrait@2x~ipad.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/2/Default-Portrait@2x~ipad.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/3/Default-Portrait@2x~ipad.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/4/Default-Portrait@2x~ipad.png")
+      }
+      else {
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/1/Default-736h.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/2/Default-736h.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/3/Default-736h.png")
+        $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/4/Default-736h.png")
       }
     }
     //ng-repeat遍历生成一个个slide块的时候，执行完成页面是空白的 手动在渲染之后更新一下，在控制器注入$ionicSlideBoxDelegate，然后渲染数据之后
@@ -1111,6 +1182,7 @@ angular.module('starter.controllers', [])
 
     if ($scope.type == 1) {
       OrderService.getDengJiDetail({djno: $stateParams.no}).success(function (data) {
+        console.log(data);
         if (data.code == 1001) {
           $scope.orderDetail = data.data;
         } else {
@@ -1123,6 +1195,7 @@ angular.module('starter.controllers', [])
     }
     if ($scope.type == 2) {
       OrderService.getOrderReceiptDetail({orno: $stateParams.no}).success(function (data) {
+        console.log(data);
         if (data.code == 1001) {
           $scope.orderDetail = data.data;
         } else {
@@ -2702,10 +2775,10 @@ angular.module('starter.controllers', [])
     $scope.userbanklist = [];
     $scope.page = 0;
     $scope.total = 1;
-    $scope.blc=[];//银行logo及颜色
+    $scope.blc = [];//银行logo及颜色
     //获取银行卡logo等信息
     MyWalletService.getBankLogo().success(function (data) {
-      $scope.blc=data;
+      $scope.blc = data;
     });
 
     $scope.selectThis = function (item) {
@@ -2735,15 +2808,15 @@ angular.module('starter.controllers', [])
           return;
         }
         angular.forEach(data.data.data_list, function (item) {
-          angular.forEach($scope.blc,function (item2) {
-            if(item.bankname.indexOf(item2.name)>=0||item2.name.indexOf(item.bankname)>=0){
-              item.logo=item2.logo;
-              item.color=item2.color;
+          angular.forEach($scope.blc, function (item2) {
+            if (item.bankname.indexOf(item2.name) >= 0 || item2.name.indexOf(item.bankname) >= 0) {
+              item.logo = item2.logo;
+              item.color = item2.color;
             }
           });
-          if(!item.logo){
-            item.logo=$scope.blc[$scope.blc.length-1].logo;
-            item.color=$scope.blc[$scope.blc.length-1].color;
+          if (!item.logo) {
+            item.logo = $scope.blc[$scope.blc.length - 1].logo;
+            item.color = $scope.blc[$scope.blc.length - 1].color;
           }
           $scope.userbanklist.push(item);
         })
@@ -2928,24 +3001,24 @@ angular.module('starter.controllers', [])
 
     }
   })
-//生成邀请码
-  .controller('tuiguangCtrl',function ($scope,$rootScope,AccountService,CommonService) {
+  //生成邀请码
+  .controller('tuiguangCtrl', function ($scope, $rootScope, AccountService, CommonService) {
     //是否登录
     if (!CommonService.isLogin()) {
       return;
     }
-    if(!$rootScope.userdata||$rootScope.userdata.promoter!=1){
+    if (!$rootScope.userdata || $rootScope.userdata.promoter != 1) {
       CommonService.platformPrompt("很抱歉，您不是收收的推广用户！", 'close');
       $state.go("tab.account")
       return;
     }
     $scope.invitecode;//邀请码
     //获取邀请码
-    $scope.getCode=function () {
+    $scope.getCode = function () {
       AccountService.getInvitecode(localStorage.getItem("userid")).success(function (data) {
-        $scope.invitecode=data.data;
+        $scope.invitecode = data.data;
       }).error(function (err) {
-        $scope.invitecode="迷失在沙漠中，请重新生成！";
+        $scope.invitecode = "迷失在沙漠中，请重新生成！";
       });
     }
   })
