@@ -542,7 +542,7 @@ angular.module('starter.controllers', [])
 
       AccountService.register($scope.user).success(function (data) {
         if (data.code == 1001) {
-          $rootScope.registerUserType = $scope.user.type;
+          $rootScope.registerUserType = $scope.user.usertype;
           $rootScope.isPhoneRegister = (/^1(3|4|5|7|8)\d{9}$/.test($scope.user.account))
           $state.go('organizingdata');
         }
