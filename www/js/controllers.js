@@ -1729,7 +1729,7 @@ angular.module('starter.controllers', [])
   })
 
   //我的设置页面
-  .controller('AccountCtrl', function ($scope, $rootScope, BoRecycle, CommonService, AccountService, OrderService, WeiXinService,MyWalletService) {
+  .controller('AccountCtrl', function ($scope, $rootScope, BoRecycle, CommonService, AccountService, OrderService, WeiXinService) {
     //是否登录
     if (!CommonService.isLogin(true)) {
       return;
