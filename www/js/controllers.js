@@ -2496,7 +2496,7 @@ angular.module('starter.controllers', [])
           $scope.addresspois = data.regeocode.pois;
           $scope.city = addressComponent.city;
           $scope.ssx = addressComponent.province + addressComponent.city + addressComponent.district;//省市县
-          if(param){
+          if(param==0){
             $scope.dengji.addrdetail = addressComponent.township + addressComponent.streetNumber.street;
           }
         }).then(function () {
@@ -2512,7 +2512,7 @@ angular.module('starter.controllers', [])
       })
 
     }
-    $scope.location();//自动定位
+    $scope.location(1);//自动定位
     //实现单选
     $scope.multipleChoice = function (array, item) {
       item.checked ? item.checked = false : item.checked = true;
