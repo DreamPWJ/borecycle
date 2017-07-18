@@ -68,7 +68,7 @@
           <div ng-click="multipleChoice(manufacteList,item)" ng-repeat="item in manufacteList" ng-class="item.checked?'showDiv':''" class="col-20 text-center">
             <input type="checkbox" ng-hide="true" ng-model="item.checked">
             <img ng-src="{{imgUrl+'/'+item.logurl}}" alt="{{item.shortename}}">
-            <span ng-class="item.checked?'showSpan':''"></span>
+            <span class="showSpan" ng-show="item.checked"></span>
         </div>
         </div>
       </div>
