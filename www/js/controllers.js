@@ -612,6 +612,9 @@ angular.module('starter.controllers', [])
         $scope.usertype = $rootScope.registerUserType; //是从注册页面进入
         $scope.user.usertype = $rootScope.registerUserType;
         $scope.isPhoneRegister = $rootScope.isPhoneRegister;
+        if($rootScope.registerUserType==2){
+          $scope.isUpgradeRecycler = true; //升级成为回收商
+        }
       }
     })
     $scope.isLogin = localStorage.getItem("userid") ? true : false;//是否登录
