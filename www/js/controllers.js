@@ -2492,14 +2492,17 @@ angular.module('starter.controllers', [])
       })
 
     }
-    $scope.location();//自动定位
+    //$scope.location();//自动定位
     //实现单选
     $scope.multipleChoice = function (array, item) {
-      angular.forEach(array, function (child) {
-        if (item != child) {
-          child.checked = false;
-        }
-      })
+      item.checked ? item.checked = false : item.checked = true;
+      if (item.checked) {
+        angular.forEach(array, function (child) {
+          if (item != child) {
+            child.checked = false;
+          }
+        });
+      }
     }
     //信息登记提交
     $scope.informationSubmit = function () {

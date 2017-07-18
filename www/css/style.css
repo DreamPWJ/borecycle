@@ -414,3 +414,47 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
   -ms-flex: 0 0 48%;
   flex: 0 0 48%;
   max-width: 48%; }
+#facteSelect div img{
+  max-width: 90%;
+}
+#facteSelect div {
+  position: relative;
+  display: inline-block;
+  padding: 3px;
+}
+#facteSelect div span {
+  opacity: 0;
+  color: #fff !important;
+}
+#facteSelect div span:before {
+  content: '√';
+  position: absolute;
+  color: #fff !important;
+  font-size: 10px;
+  right: 0.1rem;
+  bottom: -0.3rem;
+  z-index: 2000;
+}
+
+#facteSelect div span:after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-bottom: 1.2rem solid #00ACFF;
+  border-left: 1.2rem solid transparent;
+  right: 0;
+  bottom: 0;
+}
+#facteSelect .showSpan{
+  opacity: 1;
+}
+#facteSelect .showDiv {
+  border: 1px solid #00ACFF;
+}
+#facteSelect input:checked + div > span {
+  opacity: 1;
+}
+#facteSelect input:checked + div {
+  border: 1px solid #00ACFF;
+}
