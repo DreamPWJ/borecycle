@@ -136,16 +136,6 @@
         "is_top_level": true,
         "variables": {}
     },
-    "jpush-phonegap-plugin": {
-        "source": {
-            "type": "registry",
-            "id": "jpush-phonegap-plugin"
-        },
-        "is_top_level": true,
-        "variables": {
-            "APP_KEY": "f4369f588d55c5cee044b822"
-        }
-    },
     "cordova-plugin-jcore": {
         "source": {
             "type": "registry",
@@ -220,6 +210,17 @@
         "is_top_level": true,
         "variables": {
             "PARTNER_ID": "2088721190793524"
+        }
+    },
+    "jpush-phonegap-plugin": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/jpush/jpush-phonegap-plugin.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {
+            "APP_KEY": "f4369f588d55c5cee044b822"
         }
     }
 }

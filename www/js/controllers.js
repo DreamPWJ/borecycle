@@ -544,6 +544,9 @@ angular.module('starter.controllers', [])
         if (data.code == 1001) {
           $rootScope.registerUserType = $scope.user.usertype;
           $rootScope.isPhoneRegister = (/^1(3|4|5|7|8)\d{9}$/.test($scope.user.account))
+          if($rootScope.isPhoneRegister){
+            $rootScope.phoneRegister=$scope.user.account;
+          }
           $state.go('organizingdata');
         }
         CommonService.platformPrompt(data.message, 'close');
@@ -612,6 +615,12 @@ angular.module('starter.controllers', [])
         $scope.usertype = $rootScope.registerUserType; //是从注册页面进入
         $scope.user.usertype = $rootScope.registerUserType;
         $scope.isPhoneRegister = $rootScope.isPhoneRegister;
+        if($rootScope.isPhoneRegister){
+          $scope.user.mobile = Number($rootScope.phoneRegister);
+        }
+        if($rootScope.registerUserType==2){
+          $scope.isUpgradeRecycler = true; //升级成为回收商
+        }
       }
     })
     $scope.isLogin = localStorage.getItem("userid") ? true : false;//是否登录
