@@ -25,7 +25,7 @@
           </div>
         </div>
         <p></p>
-        <ion-item class="item-divider light-bg">
+        <ion-item class="item-divider light-bg item-borderless border-bottom">
           <h2 class="border-left">货主联系信息</h2></ion-item>
         <div class="row light-bg border-bottom" style="padding: 2.5px 5px;">
         <label class="item item-input item-borderless col-40">
@@ -61,7 +61,8 @@
 
         </div>
         <p></p>
-        <ion-item ng-show="manufacteList" class="item-divider light-bg item-borderless border-bottom">
+      <div ng-show="manufacteList">
+        <ion-item class="item-divider light-bg item-borderless border-bottom">
           <h2 class="border-left">所属厂商 (非必选项)</h2></ion-item>
         <div class="row row-center row-wrap text-center light-bg padding-top" id="facteSelect"><!--ng-if="manufacteList"-->
           <div ng-click="multipleChoice(manufacteList,item)" ng-repeat="item in manufacteList" ng-class="item.checked?'showDiv':''" class="col-20 text-center">
@@ -70,7 +71,7 @@
             <span ng-class="item.checked?'showSpan':''"></span>
         </div>
         </div>
-
+      </div>
 
       <!--</ion-list>-->
       <p></p>
