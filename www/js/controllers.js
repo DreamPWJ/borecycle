@@ -1603,7 +1603,16 @@ angular.module('starter.controllers', [])
     $scope.pay = { //支付相关
       choice: 1//选择支付方式默认支付方式1. 现金支付2. 在线支付
     }
-
+    //获得订单详情
+    OrderService.getOrderReceiptDetail({orno: $scope.orderinfo.orno}).success(function (data) {
+      console.log(data);
+      if (data.code == 1001) {
+        $scope.orderDetail = data.data;
+        $scope.orderinfo.amount=data.data.totalprice;
+      } else {
+        CommonService.platformPrompt(data.message, "close");
+      }
+    })
     //获得余额
     OrderService.getOrderSum({userid: localStorage.getItem("userid"), expiry: 6}).success(function (data) {
       if (data.code == 1001) {
@@ -1640,8 +1649,8 @@ angular.module('starter.controllers', [])
           }
         })
       }
-      if ($scope.orderinfo.type == 1 && $scope.orderinfo.informationmoney) { //如果是登记信息（type=1）的情况，要提示他的“预计信息费金额”
-        CommonService.showConfirm('支付提示', '温馨提示:此订单的预计信息费金额为 ' + $scope.orderinfo.informationmoney + ' 元 , 支付请点击"确定",否则请点击"取消"', '确定', '取消', '', 'close', function () {
+      if ($scope.orderinfo.type == 1 && $scope.orderDetail.informationmoney) { //如果是登记信息（type=1）的情况，要提示他的“预计信息费金额”
+        CommonService.showConfirm('支付提示', '温馨提示:此订单的预计信息费金额为 ' + $scope.orderDetail.informationmoney + ' 元 , 支付请点击"确定",否则请点击"取消"', '确定', '取消', '', 'close', function () {
           $scope.payOrderReceipt()
         });
       } else {
