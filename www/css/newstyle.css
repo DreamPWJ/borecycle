@@ -126,3 +126,8 @@
   border-radius: 2px;
   margin: -0.1rem 0.2rem 0.2rem;
 }
+
+.show-updateconfirm .popup .popup-body {
+  text-align: left;
+  padding: 1rem 1.2rem;
+}
