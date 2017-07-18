@@ -65,7 +65,7 @@
       <a ng-if="usertype==2||usertype==0" nav-direction=forward ng-href="#/wallet"
          class="item item-icon-left item-icon-right ">
         <i class="icon iconfont icon-moneybag" style="color: #FFD700"></i>
-        <h2>我的钱包 <span class="item-note ">余额 ：<span class="balanced">{{kyamount | currency :'￥'}}</span></span>
+        <h2>我的钱包 <span class="item-note ">余额 ：<span class="balanced">{{orderSum.account | currency :'￥'}}</span></span>
         </h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>

@@ -1734,11 +1734,6 @@ angular.module('starter.controllers', [])
     if (!CommonService.isLogin(true)) {
       return;
     }
-    $scope.kyamount = 0.00;//可用余额
-    //总金额
-    MyWalletService.get(localStorage.getItem("userid")).success(function (data) {
-      $scope.kyamount = data.data.cashamount;//可用余额
-    });
     //调出分享面板
     CommonService.customModal($scope, 'templates/modal/share.html');
 
