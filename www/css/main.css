@@ -34,18 +34,20 @@
 }
 
 .bhytype:not(:empty) {
+  display: inline-block;
   border: 1px solid #33cd5f;
   border-radius: 2px;
-  font-size: 0.6rem;
-  padding: 1px 5px;
+  font-size: 0.7rem;
+  padding: 0 5px;
   color: #33cd5f;
 }
 
 .ehytype:not(:empty) {
+  display: inline-block;
   border: 1px solid #f26604;
   border-radius: 2px;
-  font-size: 0.6rem;
-  padding: 1px 5px;
+  font-size: 0.7rem;
+  padding: 0 5px;
   color: #f26604;
 }
 

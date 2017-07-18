@@ -61,6 +61,9 @@
           <ion-item ng-if="orderDetail.paymentmethod">
             支付类型 : {{orderDetail.paymentmethod==1?'现金支付':'在线支付'}}
           </ion-item>
+          <ion-item ng-if="orderDetail.type==1&&orderDetail.order_amount.info_amount">
+            信息费 : {{orderDetail.order_amount.info_amount | currency:'￥'}}
+          </ion-item>
           <ion-item ng-if="(orderType==0||orderType==2)&&orderDetail.type==1&&orderDetail.order_amount.info_amount">
             扣除信息费 : {{(orderDetail.order_amount.info_amount + orderDetail.order_amount.service_amount)| currency:'￥'}}
           </ion-item>
