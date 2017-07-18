@@ -35,6 +35,9 @@
         <ion-item ng-if="orderDetail.orname">
           接单人 : {{orderDetail.orname}}
         </ion-item>
+        <ion-item ng-if="orderDetail.ormotel">
+          接单手机号 : {{orderDetail.ormotel}}
+        </ion-item>
         <ion-item ng-if="orderDetail.oraddtime!='0001-01-01T00:00:00'">
           接单时间 : {{orderDetail.oraddtime |date :'yyyy-MM-dd HH:mm'}}
         </ion-item>

@@ -658,8 +658,8 @@ angular.module('starter.controllers', [])
               shopphone: userext.shopphone ? Number(userext.shopphone) : '',//企业电话
               addrdetail: userext.addrdetail //企业详细地址
             }
-          }else {
-            $scope.user.usertype= $scope.isUpgradeRecycler ? 2 : usertype //用户类型
+          } else {
+            $scope.user.usertype = $scope.isUpgradeRecycler ? 2 : usertype //用户类型
           }
 
         } else {
@@ -1170,8 +1170,8 @@ angular.module('starter.controllers', [])
     }
 
 //去付款
-    $scope.topay = function (type, djno, orno, fromuser, touser, amount, name,informationmoney) {
-      OrderService.topay(type, djno, orno, fromuser, touser, amount, name,informationmoney);
+    $scope.topay = function (type, djno, orno, fromuser, touser, amount, name, informationmoney) {
+      OrderService.topay(type, djno, orno, fromuser, touser, amount, name, informationmoney);
     }
 
   })
@@ -1238,8 +1238,8 @@ angular.module('starter.controllers', [])
 
 
     //去付款
-    $scope.topay = function (type, djno, orno, fromuser, touser, amount, name,informationmoney) {
-      OrderService.topay(type, djno, orno, fromuser, touser, amount, name,informationmoney);
+    $scope.topay = function (type, djno, orno, fromuser, touser, amount, name, informationmoney) {
+      OrderService.topay(type, djno, orno, fromuser, touser, amount, name, informationmoney);
     }
 
     //在回收订单中 取消订单
@@ -1475,8 +1475,8 @@ angular.module('starter.controllers', [])
     }
 
     //去付款
-    $scope.topay = function (type, djno, orno, fromuser, touser, amount, name,informationmoney) {
-      OrderService.topay(type, djno, orno, fromuser, touser, amount, name,informationmoney);
+    $scope.topay = function (type, djno, orno, fromuser, touser, amount, name, informationmoney) {
+      OrderService.topay(type, djno, orno, fromuser, touser, amount, name, informationmoney);
     }
   })
 
@@ -1605,6 +1605,7 @@ angular.module('starter.controllers', [])
     })
     //确认支付
     $scope.confirmPayment = function () {
+
       $scope.data = {
         ordertype: $scope.orderinfo.type, //type类型 1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
         orderno: $scope.orderinfo.djno,//登记号
@@ -1615,18 +1616,30 @@ angular.module('starter.controllers', [])
         paymentmethod: $scope.pay.choice //支付方式1.	现金支付2.	在线支付
       }
       console.log($scope.data);
+
       //回收付款
-      OrderService.payOrderReceipt($scope.data).success(function (data) {
-        console.log(data);
-        if (data.code == 1001) {
-          CommonService.platformPrompt("回收付款成功", "orderdetails", {
-            no: $scope.orderinfo.orno,
-            type: 2
-          })
-        } else {
-          CommonService.platformPrompt(data.message, "close")
-        }
-      })
+      $scope.payOrderReceipt = function () {
+        OrderService.payOrderReceipt($scope.data).success(function (data) {
+          console.log(data);
+          if (data.code == 1001) {
+            CommonService.platformPrompt("回收付款成功", "orderdetails", {
+              no: $scope.orderinfo.orno,
+              type: 2
+            })
+          } else {
+            CommonService.platformPrompt(data.message, "close")
+          }
+        })
+      }
+      if ($scope.orderinfo.type == 1 && $scope.orderinfo.informationmoney) { //如果是登记信息（type=1）的情况，要提示他的“预计信息费金额”
+        CommonService.showConfirm('支付提示', '温馨提示:此订单的预计信息费金额为 ' + $scope.orderinfo.informationmoney + ' 元 , 支付请点击"确定",否则请点击"取消"', '确定', '取消', '', 'close', function () {
+          $scope.payOrderReceipt()
+        });
+      } else {
+        $scope.payOrderReceipt()
+      }
+
+
     }
   })
 
@@ -1904,8 +1917,9 @@ angular.module('starter.controllers', [])
   })
 
   //添加地址
-  .controller('AddAddressCtrl', function ($scope, $rootScope, $state, CommonService, AccountService, AddressService, $ionicHistory) {
+  .controller('AddAddressCtrl', function ($scope, $rootScope, $state, CommonService, AccountService, AddressService, BoRecycle,$ionicHistory) {
     CommonService.customModal($scope, 'templates/modal/addressmodal.html');
+    CommonService.customModal($scope, 'templates/modal/nearbyaddressmodal.html', 1);
     //去掉默认的只在下单的地方去掉，会员中心要显示
     /*
      if ($ionicHistory.backView().stateName == 'address') {
@@ -1918,7 +1932,7 @@ angular.module('starter.controllers', [])
     $scope.addrinfoother = {};
     $scope.buttonText = '添加';
     $scope.isshowstatus = true;
-
+    $scope.addresspois = [];//附近地址数组
     //获取省市县
     $scope.getAddressPCCList = function (item) {
       AddressService.getAddressPCCList($scope, item)
@@ -1927,6 +1941,62 @@ angular.module('starter.controllers', [])
     $scope.openModal = function () {
       $scope.modal.show();
       $scope.getAddressPCCList();
+    }
+    //打开附近地址modal
+    $scope.openNearAddrModal = function () {
+      $scope.modal1.show();
+    }
+
+    // 选择打开附近地址
+    $scope.getAddressPois = function (item) {
+      $scope.addrinfo.addr = item.name;
+      $scope.longitude = item.location.split(",")[0];//经度
+      $scope.latitude = item.location.split(",")[1];//纬度
+      $scope.modal1.hide();
+    }
+
+    //关键字搜索：通过用POI的关键字进行条件搜索，例如：肯德基、朝阳公园等；同时支持设置POI类型搜索，例如：银行称
+    $scope.getPlaceBySearch = function (addrname) {
+      AccountService.getPlaceBySearch({
+        key: BoRecycle.gaoDeKey,
+        keywords: addrname,//查询关键词
+        city: $scope.city || "深圳",
+        extensions: 'all'//返回结果控制
+      }).success(function (data) {
+        console.log(data);
+        $scope.addresspois = data.pois;
+      })
+    }
+
+    //获取当前位置 定位
+    $scope.location = function () {
+      CommonService.getLocation(function () {
+        //当前位置 定位
+        AccountService.getCurrentCityName({
+          key: BoRecycle.gaoDeKey,
+          location: Number(localStorage.getItem("longitude")).toFixed(6) + "," + Number(localStorage.getItem("latitude")).toFixed(6),
+          radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
+          extensions: 'all',//返回结果控制
+          batch: false, //batch=true为批量查询。batch=false为单点查询
+          roadlevel: 0//可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
+        }).success(function (data) {
+          var addressComponent = data.regeocode.addressComponent;
+          $scope.addresspois = data.regeocode.pois;
+          $scope.city = addressComponent.city;
+          $scope.ssx = addressComponent.province + addressComponent.city + addressComponent.district;//省市县
+          $scope.addrinfo.addr = addressComponent.township + addressComponent.streetNumber.street;
+        }).then(function () {
+          AddressService.getAddressBySSX({ssx: $scope.ssx}).success(function (data) {
+            console.log(data);
+            if (data.code == 1001) {
+              $scope.addrareacountyone = data.data;
+            } else {
+              CommonService.platformPrompt(data.message, "close")
+            }
+          })
+        })
+      })
+
     }
 
 
@@ -1941,6 +2011,7 @@ angular.module('starter.controllers', [])
       $scope.buttonText = '修改';
     } else {//增加自动默认地址
       $scope.addrinfoother.isstatus = true;
+      $scope.location();//自动定位
     }
     //增加地址方法
     $scope.dealaddresssubmit = function () {
@@ -1948,8 +2019,8 @@ angular.module('starter.controllers', [])
       $scope.addrinfo.userid = localStorage.getItem("userid");//用户id
       $scope.addrinfo.addrcode = $scope.addrareacountyone ? $scope.addrareacountyone.ID : $scope.addressiteminfo.AddrCode;	//地区id
       $scope.addrinfo.is_default = $scope.addrinfoother.isstatus ? 1 : 0;	//是否默认0-否，1-是
-      $scope.addrinfo.lat = $scope.addrareacountyone ? $scope.addrareacountyone.Lat : $scope.addressiteminfo.Lat;	//纬度
-      $scope.addrinfo.lng = $scope.addrareacountyone ? $scope.addrareacountyone.Lng : $scope.addressiteminfo.Lng; 	//经度
+      $scope.addrinfo.lat = $scope.addrareacountyone ? $scope.latitude || localStorage.getItem("latitude") || $scope.addrareacountyone.Lat : $scope.latitude || localStorage.getItem("latitude") || $scope.addressiteminfo.Lat;	//纬度
+      $scope.addrinfo.lng = $scope.addrareacountyone ? $scope.longitude || localStorage.getItem("longitude") || $scope.addrareacountyone.Lng : $scope.longitude || localStorage.getItem("longitude") || $scope.addressiteminfo.Lng; 	//经度
       console.log($scope.addrinfo);
       AddressService.addAddress($scope.addrinfo).success(function (data) {
         if (data.code == 1001) {
@@ -2290,7 +2361,7 @@ angular.module('starter.controllers', [])
     $scope.addrinfo = {};
     $scope.addresspois = [];//附近地址数组
     $scope.productLists = [];//产品品类
-    $scope.imgUrl=BoRecycle.imgUrl;//图片路径
+    $scope.imgUrl = BoRecycle.imgUrl;//图片路径
     //获取产品品类
     OrderService.getProductList({ID: "", Name: ""}).success(function (data) {
       console.log(data);
@@ -2334,7 +2405,7 @@ angular.module('starter.controllers', [])
           if (data.code == 1001) {
             $scope.manufacteList = [];
             $scope.manufacteList = data.data
-      /*      $scope.manufacteList.unshift({id: "", shortename: '无'});*///追加到第一位
+            /*      $scope.manufacteList.unshift({id: "", shortename: '无'});*///追加到第一位
           } else {
             CommonService.platformPrompt(data.message, 'close');
           }
@@ -2788,14 +2859,14 @@ angular.module('starter.controllers', [])
   })
 
   //我的银行卡
-  .controller('BankcardCtrl', function ($scope, $rootScope, $state, $ionicHistory,$ionicScrollDelegate, CommonService, AccountService, MyWalletService) {
+  .controller('BankcardCtrl', function ($scope, $rootScope, $state, $ionicHistory, $ionicScrollDelegate, CommonService, AccountService, MyWalletService) {
     $scope.userbanklist = [];
     $scope.page = 0;
     $scope.total = 1;
     $scope.blc = [];//银行logo及颜色
 
-    if(!$ionicHistory.backView()||$ionicHistory.backView().stateName!="cash"){
-      $rootScope.defaultBank=null;
+    if (!$ionicHistory.backView() || $ionicHistory.backView().stateName != "cash") {
+      $rootScope.defaultBank = null;
     }
     $scope.selectThis = function (item) {
       if ($rootScope.defaultBank) {
@@ -2825,7 +2896,7 @@ angular.module('starter.controllers', [])
         }
         //获取银行卡logo等信息
         MyWalletService.getBankLogo().success(function (data) {
-          angular.forEach(data,function (item) {
+          angular.forEach(data, function (item) {
             $scope.blc.push(item);
           });
         }).then(function () {
@@ -3047,15 +3118,15 @@ angular.module('starter.controllers', [])
     }
   })
   //信息费标准
-  .controller('infeeCtrl',function ($scope, $rootScope, NewsService, CommonService) {
+  .controller('infeeCtrl', function ($scope, $rootScope, NewsService, CommonService) {
     //是否登录
     if (!CommonService.isLogin()) {
       return;
     }
-    $scope.ut=localStorage.removeItem("usertype");
+    $scope.ut = localStorage.removeItem("usertype");
     NewsService.getInfo_fee().success(function (data) {
       console.log(data);
-      $scope.infeels=data.data;
+      $scope.infeels = data.data;
     });
     console.log($scope.infeels);
   })

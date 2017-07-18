@@ -894,7 +894,9 @@ angular.module('starter.services', [])
           $scope.addresspcd = item.MergerName;
           $scope.addrareacountyone = item;
           //手动选择 清楚自动数据
-          $scope.dengji.addrdetail="";
+          if($scope.dengji) $scope.dengji.addrdetail="";
+          if($scope.user) $scope.user.addrdetail="";
+          if($scope.addrinfo) $scope.addrinfo.addr="";
           $scope.longitude = null//经度
           $scope.latitude =null//纬度
           $scope.modal.hide();

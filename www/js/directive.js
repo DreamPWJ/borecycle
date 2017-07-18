@@ -70,7 +70,6 @@ angular.module('starter.directive', [])
         $rootScope.verify = true;
         $rootScope.verifyarray[scope.$id] = true;
         scope.publicCheckForm = function (regular, value, content, isshowtip) { //验证公共部分封装
-          console.log(regular);
           if (regular) {
             if (value == 0) {
               $rootScope.verifyarray[scope.$id] = false;
@@ -85,7 +84,7 @@ angular.module('starter.directive', [])
               }
             });
           } else {
-            if (value == 0) {
+            if (value || value == 0) {
               if (isshowtip) {
                 $rootScope.commonService.toolTip(content, '');
               }
