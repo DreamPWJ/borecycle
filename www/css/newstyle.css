@@ -129,5 +129,6 @@
 
 .show-updateconfirm .popup .popup-body {
   text-align: left;
-  padding: 1rem 1.2rem;
+  margin:0 auto;
+  padding: 1rem 0.5rem 1rem 1.5rem;
 }
