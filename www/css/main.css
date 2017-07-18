@@ -28,16 +28,16 @@
   padding: 0.2rem 1rem !important;
 }
 
-#orderlist .jiedan:active,#orderlist .jiedan:hover  {
+#orderlist .jiedan:active, #orderlist .jiedan:hover {
   color: #fff;
-  background-color:#00ACFF ;
+  background-color: #00ACFF;
 }
 
 .bhytype:not(:empty) {
   border: 1px solid #33cd5f;
   border-radius: 2px;
   font-size: 0.6rem;
-  padding: 0px 5px;
+  padding: 1px 5px;
   color: #33cd5f;
 }
 
@@ -45,7 +45,7 @@
   border: 1px solid #f26604;
   border-radius: 2px;
   font-size: 0.6rem;
-  padding: 0px 5px;
+  padding: 1px 5px;
   color: #f26604;
 }
 
@@ -53,9 +53,11 @@
   border-top: 2px solid rgba(221, 221, 221, 0.3);
   padding: 0.6rem 0;
 }
-.manufacteList img{
+
+.manufacteList img {
   width: 38%;
 }
+
 #myorderlist .close {
   margin-top: 0.2rem !important;
   padding: 5px 4px;
@@ -188,7 +190,8 @@
   font-size: 2rem !important;
 
 }
-.padding-top-2{
+
+.padding-top-2 {
   padding-top: 2rem;
 }
 
@@ -338,7 +341,7 @@
   box-shadow: 1px 1px 2px rgba(136, 136, 136, 0.5);
 }
 
-#helpuser .iconfont{
+#helpuser .iconfont {
   font-size: 1rem;
 }
 

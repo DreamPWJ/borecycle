@@ -1666,7 +1666,7 @@ angular.module('starter.controllers', [])
   })
 
   //通知消息列表
-  .controller('NewsCtrl', function ($scope, CommonService, NewsService, $ionicScrollDelegate) {
+  .controller('NewsCtrl', function ($scope, $state, CommonService, NewsService, $ionicScrollDelegate) {
     //是否登录
     if (!CommonService.isLogin(true)) {
       return;
@@ -1712,9 +1712,19 @@ angular.module('starter.controllers', [])
       NewsService.updateNewsLook($scope.lookparams).success(function (data) {
         if (data.code == 1001) {
           $scope.newslist(0);
+        } else {
+          CommonService.platformPrompt(data.message, 'close');
         }
-        CommonService.platformPrompt(data.message, 'close');
+
       })
+    }
+    //订单详情
+    $scope.newsDetails = function (relateno, id) {
+      if (relateno) {
+        $scope.updateNewsLook(1, id)
+        $state.go("myorderdetails", {no: relateno})
+
+      }
     }
   })
 
@@ -1917,7 +1927,7 @@ angular.module('starter.controllers', [])
   })
 
   //添加地址
-  .controller('AddAddressCtrl', function ($scope, $rootScope, $state, CommonService, AccountService, AddressService, BoRecycle,$ionicHistory) {
+  .controller('AddAddressCtrl', function ($scope, $rootScope, $state, CommonService, AccountService, AddressService, BoRecycle, $ionicHistory) {
     CommonService.customModal($scope, 'templates/modal/addressmodal.html');
     CommonService.customModal($scope, 'templates/modal/nearbyaddressmodal.html', 1);
     //去掉默认的只在下单的地方去掉，会员中心要显示
