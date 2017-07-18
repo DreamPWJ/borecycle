@@ -2472,7 +2472,7 @@ angular.module('starter.controllers', [])
     }
 
     //获取当前位置 定位
-    $scope.location = function () {
+    $scope.location = function (param) {
       CommonService.getLocation(function () {
         //当前位置 定位
         AccountService.getCurrentCityName({
@@ -2487,7 +2487,9 @@ angular.module('starter.controllers', [])
           $scope.addresspois = data.regeocode.pois;
           $scope.city = addressComponent.city;
           $scope.ssx = addressComponent.province + addressComponent.city + addressComponent.district;//省市县
-          $scope.dengji.addrdetail = addressComponent.township + addressComponent.streetNumber.street;
+          if(param){
+            $scope.dengji.addrdetail = addressComponent.township + addressComponent.streetNumber.street;
+          }
         }).then(function () {
           AddressService.getAddressBySSX({ssx: $scope.ssx}).success(function (data) {
             console.log(data);
@@ -2501,7 +2503,7 @@ angular.module('starter.controllers', [])
       })
 
     }
-    //$scope.location();//自动定位
+    $scope.location();//自动定位
     //实现单选
     $scope.multipleChoice = function (array, item) {
       item.checked ? item.checked = false : item.checked = true;
