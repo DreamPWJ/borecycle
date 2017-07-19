@@ -91,7 +91,7 @@
   padding: 8px 16px !important;
 }
 
-#organizingdata .item-checkbox, #information .item-checkbox, #register .services .item-checkbox, #evaluate .item-checkbox {
+#organizingdata .item-checkbox, #information .item-checkbox, #register .services .item-checkbox, #evaluate .item-checkbox,#cancelorder .item-checkbox{
   width: 32%;
   display: inline-block;
   margin: 0.1rem;
@@ -102,14 +102,14 @@
   background-color: #ffffff !important;
 }
 
-#organizingdata .checkbox-icon, #information .checkbox-icon, #register .services .checkbox-icon, #evaluate .checkbox-icon {
+#organizingdata .checkbox-icon, #information .checkbox-icon, #register .services .checkbox-icon, #evaluate .checkbox-icon,#cancelorder  .checkbox-icon{
   margin-left: -0.8rem !important;
   margin-top: 0.3rem !important;
   width: 20px;
   height: 20px;
 }
 
-#organizingdata .checkbox-icon:after, #information .checkbox-icon:after, #register .services .checkbox-icon:after, #evaluate .checkbox-icon:after {
+#organizingdata .checkbox-icon:after, #information .checkbox-icon:after, #register .services .checkbox-icon:after, #evaluate .checkbox-icon:after ,#cancelorder  .checkbox-icon:after{
   width: 12px;
 }
 

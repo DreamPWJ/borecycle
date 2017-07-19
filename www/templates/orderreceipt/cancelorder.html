@@ -1,0 +1,39 @@
+<ion-view>
+  <ion-nav-buttons side="left">
+    <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back ng-click="$ionicGoBack()"></button>
+  </ion-nav-buttons>
+  <ion-nav-title>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 取消订单</h1>
+  </ion-nav-title>
+  <form name="cancelorderForm">
+    <ion-content overflow-scroll="false" id="cancelorder" class="has-button-footer stable-bg" has-bouncing="true">
+      <div class="item  ">
+        <span class="input-label "> 取消原因</span>
+        <ion-checkbox class="item-borderless checkbox-positive" ng-checked="cancelorder.reason==1"
+                      ng-click="cancelorder.reason=1">
+          联系不上
+        </ion-checkbox>
+        <ion-checkbox class="item-borderless checkbox-positive" ng-checked="cancelorder.reason==2"
+                      ng-click="cancelorder.reason=2">
+          交易没谈拢
+        </ion-checkbox>
+        <ion-checkbox class="item-borderless checkbox-positive" ng-checked="cancelorder.reason==3"
+                      ng-click="cancelorder.reason=3">
+          其他
+        </ion-checkbox>
+      </div>
+
+      <p></p>
+      <label class="item item-input item-borderless">
+        <textarea rows="3" ng-model="cancelorder.remark" placeholder="补充说明" ng-maxlength="300"></textarea>
+      </label>
+      </div>
+
+
+    </ion-content>
+    <div class="padding light-bg bottom-0" keyboard-attach>
+      <a class="button button-positive  full-image" ng-disabled="!cancelorderForm.$valid"
+         ng-click="cancelOrder()">提交</a>
+    </div>
+  </form>
+</ion-view>

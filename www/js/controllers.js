@@ -1153,14 +1153,15 @@ angular.module('starter.controllers', [])
     }
 //在回收订单中 取消订单
     $scope.cancelOrder = function (orno) {
-      OrderService.cancelOrderReceipt({orno: orno}).success(function (data) {
-        if (data.code == 1001) {
-          CommonService.platformPrompt("取消接单成功", "close");
-          $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
-        } else {
-          CommonService.platformPrompt(data.message, "close");
-        }
-      })
+      $state.go("cancelorder", {no: orno, type: 1});//订单类型 1.回收单 2.登记单
+      /*      OrderService.cancelOrderReceipt({orno: orno}).success(function (data) {
+       if (data.code == 1001) {
+       CommonService.platformPrompt("取消接单成功", "close");
+       $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
+       } else {
+       CommonService.platformPrompt(data.message, "close");
+       }
+       })*/
     }
 //联系他
     $scope.relation = function (phonenumber) {
@@ -1254,15 +1255,16 @@ angular.module('starter.controllers', [])
     }
 
     //在回收订单中 取消订单
-    $scope.cancelOrder = function (djno) {
-      OrderService.cancelOrderReceipt({orno: djno}).success(function (data) {
-        if (data.code == 1001) {
-          CommonService.platformPrompt("取消接单成功", "close");
-          $scope.getOrderListDetails();//详情刷新
-        } else {
-          CommonService.platformPrompt(data.message, "close");
-        }
-      })
+    $scope.cancelOrder = function (orno) {
+      $state.go("cancelorder", {no: orno, type: 1});//订单类型 1.回收单 2.登记单
+      /*      OrderService.cancelOrderReceipt({orno: djno}).success(function (data) {
+       if (data.code == 1001) {
+       CommonService.platformPrompt("取消接单成功", "close");
+       $scope.getOrderListDetails();//详情刷新
+       } else {
+       CommonService.platformPrompt(data.message, "close");
+       }
+       })*/
     }
   })
 
@@ -1368,6 +1370,7 @@ angular.module('starter.controllers', [])
     //关闭订单
     $scope.closeOrder = function (djno) {
       event.preventDefault();
+      // $state.go("cancelorder", {no: djno, type: 2});//订单类型 1.回收单 2.登记单
       CommonService.showConfirm('操作提示', '您是否要关闭此订单?"是"点击"确定",否则请点击"取消"', '确定', '取消', '', 'close', function () {
         OrderService.cancelDengJiOrder({djno: djno}).success(function (data) {
           if (data.code == 1001) {
@@ -1404,6 +1407,7 @@ angular.module('starter.controllers', [])
     //关闭订单
     $scope.closeOrder = function (djno) {
       event.preventDefault();
+      // $state.go("cancelorder", {no: djno, type: 2});//订单类型 1.回收单 2.登记单
       CommonService.showConfirm('操作提示', '您是否要关闭此订单?"是"点击"确定",否则请点击"取消"', '确定', '取消', '', 'close', function () {
         OrderService.cancelDengJiOrder({djno: djno}).success(function (data) {
           if (data.code == 1001) {
@@ -2769,6 +2773,34 @@ angular.module('starter.controllers', [])
     }
 
 
+  })
+
+  //取消订单
+  .controller('CancelOrderCtrl', function ($scope, $rootScope, $stateParams, CommonService, OrderService) {
+    $scope.cancelorder = {
+      reason: 1//取消原因 默认联系不上
+    }
+    $scope.cancelOrder = function () {
+      $scope.datas = {
+        no: $stateParams.no,//订单号
+        type: $stateParams.type,//订单类型 1.回收单 2.登记单
+        userid: localStorage.getItem("userid"),//取消人账号
+        reason: $scope.cancelorder.reason,//取消原因 1.	联系不上 2.	交易没谈拢 3.	其他
+        remark: $scope.cancelorder.remark  //补充说明
+      }
+      console.log($scope.datas);
+      CommonService.showConfirm('取消提示', '您是否要取消此订单?"是"点击"确定",否则请点击"取消"', '确定', '取消', '', 'close', function () {
+        OrderService.newCancelOrderReceipt($scope.datas).success(function (data) {
+          console.log(data);
+          if (data.code == 1001) {
+            CommonService.platformPrompt('取消订单成功', '');
+          } else {
+            CommonService.platformPrompt(data.message, 'close');
+          }
+
+        })
+      })
+    }
   })
 
   //我的钱包

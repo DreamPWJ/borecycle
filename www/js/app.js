@@ -488,6 +488,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'EvaluateCtrl'
       })
 
+      //取消订单
+      .state('cancelorder', {
+        url: '/cancelorder/:no/:type', //订单号  订单类型 1.回收单 2.登记单
+        cache: false,
+        templateUrl: 'templates/orderreceipt/cancelorder.html',
+        controller: 'CancelOrderCtrl'
+      })
+
       //我的钱包
       .state('wallet', {
         url: '/wallet',
