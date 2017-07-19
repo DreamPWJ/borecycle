@@ -21,7 +21,7 @@
           货主 : {{orderDetail.name}}
         </ion-item>
         <ion-item class="text-wrap">
-          交易品类 : {{orderDetail.category}} <span class=" {{orderDetail.hytype==1?'bhytype':'ehytype'}} ">{{orderDetail.hytype==0?'':(orderDetail.hytype==1?'废品':'二手')}}</span>
+          交易品类 : {{orderDetail.category}} <span class=" {{orderDetail.hytype==1?'bhytype':(orderDetail.hytype==2?'ehytype':'')}} ">{{orderDetail.hytype==1?'废品':(orderDetail.hytype==2?'二手':'')}}</span>
         </ion-item>
         <ion-item>
           联系电话 : {{orderDetail.motel}}

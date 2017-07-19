@@ -21,7 +21,7 @@
           联系人 : {{orderDetail.name}}
         </ion-item>
         <ion-item class="text-wrap">
-          回收品类 : {{orderDetail.category}} <span class=" {{orderDetail.hytype==1?'bhytype':'ehytype'}} ">{{orderDetail.hytype==0?'':(orderDetail.hytype==1?'废品':'二手')}}</span>
+          回收品类 : {{orderDetail.category}} <span class=" {{orderDetail.hytype==1?'bhytype':(orderDetail.hytype==2?'ehytype':'')}} ">{{orderDetail.hytype==1?'废品':(orderDetail.hytype==2?'二手':'')}}</span>
         </ion-item>
         <ion-item>
           联系电话 : {{type==1?(orderDetail.motel | hidepartinfo : 'phone'):orderDetail.motel }}
@@ -62,7 +62,7 @@
             支付类型 : {{orderDetail.paymentmethod==1?'现金支付':'在线支付'}}
           </ion-item>
           <ion-item ng-if="orderDetail.type==1&&orderDetail.order_amount.info_amount">
-            信息费 : {{orderDetail.order_amount.info_amount | currency:'￥'}}
+            信息费 : {{(orderDetail.order_amount.info_amount )| currency:'￥'}}
           </ion-item>
           <ion-item ng-if="(orderType==0||orderType==2)&&orderDetail.type==1&&orderDetail.order_amount.info_amount">
             扣除信息费 : {{(orderDetail.order_amount.info_amount + orderDetail.order_amount.service_amount)| currency:'￥'}}

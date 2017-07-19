@@ -43,7 +43,7 @@ angular.module('starter.services', [])
 
         });
       },
-      showConfirm: function (title, template, okText, cancelText, stateurl, closeurl, confirmfunction, stateparams) {
+      showConfirm: function (title, template, okText, cancelText, stateurl, closeurl, confirmfunction, stateparams,stateparams2) {
         var confirmPopup = $ionicPopup.confirm({
           cssClass: "show-confirm",
           title: '<strong>' + title + '</strong>',
@@ -67,7 +67,7 @@ angular.module('starter.services', [])
             if (closeurl == 'close') {//不处理
               return;
             }
-            $state.go((closeurl == null || closeurl == '') ? 'tab.main' : closeurl, stateparams, {reload: true})
+            $state.go((closeurl == null || closeurl == '') ? 'tab.main' : closeurl, stateparams2, {reload: true})
             $ionicViewSwitcher.nextDirection("back");//后退动画效果
           }
         });

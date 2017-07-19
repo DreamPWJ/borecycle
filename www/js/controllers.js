@@ -1135,9 +1135,11 @@ angular.module('starter.controllers', [])
       }
       OrderService.addOrderReceipt($scope.jiedandata).success(function (data) {
         if (data.code == 1001) {
-          CommonService.showConfirm('接单提示', '尊敬的用户,您好！恭喜您,接单成功！订单有效期为24小时,请您务必在24小时之内上门回收！', '查看订单', '继续接单', 'orderdetails', 'close', '', {
+          CommonService.showConfirm('接单提示', '尊敬的用户,您好！恭喜您,接单成功！订单有效期为24小时,请您务必在24小时之内上门回收！', '查看订单', '继续接单', 'orderdetails', 'order', '', {
             no: data.data,
             type: 2
+          },{
+            orderType: 1
           })
           $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
         } else if (data.code == 1005) { //接单的时候返回值是1005,就跳转到“待处理”页面
