@@ -101,7 +101,7 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 
         <preference name="GEOLOCATION_USAGE_DESCRIPTION" default=" " />
         <config-file target="*-Info.plist" parent="NSLocationWhenInUseUsageDescription">
-            <string>$GEOLOCATION_USAGE_DESCRIPTION</string>
+            <string>使用期间定位 获取定位是为了计算用户与货主的距离以及LBS导航</string>
         </config-file>
 
     </platform>
