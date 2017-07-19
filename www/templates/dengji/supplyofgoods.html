@@ -1,4 +1,4 @@
-<ion-view>
+<ion-view >
   <ion-nav-buttons side="left">
     <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back ng-click="$ionicGoBack()"></button>
   </ion-nav-buttons>
@@ -15,9 +15,9 @@
              class="icon  iconfont"></i>
         </ion-item>
         <div ng-hide="showme" class="row row-center row-wrap text-center light-bg select-category padding-top">
-          <div ng-repeat="item in productList" ng-click="checkChecded()"  class="col-25">
+          <div ng-repeat="item in productList" ng-click="checkChecded()" class="col-25">
             <input type="checkbox" id="{{item.imgurl}}" ng-model="item.checked">
-            <label for="{{item.imgurl}}" ><i
+            <label for="{{item.imgurl}}"><i
               class="iconfont {{item.imgurl}}"></i>
               <span></span>
               <p>{{item.name}}</p>
@@ -29,18 +29,24 @@
           <i class="icon iconfont icon-shouhuo "></i>
           <div class="row row-center row-no-padding">
             <h2>交货方式</h2>
-            <label ng-click="goods.delivery=1" for="shangmen" >
+            <label ng-click="goods.delivery=1" for="shangmen">
               <input type="checkbox" id="shangmen" ng-checked="goods.delivery==1">
               <span>上门回收</span>
             </label>
-            <label ng-click="goods.delivery=2" for="songluo" >
-              <input type="checkbox" id="songluo"  ng-checked="goods.delivery==2">
+            <label ng-click="goods.delivery=2" for="songluo">
+              <input type="checkbox" id="songluo" ng-checked="goods.delivery==2">
               <span>送货上门</span>
             </label>
           </div>
         </div>
+        <a ng-href="#/myaddress" class="item item-borderless  border-top item-divider light-bg item-icon-left item-icon-right">
+          <i class="icon iconfont icon-location "></i>
+          <p >{{address?address.AddrDetailForPCC:'请选择货源地址'}}</p>
+          <i  class="icon iconfont ion-ios-arrow-right"></i>
+        </a>
         <p></p>
-        <ion-item class="item-divider item-icon-left item-icon-right item-borderless text-center item-divider-bg"  ng-if="ischecked" ng-click="toggle(1)">
+        <ion-item class="item-divider item-icon-left item-icon-right item-borderless text-center item-divider-bg"
+                  ng-if="ischecked" ng-click="toggle(1)">
           <i class="icon iconfont icon-edit"></i>
           录入数量
           <i ng-class="{true:'ion-ios-arrow-right',false:'ion-ios-arrow-down'}[showme1]"
@@ -51,16 +57,19 @@
             <div class="padding-left padding-top" style="font-weight: bold;padding-left: 20px;">
               <!--<i class="icon iconfont {{item.imgurl}}"></i>--> {{item.name}}
             </div>
-            <div class="row padding-left padding-right" ng-repeat="items in item.details" style="border-bottom: solid 1px #efefef;"><!--{{items.name}}废品 :{{items.name}}二手 :-->
-             <input type="number" class="col row-no-padding" ng-model="items.wastenum" style="border-right: solid 1px #dedede;border-radius:0;padding-left: 10px;height: 26px;"
-                                                           check-form
-                                                           ng-change="checkForm(items.wastenum,'输入废品数量错误',items.unit==1?'positiveinteger':'positivenumber','')"
-                                                           ng-keyup="checkAtLeastOneIsSame(productLists,'wastenum','secondhandnum')"
-                                                            placeholder="废品数量"/>
-               <input type="number" class="col row-no-padding" ng-model="items.secondhandnum" style="padding-left: 20px;height: 26px;"
-                                                             ng-change="checkForm(items.secondhandnum,'输入二手数量错误',items.unit==1?'positiveinteger':'positivenumber','')"
-                                                             ng-keyup="checkAtLeastOneIsSame(productLists,'wastenum','secondhandnum')"
-                                                              placeholder="二手数量"/>
+            <div class="row padding-left padding-right" ng-repeat="items in item.details"
+                 style="border-bottom: solid 1px #efefef;"><!--{{items.name}}废品 :{{items.name}}二手 :-->
+              <input type="number" class="col row-no-padding" ng-model="items.wastenum"
+                     style="border-right: solid 1px #dedede;border-radius:0;padding-left: 10px;height: 26px;"
+                     check-form
+                     ng-change="checkForm(items.wastenum,'输入废品数量错误',items.unit==1?'positiveinteger':'positivenumber','')"
+                     ng-keyup="checkAtLeastOneIsSame(productLists,'wastenum','secondhandnum')"
+                     placeholder="废品数量"/>
+              <input type="number" class="col row-no-padding" ng-model="items.secondhandnum"
+                     style="padding-left: 20px;height: 26px;"
+                     ng-change="checkForm(items.secondhandnum,'输入二手数量错误',items.unit==1?'positiveinteger':'positivenumber','')"
+                     ng-keyup="checkAtLeastOneIsSame(productLists,'wastenum','secondhandnum')"
+                     placeholder="二手数量"/>
             </div>
           </ion-item>
 

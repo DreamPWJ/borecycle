@@ -544,8 +544,8 @@ angular.module('starter.controllers', [])
         if (data.code == 1001) {
           $rootScope.registerUserType = $scope.user.usertype;
           $rootScope.isPhoneRegister = (/^1(3|4|5|7|8)\d{9}$/.test($scope.user.account))
-          if($rootScope.isPhoneRegister){
-            $rootScope.phoneRegister=$scope.user.account;
+          if ($rootScope.isPhoneRegister) {
+            $rootScope.phoneRegister = $scope.user.account;
           }
           $state.go('organizingdata');
         }
@@ -615,10 +615,10 @@ angular.module('starter.controllers', [])
         $scope.usertype = $rootScope.registerUserType; //是从注册页面进入
         $scope.user.usertype = $rootScope.registerUserType;
         $scope.isPhoneRegister = $rootScope.isPhoneRegister;
-        if($rootScope.isPhoneRegister){
+        if ($rootScope.isPhoneRegister) {
           $scope.user.mobile = Number($rootScope.phoneRegister);
         }
-        if($rootScope.registerUserType==2){
+        if ($rootScope.registerUserType == 2) {
           $scope.isUpgradeRecycler = true; //升级成为回收商
         }
       }
@@ -1608,7 +1608,7 @@ angular.module('starter.controllers', [])
       console.log(data);
       if (data.code == 1001) {
         $scope.orderDetail = data.data;
-        $scope.orderinfo.amount=data.data.totalprice;
+        $scope.orderinfo.amount = data.data.totalprice;
       } else {
         CommonService.platformPrompt(data.message, "close");
       }
@@ -1876,14 +1876,14 @@ angular.module('starter.controllers', [])
   })
 
   //地址详细列表
-  .controller('MyAddressCtrl', function ($scope, $state, $rootScope, $ionicHistory, CommonService, AddressService, AccountService) {
-    /*    if ($rootScope.addrlistFirst) {
-     $scope.selectAddress = function (item) {
-     $rootScope.addrlistFirst = []
-     $rootScope.addrlistFirst.push(item);
-     $ionicHistory.goBack();
-     }
-     }*/
+  .controller('MyAddressCtrl', function ($scope, $state, $rootScope, $ionicHistory, CommonService, AddressService) {
+    if ($ionicHistory.backView() && $ionicHistory.backView().stateName != 'tab.account') {
+      $scope.selectAddress = function (item) {
+        $rootScope.addrlistFirst = {}
+        $rootScope.addrlistFirst = item;
+        $ionicHistory.goBack();
+      }
+    }
     $scope.addrlist = [];
 
     $scope.getAddrlist = function () {
@@ -1898,7 +1898,7 @@ angular.module('starter.controllers', [])
         if (data.data == null || data.data.length == 0) {
           $scope.isNotData = true;
           $scope.addrlist = [];
-          /* $rootScope.addrlistFirst = [];*///无交易地址的时候清除数据
+          $rootScope.addrlistFirst = {};///无交易地址的时候清除数据
           return;
         }
         $scope.addrlist = data.data;
@@ -2496,7 +2496,7 @@ angular.module('starter.controllers', [])
           $scope.addresspois = data.regeocode.pois;
           $scope.city = addressComponent.city;
           $scope.ssx = addressComponent.province + addressComponent.city + addressComponent.district;//省市县
-          if(param==0){
+          if (param == 0) {
             $scope.dengji.addrdetail = addressComponent.township + addressComponent.streetNumber.street;
           }
         }).then(function () {
@@ -2586,125 +2586,138 @@ angular.module('starter.controllers', [])
   })
 
   //登记货源
-  .controller('SupplyOfGoodsCtrl', function ($scope, CommonService, OrderService, AddressService) {
+  .controller('SupplyOfGoodsCtrl', function ($scope, $rootScope, $ionicHistory, CommonService, OrderService, AddressService) {
     //是否登录
     if (!CommonService.isLogin(true)) {
       return;
     }
-    $scope.goods = {//货源信息
-      delivery: 1//默认上门回收
-    };
-    $scope.productLists = [];//产品品类
 
-    //获取产品品类
-    OrderService.getProductList({ID: "", Name: ""}).success(function (data) {
-      console.log(data);
-      if (data.code == 1001) {
-        $scope.productList = data.data;
-      } else {
-        CommonService.platformPrompt(data.message, 'close');
-      }
-    }).then(function () {
-      angular.forEach($scope.productList, function (item) { //根据产品品类及是否统货取产品列表(最新报价)
-        OrderService.getProductListIsth({grpid: item.grpid, isth: 1}).success(function (data) {
-          $scope.data = data;
-        }).then(function () {
-          if ($scope.data.code == 1001) {
-            var items = item;
-            items.details = $scope.data.data;
-            $scope.productLists.push(items);
-          }
+    $scope.supplyOfGoods = function () {
+      $scope.goods = {//货源信息
+        delivery: 1//默认上门回收
+      };
+      $scope.productLists = [];//产品品类
+
+      //获取产品品类
+      OrderService.getProductList({ID: "", Name: ""}).success(function (data) {
+        console.log(data);
+        if (data.code == 1001) {
+          $scope.productList = data.data;
+        } else {
+          CommonService.platformPrompt(data.message, 'close');
+        }
+      }).then(function () {
+        angular.forEach($scope.productList, function (item) { //根据产品品类及是否统货取产品列表(最新报价)
+          OrderService.getProductListIsth({grpid: item.grpid, isth: 1}).success(function (data) {
+            $scope.data = data;
+          }).then(function () {
+            if ($scope.data.code == 1001) {
+              var items = item;
+              items.details = $scope.data.data;
+              $scope.productLists.push(items);
+            }
+          })
         })
+        //  $scope.productList = $scope.productLists;
+
+        $scope.checkChecded = function () {
+          CommonService.checkChecded($scope, $scope.productList);
+          $scope.recyclingCategoryName = [];//回收品类名字数组
+          angular.forEach($scope.productList, function (item) {
+            if (item.checked) {
+              $scope.recyclingCategoryName.push(item.name);
+            }
+          })
+
+        }
+
       })
-      //  $scope.productList = $scope.productLists;
+    }
+    /*    $scope.$on('$ionicView.beforeEnter', function () {
+     if (!($ionicHistory.backView() && $ionicHistory.backView().stateName == 'myaddress')) {*/
+    $scope.supplyOfGoods();
+    // }
 
-      $scope.checkChecded = function () {
-        CommonService.checkChecded($scope, $scope.productList);
-        $scope.recyclingCategoryName = [];//回收品类名字数组
-        angular.forEach($scope.productList, function (item) {
-          if (item.checked) {
-            $scope.recyclingCategoryName.push(item.name);
-          }
-        })
-
-      }
-
-    })
-
-
-    //登记货源提交
-    $scope.supplyofgoodsSubmit = function () {
-
+    if ($rootScope.addrlistFirst) {
+      $scope.address = $rootScope.addrlistFirst;
+    } else {
       //获取当前用户默认地址
       AddressService.getDefualtAddr({userid: localStorage.getItem("userid")}).success(function (data) {
         console.log(data);
         if (data.code == 1001) {
           $scope.address = data.data;
+        }
+      })
+    }
+    /*    });*/
+
+
+    //登记货源提交
+    $scope.supplyofgoodsSubmit = function () {
+      if ($scope.address == null || $scope.address.length == 0) {
+        CommonService.platformPrompt("请选择货源地址", 'myaddress');
+        return;
+      }
+      $scope.supplyofgoods = [];//要提交的json数组
+      $scope.wastenumdetails = [];//废旧数据详情
+      $scope.secondhandnumdetails = [];//二手数据详情
+      var user = JSON.parse(localStorage.getItem("user"));
+
+      //获取废旧和二手 填写的num数据
+      angular.forEach($scope.productLists, function (item) {
+        if (item.checked) {//选中的品类
+          angular.forEach(item.details, function (itemitem) {
+            if (itemitem.wastenum) { //废旧数据
+              $scope.wastenumdetails.push({
+                num: itemitem.wastenum,
+                grpid: itemitem.grpid,
+                proid: itemitem.id,
+                proname: itemitem.name,
+                unit: itemitem.unit
+              })
+            }
+            if (itemitem.secondhandnum) { //二手数据
+              $scope.secondhandnumdetails.push({
+                num: itemitem.secondhandnum,
+                grpid: itemitem.grpid,
+                proid: itemitem.id,
+                proname: itemitem.name,
+                unit: itemitem.unit
+              })
+            }
+          })
+        }
+      })
+      for (var i = 0; i < 2; i++) { //两次循环
+        var items = {};
+        items.type = 2;//类型 1.	登记信息 2.	登记货源
+        items.userid = localStorage.getItem("userid");//登记人userid
+        items.name = user.username;//登记人姓名
+        items.motel = user.mobile;//登记人电话
+        items.longitude = localStorage.getItem("longitude") || $scope.address.Lng || 0;//经度 默认为0   地址表里有经纬度值 如果没值现在的地区取经纬度
+        items.latitude = localStorage.getItem("latitude") || $scope.address.Lat || 0;//纬度 默认为0 地址表里有经纬度值 如果没值现在的地区取经纬度
+        items.category = $scope.recyclingCategoryName.join(",");//货物品类 多个用逗号隔开
+        items.manufactor = "";//单选 登记货源是空
+        items.addrcode = $scope.address.AddrCode;//地址code
+        items.delivery = $scope.goods.delivery; //交货方式 1 上门回收(默认) 2 送货上门 登记信息直接用1
+        items.addrdetail = $scope.address.AddrDetail;//详细地址
+        items.hytype = i == 0 ? 1 : 2;//货物类别 0.未区分 1废料 2二手 (登记信息时为0)
+        items.details = i == 0 ? $scope.wastenumdetails : $scope.secondhandnumdetails;//登记货源明细数据数组
+        if ((i == 0 && $scope.wastenumdetails.length != 0) || (i == 1 && $scope.secondhandnumdetails.length != 0)) {
+          $scope.supplyofgoods.push(items);
+        }
+      }
+      console.log($scope.supplyofgoods);
+
+      //添加登记信息/货源信息(添加登记货源时明细不能为空，添加登记信息时明细为空)
+      OrderService.addDengJi($scope.supplyofgoods).success(function (data) {
+        console.log(data);
+        if (data.code == 1001) {
+          CommonService.platformPrompt("登记货源提交成功", 'myorder');
         } else {
-          CommonService.platformPrompt("无默认地址,请添加", 'myaddress');
+          CommonService.platformPrompt(data.message, 'close');
         }
-      }).then(function () {
-        $scope.supplyofgoods = [];//要提交的json数组
-        $scope.wastenumdetails = [];//废旧数据详情
-        $scope.secondhandnumdetails = [];//二手数据详情
-        var user = JSON.parse(localStorage.getItem("user"));
 
-        //获取废旧和二手 填写的num数据
-        angular.forEach($scope.productLists, function (item) {
-          if (item.checked) {//选中的品类
-            angular.forEach(item.details, function (itemitem) {
-              if (itemitem.wastenum) { //废旧数据
-                $scope.wastenumdetails.push({
-                  num: itemitem.wastenum,
-                  grpid: itemitem.grpid,
-                  proid: itemitem.id,
-                  proname: itemitem.name,
-                  unit: itemitem.unit
-                })
-              }
-              if (itemitem.secondhandnum) { //二手数据
-                $scope.secondhandnumdetails.push({
-                  num: itemitem.secondhandnum,
-                  grpid: itemitem.grpid,
-                  proid: itemitem.id,
-                  proname: itemitem.name,
-                  unit: itemitem.unit
-                })
-              }
-            })
-          }
-        })
-        for (var i = 0; i < 2; i++) { //两次循环
-          var items = {};
-          items.type = 2;//类型 1.	登记信息 2.	登记货源
-          items.userid = localStorage.getItem("userid");//登记人userid
-          items.name = user.username;//登记人姓名
-          items.motel = user.mobile;//登记人电话
-          items.longitude = localStorage.getItem("longitude") || $scope.address.Lng || 0;//经度 默认为0   地址表里有经纬度值 如果没值现在的地区取经纬度
-          items.latitude = localStorage.getItem("latitude") || $scope.address.Lat || 0;//纬度 默认为0 地址表里有经纬度值 如果没值现在的地区取经纬度
-          items.category = $scope.recyclingCategoryName.join(",");//货物品类 多个用逗号隔开
-          items.manufactor = "";//单选 登记货源是空
-          items.addrcode = $scope.address.AddrCode;//地址code
-          items.delivery = $scope.goods.delivery; //交货方式 1 上门回收(默认) 2 送货上门 登记信息直接用1
-          items.addrdetail = $scope.address.AddrDetail;//详细地址
-          items.hytype = i == 0 ? 1 : 2;//货物类别 0.未区分 1废料 2二手 (登记信息时为0)
-          items.details = i == 0 ? $scope.wastenumdetails : $scope.secondhandnumdetails;//登记货源明细数据数组
-          if ((i == 0 && $scope.wastenumdetails.length != 0) || (i == 1 && $scope.secondhandnumdetails.length != 0)) {
-            $scope.supplyofgoods.push(items);
-          }
-        }
-        console.log($scope.supplyofgoods);
-
-        //添加登记信息/货源信息(添加登记货源时明细不能为空，添加登记信息时明细为空)
-        OrderService.addDengJi($scope.supplyofgoods).success(function (data) {
-          console.log(data);
-          if (data.code == 1001) {
-            CommonService.platformPrompt("登记货源提交成功", 'myorder');
-          } else {
-            CommonService.platformPrompt(data.message, 'close');
-          }
-
-        })
       })
     }
 
