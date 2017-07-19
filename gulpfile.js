@@ -19,7 +19,7 @@ var paths = {
   sass: ['./scss/**/*.scss']
 };
 
-gulp.task('default', ['mergeMiniJsCss','minifyCss','minifyJs','minImages','copyHtml','copyFonts','copyLib']);
+gulp.task('default', ['mergeMiniJsCss','minifyCss','minifyJs','minImages','copyHtml','copyFonts','copyLib','copyBankInfo']);
 
 /* 自动添加css兼容前缀任务*/
 gulp.task('autoprefixer', function () {
@@ -83,7 +83,12 @@ gulp.task('copyFonts', function () {
 /*    .pipe(minifyCss()) */   //执行压缩
     .pipe(gulp.dest('./borecycle/fonts/'));  //输出文件夹
 });
-
+/*复制bankinfo*/
+gulp.task('copyBankInfo', function () {
+  return gulp.src('./www/js/*.json')      //复制的文件
+  /*    .pipe(minifyCss()) */   //执行压缩
+    .pipe(gulp.dest('./borecycle/js/'));  //输出文件夹
+});
 /*复制Lib*/
 gulp.task('copyLib', function () {
   return gulp.src('./www/lib/**')      //复制的文件
