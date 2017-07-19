@@ -5,6 +5,6 @@
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>始终定位</string>
 	<key>NSLocationWhenInUseUsageDescription </key>
-	<string>使用期间定位</string>
+	<string>使用期间定位 获取定位是为了计算用户与货主的距离以及LBS导航</string>
 </dict>
 </plist>

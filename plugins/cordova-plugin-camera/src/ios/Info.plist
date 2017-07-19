@@ -2,11 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSPhotoLibraryUsageDescrip</key>
-	<string>调用相册方便用户随时上传图片</string>
 	<key>NSCameraUsageDescription</key>
-	<string>使用相机</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-  	<string>使用图库</string>
+	<string>使用相机 用户随时上传拍照</string>
 </dict>
 </plist>
