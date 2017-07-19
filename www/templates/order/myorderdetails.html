@@ -68,9 +68,6 @@
           <ion-item ng-if="orderDetail.type==1&&orderDetail.order_amount.info_amount">
             信息费 : {{orderDetail.order_amount.info_amount | currency:'￥'}}
           </ion-item>
-          <ion-item ng-if="(orderType==0||orderType==2)&&orderDetail.type==1&&orderDetail.order_amount.info_amount">
-            扣除信息费 : {{(orderDetail.order_amount.info_amount + orderDetail.order_amount.service_amount)| currency:'￥'}}
-          </ion-item>
         </div>
       </div>
       <p></p>

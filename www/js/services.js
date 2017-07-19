@@ -43,7 +43,7 @@ angular.module('starter.services', [])
 
         });
       },
-      showConfirm: function (title, template, okText, cancelText, stateurl, closeurl, confirmfunction, stateparams,stateparams2) {
+      showConfirm: function (title, template, okText, cancelText, stateurl, closeurl, confirmfunction, stateparams, stateparams2) {
         var confirmPopup = $ionicPopup.confirm({
           cssClass: "show-confirm",
           title: '<strong>' + title + '</strong>',
@@ -532,6 +532,20 @@ angular.module('starter.services', [])
         });
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       },
+      newCancelOrderReceipt: function (datas) { //取消(关闭)接单 new
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'POST',
+          url: BoRecycle.api + "/api/orderreceipt/cancelorder",
+          data: datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
       getOrderReceiptList: function (params, datas) { //查询接单收货/货源归集分页列
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise;
@@ -763,7 +777,7 @@ angular.module('starter.services', [])
         }
         $state.go("recycleorder", {orderinfo: JSON.stringify(json)});
       },
-      topay: function (type, djno, orno, fromuser, touser, amount, name,informationmoney) {//去付款参数封装
+      topay: function (type, djno, orno, fromuser, touser, amount, name, informationmoney) {//去付款参数封装
         event.preventDefault();
         CommonService = this;
         var json = {
@@ -774,7 +788,7 @@ angular.module('starter.services', [])
           touser: touser,
           amount: amount,
           name: name,
-          informationmoney:informationmoney
+          informationmoney: informationmoney
         }
         $state.go("payment", {orderinfo: JSON.stringify(json)})
       }
@@ -824,7 +838,7 @@ angular.module('starter.services', [])
         });
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       },
-      getInfo_fee:function () {
+      getInfo_fee: function () {
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise;
         promise = $http({
@@ -894,11 +908,11 @@ angular.module('starter.services', [])
           $scope.addresspcd = item.MergerName;
           $scope.addrareacountyone = item;
           //手动选择 清楚自动数据
-          if($scope.dengji) $scope.dengji.addrdetail="";
-          if($scope.user) $scope.user.addrdetail="";
-          if($scope.addrinfo) $scope.addrinfo.addr="";
+          if ($scope.dengji) $scope.dengji.addrdetail = "";
+          if ($scope.user) $scope.user.addrdetail = "";
+          if ($scope.addrinfo) $scope.addrinfo.addr = "";
           $scope.longitude = null//经度
-          $scope.latitude =null//纬度
+          $scope.latitude = null//纬度
           $scope.modal.hide();
           return;
         }
@@ -1091,8 +1105,8 @@ angular.module('starter.services', [])
         var promise = deferred.promise
         promise = $http({
           method: 'GET',
-          url: BoRecycle.api + "/api/user/get_isinvite" ,
-          params:params
+          url: BoRecycle.api + "/api/user/get_isinvite",
+          params: params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -1100,12 +1114,12 @@ angular.module('starter.services', [])
         });
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       },
-      getInvitecode:function (params) {
+      getInvitecode: function (params) {
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise
         promise = $http({
           method: 'GET',
-          url: BoRecycle.api + "/api/invitecode/generate/"+params
+          url: BoRecycle.api + "/api/invitecode/generate/" + params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -1492,7 +1506,7 @@ angular.module('starter.services', [])
               $timeout(function () {
                 var downloadProgress = (progress.loaded / progress.total) * 100;
                 $ionicLoading.show({
-                  template:  Math.floor(downloadProgress) + "%",
+                  template: Math.floor(downloadProgress) + "%",
                   noBackdrop: true
                 });
                 if (downloadProgress > 99) {
@@ -2432,7 +2446,7 @@ angular.module('starter.services', [])
         });
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       },
-      getDefaultBank:function (uid) {
+      getDefaultBank: function (uid) {
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise;
         promise = $http({
@@ -2553,12 +2567,12 @@ angular.module('starter.services', [])
         });
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       },
-      getBankLogo:function () {
+      getBankLogo: function () {
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
-          url:'./js/bank.json' ,
+          url: './js/bank.json',
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {

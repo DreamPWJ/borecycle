@@ -1138,7 +1138,7 @@ angular.module('starter.controllers', [])
           CommonService.showConfirm('接单提示', '尊敬的用户,您好！恭喜您,接单成功！订单有效期为24小时,请您务必在24小时之内上门回收！', '查看订单', '继续接单', 'orderdetails', 'order', '', {
             no: data.data,
             type: 2
-          },{
+          }, {
             orderType: 1
           })
           $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
@@ -1929,13 +1929,15 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt('供货商会员不能删除默认地址', 'close');
         return;
       }
-      $scope.delparams = {
-        id: addrid,
-        userid: localStorage.getItem("userid")
-      }
-      AddressService.deleteAddr($scope.delparams).success(function (data) {
-        CommonService.platformPrompt(data.message, 'close');
-        $scope.getAddrlist(0);//重新加载列表
+      CommonService.showConfirm('收收提示', '您是否要删除此地址信息?"是"点击"确定",否则请点击"取消"', '确定', '取消', '', 'close', function () {
+        $scope.delparams = {
+          id: addrid,
+          userid: localStorage.getItem("userid")
+        }
+        AddressService.deleteAddr($scope.delparams).success(function (data) {
+          CommonService.platformPrompt(data.message, 'close');
+          $scope.getAddrlist(0);//重新加载列表
+        })
       })
     }
     //修改地址信息
@@ -2064,7 +2066,7 @@ angular.module('starter.controllers', [])
   })
 
   //我的设置
-  .controller('SettingCtrl', function ($scope, $rootScope, $state, BoRecycle) {
+  .controller('SettingCtrl', function ($scope, $rootScope, $state, $ionicPlatform, BoRecycle) {
     $scope.version = BoRecycle.version;
     $scope.securitylevel = '未知';
     var certstate = JSON.parse(localStorage.getItem("user")).certstate;
@@ -2082,6 +2084,9 @@ angular.module('starter.controllers', [])
     }
     if ((certstate.substr(0, 1) == 2 && certstate.substr(1, 1) == 2) && (certstate.substr(3, 1) == 2 && certstate.substr(4, 1) == 2)) {
       $scope.securitylevel = '极高';
+    }
+    if (ionic.Platform.isWebView() && $ionicPlatform.is('ios')) {
+      $scope.isIos = true;
     }
   })
 
