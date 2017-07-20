@@ -99,6 +99,7 @@ angular.module('starter.controllers', [])
 
       //是否是微信 初次获取签名 获取微信签名
       if (WeiXinService.isWeiXin()) {
+        window.open('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx39ba5b2a2f59ef2c&redirect_uri=encodeURIComponent("http://s.boolv.com")&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect')
         // 获取微信签名
         $scope.wxparams = {
           url: location.href.split('#')[0] //当前网页的URL，不包含#及其后面部分
