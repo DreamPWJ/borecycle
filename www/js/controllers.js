@@ -3161,52 +3161,50 @@ angular.module('starter.controllers', [])
           }
 
         })
-        return;
       }
-      /*     if (ionic.Platform.isWebView()) {*/
-      if ($scope.pay.choice == "A") {//支付宝支付
-        $scope.alidatas = {
-          out_trade_no: new Date().getTime(),//订单号
-          subject: "收收充值",//商品名称
-          body: "收收充值详情",//商品详情
-          total_fee: $scope.pay.money, //总金额
-          userid: localStorage.getItem("userid"),//用户userid
-          name: JSON.parse(localStorage.getItem("user")).username//用户名
-        }
-        console.log($scope.alidatas);
-        PayService.aliPayRecharge($scope.alidatas).success(function (data) {
-          console.log(data);
-          if (data.code == 1001) {
-            PayService.aliPay(data.data);
-          } else {
-            CommonService.platformPrompt(data.message, 'close');
+      if (ionic.Platform.isWebView()) {
+        if ($scope.pay.choice == "A") {//支付宝支付
+          $scope.alidatas = {
+            out_trade_no: new Date().getTime(),//订单号
+            subject: "收收充值",//商品名称
+            body: "收收充值详情",//商品详情
+            total_fee: $scope.pay.money, //总金额
+            userid: localStorage.getItem("userid"),//用户userid
+            name: JSON.parse(localStorage.getItem("user")).username//用户名
           }
+          console.log($scope.alidatas);
+          PayService.aliPayRecharge($scope.alidatas).success(function (data) {
+            console.log(data);
+            if (data.code == 1001) {
+              PayService.aliPay(data.data);
+            } else {
+              CommonService.platformPrompt(data.message, 'close');
+            }
 
-        })
-      } else if ($scope.pay.choice == "B") {//微信支付
-        $scope.wxdatas = {
-          out_trade_no: new Date().getTime(),//订单号
-          subject: "收收充值",//商品名称
-          body: "收收充值详情",//商品详情
-          total_fee: $scope.pay.money,  //总金额
-          userid: localStorage.getItem("userid"),//用户userid
-          name: JSON.parse(localStorage.getItem("user")).username//用户名
-        }
-        console.log($scope.wxdatas);
-        PayService.wxPayRecharge($scope.wxdatas).success(function (data) {
-          console.log(data);
-          if (data.code == 1001) {
-            PayService.weixinPay(data.data);
-          } else {
-            CommonService.platformPrompt(data.message, 'close');
+          })
+        } else if ($scope.pay.choice == "B") {//微信支付
+          $scope.wxdatas = {
+            out_trade_no: new Date().getTime(),//订单号
+            subject: "收收充值",//商品名称
+            body: "收收充值详情",//商品详情
+            total_fee: $scope.pay.money,  //总金额
+            userid: localStorage.getItem("userid"),//用户userid
+            name: JSON.parse(localStorage.getItem("user")).username//用户名
           }
-        })
+          console.log($scope.wxdatas);
+          PayService.wxPayRecharge($scope.wxdatas).success(function (data) {
+            console.log(data);
+            if (data.code == 1001) {
+              PayService.weixinPay(data.data);
+            } else {
+              CommonService.platformPrompt(data.message, 'close');
+            }
+          })
+        }
+      } else {
+        CommonService.platformPrompt("充值功能请使用APP客户端操作", 'close');
       }
-      /*
-       } else {
-       CommonService.platformPrompt("充值功能请使用APP客户端操作", 'close');
-       }
-       */
+
 
     }
   })
