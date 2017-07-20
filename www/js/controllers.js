@@ -598,6 +598,7 @@ angular.module('starter.controllers', [])
     //上传图片数组集合
     $scope.imageList = [];
     $scope.ImgsPicAddr = [];//图片信息数组
+    $scope.uploadtype = 4;//上传媒体操作类型 1.卖货单 2 供货单 3 买货单 4身份证 5 头像
     $scope.usertype = 0;//默认旧会员
     $scope.addresspois = [];//附近地址数组
     $scope.user = {//定义用户对象
@@ -1851,6 +1852,7 @@ angular.module('starter.controllers', [])
     //上传图片数组集合
     $scope.imageList = [];
     $scope.ImgsPicAddr = [];//图片信息数组
+    $scope.uploadtype = 5;//上传媒体操作类型 1.卖货单 2 供货单 3 买货单 4身份证 5 头像
     $scope.uploadName = 'uploadhead';//上传图片的类别 用于区分
     $scope.figureurl = $stateParams.figure;
     $scope.uploadActionSheet = function () {
