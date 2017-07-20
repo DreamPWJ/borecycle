@@ -117,6 +117,9 @@ angular.module('starter.controllers', [])
         })
         //获取微信openid获取会员账号，如果没有则添加
         var wxcode = WeiXinService.getQueryString("code");
+
+        console.log("================" + window.location);
+        console.log("================" + wxcode);
         if (wxcode) {
           WeiXinService.getWCOpenId({
             code: code,
