@@ -157,7 +157,7 @@
 }
 
 #main .main-list a {
-  padding: 2rem 1rem 1rem 1rem;
+  padding: 2rem 0.2rem 1rem 0.2rem;
 }
 
 #main .main-list a h5, #main .main-list a p {

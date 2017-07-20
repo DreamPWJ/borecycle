@@ -99,6 +99,10 @@
   box-shadow: 0px 0px 20px #ddd
 }
 
+.bottom-0 .button {
+  padding: 2px;
+}
+
 .has-button-footer {
   bottom: 67px;
 }
@@ -211,8 +215,8 @@ a {
   text-align: center;
 }
 
-.isNotDataHint i,.isNotDataHint .iconfont {
-  font-size: 5rem!important;
+.isNotDataHint i, .isNotDataHint .iconfont {
+  font-size: 5rem !important;
 }
 
 .isNotDataHint p {
@@ -395,9 +399,11 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
 #helpContent > p {
   padding: 0 20px;
 }
-#bankcard .iconfont{
+
+#bankcard .iconfont {
   font-size: 2.3rem !important;
 }
+
 .col-17 {
   -webkit-box-flex: 0;
   -webkit-flex: 0 0 17%;
@@ -405,7 +411,9 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
   -moz-flex: 0 0 17%;
   -ms-flex: 0 0 17%;
   flex: 0 0 17%;
-  max-width: 17%; }
+  max-width: 17%;
+}
+
 .col-48 {
   -webkit-box-flex: 0;
   -webkit-flex: 0 0 48%;
@@ -413,19 +421,24 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
   -moz-flex: 0 0 48%;
   -ms-flex: 0 0 48%;
   flex: 0 0 48%;
-  max-width: 48%; }
-#facteSelect div img{
+  max-width: 48%;
+}
+
+#facteSelect div img {
   max-width: 90%;
 }
+
 #facteSelect div {
   position: relative;
   display: inline-block;
   padding: 3px;
 }
+
 #facteSelect div span {
   opacity: 0;
   color: #fff !important;
 }
+
 #facteSelect div span:before {
   content: '√';
   position: absolute;
@@ -446,15 +459,19 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
   right: 0;
   bottom: 0;
 }
-#facteSelect .showSpan{
+
+#facteSelect .showSpan {
   opacity: 1;
 }
+
 #facteSelect .showDiv {
   border: 1px solid #00ACFF;
 }
+
 #facteSelect input:checked + div > span {
   opacity: 1;
 }
+
 #facteSelect input:checked + div {
   border: 1px solid #00ACFF;
 }

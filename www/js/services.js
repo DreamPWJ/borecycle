@@ -2176,7 +2176,7 @@ angular.module('starter.services', [])
       weichatConfig: function (timestamp, nonceStr, signature) { //微信JS SDK 通过config接口注入权限验证配置
         wx.config({
           debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-          appId: 'wxb7618c43863f5a2f', // 必填，公众号的唯一标识
+          appId: 'wx39ba5b2a2f59ef2c', // 必填，公众号的唯一标识
           timestamp: timestamp, // 必填，生成签名的时间戳
           nonceStr: nonceStr, // 必填，生成签名的随机串
           signature: signature,// 必填，签名，见附录1
@@ -2263,7 +2263,7 @@ angular.module('starter.services', [])
         function onBridgeReady() {
           WeixinJSBridge.invoke(
             'getBrandWCPayRequest', {
-              "appId": data.appid,     //公众号名称，由商户传入
+              "appId": "wx39ba5b2a2f59ef2c",     //公众号名称，由商户传入
               "timeStamp": data.timestamp,         //时间戳，自1970年以来的秒数
               "nonceStr": data.nonce_str, //随机串
               "package": data.prepay_id,
@@ -2398,7 +2398,7 @@ angular.module('starter.services', [])
         });
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       },
-      wxPayRecharge: function (datas) { //微信统一下单支付订单信息
+      wxPayRecharge: function (datas) { //APP微信统一下单支付订单信息
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise
         promise = $http({

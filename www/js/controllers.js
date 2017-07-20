@@ -267,8 +267,7 @@ angular.module('starter.controllers', [])
         $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/3/drawable-port-xxhdpi-screen.png")
         $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/4/drawable-port-xxhdpi-screen.png")
       }
-    }
-    if ($ionicPlatform.is('ios')) { //ios设备
+    }else if ($ionicPlatform.is('ios')) { //ios设备
 
       if (width == 320 || height == 480) {
         $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/1/Default~iphone.png")
@@ -312,7 +311,14 @@ angular.module('starter.controllers', [])
         $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/3/Default-736h.png")
         $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/4/Default-736h.png")
       }
+    }else {//h5
+      $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/1/drawable-port-xxxhdpi-screen.png")
+      $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/2/drawable-port-xxxhdpi-screen.png")
+      $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/3/drawable-port-xxxhdpi-screen.png")
+      $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/4/drawable-port-xxxhdpi-screen.png")
     }
+
+
     //ng-repeat遍历生成一个个slide块的时候，执行完成页面是空白的 手动在渲染之后更新一下，在控制器注入$ionicSlideBoxDelegate，然后渲染数据之后
     $timeout(function () {
       $ionicSlideBoxDelegate.$getByHandle("startslideboximgs").update();
