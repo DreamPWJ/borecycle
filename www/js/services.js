@@ -2176,7 +2176,7 @@ angular.module('starter.services', [])
       weichatConfig: function (timestamp, nonceStr, signature) { //微信JS SDK 通过config接口注入权限验证配置
         wx.config({
           debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-          appId: 'wx39ba5b2a2f59ef2c', // 必填，公众号的唯一标识
+          appId: 'wxb7618c43863f5a2f', // 必填，公众号的唯一标识
           timestamp: timestamp, // 必填，生成签名的时间戳
           nonceStr: nonceStr, // 必填，生成签名的随机串
           signature: signature,// 必填，签名，见附录1
@@ -2263,7 +2263,7 @@ angular.module('starter.services', [])
         function onBridgeReady() {
           WeixinJSBridge.invoke(
             'getBrandWCPayRequest', {
-              "appId": "wx7a6a63e9ee94e24d",     //公众号名称，由商户传入
+              "appId": "wxb7618c43863f5a2f",     //公众号名称，由商户传入
               "timeStamp": data.timeStamp,         //时间戳，自1970年以来的秒数
               "nonceStr": data.nonceStr, //随机串
               "package": data.package,
