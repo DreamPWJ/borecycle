@@ -3141,7 +3141,7 @@ angular.module('starter.controllers', [])
       money: ""
     }
     $scope.confirmPayment = function () { //充值
-      if (WeiXinService.isWeiXin()) { //微信H5支付
+      if (WeiXinService.isWeiXin()) { //微信公众号支付
         $scope.isWeiXin = true;
         $scope.wxh5datas = {
           out_trade_no: new Date().getTime(),//订单号
@@ -3152,7 +3152,7 @@ angular.module('starter.controllers', [])
           name: JSON.parse(localStorage.getItem("user")).username//用户名
         }
         console.log($scope.wxh5datas);
-        PayService.wxpayH5($scope.wxh5datas).success(function (data) {
+        PayService.wxpayGZH($scope.wxh5datas).success(function (data) {
           console.log(data);
           if (data.code == 1001) {
             WeiXinService.wxchooseWXPay(data.data);
