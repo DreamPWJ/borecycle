@@ -1758,6 +1758,9 @@ angular.module('starter.controllers', [])
     if (!CommonService.isLogin(true)) {
       return;
     }
+    if (ionic.Platform.isWebView()) {
+      $scope.isWebView = true;
+    }
     //调出分享面板
     CommonService.customModal($scope, 'templates/modal/share.html');
 
@@ -2327,7 +2330,9 @@ angular.module('starter.controllers', [])
   .controller('HelpCtrl', function ($scope, $rootScope, $stateParams, $state, BoRecycle, CommonService, MainService, AccountService, WeiXinService) {
     //调出分享面板
     CommonService.customModal($scope, 'templates/modal/share.html');
-
+    if (ionic.Platform.isWebView()) {
+      $scope.isWebView = true;
+    }
     $scope.getHelpDetails = function () {
       var id = $stateParams.ID;
       if (id == 11) {
@@ -3128,12 +3133,34 @@ angular.module('starter.controllers', [])
   })
 
   //充值
-  .controller('RechargeCtrl', function ($scope, CommonService, PayService) {
+  .controller('RechargeCtrl', function ($scope, CommonService, PayService, WeiXinService) {
     $scope.pay = { //支付相关
       choice: "B",//选择支付方式默认
       money: ""
     }
     $scope.confirmPayment = function () { //充值
+      if (WeiXinService.isWeiXin()) { //微信H5支付
+        $scope.isWeiXin = true;
+        $scope.wxh5datas = {
+          out_trade_no: new Date().getTime(),//订单号
+          subject: "收收充值",//商品名称
+          body: "收收充值详情",//商品详情
+          total_fee: $scope.pay.money, //总金额
+          userid: localStorage.getItem("userid"),//用户userid
+          name: JSON.parse(localStorage.getItem("user")).username//用户名
+        }
+        console.log($scope.wxh5datas);
+        PayService.wxpayH5($scope.wxh5datas).success(function (data) {
+          console.log(data);
+          if (data.code == 1001) {
+            WeiXinService.wxchooseWXPay(data.data);
+          } else {
+            CommonService.platformPrompt(data.message, 'close');
+          }
+
+        })
+        return;
+      }
       /*     if (ionic.Platform.isWebView()) {*/
       if ($scope.pay.choice == "A") {//支付宝支付
         $scope.alidatas = {
