@@ -823,13 +823,12 @@ angular.module('starter.controllers', [])
       $scope.user.addrcode = $scope.addrareacountyone.ID;
       $scope.user.img = $scope.ImgsPicAddr[0]; //证件照地址
       console.log(JSON.stringify($scope.user));
-
       AccountService.setUserInfo($scope.user).success(function (data) {
         console.log(data);
         if (data.code == 1001) {
           CommonService.platformPrompt("完善资料提交成功", localStorage.getItem("userid") ? '' : 'login');
         } else {
-          CommonService.platformPrompt(datas.message, 'close');
+          CommonService.platformPrompt(data.message, 'close');
         }
 
         if (data.code == 1001 && localStorage.getItem("userid")) {  //更新用户信息
