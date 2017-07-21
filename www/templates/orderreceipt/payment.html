@@ -1,6 +1,7 @@
 <ion-view>
   <ion-nav-buttons side="left">
-    <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back ui-sref="order({orderType:2})"></button>
+    <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back
+            ui-sref="order({orderType:2})"></button>
   </ion-nav-buttons>
   <ion-nav-title>
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 付款</h1>
@@ -20,9 +21,9 @@
         <ion-item>
           应付金额 : {{orderinfo.amount | currency:'￥'}}
         </ion-item>
-        <ion-item ng-if="orderinfo.type==1&&orderDetail.informationmoney">
-          预计信息费金额 : {{orderDetail.informationmoney | currency:'￥'}}
-        </ion-item>
+        <!--        <ion-item ng-if="orderinfo.type==1&&orderDetail.informationmoney">
+                  预计信息费金额 : {{orderDetail.informationmoney | currency:'￥'}}
+                </ion-item>-->
         <ion-item class="item-button-right" ng-if="orderinfo.type==2&&pay.choice==2">
           我的余额 : {{orderSum.account| currency:'￥'}} {{(orderSum.account < orderinfo.amount)?' (余额不足)':''}}
           <button class="button button-balanced" ui-sref="recharge">充值</button>
@@ -40,7 +41,9 @@
     </ion-list>
   </ion-content>
   <div class="padding light-bg bottom-0" keyboard-attach>
-    <a class="button button-positive  full-image" ng-disabled="(orderinfo.type==2&&(pay.choice==2&&orderSum.account < orderinfo.amount))" ng-click="confirmPayment()">确认付款</a>
+    <a class="button button-positive  full-image"
+       ng-disabled="(orderinfo.type==2&&(pay.choice==2&&orderSum.account < orderinfo.amount))"
+       ng-click="confirmPayment()">确认付款</a>
   </div>
 
 </ion-view>

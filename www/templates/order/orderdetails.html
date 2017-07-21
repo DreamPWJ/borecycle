@@ -23,9 +23,10 @@
         <ion-item class="text-wrap">
           回收品类 : {{orderDetail.category}} <span class=" {{orderDetail.hytype==1?'bhytype':(orderDetail.hytype==2?'ehytype':'')}} ">{{orderDetail.hytype==1?'废品':(orderDetail.hytype==2?'二手':'')}}</span>
         </ion-item>
-        <ion-item>
+        <a class="item item-icon-right" href="tel:{{orderDetail.motel}}">
           联系电话 : {{type==1?(orderDetail.motel | hidepartinfo : 'phone'):orderDetail.motel }}
-        </ion-item>
+          <i class="icon iconfont icon-phone energized"></i>
+        </a>
         <ion-item class="text-wrap item-icon-right">
           联系地址 : {{orderDetail.addrdetail }}({{orderDetail.area.MergerName}})
           <i ng-click="navigation(orderDetail.longitude,orderDetail.latitude)"

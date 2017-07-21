@@ -1668,13 +1668,13 @@ angular.module('starter.controllers', [])
           }
         })
       }
-      if ($scope.orderinfo.type == 1 && $scope.orderDetail.informationmoney) { //如果是登记信息（type=1）的情况，要提示他的“预计信息费金额”
-        CommonService.showConfirm('支付提示', '温馨提示:此订单的预计信息费金额为 ' + $scope.orderDetail.informationmoney + ' 元 , 支付请点击"确定",否则请点击"取消"', '确定', '取消', '', 'close', function () {
-          $scope.payOrderReceipt()
-        });
-      } else {
-        $scope.payOrderReceipt()
-      }
+      /*      if ($scope.orderinfo.type == 1 && $scope.orderDetail.informationmoney) { //如果是登记信息（type=1）的情况，要提示他的“预计信息费金额”
+       CommonService.showConfirm('支付提示', '温馨提示:此订单的预计信息费金额为 ' + $scope.orderDetail.informationmoney + ' 元 , 支付请点击"确定",否则请点击"取消"', '确定', '取消', '', 'close', function () {
+       $scope.payOrderReceipt()
+       });
+       } else {*/
+      $scope.payOrderReceipt()
+      /*  }*/
 
 
     }
