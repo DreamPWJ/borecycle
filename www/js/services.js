@@ -2234,12 +2234,12 @@ angular.module('starter.services', [])
               optId: uploadtype //上传媒体操作类型 1.卖货单 2 供货单 3 买货单 4身份证 5 头像
             }
             WeiXinService.getWCMedia($scope.mediaparams).success(function (data) {
-              $scope.imageList.push(BoRecycle.imgUrl +data.data);//客户端显示的url
-              $scope.ImgsPicAddr.push(BoRecycle.imgUrl +data.data);//提交订单需要的url
+              $scope.imageList.push(data.url);//客户端显示的url
+              $scope.ImgsPicAddr.push(BoRecycle.imgUrl + data.savepath);//提交需要的url
               if (uploadtype == 5) {//上传头像单独处理
                 var figurparams = {
                   userid: localStorage.getItem("userid"),
-                  figure: BoRecycle.imgUrl + data.data //上传图片接口获得地址
+                  figure: BoRecycle.imgUrl + data.savepath //上传图片接口获得地址
                 }
                 AccountService.setFigure(figurparams);
               }
@@ -2368,7 +2368,7 @@ angular.module('starter.services', [])
           }
         });
       },
-      getQueryString: function (url,name) { // 通过key获取url中的参数值
+      getQueryString: function (url, name) { // 通过key获取url中的参数值
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
         var r = url.search.substr(1).match(reg);
         if (r != null) return unescape(r[2]);
