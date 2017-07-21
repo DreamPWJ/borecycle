@@ -99,7 +99,9 @@ angular.module('starter.controllers', [])
 
       //是否是微信 初次获取签名 获取微信签名
       if (WeiXinService.isWeiXin()) {
-        window.open('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx39ba5b2a2f59ef2c&redirect_uri=encodeURIComponent("http://s.boolv.com")&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect')
+        if (!localStorage.getItem("openid")) {
+          window.open('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx39ba5b2a2f59ef2c&redirect_uri=encodeURIComponent("http://s.boolv.com/#/tab/main")&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect')
+        }
         // 获取微信签名
         $scope.wxparams = {
           url: location.href.split('#')[0] //当前网页的URL，不包含#及其后面部分
@@ -268,7 +270,7 @@ angular.module('starter.controllers', [])
         $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/3/drawable-port-xxhdpi-screen.png")
         $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/4/drawable-port-xxhdpi-screen.png")
       }
-    }else if ($ionicPlatform.is('ios')) { //ios设备
+    } else if ($ionicPlatform.is('ios')) { //ios设备
 
       if (width == 320 || height == 480) {
         $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/1/Default~iphone.png")
@@ -312,7 +314,7 @@ angular.module('starter.controllers', [])
         $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/3/Default-736h.png")
         $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/4/Default-736h.png")
       }
-    }else {//h5
+    } else {//h5
       $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/1/drawable-port-xxxhdpi-screen.png")
       $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/2/drawable-port-xxxhdpi-screen.png")
       $scope.imgname.push(BoRecycle.imgUrl + "/ShouShou/3/drawable-port-xxxhdpi-screen.png")
@@ -3211,9 +3213,10 @@ angular.module('starter.controllers', [])
             }
           })
         }
-      } else {
-        CommonService.platformPrompt("充值功能请使用APP客户端操作", 'close');
       }
+      /*else {
+       CommonService.platformPrompt("充值功能请使用APP客户端操作", 'close');
+       }*/
 
 
     }
