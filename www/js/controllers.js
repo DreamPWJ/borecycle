@@ -97,11 +97,29 @@ angular.module('starter.controllers', [])
         })
       }
 
-      //是否是微信 初次获取签名 获取微信签名
+      //是否是微信 初次获取签名 获取微信签名 获取微信登录授权
       if (WeiXinService.isWeiXin()) {
-        if (!localStorage.getItem("wxoauth2")) {
-          window.open('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx39ba5b2a2f59ef2c&redirect_uri=' + encodeURIComponent("http://m.boolv.com/WeChat") + '&response_type=code&scope=snsapi_base&state=shoushou#wechat_redirect')
-          localStorage.setItem("wxoauth2", true);
+        if (!localStorage.getItem("openid")) { //微信登录授权
+          WeiXinService.getWCOauth2().success(function () {
+            localStorage.setItem("wxoauth2", true);
+            //获取微信openid获取会员账号，如果没有则添加
+            var wxcode = WeiXinService.getQueryString(window.location, "code");
+            console.log("================" + wxcode);
+            if (wxcode) {
+              WeiXinService.getWCOpenId({
+                code: code,
+                UserLogID: localStorage.getItem("userid") || ""
+              }).success(function (data) {
+                console.log(data);
+                if (data == 1001) {
+                  localStorage.setItem("openid", data.data)
+                } else {
+                  CommonService.platformPrompt("获取微信OpenID失败", 'close');
+                }
+
+              })
+            }
+          })
         }
         // 获取微信签名
         $scope.wxparams = {
@@ -119,24 +137,7 @@ angular.module('starter.controllers', [])
             CommonService.platformPrompt("获取微信签名失败", 'close');
           }
         })
-        //获取微信openid获取会员账号，如果没有则添加
-        var wxcode = WeiXinService.getQueryString("code");
 
-        console.log("================" + wxcode);
-        if (wxcode) {
-          WeiXinService.getWCOpenId({
-            code: code,
-            UserLogID: localStorage.getItem("userid") || ""
-          }).success(function (data) {
-            console.log(data);
-            if (data == 1001) {
-              localStorage.setItem("openid", data.data)
-            } else {
-              CommonService.platformPrompt("获取微信OpenID失败", 'close');
-            }
-
-          })
-        }
 
       }
       //根据会员ID获取会员账号基本信息
