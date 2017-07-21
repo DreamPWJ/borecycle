@@ -79,7 +79,7 @@ angular.module('starter.controllers', [])
       }
 
 
-      if ($ionicPlatform.is('android')) {//android系统自动更新软件版本
+      if (ionic.Platform.isWebView() && $ionicPlatform.is('android')) {//android系统自动更新软件版本
         $scope.versionparams = {
           ID: 3,//编码 ,等于空时取所有
           Name: '',//软件名称（中文）
@@ -100,7 +100,7 @@ angular.module('starter.controllers', [])
       //是否是微信 初次获取签名 获取微信签名
       if (WeiXinService.isWeiXin()) {
         if (!localStorage.getItem("openid")) {
-          window.open('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx39ba5b2a2f59ef2c&redirect_uri=encodeURIComponent("http://s.boolv.com/#/tab/main")&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect')
+          window.open('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx39ba5b2a2f59ef2c&redirect_uri=encodeURIComponent("http://m.boolv.com/WeChat")&response_type=code&scope=snsapi_base&state=shoushou#wechat_redirect')
         }
         // 获取微信签名
         $scope.wxparams = {
@@ -121,7 +121,6 @@ angular.module('starter.controllers', [])
         //获取微信openid获取会员账号，如果没有则添加
         var wxcode = WeiXinService.getQueryString("code");
 
-        console.log("================" + window.location);
         console.log("================" + wxcode);
         if (wxcode) {
           WeiXinService.getWCOpenId({
