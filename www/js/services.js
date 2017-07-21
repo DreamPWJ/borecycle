@@ -2102,7 +2102,7 @@ angular.module('starter.services', [])
 
     }
   })
-  .service('WeiXinService', function ($q, $http, BoRecycle) { //微信 JS SDK 接口服务定义
+  .service('WeiXinService', function ($q, $http, BoRecycle, AccountService) { //微信 JS SDK 接口服务定义
     return {
       //获取微信access_token
       getWCtoken: function () {
@@ -2221,6 +2221,14 @@ angular.module('starter.services', [])
             }
             WeiXinService.getWCMedia($scope.mediaparams).success(function (data) {
               $scope.imageList.push(data.data.url);//客户端显示的url
+              $scope.ImgsPicAddr.push(data.Values.savepath);//提交订单需要的url
+              if (uploadtype == 5) {//上传头像单独处理
+                var figurparams = {
+                  userid: localStorage.getItem("userid"),
+                  figure: BoRecycle.imgUrl + data.Values.savepath //上传图片接口获得地址
+                }
+                AccountService.setFigure(figurparams);
+              }
             })
           }
         });

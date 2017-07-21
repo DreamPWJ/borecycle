@@ -771,6 +771,7 @@ angular.module('starter.controllers', [])
           batch: false, //batch=true为批量查询。batch=false为单点查询
           roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
         }).success(function (data) {
+          console.log(data);
           var addressComponent = data.regeocode.addressComponent;
           $scope.addresspois = data.regeocode.pois;
           $scope.city = addressComponent.city;
@@ -2034,6 +2035,7 @@ angular.module('starter.controllers', [])
           batch: false, //batch=true为批量查询。batch=false为单点查询
           roadlevel: 0//可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
         }).success(function (data) {
+          console.log(data);
           var addressComponent = data.regeocode.addressComponent;
           $scope.addresspois = data.regeocode.pois;
           $scope.city = addressComponent.city;
@@ -2523,6 +2525,7 @@ angular.module('starter.controllers', [])
           batch: false, //batch=true为批量查询。batch=false为单点查询
           roadlevel: 0//可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
         }).success(function (data) {
+          console.log(data);
           var addressComponent = data.regeocode.addressComponent;
           $scope.addresspois = data.regeocode.pois;
           $scope.city = addressComponent.city;
