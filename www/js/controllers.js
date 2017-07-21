@@ -99,8 +99,9 @@ angular.module('starter.controllers', [])
 
       //是否是微信 初次获取签名 获取微信签名
       if (WeiXinService.isWeiXin()) {
-        if (!localStorage.getItem("openid")) {
-          window.open('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx39ba5b2a2f59ef2c&redirect_uri='+encodeURIComponent("http://m.boolv.com/WeChat")+'&response_type=code&scope=snsapi_base&state=shoushou#wechat_redirect')
+        if (!localStorage.getItem("wxoauth2")) {
+          window.open('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx39ba5b2a2f59ef2c&redirect_uri=' + encodeURIComponent("http://m.boolv.com/WeChat") + '&response_type=code&scope=snsapi_base&state=shoushou#wechat_redirect')
+          localStorage.setItem("wxoauth2", true);
         }
         // 获取微信签名
         $scope.wxparams = {
@@ -820,7 +821,7 @@ angular.module('starter.controllers', [])
       $scope.user.grps = $scope.recyclingCategory.join(",");
       $scope.user.addrcode = $scope.addrareacountyone.ID;
       $scope.user.img = $scope.ImgsPicAddr[0]; //证件照地址
-      console.log($scope.user);
+      console.log(JSON.stringify($scope.user));
 
       AccountService.setUserInfo($scope.user).success(function (data) {
         console.log(data);
@@ -1900,7 +1901,7 @@ angular.module('starter.controllers', [])
   //地址详细列表
   .controller('MyAddressCtrl', function ($scope, $state, $rootScope, $ionicHistory, CommonService, AddressService) {
     if ($ionicHistory.backView() && $ionicHistory.backView().stateName != 'tab.account') {
-      $scope.isSelect=true;
+      $scope.isSelect = true;
       $scope.selectAddress = function (item) {
         $rootScope.addrlistFirst = {}
         $rootScope.addrlistFirst = item;
@@ -3256,72 +3257,72 @@ angular.module('starter.controllers', [])
     console.log($scope.infeels);
   })
   //下载页面
-  .controller('downloadCtrl',function ($scope,$ionicPlatform,BoRecycle) {
+  .controller('downloadCtrl', function ($scope, $ionicPlatform, BoRecycle) {
     var width = window.screen.width * window.devicePixelRatio;//屏幕的宽分辨率
     var height = window.screen.height * window.devicePixelRatio;//屏幕的高分辨率
     $scope.dbg;//背景
     if ($ionicPlatform.is('android')) {//android设备
       if (width == 240 || height == 320) {
-        $scope.dbg=BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-ldpi-screen.png";
+        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-ldpi-screen.png";
       } else if (width == 320 || height == 480) {
-        $scope.dbg=BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-mdpi-screen.png";
+        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-mdpi-screen.png";
       } else if (width == 480 || height == 800) {
-        $scope.dbg=BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-hdpi-screen.png";
+        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-hdpi-screen.png";
       } else if (width == 720 || height == 1280) {
-        $scope.dbg=BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-xhdpi-screen.png";
+        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-xhdpi-screen.png";
       } else if (width == 1080 || height == 1920) {
-        $scope.dbg=BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-xxhdpi-screen.png";
+        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-xxhdpi-screen.png";
       } else if (width == 2160 || height == 3840) {
-        $scope.dbg=BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-xxxhdpi-screen.png";
+        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-xxxhdpi-screen.png";
       } else {
-        $scope.dbg=BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-xxhdpi-screen.png";
+        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-xxhdpi-screen.png";
       }
     }
     if ($ionicPlatform.is('ios')) { //ios设备
       if (width == 320 || height == 480) {
-        $scope.dbg=BoRecycle.imgUrl + "/ShouShou/down-bg/Default~iphone.png";
+        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default~iphone.png";
       } else if (width == 640 || height == 960) {
-        $scope.dbg=BoRecycle.imgUrl + "/ShouShou/down-bg/Default@2x~iphone.png";
+        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default@2x~iphone.png";
       } else if (width == 640 || height == 1136) {
-        $scope.dbg=BoRecycle.imgUrl + "/ShouShou/down-bg/Default-568h@2x~iphone.png";
+        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default-568h@2x~iphone.png";
       } else if (width == 750 || height == 1134) {
-        $scope.dbg=BoRecycle.imgUrl + "/ShouShou/down-bg/Default-667h.png";
+        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default-667h.png";
       } else if (width == 1242 || height == 2208) {
-        $scope.dbg=BoRecycle.imgUrl + "/ShouShou/down-bg/Default-736h.png";
+        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default-736h.png";
       } else if (width == 768 || height == 1024) {
-        $scope.dbg=BoRecycle.imgUrl + "/ShouShou/down-bg/Default-Portrait~ipad.png";
+        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default-Portrait~ipad.png";
       } else if (width == 1536 || height == 2048) {
-        $scope.dbg=BoRecycle.imgUrl + "/ShouShou/down-bg/Default-Portrait@2x~ipad.png";
+        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default-Portrait@2x~ipad.png";
       }
       else {
-        $scope.dbg=BoRecycle.imgUrl + "/ShouShou/down-bg/Default-736h.png";
+        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default-736h.png";
       }
     }
     if ($ionicPlatform.is('browser')) { //ios设备
       if (width == 240 || height == 320) {
-        $scope.dbg=BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-ldpi-screen.png";
-      }else if (width == 320 || height == 480) {
-        $scope.dbg=BoRecycle.imgUrl + "/ShouShou/down-bg/Default~iphone.png";
+        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-ldpi-screen.png";
+      } else if (width == 320 || height == 480) {
+        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default~iphone.png";
       } else if (width == 640 || height == 960) {
-        $scope.dbg=BoRecycle.imgUrl + "/ShouShou/down-bg/Default@2x~iphone.png";
+        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default@2x~iphone.png";
       } else if (width == 640 || height == 1136) {
-        $scope.dbg=BoRecycle.imgUrl + "/ShouShou/down-bg/Default-568h@2x~iphone.png";
+        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default-568h@2x~iphone.png";
       } else if (width == 750 || height == 1134) {
-        $scope.dbg=BoRecycle.imgUrl + "/ShouShou/down-bg/Default-667h.png";
+        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default-667h.png";
       } else if (width == 1242 || height == 2208) {
-        $scope.dbg=BoRecycle.imgUrl + "/ShouShou/down-bg/Default-736h.png";
+        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default-736h.png";
       } else if (width == 768 || height == 1024) {
-        $scope.dbg=BoRecycle.imgUrl + "/ShouShou/down-bg/Default-Portrait~ipad.png";
+        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default-Portrait~ipad.png";
       } else if (width == 480 || height == 800) {
-        $scope.dbg=BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-hdpi-screen.png";
+        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-hdpi-screen.png";
       } else if (width == 720 || height == 1280) {
-        $scope.dbg=BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-xhdpi-screen.png";
+        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-xhdpi-screen.png";
       } else if (width == 1080 || height == 1920) {
-        $scope.dbg=BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-xxhdpi-screen.png";
+        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-xxhdpi-screen.png";
       } else if (width == 2160 || height == 3840) {
-        $scope.dbg=BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-xxxhdpi-screen.png";
+        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-xxxhdpi-screen.png";
       } else {
-        $scope.dbg=BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-xxhdpi-screen.png";
+        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-xxhdpi-screen.png";
       }
     }
   })
