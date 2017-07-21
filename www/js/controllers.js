@@ -1901,6 +1901,7 @@ angular.module('starter.controllers', [])
   //地址详细列表
   .controller('MyAddressCtrl', function ($scope, $state, $rootScope, $ionicHistory, CommonService, AddressService) {
     if ($ionicHistory.backView() && $ionicHistory.backView().stateName != 'tab.account') {
+      $scope.isSelect=true;
       $scope.selectAddress = function (item) {
         $rootScope.addrlistFirst = {}
         $rootScope.addrlistFirst = item;

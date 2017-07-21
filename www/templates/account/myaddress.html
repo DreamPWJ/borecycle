@@ -17,29 +17,30 @@
     <ion-list>
       <div ng-repeat="item in addrlist">
         <ion-item ng-click="selectAddress(item)" class="border-bottom">
-          <h2>联系人 :{{item.UserName}}<!-- <span ng-if="item.Status==1" class="right-1  balanced"> ● 默认</span>--></h2>
+          <h2>联系人 :{{item.UserName}} <span ng-if="isSelect&&item.Status==1" class="right-1  balanced"> ● 默认</span></h2>
           <p>手机 : {{item.MoTel}}</p>
           <p class="text-wrap">地址 : {{item.AddrDetailForPCC}}</p>
-<!--          <ion-option-button class="button-assertive" ng-click="deleteAddr(item.ID)">删除</ion-option-button>
-          <ion-option-button class="button-positive" ng-click="updateaddress(item)">编辑</ion-option-button>
-          <ion-option-button class="button-balanced" ng-click="setDefaultAddr(item.ID)" ng-if="item.Status==0">设置默认
-          </ion-option-button>-->
+          <!--          <ion-option-button class="button-assertive" ng-click="deleteAddr(item.ID)">删除</ion-option-button>
+                    <ion-option-button class="button-positive" ng-click="updateaddress(item)">编辑</ion-option-button>
+                    <ion-option-button class="button-balanced" ng-click="setDefaultAddr(item.ID)" ng-if="item.Status==0">设置默认
+                    </ion-option-button>-->
         </ion-item>
-        <div  class="row row-no-padding  row-center light-bg address-sub grey">
-        <div class="item item-checkbox  checkbox-positive  col-50 grey"  >
-          <div class="checkbox" >
-            <input type="checkbox" ng-click="item.Status==1?'':setDefaultAddr(item.ID)" ng-readonly="item.Status==1" ng-checked="item.Status==1">
+        <div ng-if="!isSelect" class="row row-no-padding  row-center light-bg address-sub grey">
+          <div class="item item-checkbox  checkbox-positive  col-50 grey">
+            <div class="checkbox">
+              <input type="checkbox" ng-click="item.Status==1?'':setDefaultAddr(item.ID)" ng-readonly="item.Status==1"
+                     ng-checked="item.Status==1">
+            </div>
+            设为默认
           </div>
-          设为默认
-        </div>
-        <i class="icon iconfont icon-edit col-20 col-offset-10" ng-click="updateaddress(item)"> 编辑</i>
-        <i class="icon iconfont icon-delete col-20 " ng-click="deleteAddr(item.ID)"> 删除</i>
+          <i class="icon iconfont icon-edit col-20 col-offset-10" ng-click="updateaddress(item)"> 编辑</i>
+          <i class="icon iconfont icon-delete col-20 " ng-click="deleteAddr(item.ID)"> 删除</i>
         </div>
         <p></p>
       </div>
     </ion-list>
-<!--    <p ng-if="addrlist.length!=0" class="text-center padding-top grey"><i class="icon ion-information-circled"></i>
-      列表左滑可编辑删除我的地址</p>-->
+    <!--    <p ng-if="addrlist.length!=0" class="text-center padding-top grey"><i class="icon ion-information-circled"></i>
+          列表左滑可编辑删除我的地址</p>-->
 
   </ion-content>
 </ion-view>

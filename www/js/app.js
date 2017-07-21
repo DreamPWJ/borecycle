@@ -81,14 +81,20 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
         //启动极光推送服务
         try {
-          window.plugins.jPushPlugin.init();
-          if (device.platform != "Android") {
-            window.plugins.jPushPlugin.setDebugModeFromIos();
-            window.plugins.jPushPlugin.setApplicationIconBadgeNumber(0);
-          } else {
-            window.plugins.jPushPlugin.setDebugMode(true);
-            window.plugins.jPushPlugin.setStatisticsOpen(true);
-          }
+          window.setTimeout(function () {
+            window.plugins.jPushPlugin.init();
+            if (device.platform != "Android") {
+              window.plugins.jPushPlugin.setBadge(0);
+              window.plugins.jPushPlugin.resetBadge();
+              window.plugins.jPushPlugin.setDebugModeFromIos();
+              window.plugins.jPushPlugin.setApplicationIconBadgeNumber(0);
+            } else {
+              window.plugins.jPushPlugin.setLatestNotificationNum(5);
+              window.plugins.jPushPlugin.clearAllNotification();
+              window.plugins.jPushPlugin.setDebugMode(true);
+              window.plugins.jPushPlugin.setStatisticsOpen(true);
+            }
+          }, 200);
         } catch (e) {
           console.log(e);
         }
@@ -99,7 +105,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
               window.plugins.jPushPlugin.resetBadge();
               window.plugins.jPushPlugin.setApplicationIconBadgeNumber(0);
             } else if (device.platform == "Android") {
-              window.plugins.jPushPlugin.setLatestNotificationNum(3);
+              window.plugins.jPushPlugin.setLatestNotificationNum(5);
               window.plugins.jPushPlugin.clearAllNotification();
             }
           }
