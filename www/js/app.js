@@ -81,45 +81,49 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
         //启动极光推送服务
         try {
-          window.setTimeout(function () {
-            window.plugins.jPushPlugin.init();
-            if (device.platform != "Android") {
-              window.plugins.jPushPlugin.setBadge(0);
-              window.plugins.jPushPlugin.resetBadge();
-              window.plugins.jPushPlugin.setDebugModeFromIos();
-              window.plugins.jPushPlugin.setApplicationIconBadgeNumber(0);
-            } else {
-              window.plugins.jPushPlugin.setLatestNotificationNum(5);
-              window.plugins.jPushPlugin.clearAllNotification();
-              window.plugins.jPushPlugin.setDebugMode(true);
-              window.plugins.jPushPlugin.setStatisticsOpen(true);
-            }
-          }, 200);
+          window.plugins.jPushPlugin.init();
+          if (device.platform != "Android") {
+            window.plugins.jPushPlugin.setBadge(0);
+            window.plugins.jPushPlugin.resetBadge();
+            window.plugins.jPushPlugin.setDebugModeFromIos();
+            window.plugins.jPushPlugin.setApplicationIconBadgeNumber(0);
+          } else {
+            window.plugins.jPushPlugin.setLatestNotificationNum(5);
+            window.plugins.jPushPlugin.clearAllNotification();
+            window.plugins.jPushPlugin.setDebugMode(true);
+            window.plugins.jPushPlugin.setStatisticsOpen(true);
+          }
+
         } catch (e) {
           console.log(e);
         }
-        window.setTimeout(function () {
-          function resume() {
-            if (window.plugins.jPushPlugin.isPlatformIOS()) {
-              window.plugins.jPushPlugin.setBadge(0);
-              window.plugins.jPushPlugin.resetBadge();
-              window.plugins.jPushPlugin.setApplicationIconBadgeNumber(0);
-            } else if (device.platform == "Android") {
-              window.plugins.jPushPlugin.setLatestNotificationNum(5);
-              window.plugins.jPushPlugin.clearAllNotification();
-            }
+
+        function resume() {
+          if (window.plugins.jPushPlugin.isPlatformIOS()) {
+            window.plugins.jPushPlugin.setBadge(0);
+            window.plugins.jPushPlugin.resetBadge();
+            window.plugins.jPushPlugin.setApplicationIconBadgeNumber(0);
+          } else if (device.platform == "Android") {
+            window.plugins.jPushPlugin.setLatestNotificationNum(5);
+            window.plugins.jPushPlugin.clearAllNotification();
           }
+        }
 
-          // System events
-          document.addEventListener("resume", resume, false);
+        // System events
+        document.addEventListener("resume", resume, false);
 
-          //点击极光推送跳转到相应页面/点击通知栏的回调
-          document.addEventListener("jpush.openNotification", function (data) {
-            var BLNo = data.extras.BLNo; //订单号
-            $state.go("myorderdetails", {no: BLNo});//订单详情
-          }, false)
+        //点击极光推送跳转到相应页面/点击通知栏的回调
+        document.addEventListener("jpush.openNotification", function (data) {
+          var BLNo = data.extras.BLNo; //订单号
+          $state.go("myorderdetails", {no: BLNo});//订单详情
+        }, false)
 
-        }, 3000);
+        //点击极光推送跳转到相应页面
+        document.addEventListener("jpush.receiveMessage", function (data) {
+          var BLNo = data.extras.BLNo; //订单号
+          $state.go("myorderdetails", {no: BLNo});//订单详情
+        }, false)
+
 
         //调试模式，这样报错会在应用中弹出一个遮罩层显示错误信息
         //window.plugins.jPushPlugin.setDebugMode(true);
