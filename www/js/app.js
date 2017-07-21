@@ -563,6 +563,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/infofee.html',
         controller: 'infeeCtrl'
       })
+      //下载页
+      .state('download', {
+        url: '/download',
+        cache: true,
+        templateUrl: 'templates/download.html',
+        controller: 'downloadCtrl'
+      })
     // if none of the above states are matched, use this as the fallback
     //动态判断是否显示初始化页面
     if (localStorage.getItem('isStart')) {
