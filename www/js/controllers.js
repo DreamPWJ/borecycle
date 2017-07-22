@@ -3165,7 +3165,8 @@ angular.module('starter.controllers', [])
           body: "收收充值详情",//商品详情
           total_fee: $scope.pay.money, //总金额
           userid: localStorage.getItem("userid"),//用户userid
-          name: JSON.parse(localStorage.getItem("user")).username//用户名
+          name: JSON.parse(localStorage.getItem("user")).username,//用户名
+          openid: localStorage.getItem("openid") //微信openid
         }
         console.log($scope.wxh5datas);
         PayService.wxpayGZH($scope.wxh5datas).success(function (data) {
@@ -3179,17 +3180,17 @@ angular.module('starter.controllers', [])
         })
       }
       if (ionic.Platform.isWebView()) {
+        $scope.appdatas = {
+          out_trade_no: new Date().getTime(),//订单号
+          subject: "收收充值",//商品名称
+          body: "收收充值详情",//商品详情
+          total_fee: $scope.pay.money, //总金额
+          userid: localStorage.getItem("userid"),//用户userid
+          name: JSON.parse(localStorage.getItem("user")).username//用户名
+        }
+        console.log($scope.appdatas);
         if ($scope.pay.choice == "A") {//支付宝支付
-          $scope.alidatas = {
-            out_trade_no: new Date().getTime(),//订单号
-            subject: "收收充值",//商品名称
-            body: "收收充值详情",//商品详情
-            total_fee: $scope.pay.money, //总金额
-            userid: localStorage.getItem("userid"),//用户userid
-            name: JSON.parse(localStorage.getItem("user")).username//用户名
-          }
-          console.log($scope.alidatas);
-          PayService.aliPayRecharge($scope.alidatas).success(function (data) {
+          PayService.aliPayRecharge($scope.appdatas).success(function (data) {
             console.log(data);
             if (data.code == 1001) {
               PayService.aliPay(data.data);
@@ -3199,16 +3200,7 @@ angular.module('starter.controllers', [])
 
           })
         } else if ($scope.pay.choice == "B") {//微信支付
-          $scope.wxdatas = {
-            out_trade_no: new Date().getTime(),//订单号
-            subject: "收收充值",//商品名称
-            body: "收收充值详情",//商品详情
-            total_fee: $scope.pay.money,  //总金额
-            userid: localStorage.getItem("userid"),//用户userid
-            name: JSON.parse(localStorage.getItem("user")).username//用户名
-          }
-          console.log($scope.wxdatas);
-          PayService.wxPayRecharge($scope.wxdatas).success(function (data) {
+          PayService.wxPayRecharge($scope.appdatas).success(function (data) {
             console.log(data);
             if (data.code == 1001) {
               PayService.weixinPay(data.data);
@@ -3222,7 +3214,32 @@ angular.module('starter.controllers', [])
        CommonService.platformPrompt("充值功能请使用APP客户端操作", 'close');
        }*/
 
+      if (!ionic.Platform.isWebView() && !WeiXinService.isWeiXin()) {
+        $scope.h5datas = {
+          out_trade_no: new Date().getTime(),//订单号
+          subject: "收收充值",//商品名称
+          body: "收收充值详情",//商品详情
+          total_fee: $scope.pay.money, //总金额
+          userid: localStorage.getItem("userid"),//用户userid
+          name: JSON.parse(localStorage.getItem("user")).username//用户名
+        }
+        console.log($scope.h5datas);
+        if ($scope.pay.choice == "A") {//支付宝支付
 
+        } else if ($scope.pay.choice == "B") {//微信支付
+          PayService.wxpayH5($scope.h5datas).success(function (data) {
+            console.log(data);
+            if (data.code == 1001) {
+              window.open(data.data.mweb_url);//支付跳转
+            } else {
+              CommonService.platformPrompt(data.message, 'close');
+            }
+
+          })
+        }
+
+
+      }
     }
   })
 
