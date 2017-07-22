@@ -224,6 +224,14 @@
   padding: 10px 16px;
 }
 
+#orderdetails .orderdetails .item.item-icon-left {
+  padding-left: 54px;
+}
+
+#orderdetails .orderdetails .item.item-icon-right {
+  padding-right: 54px;
+}
+
 #gaode-map {
   width: 100%;
   height: calc(100% + 1rem);

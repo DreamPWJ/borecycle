@@ -27,10 +27,9 @@
           联系电话 : {{type==1?(orderDetail.motel | hidepartinfo : 'phone'):orderDetail.motel }}
           <i class="icon iconfont icon-phone energized"></i>
         </a>
-        <ion-item class="text-wrap item-icon-right">
+        <ion-item class="text-wrap item-icon-right" ng-click="navigation(orderDetail.longitude,orderDetail.latitude)">
           联系地址 : {{orderDetail.addrdetail }}({{orderDetail.area.MergerName}})
-          <i ng-click="navigation(orderDetail.longitude,orderDetail.latitude)"
-             class="icon iconfont icon-daohang1 positive"></i>
+          <i class="icon iconfont icon-daohang1 positive"></i>
         </ion-item>
         <ion-item ng-if="orderDetail.addtime!='0001-01-01T00:00:00'">
           登记时间 : {{orderDetail.addtime |date :'yyyy-MM-dd HH:mm'}}

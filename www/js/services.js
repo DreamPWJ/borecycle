@@ -76,7 +76,8 @@ angular.module('starter.services', [])
         index = index == undefined ? "" : index;
         $ionicModal.fromTemplateUrl(templateurl, {
           scope: $scope,
-          animation: 'slide-in-up'
+          animation: 'slide-in-up',
+          focusFirstInput:true   //默认打开键盘
         }).then(function (modal) {
           $scope["modal" + index] = modal;
         });
