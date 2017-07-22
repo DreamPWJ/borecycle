@@ -971,7 +971,7 @@ angular.module('starter.controllers', [])
 
       $scope.params = {
         page: $scope.tabIndex == 0 ? $scope.jiedanpage : ($scope.tabIndex == 1 ? $scope.chulipage : $scope.page),//页码
-        size: 20//条数
+        size: 10//条数
       }
       var hytype = [];//货物类别
 

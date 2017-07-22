@@ -34,20 +34,20 @@
 }
 
 .bhytype:not(:empty) {
-  display: inline-block;
+  display: inline;
   border: 1px solid #33cd5f;
   border-radius: 2px;
   font-size: 0.7rem;
-  padding: 0 5px;
+  padding: 0 2px;
   color: #33cd5f;
 }
 
 .ehytype:not(:empty) {
-  display: inline-block;
+  display: inline;
   border: 1px solid #f26604;
   border-radius: 2px;
   font-size: 0.7rem;
-  padding: 0 5px;
+  padding: 0 2px;
   color: #f26604;
 }
 
@@ -62,7 +62,7 @@
 
 #myorderlist .close {
   margin-top: 0.2rem !important;
-  padding: 5px 4px;
+  padding: 4px;
 }
 
 #orderlist .jiedan i, #orderlist .pending i, #orderwarning .pending i, #myorderlist .close i {
