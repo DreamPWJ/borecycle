@@ -64,12 +64,15 @@
 .account .expiring:after {
   content: '';
   position: absolute;
-  width: 0px;
+  width: 60px;
   height: 0;
-  border-bottom: 2.3rem solid #ef473a;
-  border-left: 2.3rem solid transparent;
-  right: 1px;
-  bottom: 0px;
+  border-bottom: 18px solid #ef473a;
+  border-left: 18px solid transparent;
+  border-right: 18px solid transparent;
+  right: -15px;
+  bottom: 6px;
+  -webkit-transform: rotate(135deg);
+  transform: rotate(135deg);
 }
 
 .order-item .col:last-child {

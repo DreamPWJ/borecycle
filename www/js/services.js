@@ -1336,9 +1336,10 @@ angular.module('starter.services', [])
       },
       getCurrentCityName: function (params) { //获取首页地理位置城市名称 高德web API
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-        var promise = deferred.promise
+        var promise = deferred.promise;
+        params.callback = 'JSON_CALLBACK';
         promise = $http({
-          method: 'GET',
+          method: 'JSONP',
           url: "http://restapi.amap.com/v3/geocode/regeo",
           params: params
         }).success(function (data) {
@@ -1350,9 +1351,10 @@ angular.module('starter.services', [])
       },
       getPlaceBySearch: function (params) { //关键字搜索：通过用POI的关键字进行条件搜索，例如：肯德基、朝阳公园等；同时支持设置POI类型搜索，例如：银行称 高德web API
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-        var promise = deferred.promise
+        var promise = deferred.promise;
+        params.callback = 'JSON_CALLBACK';
         promise = $http({
-          method: 'GET',
+          method: 'JSONP',
           url: "http://restapi.amap.com/v3/place/text",
           params: params
         }).success(function (data) {
@@ -1364,9 +1366,10 @@ angular.module('starter.services', [])
       },
       getDistrict: function (params) { //行政区域查询高德web API
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-        var promise = deferred.promise
+        var promise = deferred.promise;
+        params.callback = 'JSON_CALLBACK';
         promise = $http({
-          method: 'GET',
+          method: 'JSONP',
           url: "http://restapi.amap.com/v3/config/district",
           params: params
         }).success(function (data) {
@@ -2107,13 +2110,11 @@ angular.module('starter.services', [])
       //获取微信登录授权
       getWCOauth2: function () {
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-        var promise = deferred.promise
+        var promise = deferred.promise;
+        /*  params.callback='JSON_CALLBACK';*/
         promise = $http({
-          method: 'POST',
-          url: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx39ba5b2a2f59ef2c&redirect_uri=' + encodeURIComponent("http://m.boolv.com/WeChat") + '&response_type=code&scope=snsapi_base&state=shoushou#wechat_redirect',
-          headers:{
-            'Content-Type':'application/x-www-form-urlencoded'
-          }
+          method: 'JSONP',
+          url: 'https://open.weixin.qq.com/connect/oauth2/authorize?callback=JSON_CALLBACK&appid=wx39ba5b2a2f59ef2c&redirect_uri=' + encodeURIComponent("http://m.boolv.com/WeChat") + '&response_type=code&scope=snsapi_base&state=shoushou#wechat_redirect',
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {

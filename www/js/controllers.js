@@ -3225,6 +3225,7 @@ angular.module('starter.controllers', [])
 
     }
   })
+
   //生成邀请码
   .controller('tuiguangCtrl', function ($scope, $rootScope, AccountService, CommonService) {
     //是否登录
@@ -3246,6 +3247,7 @@ angular.module('starter.controllers', [])
       });
     }
   })
+
   //信息费标准
   .controller('infeeCtrl', function ($scope, $rootScope, NewsService, CommonService) {
     //是否登录
@@ -3259,63 +3261,64 @@ angular.module('starter.controllers', [])
     });
     console.log($scope.infeels);
   })
+
   //下载页面
-  .controller('downloadCtrl', function ($scope, $ionicPlatform, BoRecycle,CommonService,WeiXinService) {
+  .controller('downloadCtrl', function ($scope, $ionicPlatform, BoRecycle, CommonService, WeiXinService) {
     var width = window.screen.width * window.devicePixelRatio;//屏幕的宽分辨率
     var height = window.screen.height * window.devicePixelRatio;//屏幕的高分辨率
     $scope.dbg;//背景
-      if (width == 240 || height == 320) {
-        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-ldpi-screen.png";
-      } else if (width == 320 || height == 480) {
-        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default~iphone.png";
-      } else if (width == 640 || height == 960) {
-        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default@2x~iphone.png";
-      } else if (width == 640 && height == 1136) {
-        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default-568h@2x~iphone.png";
-      } else if (width == 750 || height == 1134) {
-        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default-667h.png";
-      } else if (width == 1242 || height == 2208) {
-        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default-736h.png";
-      } else if (width == 768 || height == 1024) {
-        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default-Portrait~ipad.png";
-      } else if (width == 480 || height == 800) {
-        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-hdpi-screen.png";
-      } else if (width == 720 || height == 1280) {
-        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-xhdpi-screen.png";
-      } else if (width == 1080 || height == 1920) {
-        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-xxhdpi-screen.png";
-      } else if (width == 2160 || height == 3840) {
-        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-xxxhdpi-screen.png";
-      } else {
-        $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-xxhdpi-screen.png";
+    if (width == 240 || height == 320) {
+      $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-ldpi-screen.png";
+    } else if (width == 320 || height == 480) {
+      $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default~iphone.png";
+    } else if (width == 640 || height == 960) {
+      $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default@2x~iphone.png";
+    } else if (width == 640 && height == 1136) {
+      $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default-568h@2x~iphone.png";
+    } else if (width == 750 || height == 1134) {
+      $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default-667h.png";
+    } else if (width == 1242 || height == 2208) {
+      $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default-736h.png";
+    } else if (width == 768 || height == 1024) {
+      $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default-Portrait~ipad.png";
+    } else if (width == 480 || height == 800) {
+      $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-hdpi-screen.png";
+    } else if (width == 720 || height == 1280) {
+      $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-xhdpi-screen.png";
+    } else if (width == 1080 || height == 1920) {
+      $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-xxhdpi-screen.png";
+    } else if (width == 2160 || height == 3840) {
+      $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-xxxhdpi-screen.png";
+    } else {
+      $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-xxhdpi-screen.png";
 
-      }
-      $scope.dld=function () {
-        if(WeiXinService.isWeiXin()){
-          CommonService.windowOpen("http://a.app.qq.com/o/simple.jsp?pkgname=com.boolv.recycle");
-          return;
-        }else {
-          if($ionicPlatform.is('android')){
-            $scope.versionparams = {
-              ID: 3,//编码 ,等于空时取所有
-              Name: '',//软件名称（中文）
-              NameE: '',//软件名称（英文）
-              Enable: 1 //是否启用 1启用 2禁用
-            }
-            CommonService.getVersionsList(versionparams).success(function (data) {
-              console.log(data);
-              CommonService.windowOpen(data.data.data_list.attached);
-            });
-            return;
-          }else if($ionicPlatform.is('ios')){
-            CommonService.windowOpen("https://itunes.apple.com/cn/app/id1260924490");
-            return;
+    }
+    $scope.dld = function () {
+      if (WeiXinService.isWeiXin()) {
+        CommonService.windowOpen("http://a.app.qq.com/o/simple.jsp?pkgname=com.boolv.recycle");
+        return;
+      } else {
+        if ($ionicPlatform.is('android')) {
+          $scope.versionparams = {
+            ID: 3,//编码 ,等于空时取所有
+            Name: '',//软件名称（中文）
+            NameE: '',//软件名称（英文）
+            Enable: 1 //是否启用 1启用 2禁用
           }
+          CommonService.getVersionsList(versionparams).success(function (data) {
+            console.log(data);
+            CommonService.windowOpen(data.data.data_list.attached);
+          });
+          return;
+        } else if ($ionicPlatform.is('ios')) {
+          CommonService.windowOpen("https://itunes.apple.com/cn/app/id1260924490");
+          return;
         }
       }
-      $scope.dloading=function () {
-        $scope.dld();
-      }
+    }
+    $scope.dloading = function () {
+      $scope.dld();
+    }
     $scope.dld();
   })
 ;
