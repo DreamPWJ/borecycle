@@ -77,7 +77,7 @@ angular.module('starter.services', [])
         $ionicModal.fromTemplateUrl(templateurl, {
           scope: $scope,
           animation: 'slide-in-up',
-          focusFirstInput:true   //默认打开键盘
+          focusFirstInput: true   //默认打开键盘
         }).then(function (modal) {
           $scope["modal" + index] = modal;
         });
@@ -2239,12 +2239,13 @@ angular.module('starter.services', [])
               optId: uploadtype //上传媒体操作类型 1.卖货单 2 供货单 3 买货单 4身份证 5 头像
             }
             WeiXinService.getWCMedia($scope.mediaparams).success(function (data) {
-              $scope.imageList.push(data.url);//客户端显示的url
-              $scope.ImgsPicAddr.push(BoRecycle.imgUrl + data.savepath);//提交需要的url
+              console.log(data);
+              $scope.imageList.push(data.data.url);//客户端显示的url
+              $scope.ImgsPicAddr.push(BoRecycle.imgUrl + data.data.savepath);//提交需要的url
               if (uploadtype == 5) {//上传头像单独处理
                 var figurparams = {
                   userid: localStorage.getItem("userid"),
-                  figure: BoRecycle.imgUrl + data.savepath //上传图片接口获得地址
+                  figure: BoRecycle.imgUrl + data.data.savepath //上传图片接口获得地址
                 }
                 AccountService.setFigure(figurparams);
               }

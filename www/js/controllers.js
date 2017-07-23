@@ -100,7 +100,8 @@ angular.module('starter.controllers', [])
       //是否是微信 初次获取签名 获取微信签名 获取微信登录授权
       if (WeiXinService.isWeiXin()) {
         if (!localStorage.getItem("openid")) { //微信登录授权
-          WeiXinService.getWCOauth2().success(function () {
+          WeiXinService.getWCOauth2().success(function (data) {
+            console.log(data);
             localStorage.setItem("wxoauth2", true);
             //获取微信openid获取会员账号，如果没有则添加
             var wxcode = WeiXinService.getQueryString(window.location, "code");
@@ -762,7 +763,8 @@ angular.module('starter.controllers', [])
 
     //获取当前位置 定位
     $scope.location = function () {
-      CommonService.getLocation(function () {
+      /*    CommonService.getLocation(function () {*/
+      if (localStorage.getItem("longitude") && localStorage.getItem("latitude")) {
         //当前位置 定位
         AccountService.getCurrentCityName({
           key: BoRecycle.gaoDeKey,
@@ -788,7 +790,10 @@ angular.module('starter.controllers', [])
             }
           })
         })
-      })
+      }
+
+      /*   })*/
+
 
     }
     $scope.location();//自动定位
@@ -851,7 +856,7 @@ angular.module('starter.controllers', [])
     $scope.hideBigImage = function () {
       $scope.bigImage = false;
     };
-    //点击图片放大
+//点击图片放大
     $scope.shouBigImage = function (imageName) {  //传递一个参数（图片的URl）
       $scope.Url = imageName;                   //$scope定义一个变量Url，这里会在大图出现后再次点击隐藏大图使用
       $scope.bigImage = true;                   //显示大图
@@ -2025,7 +2030,8 @@ angular.module('starter.controllers', [])
 
     //获取当前位置 定位
     $scope.location = function () {
-      CommonService.getLocation(function () {
+      /*      CommonService.getLocation(function () {*/
+      if (localStorage.getItem("longitude") && localStorage.getItem("latitude")) {
         //当前位置 定位
         AccountService.getCurrentCityName({
           key: BoRecycle.gaoDeKey,
@@ -2051,7 +2057,8 @@ angular.module('starter.controllers', [])
             }
           })
         })
-      })
+      }
+      /*    })*/
 
     }
 
@@ -2515,7 +2522,8 @@ angular.module('starter.controllers', [])
 
     //获取当前位置 定位
     $scope.location = function (param) {
-      CommonService.getLocation(function () {
+      /*    CommonService.getLocation(function () {*/
+      if (localStorage.getItem("longitude") && localStorage.getItem("latitude")) {
         //当前位置 定位
         AccountService.getCurrentCityName({
           key: BoRecycle.gaoDeKey,
@@ -2543,7 +2551,8 @@ angular.module('starter.controllers', [])
             }
           })
         })
-      })
+      }
+      /*    })*/
 
     }
     $scope.location(1);//自动定位
