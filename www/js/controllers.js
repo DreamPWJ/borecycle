@@ -763,8 +763,7 @@ angular.module('starter.controllers', [])
 
     //获取当前位置 定位
     $scope.location = function () {
-      /*    CommonService.getLocation(function () {*/
-      if (localStorage.getItem("longitude") && localStorage.getItem("latitude")) {
+      CommonService.getLocation(function () {
         //当前位置 定位
         AccountService.getCurrentCityName({
           key: BoRecycle.gaoDeKey,
@@ -790,10 +789,7 @@ angular.module('starter.controllers', [])
             }
           })
         })
-      }
-
-      /*   })*/
-
+      })
 
     }
     $scope.location();//自动定位
@@ -2030,8 +2026,7 @@ angular.module('starter.controllers', [])
 
     //获取当前位置 定位
     $scope.location = function () {
-      /*      CommonService.getLocation(function () {*/
-      if (localStorage.getItem("longitude") && localStorage.getItem("latitude")) {
+      CommonService.getLocation(function () {
         //当前位置 定位
         AccountService.getCurrentCityName({
           key: BoRecycle.gaoDeKey,
@@ -2057,8 +2052,7 @@ angular.module('starter.controllers', [])
             }
           })
         })
-      }
-      /*    })*/
+      })
 
     }
 
@@ -2522,8 +2516,7 @@ angular.module('starter.controllers', [])
 
     //获取当前位置 定位
     $scope.location = function (param) {
-      /*    CommonService.getLocation(function () {*/
-      if (localStorage.getItem("longitude") && localStorage.getItem("latitude")) {
+      CommonService.getLocation(function () {
         //当前位置 定位
         AccountService.getCurrentCityName({
           key: BoRecycle.gaoDeKey,
@@ -2551,8 +2544,7 @@ angular.module('starter.controllers', [])
             }
           })
         })
-      }
-      /*    })*/
+      })
 
     }
     $scope.location(1);//自动定位
