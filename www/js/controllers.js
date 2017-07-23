@@ -221,7 +221,7 @@ angular.module('starter.controllers', [])
     $scope.getMainData();
 
 //定位
-    CommonService.getLocation();
+    //  CommonService.getLocation();
 
 //在首页中清除导航历史退栈
     $scope.$on('$ionicView.afterEnter', function () {
@@ -230,7 +230,7 @@ angular.module('starter.controllers', [])
 
   })
 
-  //APP初次启动轮播图片
+  //APP初次启动轮播引导图片
   .controller('StartCtrl', function ($scope, $state, BoRecycle, $ionicPlatform, $timeout, $ionicSlideBoxDelegate) {
     var width = window.screen.width * window.devicePixelRatio;//屏幕的宽分辨率
     var height = window.screen.height * window.devicePixelRatio;//屏幕的高分辨率

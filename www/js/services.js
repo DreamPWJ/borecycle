@@ -2300,7 +2300,7 @@ angular.module('starter.services', [])
               "paySign": data.sign //微信签名
             },
             function (res) {
-              // alert(JSON.stringify(res));
+              alert(JSON.stringify(res));
               console.log(res.err_msg);  // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返
             }
           );
