@@ -551,7 +551,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
       //充值
       .state('recharge', {
-        url: '/recharge',
+        url: '/pay/recharge',
         cache: false,
         templateUrl: 'templates/wallet/recharge.html',
         controller: 'RechargeCtrl'
