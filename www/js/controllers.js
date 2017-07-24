@@ -3277,69 +3277,46 @@ angular.module('starter.controllers', [])
     }
     $scope.ut = localStorage.removeItem("usertype");
     NewsService.getInfo_fee().success(function (data) {
-      console.log(data);
       $scope.infeels = data.data;
     });
-    console.log($scope.infeels);
   })
 
   //下载页面
-  .controller('downloadCtrl', function ($scope, $ionicPlatform, BoRecycle, CommonService, WeiXinService) {
-    var width = window.screen.width * window.devicePixelRatio;//屏幕的宽分辨率
-    var height = window.screen.height * window.devicePixelRatio;//屏幕的高分辨率
-    $scope.dbg;//背景
-    if (width == 240 || height == 320) {
-      $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-ldpi-screen.png";
-    } else if (width == 320 || height == 480) {
-      $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default~iphone.png";
-    } else if (width == 640 || height == 960) {
-      $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default@2x~iphone.png";
-    } else if (width == 640 && height == 1136) {
-      $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default-568h@2x~iphone.png";
-    } else if (width == 750 || height == 1134) {
-      $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default-667h.png";
-    } else if (width == 1242 || height == 2208) {
-      $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default-736h.png";
-    } else if (width == 768 || height == 1024) {
-      $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/Default-Portrait~ipad.png";
-    } else if (width == 480 || height == 800) {
-      $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-hdpi-screen.png";
-    } else if (width == 720 || height == 1280) {
-      $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-xhdpi-screen.png";
-    } else if (width == 1080 || height == 1920) {
-      $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-xxhdpi-screen.png";
-    } else if (width == 2160 || height == 3840) {
-      $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-xxxhdpi-screen.png";
-    } else {
-      $scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-xxhdpi-screen.png";
-
-    }
-    $scope.dld = function () {
+  .controller('downloadCtrl', function ($scope, $ionicPlatform, BoRecycle, CommonService, WeiXinService,AccountService) {
+    var ua = window.navigator.userAgent.toLowerCase(); //浏览器的用户代理设置为小写，再进行匹配
+    var isIpad = ua.match(/ipad/i) == "ipad"; //或者利用indexOf方法来匹配
+    var isIphoneOs = ua.match(/iphone os/i) == "iphone os";
+    var isAndroid = ua.match(/android/i) == "android";
+    //$scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-xxxhdpi-screen.png";;//背景
+    $scope.dld = function (pa) {
       if (WeiXinService.isWeiXin()) {
         CommonService.windowOpen("http://a.app.qq.com/o/simple.jsp?pkgname=com.boolv.recycle");
         return;
       } else {
-        if ($ionicPlatform.is('android')) {
+        if (isAndroid) {
           $scope.versionparams = {
             ID: 3,//编码 ,等于空时取所有
             Name: '',//软件名称（中文）
             NameE: '',//软件名称（英文）
             Enable: 1 //是否启用 1启用 2禁用
           }
-          CommonService.getVersionsList(versionparams).success(function (data) {
-            console.log(data);
-            CommonService.windowOpen(data.data.data_list.attached);
+          AccountService.getVersionsList($scope.versionparams).success(function (data) {
+            CommonService.windowOpen(data.data.data_list[0].attached);
           });
           return;
-        } else if ($ionicPlatform.is('ios')) {
+        } else if (isIpad||isIphoneOs) {
           CommonService.windowOpen("https://itunes.apple.com/cn/app/id1260924490");
           return;
+        }else{
+          if(pa==1){
+            CommonService.platformPrompt("很抱歉，“收收”只提供安卓版及Iphone版！", 'close');
+          }
         }
       }
     }
     $scope.dloading = function () {
-      $scope.dld();
+      $scope.dld(1);
     }
-    $scope.dld();
+    $scope.dld(0);
   })
 ;

@@ -475,6 +475,10 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
 #facteSelect input:checked + div {
   border: 1px solid #00ACFF;
 }
+#download{
+  background: url("../img/down-bg.png") no-repeat;
+  background-size: 100% 100%;
+}
 #download img{
   max-width: 98%;
   margin-top: 2rem;
