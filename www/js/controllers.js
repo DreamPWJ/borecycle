@@ -933,7 +933,7 @@ angular.module('starter.controllers', [])
     };
     $rootScope.orderType = $stateParams.orderType; //orderType类型 0.是我的回收订单 1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
 
-    var isorderdetails = $ionicHistory.backView() && $ionicHistory.backView().stateName == 'orderdetails';
+    var isorderdetails = $ionicHistory.forwardView() && $ionicHistory.forwardView().stateName == 'orderdetails';
     $scope.tabIndex = isorderdetails ? $rootScope.tabOrderIndex : 0;//当前tabs页
 
     //待接单订单
@@ -1293,7 +1293,7 @@ angular.module('starter.controllers', [])
 
   //我的订单页面
   .controller('MyOrderCtrl', function ($scope, $rootScope, $state, CommonService, OrderService, $ionicHistory, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
-    var ismyorderdetails = $ionicHistory.backView() && $ionicHistory.backView().stateName == 'myorderdetails';
+    var ismyorderdetails = $ionicHistory.forwardView() && $ionicHistory.forwardView().stateName == 'myorderdetails';
     $scope.tabIndex = ismyorderdetails ? $rootScope.tabMyOrderIndex : 0;//tab默认
     //未完成订单
     $scope.unfinishedorderList = [];
