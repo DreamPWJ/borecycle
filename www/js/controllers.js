@@ -1636,8 +1636,8 @@ angular.module('starter.controllers', [])
 
   //付款页面
   .controller('PaymentCtrl', function ($scope, $stateParams, CommonService, OrderService) {
+    console.log(window.location);
     $scope.orderinfo = JSON.parse($stateParams.orderinfo);
-
     $scope.pay = { //支付相关
       choice: 1//选择支付方式默认支付方式1. 现金支付2. 在线支付
     }
