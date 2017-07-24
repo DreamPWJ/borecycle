@@ -67,6 +67,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         // listen for Online event
         $rootScope.$on('$cordovaNetwork:online', function (event, networkState) {
           var onlineState = networkState;
+          if (onlineState == '2g') {
+            CommonService.platformPrompt("您当前的网络是2G网络，为了不影响您的使用，请切换到4G或wifi网络再使用", 'close');
+          }
         })
 
         // listen for Offline event
