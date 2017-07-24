@@ -99,12 +99,15 @@ angular.module('starter.controllers', [])
 
       //是否是微信 初次获取签名 获取微信签名 获取微信登录授权
       if (WeiXinService.isWeiXin()) {
-        if (!localStorage.getItem("openid")) { //微信登录授权
-          WeiXinService.getWCOauth2().success(function (data) {
-            console.log(data);
+        $scope.$on('$ionicView.beforeEnter', function () {
+          if (!localStorage.getItem("openid")) { //微信登录授权
+            /*          WeiXinService.getWCOauth2().success(function (data) {
+             console.log(data);*/
+            CommonService.windowOpen('https://open.weixin.qq.com/connect/oauth2/authorize?callback=JSON_CALLBACK&appid=wx39ba5b2a2f59ef2c&redirect_uri=' + encodeURIComponent("http://m.boolv.com/WeChat") + '&response_type=code&scope=snsapi_base&state=shoushou#wechat_redirect')
             localStorage.setItem("wxoauth2", true);
             //获取微信openid获取会员账号，如果没有则添加
             var wxcode = WeiXinService.getQueryString(window.location, "code");
+            console.log("================" + window.location);
             console.log("================" + wxcode);
             if (wxcode) {
               WeiXinService.getWCOpenId({
@@ -120,8 +123,10 @@ angular.module('starter.controllers', [])
 
               })
             }
-          })
-        }
+            /*     })*/
+          }
+        })
+
         // 获取微信签名
         $scope.wxparams = {
           url: location.href.split('#')[0] //当前网页的URL，不包含#及其后面部分
@@ -3231,7 +3236,7 @@ angular.module('starter.controllers', [])
           PayService.wxpayH5($scope.h5datas).success(function (data) {
             console.log(data);
             if (data.code == 1001) {
-              window.open(data.data.mweb_url);//支付跳转
+              CommonService.windowOpen(data.data.mweb_url);//支付跳转
             } else {
               CommonService.platformPrompt(data.message, 'close');
             }
