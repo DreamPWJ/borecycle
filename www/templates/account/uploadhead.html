@@ -11,7 +11,7 @@
   <ion-content overflow-scroll="false" class="stable-bg ">
     <img ng-src="{{figureurl||img/head.jpg}}" class="full-image" onerror="this.src='img/head.jpg'"/>
     <label>
-      <input type="file" id="upload-picture" class="hide" accept="image/*" file-model="images"
+      <input type="file" id="upload-picture" class="hide" accept="image/jpeg" file-model="images"
              onchange="angular.element(this).scope().img_upload(this.files)"/>
     </label>
   </ion-content>

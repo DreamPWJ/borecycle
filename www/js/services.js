@@ -355,8 +355,13 @@ angular.module('starter.services', [])
           $scope.reader = new FileReader();   //创建一个FileReader接口
           $scope.img_upload = function (files) {    //单次提交图片的函数
             $scope.reader.readAsDataURL(files[0]);  //FileReader的方法，把图片转成base64
-            $scope.imageList.push($scope.reader.result);
-            console.log($scope.imageList);
+            $scope.reader.onload=function(e){
+              $scope.$apply(function(){
+                $scope.imageList.push(e.target.result);//接收base64
+              });
+
+            }
+
             var data = new FormData();      //以下为像后台提交图片数据
             data.append('file', files[0]);
             $http({
@@ -379,7 +384,7 @@ angular.module('starter.services', [])
                 }
 
               } else {
-                CommonService.platformPrompt("图片上传失败", 'close');
+                CommonService.platformPrompt(data.message, 'close');
               }
 
             })
