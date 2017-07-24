@@ -243,6 +243,10 @@ angular.module('starter.services', [])
       uploadActionSheet: function ($scope, filename, isSingle) {//上传图片  isSingle是否是单张上传
         isSingle = (isSingle == undefined) ? false : isSingle;
         CommonService = this;
+        if (!WeiXinService.isWeiXin() && !ionic.Platform.isWebView()) { // H5
+          CommonService.takePicture($scope, 0, filename, isSingle) //从手机相册选择
+          return;
+        }
         $ionicActionSheet.show({
           cssClass: 'action-s',
           titleText: '上传图片',
@@ -349,8 +353,10 @@ angular.module('starter.services', [])
         if (!WeiXinService.isWeiXin() && !ionic.Platform.isWebView()) { // H5
           document.querySelector("#upload-picture").click();
           $scope.reader = new FileReader();   //创建一个FileReader接口
-          $scope.img_upload = function (files) {       //单次提交图片的函数
+          $scope.img_upload = function (files) {    //单次提交图片的函数
             $scope.reader.readAsDataURL(files[0]);  //FileReader的方法，把图片转成base64
+            $scope.imageList.push($scope.reader.result);
+            console.log($scope.imageList);
             var data = new FormData();      //以下为像后台提交图片数据
             data.append('file', files[0]);
             $http({

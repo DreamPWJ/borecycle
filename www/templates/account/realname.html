@@ -54,6 +54,10 @@
                class="col-80 padding">
         </div>
       </div>
+      <label>
+        <input type="file" id="upload-picture" class="hide" accept="image/*" file-model="images"
+               onchange="angular.element(this).scope().img_upload(this.files)"/>
+      </label>
     </ion-content>
     <div ng-if="status!=2" class="padding light-bg bottom-0" keyboard-attach>
       <button ng-disabled="!(realnameForm.$valid&&verify)" class="button button-positive full-image "

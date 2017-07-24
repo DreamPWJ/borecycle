@@ -121,7 +121,10 @@
         </div>
       </div>
     </form>
-
+    <label>
+      <input type="file" id="upload-picture" class="hide" accept="image/*" file-model="images"
+             onchange="angular.element(this).scope().img_upload(this.files)"/>
+    </label>
   </ion-content>
   <div ng-if="bigImage" class="popover-backdrop dark-bg pic-has-header" ng-click="hideBigImage()">
     <img class="full-image"
