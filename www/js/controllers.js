@@ -99,32 +99,33 @@ angular.module('starter.controllers', [])
 
       //是否是微信 初次获取签名 获取微信签名 获取微信登录授权
       if (WeiXinService.isWeiXin()) {
-        $scope.$on('$ionicView.beforeEnter', function () {
-          if (!localStorage.getItem("openid")) { //微信登录授权
-            /*          WeiXinService.getWCOauth2().success(function (data) {
-             console.log(data);*/
-            CommonService.windowOpen('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx39ba5b2a2f59ef2c&redirect_uri=' + encodeURIComponent("http://m.boolv.com/WeChat") + '&response_type=code&scope=snsapi_base&state=shoushou#wechat_redirect')
-            localStorage.setItem("wxoauth2", true);
-            //获取微信openid获取会员账号，如果没有则添加
-            var wxcode = WeiXinService.getQueryString(window.location, "code");
-            console.log("================" + wxcode);
-            if (wxcode) {
-              WeiXinService.getWCOpenId({
-                code: wxcode,
-                UserLogID: localStorage.getItem("userid") || ""
-              }).success(function (data) {
-                console.log(data);
-                if (data.code == 1001) {
-                  localStorage.setItem("openid", data.data)
-                } else {
-                  CommonService.platformPrompt("获取微信OpenID失败", 'close');
-                }
 
-              })
-            }
-            /*     })*/
+        if (!localStorage.getItem("wxoauth2")) { //微信登录授权
+          localStorage.setItem("wxoauth2", true);
+          CommonService.windowOpen('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx39ba5b2a2f59ef2c&redirect_uri=' + encodeURIComponent("http://m.boolv.com/WeChat") + '&response_type=code&scope=snsapi_base&state=shoushou#wechat_redirect')
+          //获取微信openid获取会员账号，如果没有则添加
+          var wxcode = WeiXinService.getQueryString(window.location, "code");
+          console.log("================" + wxcode);
+          if (wxcode) {
+            WeiXinService.getWCOpenId({
+              code: wxcode,
+              UserLogID: localStorage.getItem("userid") || ""
+            }).success(function (data) {
+              console.log(data);
+              if (data.code == 1001) {
+                localStorage.setItem("openid", data.data.OpenId)
+              } else {
+                CommonService.platformPrompt("获取微信OpenID失败", 'close');
+                localStorage.setItem("wxoauth2", false);
+              }
+
+            }).error(function (err) {
+              localStorage.setItem("wxoauth2", false);
+            })
           }
-        })
+          return;
+        }
+
 
         // 获取微信签名
         $scope.wxparams = {
