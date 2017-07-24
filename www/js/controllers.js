@@ -2286,7 +2286,7 @@ angular.module('starter.controllers', [])
         userid: localStorage.getItem("userid"),	//当前用户userid
         name: $scope.realname.name,	    //姓名
         idno: $scope.realname.idno,	//身份证号码
-        cardno: $scope.realname.cardno, //银行卡号
+        idcardno: $scope.realname.cardno, //银行卡号
         mobile: $scope.realname.mobile,//手机号码
         serviceid: $scope.serviceId,//e签宝服务id
         code: $scope.realname.code,//e签宝验证码
