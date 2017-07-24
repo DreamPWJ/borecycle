@@ -107,7 +107,6 @@ angular.module('starter.controllers', [])
             localStorage.setItem("wxoauth2", true);
             //获取微信openid获取会员账号，如果没有则添加
             var wxcode = WeiXinService.getQueryString(window.location, "code");
-            console.log("================" + window.location);
             console.log("================" + wxcode);
             if (wxcode) {
               WeiXinService.getWCOpenId({
@@ -115,7 +114,7 @@ angular.module('starter.controllers', [])
                 UserLogID: localStorage.getItem("userid") || ""
               }).success(function (data) {
                 console.log(data);
-                if (data == 1001) {
+                if (data.code == 1001) {
                   localStorage.setItem("openid", data.data)
                 } else {
                   CommonService.platformPrompt("获取微信OpenID失败", 'close');
