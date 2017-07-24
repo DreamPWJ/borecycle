@@ -100,13 +100,11 @@ angular.module('starter.controllers', [])
       //是否是微信 初次获取签名 获取微信签名 获取微信登录授权
       if (WeiXinService.isWeiXin()) {
 
-        if (!localStorage.getItem("wxoauth2")) { //微信登录授权
-          localStorage.setItem("wxoauth2", true);
-          CommonService.windowOpen('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx39ba5b2a2f59ef2c&redirect_uri=' + encodeURIComponent("http://m.boolv.com/WeChat") + '&response_type=code&scope=snsapi_base&state=shoushou#wechat_redirect')
-          //获取微信openid获取会员账号，如果没有则添加
+        if (!localStorage.getItem("openid")) { //微信登录授权
           var wxcode = WeiXinService.getQueryString(window.location, "code");
           console.log("================" + wxcode);
           if (wxcode) {
+            //获取微信openid获取会员账号，如果没有则添加
             WeiXinService.getWCOpenId({
               code: wxcode,
               UserLogID: localStorage.getItem("userid") || ""
@@ -116,12 +114,12 @@ angular.module('starter.controllers', [])
                 localStorage.setItem("openid", data.data.OpenId)
               } else {
                 CommonService.platformPrompt("获取微信OpenID失败", 'close');
-                localStorage.setItem("wxoauth2", false);
               }
 
-            }).error(function (err) {
-              localStorage.setItem("wxoauth2", false);
             })
+          }else {
+            localStorage.setItem("wxoauth2", true);
+            CommonService.windowOpen('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx39ba5b2a2f59ef2c&redirect_uri=' + encodeURIComponent("http://m.boolv.com/WeChat") + '&response_type=code&scope=snsapi_base&state=shoushou#wechat_redirect')
           }
           return;
         }
