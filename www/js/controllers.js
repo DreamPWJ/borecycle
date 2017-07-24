@@ -103,7 +103,7 @@ angular.module('starter.controllers', [])
           if (!localStorage.getItem("openid")) { //微信登录授权
             /*          WeiXinService.getWCOauth2().success(function (data) {
              console.log(data);*/
-            CommonService.windowOpen('https://open.weixin.qq.com/connect/oauth2/authorize?callback=JSON_CALLBACK&appid=wx39ba5b2a2f59ef2c&redirect_uri=' + encodeURIComponent("http://m.boolv.com/WeChat") + '&response_type=code&scope=snsapi_base&state=shoushou#wechat_redirect')
+            CommonService.windowOpen('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx39ba5b2a2f59ef2c&redirect_uri=' + encodeURIComponent("http://m.boolv.com/WeChat") + '&response_type=code&scope=snsapi_base&state=shoushou#wechat_redirect')
             localStorage.setItem("wxoauth2", true);
             //获取微信openid获取会员账号，如果没有则添加
             var wxcode = WeiXinService.getQueryString(window.location, "code");
