@@ -110,7 +110,7 @@ angular.module('starter.controllers', [])
             console.log("================" + wxcode);
             if (wxcode) {
               WeiXinService.getWCOpenId({
-                code: code,
+                code: wxcode,
                 UserLogID: localStorage.getItem("userid") || ""
               }).success(function (data) {
                 console.log(data);
