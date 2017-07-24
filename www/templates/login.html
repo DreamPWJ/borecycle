@@ -25,7 +25,7 @@
 
         <label ng-if="isInvite" class="item item-input">
           <span class="input-label icon ion-ios-unlocked-outline" > 邀请码</span>
-          <input type="number" ng-model="user.invitecode" check-form
+          <input type="text" ng-model="user.invitecode" check-form
                  placeholder="请输入邀请码"  ng-required="isInvite"  maxlength="6"/>
         </label>
         <ion-checkbox class=" stable-bg item-borderless checkbox-positive" ng-model="agreedeal" ng-checked="true">
