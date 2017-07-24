@@ -117,7 +117,7 @@ angular.module('starter.controllers', [])
               }
 
             })
-          }else {
+          } else {
             localStorage.setItem("wxoauth2", true);
             CommonService.windowOpen('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx39ba5b2a2f59ef2c&redirect_uri=' + encodeURIComponent("http://m.boolv.com/WeChat") + '&response_type=code&scope=snsapi_base&state=shoushou#wechat_redirect')
           }
@@ -911,7 +911,7 @@ angular.module('starter.controllers', [])
   })
 
   //我的回收订单页面
-  .controller('OrderCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, OrderService, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
+  .controller('OrderCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, OrderService, $ionicHistory, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
     //是否登录
     if (!CommonService.isLogin(true)) {
       return;
@@ -932,7 +932,9 @@ angular.module('starter.controllers', [])
       showDelete: false
     };
     $rootScope.orderType = $stateParams.orderType; //orderType类型 0.是我的回收订单 1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
-    $scope.tabIndex = 0;//当前tabs页
+
+    var isorderdetails = $ionicHistory.backView() && $ionicHistory.backView().stateName == 'orderdetails';
+    $scope.tabIndex = isorderdetails ? $rootScope.tabOrderIndex : 0;//当前tabs页
 
     //待接单订单
     $scope.jiedanorderList = [];
@@ -947,6 +949,7 @@ angular.module('starter.controllers', [])
     $scope.page = 0;
     $scope.total = 1;
     $scope.getOrderList = function () { //查询登记信息/货源信息分页列
+      $rootScope.tabOrderIndex = $scope.tabIndex;
 
       if (arguments != [] && arguments[0] == 0) {
 
@@ -1103,7 +1106,9 @@ angular.module('starter.controllers', [])
     }
 
     $scope.$on('$ionicView.afterEnter', function () {
-      if ($rootScope.orderType == 0 || $rootScope.orderType == 2) {
+      if (isorderdetails) {
+        $scope.selectedTab($rootScope.tabOrderIndex);
+      } else if ($rootScope.orderType == 0 || $rootScope.orderType == 2) {
         $scope.selectedTab(1);
       } else {
         $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
@@ -1287,8 +1292,9 @@ angular.module('starter.controllers', [])
   })
 
   //我的订单页面
-  .controller('MyOrderCtrl', function ($scope, $rootScope, $state, CommonService, OrderService, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
-    $scope.tabIndex = 0;//tab默认
+  .controller('MyOrderCtrl', function ($scope, $rootScope, $state, CommonService, OrderService, $ionicHistory, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
+    var ismyorderdetails = $ionicHistory.backView() && $ionicHistory.backView().stateName == 'myorderdetails';
+    $scope.tabIndex = ismyorderdetails ? $rootScope.tabMyOrderIndex : 0;//tab默认
     //未完成订单
     $scope.unfinishedorderList = [];
     $scope.unfinishedpage = 0;
@@ -1298,6 +1304,7 @@ angular.module('starter.controllers', [])
     $scope.page = 0;
     $scope.total = 1;
     $scope.getOrderList = function () { //查询登记信息/货源信息分页列
+      $rootScope.tabMyOrderIndex = $scope.tabIndex;
       if (arguments != [] && arguments[0] == 0) {
         if ($scope.tabIndex == 0) {  //未完成订单
           $scope.unfinishedpage = 0;
@@ -1319,6 +1326,7 @@ angular.module('starter.controllers', [])
         page: $scope.tabIndex == 0 ? $scope.unfinishedpage : $scope.page,//页码
         size: 20//条数
       }
+
       $scope.datas = {
         DJNo: "",//登记单号(可为空)
         Type: "",//类型1.登记信息 2.登记货源(可为空)
@@ -1370,9 +1378,7 @@ angular.module('starter.controllers', [])
       })
     }
 
-    $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
 
-    $scope.tabIndex = 0;//当前tabs页
     //左右滑动列表
     $scope.slideChanged = function (index) {
       $scope.tabIndex = index;
@@ -1384,6 +1390,14 @@ angular.module('starter.controllers', [])
       //滑动的索引和速度
       $ionicSlideBoxDelegate.$getByHandle("slidebox-myorderlist").slide(index)
     }
+
+    $scope.$on('$ionicView.afterEnter', function () {
+      if (ismyorderdetails) {
+        $scope.selectedTab($rootScope.tabMyOrderIndex);
+      } else {
+        $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
+      }
+    });
 
     //关闭订单
     $scope.closeOrder = function (djno) {
@@ -3282,7 +3296,7 @@ angular.module('starter.controllers', [])
   })
 
   //下载页面
-  .controller('downloadCtrl', function ($scope, $ionicPlatform, BoRecycle, CommonService, WeiXinService,AccountService) {
+  .controller('downloadCtrl', function ($scope, $ionicPlatform, BoRecycle, CommonService, WeiXinService, AccountService) {
     var ua = window.navigator.userAgent.toLowerCase(); //浏览器的用户代理设置为小写，再进行匹配
     var isIpad = ua.match(/ipad/i) == "ipad"; //或者利用indexOf方法来匹配
     var isIphoneOs = ua.match(/iphone os/i) == "iphone os";
@@ -3304,11 +3318,11 @@ angular.module('starter.controllers', [])
             CommonService.windowOpen(data.data.data_list[0].attached);
           });
           return;
-        } else if (isIpad||isIphoneOs) {
+        } else if (isIpad || isIphoneOs) {
           CommonService.windowOpen("https://itunes.apple.com/cn/app/id1260924490");
           return;
-        }else{
-          if(pa==1){
+        } else {
+          if (pa == 1) {
             CommonService.platformPrompt("很抱歉，“收收”只提供安卓版及Iphone版！", 'close');
           }
         }
