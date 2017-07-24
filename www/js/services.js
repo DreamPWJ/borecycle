@@ -355,8 +355,8 @@ angular.module('starter.services', [])
           $scope.reader = new FileReader();   //创建一个FileReader接口
           $scope.img_upload = function (files) {    //单次提交图片的函数
             $scope.reader.readAsDataURL(files[0]);  //FileReader的方法，把图片转成base64
-            $scope.reader.onload=function(e){
-              $scope.$apply(function(){
+            $scope.reader.onload = function (e) {
+              $scope.$apply(function () {
                 $scope.imageList.push(e.target.result);//接收base64
               });
 
@@ -2095,7 +2095,7 @@ angular.module('starter.services', [])
 
     return {
       request: function (config) {//通过实现 request 方法拦截请求: 该方法会在 $http 发送请求道后台之前执行
-        if (config.url.toString().indexOf('http://') === 0) {
+        if (config.url.toString().indexOf('http') === 0) {
           //http请求Loading加载动画
           $injector.get('$ionicLoading').show({
             template: '<ion-spinner icon="spiral" class="spinner-light"></ion-spinner><p>',
@@ -2111,19 +2111,19 @@ angular.module('starter.services', [])
         return config;
       },
       requestError: function (config) {//通过实现 requestError 方法拦截请求异常: 请求发送失败或者被拦截器拒绝
-        if (config.url.toString().indexOf('http://') === 0) {
+        if (config.url.toString().indexOf('http') === 0) {
           $injector.get('$ionicLoading').hide();
         }
         return config;
       },
       response: function (response) {//通过实现 response 方法拦截响应: 该方法会在 $http 接收到从后台过来的响应之后执行
-        if (response.config.url.toString().indexOf('http://') === 0) {
+        if (response.config.url.toString().indexOf('http') === 0) {
           $injector.get('$ionicLoading').hide();
         }
         return response;
       },
       responseError: function (response) {//通过实现 responseError 方法拦截响应异常:后台调用失败 响应异常拦截器可以帮助我们恢复后台调用
-        if (response.config.url.toString().indexOf('http://') === 0) {
+        if (response.config.url.toString().indexOf('http') === 0) {
           $injector.get('$ionicLoading').hide();
         }
         return response;
