@@ -85,6 +85,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         //启动极光推送服务
         try {
           window.plugins.jPushPlugin.init();
+          window.plugins.jPushPlugin.requestPermission();
           if (device.platform != "Android") {
             window.plugins.jPushPlugin.setBadge(0);
             window.plugins.jPushPlugin.resetBadge();

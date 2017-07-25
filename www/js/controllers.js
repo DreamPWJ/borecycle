@@ -2706,10 +2706,11 @@ angular.module('starter.controllers', [])
 
     //登记货源提交
     $scope.supplyofgoodsSubmit = function () {
-      if ($scope.address == null || $scope.address.length == 0) {
+      if ($scope.address==undefined|| $scope.address == null || angular.equals({}, $scope.address)) {
         CommonService.platformPrompt("请选择货源地址", 'myaddress');
         return;
       }
+
       $scope.supplyofgoods = [];//要提交的json数组
       $scope.wastenumdetails = [];//废旧数据详情
       $scope.secondhandnumdetails = [];//二手数据详情
