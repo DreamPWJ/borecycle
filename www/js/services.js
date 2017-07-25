@@ -806,7 +806,6 @@ angular.module('starter.services', [])
               }
             }
 
-
           }, function (err) {
             $cordovaToast.showLongCenter("上传失败");
             $scope.imageList.splice(imageUrl, 1);//删除失败以后不显示
@@ -815,7 +814,7 @@ angular.module('starter.services', [])
             // constant progress updates
           });
       },
-      getCurrentCityName: function (params) { //获取首页地理位置城市名称 高德web API
+      getCurrentCity: function (params) { //获取首页地理位置城市信息 高德web API
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise;
         params.callback = 'JSON_CALLBACK';

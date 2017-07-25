@@ -768,7 +768,7 @@ angular.module('starter.controllers', [])
     $scope.location = function () {
       CommonService.getLocation(function () {
         //当前位置 定位
-        AccountService.getCurrentCityName({
+        AccountService.getCurrentCity({
           key: BoRecycle.gaoDeKey,
           location: Number(localStorage.getItem("longitude")).toFixed(6) + "," + Number(localStorage.getItem("latitude")).toFixed(6),
           radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
@@ -1855,8 +1855,10 @@ angular.module('starter.controllers', [])
         angular.forEach($rootScope.userinfo.services, function (item) {
           if (item == 1) {
             $scope.services.push("信息提供者")
+          }else {
+            $scope.services.push("回收商")
           }
-          if (item == 2) {
+/*          if (item == 2) {
             $scope.services.push("上门回收者")
           }
           if (item == 3) {
@@ -1864,7 +1866,7 @@ angular.module('starter.controllers', [])
           }
           if (item == 4) {
             $scope.services.push("二手商家")
-          }
+          }*/
 
         })
         $scope.servicesstr = $scope.services.join(",")
@@ -2044,7 +2046,7 @@ angular.module('starter.controllers', [])
     $scope.location = function () {
       CommonService.getLocation(function () {
         //当前位置 定位
-        AccountService.getCurrentCityName({
+        AccountService.getCurrentCity({
           key: BoRecycle.gaoDeKey,
           location: Number(localStorage.getItem("longitude")).toFixed(6) + "," + Number(localStorage.getItem("latitude")).toFixed(6),
           radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
@@ -2534,7 +2536,7 @@ angular.module('starter.controllers', [])
     $scope.location = function (param) {
       CommonService.getLocation(function () {
         //当前位置 定位
-        AccountService.getCurrentCityName({
+        AccountService.getCurrentCity({
           key: BoRecycle.gaoDeKey,
           location: Number(localStorage.getItem("longitude")).toFixed(6) + "," + Number(localStorage.getItem("latitude")).toFixed(6),
           radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
