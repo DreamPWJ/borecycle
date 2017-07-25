@@ -1106,7 +1106,7 @@ angular.module('starter.controllers', [])
     }
 
     $scope.$on('$ionicView.afterEnter', function () {
-      if (isorderdetails) {
+      if ($rootScope.tabOrderIndex!=0&&isorderdetails) {
         $scope.selectedTab($rootScope.tabOrderIndex);
       } else if ($rootScope.orderType == 0 || $rootScope.orderType == 2) {
         $scope.selectedTab(1);
@@ -1392,7 +1392,7 @@ angular.module('starter.controllers', [])
     }
 
     $scope.$on('$ionicView.afterEnter', function () {
-      if (ismyorderdetails) {
+      if ($rootScope.tabMyOrderIndex!=0&&ismyorderdetails) {
         $scope.selectedTab($rootScope.tabMyOrderIndex);
       } else {
         $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
@@ -1636,7 +1636,6 @@ angular.module('starter.controllers', [])
 
   //付款页面
   .controller('PaymentCtrl', function ($scope, $stateParams, CommonService, OrderService) {
-    console.log(window.location);
     $scope.orderinfo = JSON.parse($stateParams.orderinfo);
     $scope.pay = { //支付相关
       choice: 1//选择支付方式默认支付方式1. 现金支付2. 在线支付
@@ -3171,6 +3170,7 @@ angular.module('starter.controllers', [])
 
   //充值
   .controller('RechargeCtrl', function ($scope, CommonService, PayService, WeiXinService) {
+    console.log(window.location);
     $scope.pay = { //支付相关
       choice: "B",//选择支付方式默认
       money: ""
