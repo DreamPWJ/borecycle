@@ -1464,6 +1464,18 @@ angular.module('starter.services', [])
         }).error(function (data, header, config, status) {
 
         }).then(function () {
+          console.log(d);
+          $scope.currentCity ={ //默认数据
+            "id": 440300,
+            "name": "深圳",
+            "pinyin": "shenzhen",
+            "index": "S"
+          }
+          angular.forEach(d, function (item) {
+            if(item.name==$scope.cityName){
+              $scope.currentCity =item;
+            }
+          })
           var cache_currentCity = "cache_currentCity";
           var newCities = []
           // 初始化城市索引
@@ -1491,8 +1503,9 @@ angular.module('starter.services', [])
             }
           }, this);
 
-          //添加热门城市
+          //城市数据
           $scope.cities = newCities;
+          //添加热门城市
 
           $scope.hotCities = [
             {
@@ -1556,8 +1569,8 @@ angular.module('starter.services', [])
           })
 
           $scope.citySelected = function (c) {
+            /*      $scope.currentCity = c;*/
             $scope.modifyAddressSubmit(c.id);
-            $scope.currentCity = c;
             // 缓存当前城市
             window.localStorage[cache_currentCity] = angular.toJson(c);
             $scope.modal.hide();

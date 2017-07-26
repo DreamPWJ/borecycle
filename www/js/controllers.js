@@ -1865,17 +1865,10 @@ angular.module('starter.controllers', [])
   })
 
   //账号信息
-  .controller('AccountInfoCtrl', function ($scope, $rootScope, CommonService, AccountService, AddressService) {
+  .controller('AccountInfoCtrl', function ($scope, $rootScope, CommonService,BoRecycle, AccountService, AddressService) {
 
     //城市选择modal
     CommonService.customModal($scope, 'templates/modal/citymodal.html');
-
-    //点击选择城市
-    $scope.openCustomModal = function () {
-      $scope.city = {};//城市相关json数据
-      $scope.modal.show();
-      AccountService.selectCity($scope); //选择城市
-    }
 
     AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
       if (data.code == 1001) {
@@ -1915,13 +1908,13 @@ angular.module('starter.controllers', [])
     })
 
     //获取当前位置 定位
+    $scope.cityName = "深圳市"
     $scope.location = function () {
-      $scope.cityName = "深圳";//默认地址
       CommonService.getLocation(function () {
         //当前位置 定位
         AccountService.getCurrentCity({
           key: BoRecycle.gaoDeKey,
-          location: Number($scope.handlongitude || localStorage.getItem("longitude")).toFixed(6) + "," + Number($scope.handlatitude || localStorage.getItem("latitude")).toFixed(6),
+          location: Number( localStorage.getItem("longitude")).toFixed(6) + "," + Number( localStorage.getItem("latitude")).toFixed(6),
           radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
           extensions: 'all',//返回结果控制
           batch: false, //batch=true为批量查询。batch=false为单点查询
@@ -1930,12 +1923,20 @@ angular.module('starter.controllers', [])
           console.log(data);
           var addressComponent = data.regeocode.addressComponent;
           $scope.cityName = addressComponent.city ? addressComponent.city : addressComponent.province;
+
         })
 
       })
 
     }
     $scope.location();//自动定位
+
+    //点击选择城市
+    $scope.openCustomModal = function () {
+      $scope.city = {};//城市相关json数据
+      $scope.modal.show();
+      AccountService.selectCity($scope); //选择城市
+    }
 
     //修改回收区域
     $scope.user = {};//用户信息

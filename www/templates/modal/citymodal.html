@@ -18,8 +18,8 @@
       <ion-item class="item-divider">
         当前城市
       </ion-item>
-      <ion-item class="item">
-        {{currentCity.name||cityName}}
+      <ion-item class="item" ng-click="citySelected(currentCity)">
+        {{currentCity.name}}
       </ion-item>
       <div>
         <ion-item class="item-divider">
