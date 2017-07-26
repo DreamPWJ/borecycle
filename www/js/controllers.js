@@ -737,9 +737,12 @@ angular.module('starter.controllers', [])
       CommonService.getVerifyCode($scope, $scope.user.mobile);
     }
 
+
 //获取省市县
     $scope.getAddressPCCList = function (item) {
-      //获取省份信息
+      if ($scope.user.usertype == 2) { //注册完善资料和“我的”那里升级回收商，那里只选省市，不要县。信息提供者才需要县
+        $scope.pccLevel = 2;//省市县选择的层级
+      }
       AddressService.getAddressPCCList($scope, item);
     }
 
@@ -749,6 +752,7 @@ angular.module('starter.controllers', [])
       $scope.modal.show();
       $scope.getAddressPCCList();
     }
+
     //打开附近地址modal
     $scope.openNearAddrModal = function () {
       $scope.location();//自动定位
@@ -779,7 +783,7 @@ angular.module('starter.controllers', [])
         //当前位置 定位
         AccountService.getCurrentCity({
           key: BoRecycle.gaoDeKey,
-          location: Number($scope.handlongitude||localStorage.getItem("longitude")).toFixed(6) + "," + Number($scope.handlatitude||localStorage.getItem("latitude")).toFixed(6),
+          location: Number($scope.handlongitude || localStorage.getItem("longitude")).toFixed(6) + "," + Number($scope.handlatitude || localStorage.getItem("latitude")).toFixed(6),
           radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
           extensions: 'all',//返回结果控制
           batch: false, //batch=true为批量查询。batch=false为单点查询
@@ -789,10 +793,13 @@ angular.module('starter.controllers', [])
           var addressComponent = data.regeocode.addressComponent;
           $scope.addresspois = data.regeocode.pois;
           $scope.city = addressComponent.city;
-          $scope.ssx = addressComponent.province + addressComponent.city + addressComponent.district;//省市县
+          $scope.ssx = addressComponent.province + addressComponent.city + ($scope.user.usertype == 2 ? "" : addressComponent.district);//省市县
           $scope.user.addrdetail = addressComponent.township + addressComponent.streetNumber.street;
         }).then(function () {
-          AddressService.getAddressBySSX({ssx: $scope.ssx}).success(function (data) {
+          AddressService.getAddressBySSX({
+            ssx: $scope.ssx,
+            level: $scope.user.usertype == 2 ? 2 : 3
+          }).success(function (data) {
             console.log(data);
             if (data.code == 1001) {
               $scope.addrareacountyone = data.data;
@@ -805,6 +812,14 @@ angular.module('starter.controllers', [])
 
     }
     $scope.location();//自动定位
+
+    //用户类型选择
+    $scope.userTypeSelect = function (type) {
+      $scope.user.usertype = type;
+      $scope.$apply();
+      $scope.location();//自动定位
+    }
+
 //完善资料提交
     $scope.organizingdataSubmit = function () {
 
@@ -2058,7 +2073,7 @@ angular.module('starter.controllers', [])
         //当前位置 定位
         AccountService.getCurrentCity({
           key: BoRecycle.gaoDeKey,
-          location: Number($scope.handlongitude||localStorage.getItem("longitude")).toFixed(6) + "," + Number($scope.handlatitude||localStorage.getItem("latitude")).toFixed(6),
+          location: Number($scope.handlongitude || localStorage.getItem("longitude")).toFixed(6) + "," + Number($scope.handlatitude || localStorage.getItem("latitude")).toFixed(6),
           radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
           extensions: 'all',//返回结果控制
           batch: false, //batch=true为批量查询。batch=false为单点查询
@@ -2071,7 +2086,7 @@ angular.module('starter.controllers', [])
           $scope.ssx = addressComponent.province + addressComponent.city + addressComponent.district;//省市县
           $scope.addrinfo.addr = addressComponent.township + addressComponent.streetNumber.street;
         }).then(function () {
-          AddressService.getAddressBySSX({ssx: $scope.ssx}).success(function (data) {
+          AddressService.getAddressBySSX({ssx: $scope.ssx, level: 3}).success(function (data) {
             console.log(data);
             if (data.code == 1001) {
               $scope.addrareacountyone = data.data;
@@ -2549,7 +2564,7 @@ angular.module('starter.controllers', [])
         //当前位置 定位
         AccountService.getCurrentCity({
           key: BoRecycle.gaoDeKey,
-          location: Number($scope.handlongitude||localStorage.getItem("longitude")).toFixed(6) + "," + Number($scope.handlatitude||localStorage.getItem("latitude")).toFixed(6),
+          location: Number($scope.handlongitude || localStorage.getItem("longitude")).toFixed(6) + "," + Number($scope.handlatitude || localStorage.getItem("latitude")).toFixed(6),
           radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
           extensions: 'all',//返回结果控制
           batch: false, //batch=true为批量查询。batch=false为单点查询
@@ -2565,7 +2580,7 @@ angular.module('starter.controllers', [])
           }
         }).then(function () {
           if (param == 1) {
-            AddressService.getAddressBySSX({ssx: $scope.ssx}).success(function (data) {
+            AddressService.getAddressBySSX({ssx: $scope.ssx, level: 3}).success(function (data) {
               console.log(data);
               if (data.code == 1001) {
                 $scope.addrareacountyone = data.data;

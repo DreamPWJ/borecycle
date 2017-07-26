@@ -16,11 +16,11 @@
                                                nav-direction=forward> 什么是用户类型</a></p>
           </ion-item>
           <ion-item ng-if="usertype==0" class="item-divider light-bg text-center usertype">
-            <label ng-if="usertype!=1" ng-click="user.usertype=1" for="xinxi">
+            <label ng-if="usertype!=1" ng-click="userTypeSelect(1)" for="xinxi">
               <input type="checkbox" id="xinxi" ng-checked="user.usertype==1">
               <span>信息提供者</span>
             </label>
-            <label ng-if="!isUpgradeRecycler" ng-click="user.usertype=2" for="huishou">
+            <label ng-if="!isUpgradeRecycler" ng-click="userTypeSelect(2)" for="huishou">
               <input type="checkbox" id="huishou" ng-checked="user.usertype==2">
               <span>回收商</span>
             </label>
@@ -87,7 +87,8 @@
             <span class="input-label icon ion-ios-location-outline"> 详细地址</span>
             <textarea class="col-50" rows="1" ng-model="user.addrdetail" placeholder="请输入街道门牌号等详细地址"
                       ng-required="user.usertype==1"></textarea>
-            <div class="positive padding-left" ng-click="openNearAddrModal()"><i class="icon iconfont icon-locationfill"></i>定位
+            <div class="positive padding-left" ng-click="openNearAddrModal()"><i
+              class="icon iconfont icon-locationfill"></i>定位
             </div>
           </div>
 
@@ -112,7 +113,8 @@
           <p></p>
           <div class="padding-horizontal">
             <button class="button full-image button-positive " ng-click="organizingdataSubmit()"
-                    ng-disabled="!(organizingdataForm.$valid&&(user.usertype==1?verify:true)&&(user.usertype==1?true:(ischecked&&ischecked1))&&(addresspcd||ssx))">提交
+                    ng-disabled="!(organizingdataForm.$valid&&(user.usertype==1?verify:true)&&(user.usertype==1?true:(ischecked&&ischecked1))&&(addresspcd||ssx))">
+              提交
             </button>
             <p></p>
             <a ng-href="#/{{isLogin?'tab/account':'login'}}"
