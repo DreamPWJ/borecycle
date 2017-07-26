@@ -182,6 +182,7 @@ angular.module('starter.controllers', [])
                 localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
               } else {
                 CommonService.platformPrompt("获取公众接口授权token失败", 'close');
+                return;
               }
             }).then(function () {
               //授权之后执行的方法
@@ -210,6 +211,7 @@ angular.module('starter.controllers', [])
               localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
             } else {
               CommonService.platformPrompt("获取登录接口授权token失败", 'close');
+              return;
             }
           }).then(function () {
             //授权之后执行的方法
@@ -399,6 +401,7 @@ angular.module('starter.controllers', [])
 
           }).error(function () {
             CommonService.platformPrompt("获取登录接口授权token失败", 'close');
+            return;
           })
         }
         $rootScope.loginAuth = $interval(function () {
@@ -492,6 +495,7 @@ angular.module('starter.controllers', [])
 
           }).error(function () {
             CommonService.platformPrompt("获取登录接口授权token失败", 'close');
+            return;
           })
         }
         $rootScope.loginAuth = $interval(function () {
@@ -1863,19 +1867,27 @@ angular.module('starter.controllers', [])
   //账号信息
   .controller('AccountInfoCtrl', function ($scope, $rootScope, CommonService, AccountService, AddressService) {
 
-    CommonService.customModal($scope, 'templates/modal/addressmodal.html');
+    //城市选择modal
+    CommonService.customModal($scope, 'templates/modal/citymodal.html');
+    $scope.cityName = "深圳";//默认地址
+    //点击选择城市
+    $scope.openCustomModal = function () {
+      $scope.city = {};//城市相关json数据
+      $scope.modal.show();
+      AccountService.selectCity($scope);
+    }
     //获取省市县
-    $scope.getAddressPCCList = function (item) {
+/*    $scope.getAddressPCCList = function (item) {
       $scope.pccLevel = 2;//省市县选择的层级
       AddressService.getAddressPCCList($scope, item);
-    }
+    }*/
 
 
 //打开选择省市县modal
-    $scope.openModal = function () {
+/*    $scope.openModal = function () {
       $scope.modal.show();
       $scope.getAddressPCCList();
-    }
+    }*/
 
     AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
       if (data.code == 1001) {
@@ -1914,6 +1926,39 @@ angular.module('starter.controllers', [])
 
     })
 
+    //获取当前位置 定位
+    $scope.location = function () {
+      CommonService.getLocation(function () {
+        //当前位置 定位
+        AccountService.getCurrentCity({
+          key: BoRecycle.gaoDeKey,
+          location: Number($scope.handlongitude || localStorage.getItem("longitude")).toFixed(6) + "," + Number($scope.handlatitude || localStorage.getItem("latitude")).toFixed(6),
+          radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
+          extensions: 'all',//返回结果控制
+          batch: false, //batch=true为批量查询。batch=false为单点查询
+          roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
+        }).success(function (data) {
+          console.log(data);
+          var addressComponent = data.regeocode.addressComponent;
+          $scope.cityName = addressComponent.city;
+          $scope.ssx = addressComponent.province + addressComponent.city ;//省市县
+        }).then(function () {
+          AddressService.getAddressBySSX({
+            ssx: $scope.ssx,
+            level: 2
+          }).success(function (data) {
+            console.log(data);
+            if (data.code == 1001) {
+              $scope.addrareacountyone = data.data;
+            } else {
+              CommonService.platformPrompt(data.message, "close")
+            }
+          })
+        })
+      })
+
+    }
+    $scope.location();//自动定位
   })
 
   //修改用户头像图片
@@ -2888,8 +2933,10 @@ angular.module('starter.controllers', [])
   })
 
   //修改回收品类
-  .controller('ModifyCategoryCtrl', function ($scope, $stateParams, CommonService, OrderService, AccountService) {
-
+  .controller('ModifyCategoryCtrl', function ($scope,$rootScope, $stateParams, CommonService, OrderService, AccountService) {
+    $scope.user={};//用户信息
+    var user = JSON.parse(localStorage.getItem("user"));//用户信息
+    console.log(user);
     $scope.supplyOfGoods = function () {
       $scope.productLists = [];//产品品类
       //获取产品品类
@@ -2897,20 +2944,18 @@ angular.module('starter.controllers', [])
         console.log(data);
         if (data.code == 1001) {
           $scope.productList = data.data;
+          angular.forEach($scope.productList, function (item, index) {
+            if (user.userext.prodgroup.toString().indexOf(item.grpid) != -1) {
+              $scope.productList[index].checked = true;
+              $scope.ischecked = true;
+            }
+          })
         } else {
           CommonService.platformPrompt(data.message, 'close');
         }
       }).then(function () {
-
         $scope.checkChecded = function () {
           CommonService.checkChecded($scope, $scope.productList);
-          $scope.recyclingCategoryName = [];//回收品类名字数组
-          angular.forEach($scope.productList, function (item) {
-            if (item.checked) {
-              $scope.recyclingCategoryName.push(item.name);
-            }
-          })
-
         }
 
       })
@@ -2919,49 +2964,41 @@ angular.module('starter.controllers', [])
 
     //修改回收品类
     $scope.modifycategorySubmit = function () {
-      /*      $scope.user.services = [];//用户类型数组key
-       if ($scope.user.usertype == 2) {
-       angular.forEach($scope.services, function (item) {
-       if (item.checked) {
-       $scope.user.services.push(item.key)
-       }
-       })
-       } else {
-       $scope.user.services.push(1);
-       }
+      $scope.recyclingCategory = [];//回收品类
+      angular.forEach($scope.productList, function (item) {
+        if (item.checked) {
+          $scope.recyclingCategory.push(item.grpid);
+        }
+      })
+      $scope.user.username = user.userext.name;//用户名
+      $scope.user.mobile = user.userext.phone;//手机号码
+      $scope.user.userid = localStorage.getItem("userid");//用户id
+      $scope.user.services = user.services;//用户类型数组key
+      $scope.user.recoveryqty = user.userext.recovery;//月回收量
+      $scope.user.grps = $scope.recyclingCategory.join(",");
+      $scope.user.addrcode = user.userext.addrcode;
+      console.log($scope.user);
+      AccountService.setUserInfo($scope.user).success(function (data) {
+        console.log(data);
+        if (data.code == 1001) {
+          CommonService.platformPrompt("修改回收品类提交成功", '');
+        } else {
+          CommonService.platformPrompt(data.message, 'close');
+        }
 
-       angular.forEach($scope.productList, function (item) {
-       if (item.checked) {
-       $scope.recyclingCategory.push(item.grpid)
-       }
-       })
-       $scope.user.userid = localStorage.getItem("userid");//用户id
-       $scope.user.grps = $scope.recyclingCategory.join(",");
-       $scope.user.addrcode = $scope.addrareacountyone.ID;
-       $scope.user.img = $scope.ImgsPicAddr[0]; //证件照地址
-       console.log(JSON.stringify($scope.user));
-       AccountService.setUserInfo($scope.user).success(function (data) {
-       console.log(data);
-       if (data.code == 1001) {
-       CommonService.platformPrompt("修改回收品类提交成功", '');
-       } else {
-       CommonService.platformPrompt(data.message, 'close');
-       }
-
-       if (data.code == 1001 && localStorage.getItem("userid")) {  //更新用户信息
-       //根据会员ID获取会员账号基本信息
-       AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (datas) {
-       console.log(datas);
-       if (datas.code == 1001) {
-       $rootScope.userdata = datas.data;
-       localStorage.setItem("user", JSON.stringify(datas.data));
-       var services = datas.data.services;
-       //用户会员类型  0 无 1信息提供者  2回收者
-       localStorage.setItem("usertype", (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
-       }
-       })
-       }
-       })*/
+        if (data.code == 1001 && localStorage.getItem("userid")) {  //更新用户信息
+          //根据会员ID获取会员账号基本信息
+          AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (datas) {
+            if (datas.code == 1001) {
+              $rootScope.userdata = datas.data;
+              localStorage.setItem("user", JSON.stringify(datas.data));
+              var services = datas.data.services;
+              //用户会员类型  0 无 1信息提供者  2回收者
+              localStorage.setItem("usertype", (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
+            }
+          })
+        }
+      })
     }
   })
 
