@@ -24,6 +24,10 @@
   <preference name="FadeSplashScreen" value="false"/>
   <preference name="orientation" value="portrait"/>
   <preference name="REDIRECTURI" value="http://sns.whalecloud.com/sina2/callback"/>
+  <feature name="JPushPlugin">
+    <param name="ios-package" value="JPushPlugin" />
+    <param name="onload" value="true" />
+  </feature>
   <platform name="android">
     <allow-intent href="market:*"/>
     <icon src="resources\android\icon\drawable-ldpi-icon.png" density="ldpi"/>
