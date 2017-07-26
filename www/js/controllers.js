@@ -1700,25 +1700,25 @@ angular.module('starter.controllers', [])
       console.log($scope.data);
 
       //回收付款
-      $scope.payOrderReceipt = function () {
-        OrderService.payOrderReceipt($scope.data).success(function (data) {
-          console.log(data);
-          if (data.code == 1001) {
-            CommonService.platformPrompt("回收付款成功", "orderdetails", {
-              no: $scope.orderinfo.orno,
-              type: 2
-            })
-          } else {
-            CommonService.platformPrompt(data.message, "close")
-          }
-        })
-      }
+      /*      $scope.payOrderReceipt = function () {*/
+      OrderService.payOrderReceipt($scope.data).success(function (data) {
+        console.log(data);
+        if (data.code == 1001) {
+          CommonService.platformPrompt("回收付款成功", "orderdetails", {
+            no: $scope.orderinfo.orno,
+            type: 2
+          })
+        } else {
+          CommonService.platformPrompt(data.message, "close")
+        }
+      })
+      /*      }*/
       /*      if ($scope.orderinfo.type == 1 && $scope.orderDetail.informationmoney) { //如果是登记信息（type=1）的情况，要提示他的“预计信息费金额”
        CommonService.showConfirm('支付提示', '温馨提示:此订单的预计信息费金额为 ' + $scope.orderDetail.informationmoney + ' 元 , 支付请点击"确定",否则请点击"取消"', '确定', '取消', '', 'close', function () {
        $scope.payOrderReceipt()
        });
        } else {*/
-      $scope.payOrderReceipt()
+      /*      $scope.payOrderReceipt()*/
       /*  }*/
 
 
@@ -1865,7 +1865,7 @@ angular.module('starter.controllers', [])
   })
 
   //账号信息
-  .controller('AccountInfoCtrl', function ($scope, $rootScope, CommonService,BoRecycle, AccountService, AddressService) {
+  .controller('AccountInfoCtrl', function ($scope, $rootScope, CommonService, BoRecycle, AccountService, AddressService) {
 
     //城市选择modal
     CommonService.customModal($scope, 'templates/modal/citymodal.html');
@@ -1914,7 +1914,7 @@ angular.module('starter.controllers', [])
         //当前位置 定位
         AccountService.getCurrentCity({
           key: BoRecycle.gaoDeKey,
-          location: Number( localStorage.getItem("longitude")).toFixed(6) + "," + Number( localStorage.getItem("latitude")).toFixed(6),
+          location: Number(localStorage.getItem("longitude")).toFixed(6) + "," + Number(localStorage.getItem("latitude")).toFixed(6),
           radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
           extensions: 'all',//返回结果控制
           batch: false, //batch=true为批量查询。batch=false为单点查询
