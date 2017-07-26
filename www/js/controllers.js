@@ -112,7 +112,7 @@ angular.module('starter.controllers', [])
               console.log(data);
               if (data.code == 1001) {
                 localStorage.setItem("openid", data.data.OpenId);
-                if(data.data.UserLogID!=null&&data.data.usersecret!=null){
+                if (data.data.UserLogID != null && data.data.usersecret != null) {
                   localStorage.setItem("userid", data.data.UserLogID);
                   localStorage.setItem("usersecret", data.data.usersecret);
                   $scope.getMainData();
@@ -751,6 +751,7 @@ angular.module('starter.controllers', [])
     }
     //打开附近地址modal
     $scope.openNearAddrModal = function () {
+      $scope.location();//自动定位
       $scope.modal1.show();
     }
 
@@ -778,7 +779,7 @@ angular.module('starter.controllers', [])
         //当前位置 定位
         AccountService.getCurrentCity({
           key: BoRecycle.gaoDeKey,
-          location: Number(localStorage.getItem("longitude")).toFixed(6) + "," + Number(localStorage.getItem("latitude")).toFixed(6),
+          location: Number($scope.handlongitude||localStorage.getItem("longitude")).toFixed(6) + "," + Number($scope.handlatitude||localStorage.getItem("latitude")).toFixed(6),
           radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
           extensions: 'all',//返回结果控制
           batch: false, //batch=true为批量查询。batch=false为单点查询
@@ -1114,7 +1115,7 @@ angular.module('starter.controllers', [])
     }
 
     $scope.$on('$ionicView.afterEnter', function () {
-      if ($rootScope.tabOrderIndex!=0&&isorderdetails) {
+      if ($rootScope.tabOrderIndex != 0 && isorderdetails) {
         $scope.selectedTab($rootScope.tabOrderIndex);
       } else if ($rootScope.orderType == 0 || $rootScope.orderType == 2) {
         $scope.selectedTab(1);
@@ -1400,7 +1401,7 @@ angular.module('starter.controllers', [])
     }
 
     $scope.$on('$ionicView.afterEnter', function () {
-      if ($rootScope.tabMyOrderIndex!=0&&ismyorderdetails) {
+      if ($rootScope.tabMyOrderIndex != 0 && ismyorderdetails) {
         $scope.selectedTab($rootScope.tabMyOrderIndex);
       } else {
         $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
@@ -1863,18 +1864,18 @@ angular.module('starter.controllers', [])
         angular.forEach($rootScope.userinfo.services, function (item) {
           if (item == 1) {
             $scope.services.push("信息提供者")
-          }else {
+          } else {
             $scope.services.push("回收商")
           }
-/*          if (item == 2) {
-            $scope.services.push("上门回收者")
-          }
-          if (item == 3) {
-            $scope.services.push("货场")
-          }
-          if (item == 4) {
-            $scope.services.push("二手商家")
-          }*/
+          /*          if (item == 2) {
+           $scope.services.push("上门回收者")
+           }
+           if (item == 3) {
+           $scope.services.push("货场")
+           }
+           if (item == 4) {
+           $scope.services.push("二手商家")
+           }*/
 
         })
         $scope.servicesstr = $scope.services.join(",")
@@ -2026,6 +2027,7 @@ angular.module('starter.controllers', [])
     }
     //打开附近地址modal
     $scope.openNearAddrModal = function () {
+      $scope.location();//自动定位
       $scope.modal1.show();
     }
 
@@ -2056,7 +2058,7 @@ angular.module('starter.controllers', [])
         //当前位置 定位
         AccountService.getCurrentCity({
           key: BoRecycle.gaoDeKey,
-          location: Number(localStorage.getItem("longitude")).toFixed(6) + "," + Number(localStorage.getItem("latitude")).toFixed(6),
+          location: Number($scope.handlongitude||localStorage.getItem("longitude")).toFixed(6) + "," + Number($scope.handlatitude||localStorage.getItem("latitude")).toFixed(6),
           radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
           extensions: 'all',//返回结果控制
           batch: false, //batch=true为批量查询。batch=false为单点查询
@@ -2516,6 +2518,7 @@ angular.module('starter.controllers', [])
 
     //打开附近地址modal
     $scope.openNearAddrModal = function () {
+      $scope.location(0);
       $scope.modal1.show();
     }
 
@@ -2546,7 +2549,7 @@ angular.module('starter.controllers', [])
         //当前位置 定位
         AccountService.getCurrentCity({
           key: BoRecycle.gaoDeKey,
-          location: Number(localStorage.getItem("longitude")).toFixed(6) + "," + Number(localStorage.getItem("latitude")).toFixed(6),
+          location: Number($scope.handlongitude||localStorage.getItem("longitude")).toFixed(6) + "," + Number($scope.handlatitude||localStorage.getItem("latitude")).toFixed(6),
           radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
           extensions: 'all',//返回结果控制
           batch: false, //batch=true为批量查询。batch=false为单点查询
@@ -2561,14 +2564,16 @@ angular.module('starter.controllers', [])
             $scope.dengji.addrdetail = addressComponent.township + addressComponent.streetNumber.street;
           }
         }).then(function () {
-          AddressService.getAddressBySSX({ssx: $scope.ssx}).success(function (data) {
-            console.log(data);
-            if (data.code == 1001) {
-              $scope.addrareacountyone = data.data;
-            } else {
-              CommonService.platformPrompt(data.message, "close")
-            }
-          })
+          if (param == 1) {
+            AddressService.getAddressBySSX({ssx: $scope.ssx}).success(function (data) {
+              console.log(data);
+              if (data.code == 1001) {
+                $scope.addrareacountyone = data.data;
+              } else {
+                CommonService.platformPrompt(data.message, "close")
+              }
+            })
+          }
         })
       })
 
@@ -2715,7 +2720,7 @@ angular.module('starter.controllers', [])
 
     //登记货源提交
     $scope.supplyofgoodsSubmit = function () {
-      if ($scope.address==undefined|| $scope.address == null || angular.equals({}, $scope.address)) {
+      if ($scope.address == undefined || $scope.address == null || angular.equals({}, $scope.address)) {
         CommonService.platformPrompt("请选择货源地址", 'myaddress');
         return;
       }

@@ -1435,8 +1435,10 @@ angular.module('starter.services', [])
           if ($scope.dengji) $scope.dengji.addrdetail = "";
           if ($scope.user) $scope.user.addrdetail = "";
           if ($scope.addrinfo) $scope.addrinfo.addr = "";
-          $scope.longitude = null;//经度
-          $scope.latitude = null;//纬度
+          $scope.longitude = null;//自动详情经度
+          $scope.latitude = null;//自动详情纬度
+          $scope.handlongitude = item.Lng;//手动经度
+          $scope.handlatitude = item.Lat;//手动纬度
           $scope.modal.hide();
           return;
         }
