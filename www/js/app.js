@@ -215,7 +215,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       .state('tab.main', {
         url: '/main',
         nativeTransitions: null,
-        cache:true,
+        cache: true,
         views: {
           'tab-main': {
             templateUrl: 'templates/main.html',
@@ -509,6 +509,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         cache: false,
         templateUrl: 'templates/orderreceipt/cancelorder.html',
         controller: 'CancelOrderCtrl'
+      })
+
+      //修改回收品类
+      .state('modifycategory', {
+        url: '/modifycategory',
+        cache: false,
+        templateUrl: 'templates/account/modifycategory.html',
+        controller: 'ModifyCategoryCtrl'
       })
 
       //我的钱包

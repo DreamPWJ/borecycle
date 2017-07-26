@@ -1418,7 +1418,6 @@ angular.module('starter.services', [])
         //获取县或地区信息
         if (item.Level == 2) {
           this.getDList({cid: item.ID}).success(function (data) {
-            console.log(data);
             if (data.code == 1001) {
               $scope.addressinfo = data.data;
               $ionicScrollDelegate.scrollTop()
@@ -1700,7 +1699,6 @@ angular.module('starter.services', [])
               optId: uploadtype //上传媒体操作类型 1.卖货单 2 供货单 3 买货单 4身份证 5 头像
             }
             WeiXinService.getWCMedia($scope.mediaparams).success(function (data) {
-              console.log(data);
               $scope.imageList.push(data.data.url);//客户端显示的url
               $scope.ImgsPicAddr.push(BoRecycle.imgUrl + data.data.savepath);//提交需要的url
               if (uploadtype == 5) {//上传头像单独处理

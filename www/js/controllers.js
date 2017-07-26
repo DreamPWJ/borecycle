@@ -1861,7 +1861,21 @@ angular.module('starter.controllers', [])
   })
 
   //账号信息
-  .controller('AccountInfoCtrl', function ($scope, $rootScope, CommonService, AccountService) {
+  .controller('AccountInfoCtrl', function ($scope, $rootScope, CommonService, AccountService, AddressService) {
+
+    CommonService.customModal($scope, 'templates/modal/addressmodal.html');
+    //获取省市县
+    $scope.getAddressPCCList = function (item) {
+      $scope.pccLevel = 2;//省市县选择的层级
+      AddressService.getAddressPCCList($scope, item);
+    }
+
+
+//打开选择省市县modal
+    $scope.openModal = function () {
+      $scope.modal.show();
+      $scope.getAddressPCCList();
+    }
 
     AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
       if (data.code == 1001) {
@@ -2870,6 +2884,84 @@ angular.module('starter.controllers', [])
 
         })
       })
+    }
+  })
+
+  //修改回收品类
+  .controller('ModifyCategoryCtrl', function ($scope, $stateParams, CommonService, OrderService, AccountService) {
+
+    $scope.supplyOfGoods = function () {
+      $scope.productLists = [];//产品品类
+      //获取产品品类
+      OrderService.getProductList({ID: "", Name: ""}).success(function (data) {
+        console.log(data);
+        if (data.code == 1001) {
+          $scope.productList = data.data;
+        } else {
+          CommonService.platformPrompt(data.message, 'close');
+        }
+      }).then(function () {
+
+        $scope.checkChecded = function () {
+          CommonService.checkChecded($scope, $scope.productList);
+          $scope.recyclingCategoryName = [];//回收品类名字数组
+          angular.forEach($scope.productList, function (item) {
+            if (item.checked) {
+              $scope.recyclingCategoryName.push(item.name);
+            }
+          })
+
+        }
+
+      })
+    }
+    $scope.supplyOfGoods();
+
+    //修改回收品类
+    $scope.modifycategorySubmit = function () {
+      /*      $scope.user.services = [];//用户类型数组key
+       if ($scope.user.usertype == 2) {
+       angular.forEach($scope.services, function (item) {
+       if (item.checked) {
+       $scope.user.services.push(item.key)
+       }
+       })
+       } else {
+       $scope.user.services.push(1);
+       }
+
+       angular.forEach($scope.productList, function (item) {
+       if (item.checked) {
+       $scope.recyclingCategory.push(item.grpid)
+       }
+       })
+       $scope.user.userid = localStorage.getItem("userid");//用户id
+       $scope.user.grps = $scope.recyclingCategory.join(",");
+       $scope.user.addrcode = $scope.addrareacountyone.ID;
+       $scope.user.img = $scope.ImgsPicAddr[0]; //证件照地址
+       console.log(JSON.stringify($scope.user));
+       AccountService.setUserInfo($scope.user).success(function (data) {
+       console.log(data);
+       if (data.code == 1001) {
+       CommonService.platformPrompt("修改回收品类提交成功", '');
+       } else {
+       CommonService.platformPrompt(data.message, 'close');
+       }
+
+       if (data.code == 1001 && localStorage.getItem("userid")) {  //更新用户信息
+       //根据会员ID获取会员账号基本信息
+       AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (datas) {
+       console.log(datas);
+       if (datas.code == 1001) {
+       $rootScope.userdata = datas.data;
+       localStorage.setItem("user", JSON.stringify(datas.data));
+       var services = datas.data.services;
+       //用户会员类型  0 无 1信息提供者  2回收者
+       localStorage.setItem("usertype", (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
+       }
+       })
+       }
+       })*/
     }
   })
 
