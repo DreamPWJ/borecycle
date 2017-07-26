@@ -1869,25 +1869,13 @@ angular.module('starter.controllers', [])
 
     //城市选择modal
     CommonService.customModal($scope, 'templates/modal/citymodal.html');
-    $scope.cityName = "深圳";//默认地址
+
     //点击选择城市
     $scope.openCustomModal = function () {
       $scope.city = {};//城市相关json数据
       $scope.modal.show();
-      AccountService.selectCity($scope);
+      AccountService.selectCity($scope); //选择城市
     }
-    //获取省市县
-/*    $scope.getAddressPCCList = function (item) {
-      $scope.pccLevel = 2;//省市县选择的层级
-      AddressService.getAddressPCCList($scope, item);
-    }*/
-
-
-//打开选择省市县modal
-/*    $scope.openModal = function () {
-      $scope.modal.show();
-      $scope.getAddressPCCList();
-    }*/
 
     AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
       if (data.code == 1001) {
@@ -1928,6 +1916,7 @@ angular.module('starter.controllers', [])
 
     //获取当前位置 定位
     $scope.location = function () {
+      $scope.cityName = "深圳";//默认地址
       CommonService.getLocation(function () {
         //当前位置 定位
         AccountService.getCurrentCity({
@@ -1940,25 +1929,49 @@ angular.module('starter.controllers', [])
         }).success(function (data) {
           console.log(data);
           var addressComponent = data.regeocode.addressComponent;
-          $scope.cityName = addressComponent.city;
-          $scope.ssx = addressComponent.province + addressComponent.city ;//省市县
-        }).then(function () {
-          AddressService.getAddressBySSX({
-            ssx: $scope.ssx,
-            level: 2
-          }).success(function (data) {
-            console.log(data);
-            if (data.code == 1001) {
-              $scope.addrareacountyone = data.data;
-            } else {
-              CommonService.platformPrompt(data.message, "close")
-            }
-          })
+          $scope.cityName = addressComponent.city ? addressComponent.city : addressComponent.province;
         })
+
       })
 
     }
     $scope.location();//自动定位
+
+    //修改回收区域
+    $scope.user = {};//用户信息
+    $scope.modifyAddressSubmit = function (addrcode) {
+      var user = JSON.parse(localStorage.getItem("user"));//用户信息
+
+      $scope.user.username = user.userext.name;//用户名
+      $scope.user.mobile = user.userext.phone;//手机号码
+      $scope.user.userid = localStorage.getItem("userid");//用户id
+      $scope.user.services = user.services;//用户类型数组key
+      $scope.user.recoveryqty = user.userext.recovery;//月回收量
+      $scope.user.grps = user.userext.prodgroup;
+      $scope.user.addrcode = addrcode;
+      console.log($scope.user);
+      AccountService.setUserInfo($scope.user).success(function (data) {
+        console.log(data);
+        if (data.code == 1001) {
+          CommonService.platformPrompt("修改回收区域成功", '');
+        } else {
+          CommonService.platformPrompt(data.message, 'close');
+        }
+
+        if (data.code == 1001 && localStorage.getItem("userid")) {  //更新用户信息
+          //根据会员ID获取会员账号基本信息
+          AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (datas) {
+            if (datas.code == 1001) {
+              $rootScope.userinfo = datas.data;
+              localStorage.setItem("user", JSON.stringify(datas.data));
+              var services = datas.data.services;
+              //用户会员类型  0 无 1信息提供者  2回收者
+              localStorage.setItem("usertype", (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
+            }
+          })
+        }
+      })
+    }
   })
 
   //修改用户头像图片
@@ -2933,10 +2946,10 @@ angular.module('starter.controllers', [])
   })
 
   //修改回收品类
-  .controller('ModifyCategoryCtrl', function ($scope,$rootScope, $stateParams, CommonService, OrderService, AccountService) {
-    $scope.user={};//用户信息
+  .controller('ModifyCategoryCtrl', function ($scope, $rootScope, $stateParams, CommonService, OrderService, AccountService) {
+    $scope.user = {};//用户信息
     var user = JSON.parse(localStorage.getItem("user"));//用户信息
-    console.log(user);
+
     $scope.supplyOfGoods = function () {
       $scope.productLists = [];//产品品类
       //获取产品品类
@@ -2990,7 +3003,7 @@ angular.module('starter.controllers', [])
           //根据会员ID获取会员账号基本信息
           AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (datas) {
             if (datas.code == 1001) {
-              $rootScope.userdata = datas.data;
+              $rootScope.userinfo = datas.data;
               localStorage.setItem("user", JSON.stringify(datas.data));
               var services = datas.data.services;
               //用户会员类型  0 无 1信息提供者  2回收者

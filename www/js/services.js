@@ -545,7 +545,7 @@ angular.module('starter.services', [])
       },
     }
   })
-  .service('AccountService', function ($q, $http, BoRecycle, $cordovaFileTransfer, $state, $ionicScrollDelegate, $cordovaToast, $timeout, $ionicPopup, $ionicLoading, $cordovaFile, $cordovaFileOpener2) { //我的服务
+  .service('AccountService', function ($q, $http, BoRecycle, $cordovaFileTransfer, $state, $ionicScrollDelegate, $cordovaToast, $timeout, $ionicHistory, $ionicPopup, $ionicLoading, $cordovaFile, $cordovaFileOpener2) { //我的服务
     return {
       register: function (datas) { //用户注册
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
@@ -1457,7 +1457,8 @@ angular.module('starter.services', [])
         var d = "";
         $http({
           method: 'GET',
-          url: 'templates/data/city.json'
+          url: 'templates/data/city.json',
+          cache: true
         }).success(function (data) {
           d = data;
         }).error(function (data, header, config, status) {
@@ -1495,31 +1496,37 @@ angular.module('starter.services', [])
 
           $scope.hotCities = [
             {
+              "id": 110100,
               "name": "北京",
               "pinyin": "beijing",
               "index": "B"
             },
             {
+              "id": 310100,
               "name": "上海",
               "pinyin": "shanghai",
               "index": "S"
             },
             {
+              "id": 440100,
               "name": "广州",
               "pinyin": "guangzhou",
               "index": "G"
             },
             {
+              "id": 440300,
               "name": "深圳",
               "pinyin": "shenzhen",
               "index": "S"
             },
             {
+              "id": 500100,
               "name": "重庆",
               "pinyin": "chongqing",
               "index": "C"
             },
             {
+              "id": 420100,
               "name": "武汉",
               "pinyin": "wuhan",
               "index": "W"
@@ -1549,12 +1556,12 @@ angular.module('starter.services', [])
           })
 
           $scope.citySelected = function (c) {
+            $scope.modifyAddressSubmit(c.id);
             $scope.currentCity = c;
-
             // 缓存当前城市
             window.localStorage[cache_currentCity] = angular.toJson(c);
-            /*            $scope.modal.hide();*/
-            //  $ionicHistory.goBack();
+            $scope.modal.hide();
+            /*      $ionicHistory.goBack();*/
           }
 
           function alphabetMove(pPositionY) {
@@ -2005,7 +2012,7 @@ angular.module('starter.services', [])
           })
         }
         //获取最后一级地址信息 关闭modal
-        if ($scope.pccLevel==item.Level||item.Level == 3) {
+        if ($scope.pccLevel == item.Level || item.Level == 3) {
           $scope.addrareacountyone = {};
           $scope.addresspcd = item.MergerName;
           $scope.addrareacountyone = item;
