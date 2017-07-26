@@ -816,7 +816,6 @@ angular.module('starter.controllers', [])
     //用户类型选择
     $scope.userTypeSelect = function (type) {
       $scope.user.usertype = type;
-      $scope.$apply();
       $scope.location();//自动定位
     }
 

@@ -10,10 +10,11 @@
     <form name="organizingdataForm">
       <div class="list">
         <div ng-if="usertype==0||isUpgradeRecycler">
-          <ion-item class="item-divider light-bg">
-            用户类型
-            <p class="text-right item-note"><a class="positive  icon ion-ios-help-outline" ng-href="#/help/25"
-                                               nav-direction=forward> 什么是用户类型</a></p>
+          <ion-item class="item-divider light-bg border-bottom">
+            <h2 class="border-left">用户类型 <p class="text-right item-note">
+              <a class="positive  icon ion-ios-help-outline"
+                 ng-href="#/help/25"
+                 nav-direction=forward> 什么是用户类型</a></p></h2>
           </ion-item>
           <ion-item ng-if="usertype==0" class="item-divider light-bg text-center usertype">
             <label ng-if="usertype!=1" ng-click="userTypeSelect(1)" for="xinxi">

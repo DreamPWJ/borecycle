@@ -13,6 +13,30 @@
   <ion-content overflow-scroll="false" class="stable-bg" id="register" has-bouncing="true">
     <form name="registerForm">
       <ion-list>
+        <ion-item class="item-divider light-bg border-bottom">
+          <h2 class="border-left">用户类型 <p class="text-right item-note">
+            <a class="positive  icon ion-ios-help-outline"
+               ng-href="#/help/25"
+               nav-direction=forward> 什么是用户类型</a></p></h2>
+        </ion-item>
+        <ion-item class="item-divider light-bg text-center usertype">
+          <label ng-click="user.usertype=1" for="xinxi">
+            <input type="checkbox" id="xinxi" ng-checked="user.usertype==1">
+            <span>信息提供者</span>
+          </label>
+          <label ng-click="user.usertype=2" for="huishou">
+            <input type="checkbox" id="huishou" ng-checked="user.usertype==2">
+            <span>回收商</span>
+          </label>
+        </ion-item>
+
+        <div class=" services padding light-bg  text-wrap" ng-if="user.usertype==2">
+          <ion-checkbox class="item-borderless checkbox-positive " ng-click="checkChecded()"
+                        ng-repeat="item in services" ng-model="item.checked">
+            {{item.value}}
+          </ion-checkbox>
+        </div>
+
         <label class="item item-input">
           <span class="input-label icon ion-ios-person-outline"> 账号</span>
           <input type="text" name="username" ng-model="user.account" placeholder="手机号码/邮箱"
@@ -41,32 +65,11 @@
           </span>
         </div>
         <label class="item item-input">
-          <span class="input-label icon ion-ios-unlocked-outline" > 邀请码</span>
+          <span class="input-label icon ion-ios-unlocked-outline"> 邀请码</span>
           <input type="text" ng-model="user.invitecode" check-form
-                 placeholder="请输入邀请码" required  maxlength="6"/>
+                 placeholder="请输入邀请码" required maxlength="6"/>
         </label>
-        <ion-item class="item-divider light-bg">
-          用户类型
-          <p class="text-right item-note"><a class="positive  icon ion-ios-help-outline" ng-href="#/help/25"
-                                             nav-direction=forward> 什么是用户类型</a></p>
-        </ion-item>
-        <ion-item class="item-divider light-bg text-center usertype">
-          <label ng-click="user.usertype=1" for="xinxi" >
-            <input type="checkbox" id="xinxi"  ng-checked="user.usertype==1">
-            <span>信息提供者</span>
-          </label>
-          <label ng-click="user.usertype=2" for="huishou">
-            <input type="checkbox" id="huishou"  ng-checked="user.usertype==2">
-            <span>回收商</span>
-          </label>
-        </ion-item>
 
-        <div class=" services padding light-bg  text-wrap"  ng-if="user.usertype==2">
-          <ion-checkbox  class="item-borderless checkbox-positive " ng-click="checkChecded()"
-                        ng-repeat="item in services" ng-model="item.checked" >
-            {{item.value}}
-          </ion-checkbox>
-        </div>
 
         <ion-checkbox class=" stable-bg item-borderless  checkbox-positive" ng-model="agreedeal" ng-checked="true">
           同意注册协议
