@@ -415,8 +415,16 @@ angular.module('starter.services', [])
           });
       },
       isLogin: function (flag) {//判断是否登录
+        CommonService = this;
         if (!localStorage.getItem("userid")) {
           if (flag) {
+            //是否是微信 获取微信登录授权
+            if (WeiXinService.isWeiXin()) {
+              if (!localStorage.getItem("openid")) { //微信登录授权
+                CommonService.windowOpen('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx39ba5b2a2f59ef2c&redirect_uri=' + encodeURIComponent("http://m.boolv.com/WeChat") + '&response_type=code&scope=snsapi_base&state=shoushou#wechat_redirect')
+                return;
+              }
+            }
             $state.go('login');
           } else {
             this.showConfirm('收收', '温馨提示:此功能需要登录才能使用,请先登录', '登录', '关闭', 'login');

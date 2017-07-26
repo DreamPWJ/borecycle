@@ -111,17 +111,23 @@ angular.module('starter.controllers', [])
             }).success(function (data) {
               console.log(data);
               if (data.code == 1001) {
-                localStorage.setItem("openid", data.data.OpenId)
+                localStorage.setItem("openid", data.data.OpenId);
+                if(data.data.UserLogID!=null&&data.data.usersecret!=null){
+                  localStorage.setItem("userid", data.data.UserLogID);
+                  localStorage.setItem("usersecret", data.data.usersecret);
+                  $scope.getMainData();
+                }
+
               } else {
                 CommonService.platformPrompt("获取微信OpenID失败", 'close');
               }
 
             })
           } else {
-            localStorage.setItem("wxoauth2", true);
             CommonService.windowOpen('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx39ba5b2a2f59ef2c&redirect_uri=' + encodeURIComponent("http://m.boolv.com/WeChat") + '&response_type=code&scope=snsapi_base&state=shoushou#wechat_redirect')
+            return;
           }
-          return;
+
         }
 
 
@@ -345,6 +351,7 @@ angular.module('starter.controllers', [])
     localStorage.removeItem("usersecret");
     localStorage.removeItem("user");
     localStorage.removeItem("usertype");
+    localStorage.removeItem("openid");
 
     $scope.user = {};//提前定义用户对象
     $scope.agreedeal = true;//同意用户协议
@@ -425,6 +432,7 @@ angular.module('starter.controllers', [])
     localStorage.removeItem("usersecret");
     localStorage.removeItem("user");
     localStorage.removeItem("usertype");
+    localStorage.removeItem("openid");
 
     $scope.user = {};//提前定义用户对象
     $scope.agreedeal = true;//同意用户协议
