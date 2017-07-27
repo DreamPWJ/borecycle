@@ -1471,11 +1471,13 @@ angular.module('starter.services', [])
             "pinyin": "shenzhen",
             "index": "S"
           }
-          angular.forEach(d, function (item) {
-            if(item.name==$scope.cityName){
-              $scope.currentCity =item;
-            }
-          })
+          if($scope.cityName){
+            angular.forEach(d, function (item) {
+              if(item.name==$scope.cityName){
+                $scope.currentCity =item;
+              }
+            })
+          }
           var cache_currentCity = "cache_currentCity";
           var newCities = []
           // 初始化城市索引
