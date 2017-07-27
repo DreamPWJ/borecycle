@@ -16,12 +16,13 @@
         <p>{{userdata.mobile}}</p>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
+      <div ng-if="!usertype" class="head-sub light-bg"></div>
       <div ng-if="usertype==1">
         <a nav-direction=forward ng-href="#/wallet" class="item item-icon-left   order money">
           <i class="icon iconfont icon-moneybag " style="color: #4cd964;"></i>
           <h2>我的钱包
-            <button class="button button-positive" ui-sref="cash">提现</button>
-            <button class="button button-energized" ui-sref="recharge">充值</button>
+            <button class="button button-positive button-outline" ui-sref="cash">提现</button>
+            <button class="button button-energized  button-outline" ui-sref="recharge">充值</button>
           </h2>
         </a>
         <div class="row row-no-padding light-bg  row-center text-center order-item">

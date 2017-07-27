@@ -15,6 +15,10 @@
   border: 1px solid #fff;
 }
 
+.account .head-sub{
+  height: 6.3rem;
+}
+
 #login {
   padding-top: 1.5rem;
 }
