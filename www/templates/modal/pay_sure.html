@@ -1,0 +1,47 @@
+<ion-modal-view id="pay-sure">
+  <ion-header-bar class="bar bar-header bar-light">
+    <button class="button button-clear icon ion-ios-close-empty" ng-click="modal.hide()"></button>
+    <h1 class="title">确认付款</h1>
+  </ion-header-bar>
+
+  <ion-content overflow-scroll="true">
+    <p class="text-center" style="font-size: 1.8rem;padding-top: 20px;padding-bottom: 10px;">{{orderinfo.amount | currency:'￥'}}</p>
+    <div style="padding: 0 20px;font-size:18px;" class="padding-bottom">
+      <span class="grey" style="font-size: 0.8rem;">请输入手机验证码：</span>
+      <button style="font-size: 0.8rem;height: 20px;line-height: 20px;min-height: 20px;" class="button button-clear button-calm f-right" ng-click="getVerifyCode()" ng-disabled="!paraclass">{{paracont}}</button>
+      <div class="row row-no-padding" style="border: 1px solid #dedede;height: 50px;line-height: 50px;border-radius: 5px;">
+        <span class="col text-center border-r">{{vcode?vcode.substr(0,1):""}}</span>
+        <span class="col text-center border-r">{{vcode?vcode.substr(1,1):""}}</span>
+        <span class="col text-center border-r">{{vcode?vcode.substr(2,1):""}}</span>
+        <span class="col text-center border-r">{{vcode?vcode.substr(3,1):""}}</span>
+        <span class="col text-center border-r">{{vcode?vcode.substr(4,1):""}}</span>
+        <span class="col text-center">{{vcode?vcode.substr(5,1):""}}</span>
+      </div>
+    </div>
+    <div class="padding-top" style="font-size: 25px;width: 100%;position: fixed;bottom: 0;">
+      <div class="row row-no-padding" style="border-top: 1px solid rgba(221, 221, 221, 0.3);height: 50px;line-height: 50px;margin-top: 0;">
+        <span class="col text-center border-r" ng-click="inputCode('1')">1</span>
+        <span class="col text-center border-r" ng-click="inputCode('2')">2</span>
+        <span class="col text-center" ng-click="inputCode('3')">3</span>
+      </div>
+      <div class="row row-no-padding" style="border-top: 1px solid rgba(221, 221, 221, 0.3);height: 50px;line-height: 50px;margin-top: 0;">
+        <span class="col text-center border-r" ng-click="inputCode('4')">4</span>
+        <span class="col text-center border-r" ng-click="inputCode('5')">5</span>
+        <span class="col text-center" ng-click="inputCode('6')">6</span>
+      </div>
+      <div class="row row-no-padding" style="border-top: 1px solid rgba(221, 221, 221, 0.3);height: 50px;line-height: 50px;margin-top: 0;">
+        <span class="col text-center border-r" ng-click="inputCode('7')">7</span>
+        <span class="col text-center border-r" ng-click="inputCode('8')">8</span>
+        <span class="col text-center" ng-click="inputCode('9')">9</span>
+      </div>
+      <div class="row row-no-padding" style="border-top: 1px solid rgba(221, 221, 221, 0.3);height: 50px;line-height: 50px;margin-top: 0;">
+        <span class="col" style="background:#efefef;"></span>
+        <span class="col text-center" ng-click="inputCode('0')">0</span>
+        <span class="col text-center light iconfont icon-del" style="background:#efefef;" ng-click="inputCode('-1')"></span>
+      </div>
+    </div>
+  </ion-content>
+<!--  <ion-footer-bar >
+    <button ng-click="modal.hide()" class="button button-positive full-image">取消</button>
+  </ion-footer-bar>-->
+</ion-modal-view>
