@@ -39,7 +39,7 @@
           接单手机号 : {{orderDetail.ormotel}}
           <i class="icon iconfont icon-phone energized"></i>
         </a>
-        <ion-item ng-if="orderDetail.type==1">
+        <ion-item ng-if="orderDetail.type==1&&orderDetail.ormotel">
           接单手机号 : {{orderDetail.ormotel | hidepartinfo : 'phone'}}
         </ion-item>
 
