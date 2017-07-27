@@ -8,13 +8,13 @@ angular.module('starter.controllers', [])
 
   //Tabs Ctrl
   .controller('TabsCtrl', function ($scope) {
-    $scope.isLogin = localStorage.getItem("userid") ? true : false;//是否登录
+/*    $scope.isLogin = localStorage.getItem("userid") ? true : false;*///是否登录
     //  $scope.usertype = localStorage.getItem("usertype") || 0; //用户会员类型  0 无 1信息提供者  2回收者
     //$on用于事件 接收子级数据
-    $scope.$on("usertype", function (event, data) {
+/*    $scope.$on("usertype", function (event, data) {
       localStorage.setItem("usertype", data.usertype);
-      //   $scope.usertype = data.usertype; //用户会员类型  0 无 1信息提供者  2回收者
-    });
+       $scope.usertype = data.usertype; //用户会员类型  0 无 1信息提供者  2回收者
+    });*/
 
   })
 
@@ -161,7 +161,7 @@ angular.module('starter.controllers', [])
             localStorage.setItem("usertype", usertype);
             $scope.usertype = usertype;
             //向父级传数据
-            $scope.$emit("usertype", {usertype: usertype});
+        /*    $scope.$emit("usertype", {usertype: usertype});*/
           } else {
             CommonService.platformPrompt(data.message, 'close');
           }
