@@ -34,6 +34,10 @@ angular.module('starter.controllers', [])
 
       })
 
+      //获取极光推送registrationID
+      var getRegistrationID = function () {
+        window.plugins.jPushPlugin.getRegistrationID(onGetRegistrationID);
+      };
 
       var onGetRegistrationID = function (data) {
 
@@ -73,7 +77,7 @@ angular.module('starter.controllers', [])
 
       //获取极光推送registrationID
       if (ionic.Platform.isWebView() && localStorage.getItem("userid") && !localStorage.getItem("jPushRegistrationID")) { //包含cordova插件的应用
-        window.plugins.jPushPlugin.getRegistrationID(onGetRegistrationID);
+        window.setTimeout(getRegistrationID, 3000);
       }
 
 
