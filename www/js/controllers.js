@@ -1660,14 +1660,20 @@ angular.module('starter.controllers', [])
   })
 
   //付款页面
-  .controller('PaymentCtrl', function ($scope, $stateParams, CommonService, OrderService) {
+  .controller('PaymentCtrl', function ($scope, $stateParams, CommonService, OrderService,AccountService) {
     $scope.orderinfo = JSON.parse($stateParams.orderinfo);
+    $scope.vcode="";//短信验证码
+    $scope.mobilePhone;//手机号码
+    $scope.verifycode;//验证码
+    $scope.paraclass=true;//启用获取验证码
+    //调出确认付款面板
+    CommonService.customModal($scope, 'templates/modal/pay_sure.html');
     $scope.pay = { //支付相关
       choice: 1//选择支付方式默认支付方式1. 现金支付2. 在线支付
     }
     //获得订单详情
     OrderService.getOrderReceiptDetail({orno: $scope.orderinfo.orno}).success(function (data) {
-      console.log(data);
+      //console.log(data);
       if (data.code == 1001) {
         $scope.orderDetail = data.data;
         $scope.orderinfo.amount = data.data.totalprice;
@@ -1682,10 +1688,64 @@ angular.module('starter.controllers', [])
       } else {
         CommonService.platformPrompt(data.message, 'close');
       }
-    })
+    });
+    //获取验证码
+    $scope.getVerifyCode = function () {
+      CommonService.getVerifyCode($scope,$scope.mobilePhone);
+    }
+    $scope.inputCode=function (param) {
+
+      if(param=="-1"&&$scope.vcode.length>1){
+        $scope.vcode=$scope.vcode.substr(0,$scope.vcode.length-1);
+      }else if(param=="-1"&&$scope.vcode.length==1){
+        $scope.vcode="";
+      }else if(param!="-1"){
+        if($scope.vcode.length<6){
+          $scope.vcode+=param;
+        }
+      }
+      if($scope.vcode.length==6&&$scope.verifycode==$scope.vcode){
+        $scope.confirmPayment();
+      }else if($scope.vcode.length==6&&$scope.verifycode!=$scope.vcode){
+        CommonService.platformPrompt("验证码不正确,请重新输入！", 'close');
+        return;
+      }
+    }
+    //提交付款操作
+    $scope.submitPayment=function () {
+      if($scope.pay.choice==1){
+        $scope.confirmPayment();
+      }else {
+        AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
+          if (data.code == 1001) {
+            $scope.mobilePhone=data.data.mobile;
+            var certstate = data.data.certstate;//获取认证状态参数
+            //ubstr(start,length)表示从start位置开始，截取length长度的字符串
+            $scope.phonestatus = certstate.substr(0, 1);//手机认证状态码
+          } else {
+            CommonService.platformPrompt('获取信息失败，请重试！', 'close');
+            return;
+          }
+
+        }).then(function () {
+          if($scope.phonestatus=="2"&&$scope.mobilePhone){
+            $scope.getVerifyCode();
+            $scope.modal.show();
+            return;
+          }else{
+            CommonService.showConfirm('付款提示', '尊敬的用户,您好！为了您的账户安全，请先进行手机认证！', '手机认证', '暂不认证', 'bindingmobile', 'close', '', {status: 0});
+            return;
+          }
+
+        });
+
+
+
+
+      }
+    }
     //确认支付
     $scope.confirmPayment = function () {
-
       $scope.data = {
         ordertype: $scope.orderinfo.type, //type类型 1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
         orderno: $scope.orderinfo.djno,//登记号

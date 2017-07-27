@@ -483,3 +483,8 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
   max-width: 98%;
   margin-top: 2rem;
 }
+#pay-sure.modal{top:auto;min-height:415px;height:auto!important;bottom: 0;}
+#payment.item-content{
+  padding-top: 10px!important;
+  padding-bottom: 10px!important;
+}

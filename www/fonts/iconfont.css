@@ -1,10 +1,10 @@
 
 @font-face {font-family: "iconfont";
-  src: url('iconfont.eot?t=1500540466184'); /* IE9*/
-  src: url('iconfont.eot?t=1500540466184#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('iconfont.woff?t=1500540466184') format('woff'), /* chrome, firefox */
-  url('iconfont.ttf?t=1500540466184') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('iconfont.svg?t=1500540466184#iconfont') format('svg'); /* iOS 4.1- */
+  src: url('iconfont.eot?t=1501119201060'); /* IE9*/
+  src: url('iconfont.eot?t=1501119201060#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('iconfont.woff?t=1501119201060') format('woff'), /* chrome, firefox */
+  url('iconfont.ttf?t=1501119201060') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('iconfont.svg?t=1501119201060#iconfont') format('svg'); /* iOS 4.1- */
 }
 
 .iconfont {
@@ -265,6 +265,8 @@
 
 .icon-jiansheyinhang:before { content: "\e612"; }
 
+.icon-shanchu:before { content: "\e6ba"; }
+
 .icon-kongtiao:before { content: "\e606"; }
 
 .icon-huishouzhanxin:before { content: "\e654"; }
@@ -350,4 +352,6 @@
 .icon-feijiu:before { content: "\e670"; }
 
 .icon-woyaozenmozuoicon1:before { content: "\e672"; }
+
+.icon-del:before { content: "\e673"; }
 

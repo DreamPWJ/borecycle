@@ -475,7 +475,7 @@ angular.module('starter.services', [])
             $scope.paraclass = true;
           } else {
             $scope.paraclass = false;
-            $scope.paracont = second + "s后重试";
+            $scope.paracont = second + "秒后重试";
             second--;
           }
         }, 1000, 122);
