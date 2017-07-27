@@ -20,7 +20,7 @@ PID: 2088721190793524
 
 cordova plugin add https://github.com/offbye/cordova-plugin-alipay.git --variable PARTNER_ID=2088721190793524
 
-#微信   公众号支付授权目录  http://s.boolv.com/#/pay/
+#微信   公众号支付授权目录  http://s.boolv.com/#/pay/  http://s.boolv.com/#/tab/
 cordova plugin add cordova-plugin-wechat --variable wechatappid=wxb7618c43863f5a2f
 
 #QQ
