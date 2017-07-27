@@ -1,10 +1,10 @@
 {
-  "name": "My Ionic App",
-  "short_name": "My Ionic App",
+  "name": "收收",
+  "short_name": "收收",
   "start_url": "index.html",
   "display": "standalone",
   "icons": [{
-    "src": "icon.png",
+    "src": "logo.png",
     "sizes": "512x512",
     "type": "image/png"
   }]

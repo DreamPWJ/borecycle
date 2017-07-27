@@ -8,13 +8,13 @@ angular.module('starter.controllers', [])
 
   //Tabs Ctrl
   .controller('TabsCtrl', function ($scope) {
-/*    $scope.isLogin = localStorage.getItem("userid") ? true : false;*///是否登录
+    /*    $scope.isLogin = localStorage.getItem("userid") ? true : false;*///是否登录
     //  $scope.usertype = localStorage.getItem("usertype") || 0; //用户会员类型  0 无 1信息提供者  2回收者
     //$on用于事件 接收子级数据
-/*    $scope.$on("usertype", function (event, data) {
-      localStorage.setItem("usertype", data.usertype);
-       $scope.usertype = data.usertype; //用户会员类型  0 无 1信息提供者  2回收者
-    });*/
+    /*    $scope.$on("usertype", function (event, data) {
+     localStorage.setItem("usertype", data.usertype);
+     $scope.usertype = data.usertype; //用户会员类型  0 无 1信息提供者  2回收者
+     });*/
 
   })
 
@@ -34,10 +34,6 @@ angular.module('starter.controllers', [])
 
       })
 
-      //获取极光推送registrationID
-      var getRegistrationID = function () {
-        window.plugins.jPushPlugin.getRegistrationID(onGetRegistrationID);
-      };
 
       var onGetRegistrationID = function (data) {
 
@@ -74,8 +70,10 @@ angular.module('starter.controllers', [])
           console.log(exception);
         }
       };
+
+      //获取极光推送registrationID
       if (ionic.Platform.isWebView() && localStorage.getItem("userid") && !localStorage.getItem("jPushRegistrationID")) { //包含cordova插件的应用
-        window.setTimeout(getRegistrationID, 3000);
+        window.plugins.jPushPlugin.getRegistrationID(onGetRegistrationID);
       }
 
 
@@ -161,7 +159,7 @@ angular.module('starter.controllers', [])
             localStorage.setItem("usertype", usertype);
             $scope.usertype = usertype;
             //向父级传数据
-        /*    $scope.$emit("usertype", {usertype: usertype});*/
+            /*    $scope.$emit("usertype", {usertype: usertype});*/
           } else {
             CommonService.platformPrompt(data.message, 'close');
           }
@@ -2504,7 +2502,7 @@ angular.module('starter.controllers', [])
       })
     }
 
-    if (!localStorage.getItem("token")) {//如果没有授权先授权
+    if (!localStorage.getItem("token")|| ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {//如果没有授权先授权 或者超过两个小时
       //接口授权
       MainService.authLogin({grant_type: 'client_credentials'}).success(function (data) {
         if (data.access_token) {
