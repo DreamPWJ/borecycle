@@ -1448,6 +1448,10 @@ angular.module('starter.controllers', [])
 
   //我的订单详情页面
   .controller('MyOrderDetailsCtrl', function ($scope, $stateParams, CommonService, OrderService) {
+    //是否登录
+    if (!CommonService.isLogin(true)) {
+      return;
+    }
     $scope.getMyOrderDetail = function () {
       OrderService.getDengJiDetail({djno: $stateParams.no}).success(function (data) {
         console.log(data);
