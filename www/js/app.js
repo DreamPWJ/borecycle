@@ -61,6 +61,36 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
         return false;
       }, 101);
+      //启动极光推送服务
+      try {
+        window.plugins.jPushPlugin.init();
+      } catch (e) {
+        console.log(e);
+      }
+
+      function resume() {
+        if (window.plugins.jPushPlugin.isPlatformIOS()) {
+          window.plugins.jPushPlugin.setBadge(0);
+          window.plugins.jPushPlugin.resetBadge();
+          window.plugins.jPushPlugin.setApplicationIconBadgeNumber(0);
+        } else if (device.platform == "Android") {
+          window.plugins.jPushPlugin.setLatestNotificationNum(5);
+          window.plugins.jPushPlugin.clearAllNotification();
+        }
+      }
+
+      // System events
+      document.addEventListener("resume", resume, false);
+
+      //点击极光推送跳转到相应页面/点击通知栏的回调
+      document.addEventListener("jpush.openNotification", function (data) {
+        alert(JSON.stringify(data))
+        var BLNo = data.extras.BLNo; //订单号
+        $state.go("myorderdetails", {no: BLNo});//订单详情
+      }, false)
+
+      //调试模式，这样报错会在应用中弹出一个遮罩层显示错误信息
+      //window.plugins.jPushPlugin.setDebugMode(true);
 
       //判断网络状态以及横屏事件
       document.addEventListener("deviceready", function () {
@@ -82,35 +112,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         if (screenOrientation) {
           screenOrientation.setOrientation('portrait');
         }
-        //启动极光推送服务
-        try {
-          window.plugins.jPushPlugin.init();
-        } catch (e) {
-          console.log(e);
-        }
-
-        function resume() {
-          if (window.plugins.jPushPlugin.isPlatformIOS()) {
-            window.plugins.jPushPlugin.setBadge(0);
-            window.plugins.jPushPlugin.resetBadge();
-            window.plugins.jPushPlugin.setApplicationIconBadgeNumber(0);
-          } else if (device.platform == "Android") {
-            window.plugins.jPushPlugin.setLatestNotificationNum(5);
-            window.plugins.jPushPlugin.clearAllNotification();
-          }
-        }
-
-        // System events
-        document.addEventListener("resume", resume, false);
-
-        //点击极光推送跳转到相应页面/点击通知栏的回调
-        document.addEventListener("jpush.openNotification", function (data) {
-          var BLNo = data.extras.BLNo; //订单号
-          $state.go("myorderdetails", {no: BLNo});//订单详情
-        }, false)
-
-        //调试模式，这样报错会在应用中弹出一个遮罩层显示错误信息
-        window.plugins.jPushPlugin.setDebugMode(true);
 
       }, false);
 
