@@ -28,3 +28,6 @@ cordova plugin add https://github.com/iVanPan/Cordova_QQ.git --variable QQ_APP_I
 
 #微博
 cordova plugin add https://github.com/iVanPan/cordova_weibo.git --variable WEIBO_APP_ID=2892785162
+
+#极光推送
+cordova plugin add https://github.com/jpush/jpush-phonegap-plugin.git --variable APP_KEY=f4369f588d55c5cee044b822
