@@ -84,7 +84,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
       //点击极光推送跳转到相应页面/点击通知栏的回调
       document.addEventListener("jpush.openNotification", function (data) {
-        alert(JSON.stringify(data))
         var BLNo = data.extras.BLNo; //订单号
         $state.go("myorderdetails", {no: BLNo});//订单详情
       }, false)
