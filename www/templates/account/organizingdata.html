@@ -41,7 +41,7 @@
           <label class="item item-input" ng-if="!isPhoneRegister">
             <span class="input-label icon ion-iphone"> 手机号码</span>
             <input type="number" name="mobile" ng-model="user.mobile" ng-keyup="checkphone(user.mobile)"
-                   maxlength="11" placeholder="请输入真实的手机号码" ng-required="!isPhoneRegister"/>
+              ng-blur="checkphone(user.mobile)"     maxlength="11" placeholder="请输入真实的手机号码" ng-required="!isPhoneRegister"/>
           </label>
 
           <div class="item item-input" ng-if="!isPhoneRegister">

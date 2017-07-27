@@ -11,7 +11,7 @@
       <div class="list ">
         <label class="item item-input">
           <input type="number" ng-model="user.mobile" placeholder="新手机号" ng-keyup="checkphone(user.mobile)"
-                 maxlength="11" required>
+            ng-blur="checkphone(user.mobile)"     maxlength="11" required>
 
         </label>
 

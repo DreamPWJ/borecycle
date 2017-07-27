@@ -40,7 +40,7 @@
         <label class="item item-input">
           <span class="input-label icon ion-ios-person-outline"> 账号</span>
           <input type="text" name="username" ng-model="user.account" placeholder="手机号码/邮箱"
-                 ng-keyup="checkphoneandemail(user.account)" required/>
+                 ng-keyup="checkphoneandemail(user.account)" ng-blur="checkphoneandemail(user.account)" required/>
         </label>
 
         <label class="item item-input">

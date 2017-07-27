@@ -14,13 +14,13 @@
           <input type="text" placeholder="请输入完整卡号" ng-blur="getBankinfo()" ng-model="bankinfo.accountno" required/>
         </label>
         <label class="item item-input">
-        <span class="input-label"><span class="padding-right"><i class="assertive">*</i>银行名称</span>
-          <input ng-model="bankinfo.bankname" id="txtbankname" placeholder="填写或选择银行名称"
-                 ng-disabled="isabled" class="no-border bankname" required/><!-- list="bankName"-->
+        <span class="input-label"><i class="assertive">*</i>银行名称</span>
+          <input type="text" ng-model="bankinfo.bankname" id="txtbankname" placeholder="填写或选择银行名称" ng-disabled="isabled" class="no-border bankname " required/>
+          <!-- list="bankName"-->
           <!--<datalist id="bankName">-->
           <!--<option  ng-repeat="item in bankName">{{item.Name}}</option>-->
-          <!--</datalist>-->
-        </span>
+          <!--</datalist>
+        </span>-->
         </label>
         <label class="item item-input ">
           <span class="input-label"><i class="assertive">*</i>支行名称</span>
@@ -29,7 +29,7 @@
         <label class="item item-input ">
           <span class="input-label"><i class="assertive">*</i>手机号</span>
           <input placeholder="请输入银行预留手机号" ng-model="bankinfo.mobile" type="number"
-                 ng-keyup="checkphone(bankinfo.mobile)"
+                 ng-keyup="checkphone(bankinfo.mobile)"  ng-blur="checkphone(bankinfo.mobile)"
                  ng-maxlength="11" required/>
         </label>
         <div class="item item-input ">
@@ -43,7 +43,7 @@
         </div>
         <label class="item item-input item-icon-right" ng-click="setDefault()">
           <span class="input-label">是否默认</span>
-          <i class="icon" ng-class="bankinfo.isdefault?'ion-ios-circle-filled':'ion-ios-circle-outline'"></i>
+          <i class="icon positive" ng-class="bankinfo.isdefault?'ion-ios-circle-filled':'ion-ios-circle-outline'"></i>
           <!--<input type="checkbox" class="item-checkbox-right checkbox" ng-model="bankinfo.isdefault">-->
         </label>
       </div>

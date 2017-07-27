@@ -26,7 +26,7 @@
         <label class="item item-input ">
           <span class="input-label"> 手机号码</span>
           <input type="text" placeholder="{{status==2?'':'请填写银行预留手机号码'}}" ng-model="realname.mobile" ng-keyup="checkphone(realname.mobile)"
-                 maxlength="11" ng-disabled="status==2" required/>
+            ng-blur="checkphone(realname.mobile)"     maxlength="11" ng-disabled="status==2" required/>
         </label>
         <div class="item item-input" ng-if="status!=2">
           <span class="input-label  "> e签宝验证码 </span>
