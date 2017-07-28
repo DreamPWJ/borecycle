@@ -222,5 +222,16 @@
         "variables": {
             "APP_KEY": "f4369f588d55c5cee044b822"
         }
+    },
+    "com.zhaoying.GaoDeLocation": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/DaiHuaXieHuaKai/GaoDeLocation.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {
+            "API_KEY": "3488bd077a9ae79bfff7180f5092c35e"
+        }
     }
 }

@@ -404,15 +404,26 @@ angular.module('starter.services', [])
           return;
         }
         CommonService = this;
-        var posOptions = {timeout: 10000, enableHighAccuracy: false};
-        $cordovaGeolocation.getCurrentPosition(posOptions)
-          .then(function (position) {
-            localStorage.setItem("latitude", position.coords.latitude);
-            localStorage.setItem("longitude", position.coords.longitude);
+        if (ionic.Platform.isWebView() && $ionicPlatform.is('android')) {//android系统APP 高德定位提高定位精度和成功率
+          GaoDe.getCurrentPosition(function (success) {
+            localStorage.setItem("latitude", success.latitude);
+            localStorage.setItem("longitude", success.longitude);
             callback.call(this);
-          }, function (err) {
-            CommonService.platformPrompt("获取定位失败", 'close');
-          });
+          }, function (error) {
+            CommonService.platformPrompt("高德获取定位失败", 'close');
+          })
+        } else {
+          var posOptions = {timeout: 10000, enableHighAccuracy: false};
+          $cordovaGeolocation.getCurrentPosition(posOptions)
+            .then(function (position) {
+              localStorage.setItem("latitude", position.coords.latitude);
+              localStorage.setItem("longitude", position.coords.longitude);
+              callback.call(this);
+            }, function (err) {
+              CommonService.platformPrompt("获取定位失败", 'close');
+            });
+        }
+
       },
       isLogin: function (flag) {//判断是否登录
         CommonService = this;
@@ -1465,16 +1476,16 @@ angular.module('starter.services', [])
 
         }).then(function () {
           console.log(d);
-          $scope.currentCity ={ //默认数据
+          $scope.currentCity = { //默认数据
             "id": 440300,
             "name": "深圳",
             "pinyin": "shenzhen",
             "index": "S"
           }
-          if($scope.cityName){
+          if ($scope.cityName) {
             angular.forEach(d, function (item) {
-              if(item.name==$scope.cityName){
-                $scope.currentCity =item;
+              if (item.name == $scope.cityName) {
+                $scope.currentCity = item;
               }
             })
           }

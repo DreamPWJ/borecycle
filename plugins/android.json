@@ -80,6 +80,10 @@
         },
         "phonegap-plugin-barcodescanner": {
             "PACKAGE_NAME": "com.boolv.recycle"
+        },
+        "com.zhaoying.GaoDeLocation": {
+            "API_KEY": "3488bd077a9ae79bfff7180f5092c35e",
+            "PACKAGE_NAME": "com.boolv.recycle"
         }
     },
     "dependent_plugins": {
