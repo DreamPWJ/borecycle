@@ -919,7 +919,7 @@ angular.module('starter.controllers', [])
               $scope.productLists.push(items);
             }
           }).then(function () {
-            if ($scope.productList.length == index + 1) {
+            if (index==0) {
               $scope.getClassifyDetails($scope.classifyindex);
             }
           })
