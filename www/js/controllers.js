@@ -1668,12 +1668,12 @@ angular.module('starter.controllers', [])
   })
 
   //付款页面
-  .controller('PaymentCtrl', function ($scope, $stateParams, CommonService, OrderService,AccountService) {
+  .controller('PaymentCtrl', function ($scope, $stateParams, CommonService, OrderService, AccountService) {
     $scope.orderinfo = JSON.parse($stateParams.orderinfo);
-    $scope.vcode="";//短信验证码
+    $scope.vcode = "";//短信验证码
     $scope.mobilePhone;//手机号码
     $scope.verifycode;//验证码
-    $scope.paraclass=true;//启用获取验证码
+    $scope.paraclass = true;//启用获取验证码
     //调出确认付款面板
     CommonService.customModal($scope, 'templates/modal/pay_sure.html');
     $scope.pay = { //支付相关
@@ -1699,34 +1699,34 @@ angular.module('starter.controllers', [])
     });
     //获取验证码
     $scope.getVerifyCode = function () {
-      CommonService.getVerifyCode($scope,$scope.mobilePhone);
+      CommonService.getVerifyCode($scope, $scope.mobilePhone);
     }
-    $scope.inputCode=function (param) {
+    $scope.inputCode = function (param) {
 
-      if(param=="-1"&&$scope.vcode.length>1){
-        $scope.vcode=$scope.vcode.substr(0,$scope.vcode.length-1);
-      }else if(param=="-1"&&$scope.vcode.length==1){
-        $scope.vcode="";
-      }else if(param!="-1"){
-        if($scope.vcode.length<6){
-          $scope.vcode+=param;
+      if (param == "-1" && $scope.vcode.length > 1) {
+        $scope.vcode = $scope.vcode.substr(0, $scope.vcode.length - 1);
+      } else if (param == "-1" && $scope.vcode.length == 1) {
+        $scope.vcode = "";
+      } else if (param != "-1") {
+        if ($scope.vcode.length < 6) {
+          $scope.vcode += param;
         }
       }
-      if($scope.vcode.length==6&&$scope.verifycode==$scope.vcode){
+      if ($scope.vcode.length == 6 && $scope.verifycode == $scope.vcode) {
         $scope.confirmPayment();
-      }else if($scope.vcode.length==6&&$scope.verifycode!=$scope.vcode){
+      } else if ($scope.vcode.length == 6 && $scope.verifycode != $scope.vcode) {
         CommonService.platformPrompt("验证码不正确,请重新输入！", 'close');
         return;
       }
     }
     //提交付款操作
-    $scope.submitPayment=function () {
-      if($scope.pay.choice==1){
+    $scope.submitPayment = function () {
+      if ($scope.pay.choice == 1) {
         $scope.confirmPayment();
-      }else {
+      } else {
         AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
           if (data.code == 1001) {
-            $scope.mobilePhone=data.data.mobile;
+            $scope.mobilePhone = data.data.mobile;
             var certstate = data.data.certstate;//获取认证状态参数
             //ubstr(start,length)表示从start位置开始，截取length长度的字符串
             $scope.phonestatus = certstate.substr(0, 1);//手机认证状态码
@@ -1736,18 +1736,16 @@ angular.module('starter.controllers', [])
           }
 
         }).then(function () {
-          if($scope.phonestatus=="2"&&$scope.mobilePhone){
+          if ($scope.phonestatus == "2" && $scope.mobilePhone) {
             $scope.getVerifyCode();
             $scope.modal.show();
             return;
-          }else{
+          } else {
             CommonService.showConfirm('付款提示', '尊敬的用户,您好！为了您的账户安全，请先进行手机认证！', '手机认证', '暂不认证', 'bindingmobile', 'close', '', {status: 0});
             return;
           }
 
         });
-
-
 
 
       }
@@ -1948,23 +1946,25 @@ angular.module('starter.controllers', [])
         $scope.usertype = usertype;//会员类型
         $scope.isOrganizingData = $rootScope.userinfo.userext == null ? false : true;//是否完善资料
         $scope.services = [];
-        angular.forEach($rootScope.userinfo.services, function (item) {
-          if (item == 1) {
-            $scope.services.push("信息提供者")
-          } else {
-            $scope.services.push("回收商")
-          }
-          /*          if (item == 2) {
-           $scope.services.push("上门回收者")
-           }
-           if (item == 3) {
-           $scope.services.push("货场")
-           }
-           if (item == 4) {
-           $scope.services.push("二手商家")
-           }*/
+        /*        angular.forEach($rootScope.userinfo.services, function (item) {*/
+        if (usertype == 0) {
+          $scope.services.push("");
+        } else if (usertype == 1) {
+          $scope.services.push("信息提供者");
+        } else {
+          $scope.services.push("回收商");
+        }
+        /*          if (item == 2) {
+         $scope.services.push("上门回收者")
+         }
+         if (item == 3) {
+         $scope.services.push("货场")
+         }
+         if (item == 4) {
+         $scope.services.push("二手商家")
+         }*/
 
-        })
+        /*      })*/
         $scope.servicesstr = $scope.services.join(",")
         //  $scope.isprovider = $rootScope.userinfo.services.indexOf('2') != -1 && $rootScope.userinfo.services.indexOf('3') != -1 && $rootScope.userinfo.services.indexOf('4') != -1 ? true : false
       } else {
@@ -2570,7 +2570,7 @@ angular.module('starter.controllers', [])
       })
     }
 
-    if (!localStorage.getItem("token")|| ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {//如果没有授权先授权 或者超过两个小时
+    if (!localStorage.getItem("token") || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {//如果没有授权先授权 或者超过两个小时
       //接口授权
       MainService.authLogin({grant_type: 'client_credentials'}).success(function (data) {
         if (data.access_token) {
