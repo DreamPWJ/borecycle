@@ -828,7 +828,7 @@ angular.module('starter.controllers', [])
 //完善资料提交
     $scope.organizingdataSubmit = function () {
 
-      if ($scope.verifycode != $scope.user.code) {
+      if (!$scope.isPhoneRegister && $scope.verifycode != $scope.user.code) {
         CommonService.platformPrompt("输入的验证码不正确", 'close');
         return;
       }
@@ -855,7 +855,7 @@ angular.module('starter.controllers', [])
       $scope.user.userid = localStorage.getItem("userid");//用户id
       $scope.user.grps = $scope.recyclingCategory.join(",");
       $scope.user.addrcode = $scope.addrareacountyone.ID;
-      $scope.user.img = $scope.ImgsPicAddr[0]; //证件照地址
+      $scope.user.img = $scope.ImgsPicAddr[0]||""; //证件照地址
       console.log(JSON.stringify($scope.user));
       AccountService.setUserInfo($scope.user).success(function (data) {
         console.log(data);
