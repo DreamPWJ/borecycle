@@ -83,10 +83,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       document.addEventListener("resume", resume, false);
 
       //点击极光推送跳转到相应页面/点击通知栏的回调
-      document.addEventListener("jpush.openNotification", function (data) {
-        var BLNo = data.extras.BLNo; //订单号
-        $state.go("myorderdetails", {no: BLNo});//订单详情
-      }, false)
+      var onOpenNotification = function (data) {
+        try {
+          var BLNo = data.extras.BLNo; //订单号
+          $state.go("myorderdetails", {no: BLNo});//订单详情
+        } catch (exception) {
+          alert("JPushPlugin:onOpenNotification" + exception);
+        }
+      };
+      document.addEventListener("jpush.openNotification", onOpenNotification, false)
 
       //调试模式，这样报错会在应用中弹出一个遮罩层显示错误信息
       //window.plugins.jPushPlugin.setDebugMode(true);
