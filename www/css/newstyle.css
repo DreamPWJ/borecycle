@@ -29,7 +29,7 @@
   color: #585858 !important;
 }
 
-.select-category {
+#information .select-category, #supplyofgoods .select-category, #modifycategory.select-category {
   height: 9.6rem;
 }
 

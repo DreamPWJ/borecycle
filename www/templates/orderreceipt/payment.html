@@ -9,7 +9,8 @@
 
   <ion-content overflow-scroll="false" id="payment" class="has-button-footer stable-bg" has-bouncing="true">
     <ion-list hide-show>
-      <ion-item class=" item-icon-right border-bottom" style="border-bottom: 1px solid rgba(221, 221, 221, 0.5);" ng-click="toggle(0)">
+      <ion-item class=" item-icon-right border-bottom" style="border-bottom: 1px solid rgba(221, 221, 221, 0.5);"
+                ng-click="toggle(0)">
         订单号 : {{orderinfo.orno}}
         <i ng-class="{true:'ion-ios-arrow-right',false:'ion-ios-arrow-down'}[showme]"
            class="icon iconfont "></i>
@@ -21,9 +22,9 @@
         <ion-item>
           应付金额 : {{orderinfo.amount | currency:'￥'}}
         </ion-item>
-        <!--        <ion-item ng-if="orderinfo.type==1&&orderDetail.informationmoney">
-                  预计信息费金额 : {{orderDetail.informationmoney | currency:'￥'}}
-                </ion-item>-->
+        <ion-item ng-if="orderinfo.type==1&&orderDetail.informationmoney">
+          信息费 : {{orderDetail.informationmoney | currency:'￥'}}
+        </ion-item>
         <ion-item class="item-button-right" ng-if="orderinfo.type==2&&pay.choice==2">
           我的余额 : {{orderSum.account| currency:'￥'}} {{(orderSum.account < orderinfo.amount)?' (余额不足)':''}}
           <button class="button button-balanced" ui-sref="recharge">充值</button>
