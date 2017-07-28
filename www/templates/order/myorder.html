@@ -23,7 +23,7 @@
           <p>暂无未完成订单</p>
         </div>
         <ion-list>
-          <a ng-href="#/myorderdetails/{{item.djno}}" class="item " ng-repeat="item in unfinishedorderList ">
+          <a ng-href="#/myorderdetails/{{item.djno}}" class="item " style="padding-right: 10px;" ng-repeat="item in unfinishedorderList ">
             <h2 class="positive">货主 : {{item.name}} {{item.motel| hidepartinfo : 'phone'}} 状态 :
               <span class="{{item.state>=4?'balanced':(item.state>=6?'energized':'')}} "> {{item.strstate}}</span></h2>
             <p class="text-wrap">交易品类 : {{item.category}} <span
@@ -50,7 +50,7 @@
           <p>暂无所有订单</p>
         </div>
         <ion-list>
-          <a ng-href="#/myorderdetails/{{item.djno}}" class="item " ng-repeat="item in orderList ">
+          <a ng-href="#/myorderdetails/{{item.djno}}" class="item "  style="padding-right: 10px;" ng-repeat="item in orderList ">
             <h2 class="positive">货主 : {{item.name}} {{item.motel| hidepartinfo : 'phone'}} 状态
               :<span class="{{item.state>=4?'balanced':(item.state>=6?'energized':'')}} "> {{item.strstate}}</span></h2>
             <p class="text-wrap">交易品类 : {{item.category}} <span
