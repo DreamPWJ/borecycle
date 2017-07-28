@@ -85,10 +85,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //点击极光推送跳转到相应页面/点击通知栏的回调
       var onOpenNotification = function (data) {
         try {
-          var BLNo = data.extras.BLNo; //订单号
-          $state.go("myorderdetails", {no: BLNo});//订单详情
+          var blno = ""; //订单号
+          if (device.platform == "Android") {
+            blno = data.extras.BLNo; //订单号
+          } else {
+            blno = data.BLNo; //订单号
+          }
+          $state.go("myorderdetails", {no: blno});//订单详情
         } catch (exception) {
-          alert("JPushPlugin:onOpenNotification" + exception);
+          console.log("JPushPlugin:onOpenNotification" + exception);
         }
       };
       document.addEventListener("jpush.openNotification", onOpenNotification, false)
