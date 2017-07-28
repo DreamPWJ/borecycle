@@ -855,29 +855,32 @@ angular.module('starter.controllers', [])
       $scope.user.userid = localStorage.getItem("userid");//用户id
       $scope.user.grps = $scope.recyclingCategory.join(",");
       $scope.user.addrcode = $scope.addrareacountyone.ID;
-      $scope.user.img = $scope.ImgsPicAddr[0]||""; //证件照地址
+      $scope.user.img = $scope.ImgsPicAddr[0] || ""; //证件照地址
       console.log(JSON.stringify($scope.user));
       AccountService.setUserInfo($scope.user).success(function (data) {
         console.log(data);
         if (data.code == 1001) {
-          CommonService.platformPrompt("完善资料提交成功", localStorage.getItem("userid") ? '' : 'login');
+          if (localStorage.getItem("userid")) {  //更新用户信息
+            //根据会员ID获取会员账号基本信息
+            AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (datas) {
+              console.log(datas);
+              if (datas.code == 1001) {
+                $rootScope.userdata = datas.data;
+                localStorage.setItem("user", JSON.stringify(datas.data));
+                var services = datas.data.services;
+                //用户会员类型  0 无 1信息提供者  2回收者
+                localStorage.setItem("usertype", (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
+                CommonService.platformPrompt("完善资料提交成功", '');
+              }
+            })
+          } else {
+            CommonService.platformPrompt("完善资料提交成功", 'login');
+          }
+
         } else {
           CommonService.platformPrompt(data.message, 'close');
         }
 
-        if (data.code == 1001 && localStorage.getItem("userid")) {  //更新用户信息
-          //根据会员ID获取会员账号基本信息
-          AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (datas) {
-            console.log(datas);
-            if (datas.code == 1001) {
-              $rootScope.userdata = datas.data;
-              localStorage.setItem("user", JSON.stringify(datas.data));
-              var services = datas.data.services;
-              //用户会员类型  0 无 1信息提供者  2回收者
-              localStorage.setItem("usertype", (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
-            }
-          })
-        }
       })
     }
     $scope.bigImage = false;    //初始默认大图是隐藏的
@@ -919,7 +922,7 @@ angular.module('starter.controllers', [])
               $scope.productLists.push(items);
             }
           }).then(function () {
-            if (index==0) {
+            if (index == 0) {
               $scope.getClassifyDetails($scope.classifyindex);
             }
           })
