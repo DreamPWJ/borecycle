@@ -1920,7 +1920,7 @@ angular.module('starter.controllers', [])
       }
       //调用分享面板
       $scope.shareActionSheet = function (type) {
-        CommonService.shareActionSheet("下载收收", "“收收”为提高回收效率而生，为环保拆解企业低价、稳定货源，让回收更简单，是帮生产企业“零成本回收”，专业为生产者责任延伸制提供一站式逆向物流服务，是近3000多万回收相关人员的首要选择！", BoRecycle.mobApi + '/#/download', '', type);
+        CommonService.shareActionSheet("关于收收", "“收收”为提高回收效率而生，为环保拆解企业低价、稳定货源，让回收更简单，是帮生产企业“零成本回收”，专业为生产者责任延伸制提供一站式逆向物流服务，是近3000多万回收相关人员的首要选择！", BoRecycle.mobApi + '/#/download', '', type);
       }
     })
 
@@ -3593,6 +3593,6 @@ angular.module('starter.controllers', [])
     $scope.dloading = function () {
       $scope.dld(1);
     }
-    $scope.dld(0);
+    // $scope.dld(0);
   })
 ;
