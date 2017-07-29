@@ -111,7 +111,8 @@ angular.module('starter.directive', [])
             scope.publicCheckForm(/^1(3|4|5|7|8)\d{9}$/.test(value), value, content, isShow)
           }
           if (type == 'phoneandtel') {//验证手机号和电话
-            scope.publicCheckForm(/(^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$)|(^0?[1][358][0-9]{9}$)/.test(value), value, content, isShow)
+            RegExp = /^((0[1-9]\d{1,2}\d{7,8})|(1[3584]\d{9})|(400|800)\d{7,9})$/;
+            scope.publicCheckForm(RegExp.test(value), value, content, isShow)
           }
           if (type == 'maxvalue') {//最大不能超过maxvalue值
             scope.publicCheckForm(value > 0 && value <= maxvalue, value, content, isShow);

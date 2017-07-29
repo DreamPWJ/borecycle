@@ -693,7 +693,7 @@ angular.module('starter.controllers', [])
             $scope.user = {
               username: userext.name,//姓名
               mobile: Number(userext.phone),//手机号码
-              recoveryqty: userext.recovery || '',//月回收量
+              recoveryqty: 0,//月回收量
               usertype: $scope.isUpgradeRecycler ? 2 : usertype, //用户类型
               shopname: userext.shopname,//企业名称
               shopphone: userext.shopphone ? Number(userext.shopphone) : '',//企业电话
@@ -871,9 +871,10 @@ angular.module('starter.controllers', [])
                 var services = datas.data.services;
                 //用户会员类型  0 无 1信息提供者  2回收者
                 localStorage.setItem("usertype", (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
-                CommonService.platformPrompt("完善资料提交成功", '');
               }
-            })
+            }).then(function () {
+              CommonService.platformPrompt("完善资料提交成功", '');
+            });
           } else {
             CommonService.platformPrompt("完善资料提交成功", 'login');
           }
