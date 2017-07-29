@@ -53,11 +53,11 @@
           </span>
           </div>
 
-          <label ng-if="user.usertype==2" class="item item-input">
-            <span class="input-label icon ion-ios-download-outline"> 月回收量</span>
-            <input type="number" name="recoveryqty" ng-model="user.recoveryqty" placeholder="请输入月回收量" maxlength="8"
-                   ng-required="user.usertype==2"/>
-          </label>
+          <!--<label ng-if="user.usertype==2" class="item item-input">-->
+            <!--<span class="input-label icon ion-ios-download-outline"> 月回收量</span>-->
+            <!--<input type="number" name="recoveryqty" ng-model="user.recoveryqty" placeholder="请输入月回收量" maxlength="8"-->
+                   <!--ng-required="user.usertype==2"/>-->
+          <!--</label>-->
           <div ng-if="user.usertype==2" class="item text-wrap">
             <span class="block icon ion-ios-trash-outline padding-bottom"> 回收品类</span>
             <ion-checkbox ng-repeat="item in productList" class="item-borderless checkbox-positive"

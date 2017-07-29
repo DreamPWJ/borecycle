@@ -856,6 +856,7 @@ angular.module('starter.controllers', [])
       $scope.user.grps = $scope.recyclingCategory.join(",");
       $scope.user.addrcode = $scope.addrareacountyone.ID;
       $scope.user.img = $scope.ImgsPicAddr[0] || ""; //证件照地址
+      $scope.user.recoveryqty=0;//回收量默认为0
       console.log(JSON.stringify($scope.user));
       AccountService.setUserInfo($scope.user).success(function (data) {
         console.log(data);
