@@ -693,7 +693,7 @@ angular.module('starter.controllers', [])
             $scope.user = {
               username: userext.name,//姓名
               mobile: Number(userext.phone),//手机号码
-              recoveryqty: 0,//月回收量
+              recoveryqty: 0,// 月回收量
               usertype: $scope.isUpgradeRecycler ? 2 : usertype, //用户类型
               shopname: userext.shopname,//企业名称
               shopphone: userext.shopphone ? Number(userext.shopphone) : '',//企业电话
