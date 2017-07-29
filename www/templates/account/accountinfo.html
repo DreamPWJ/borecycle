@@ -6,7 +6,7 @@
     <h1 class="title"><img id="logo" src="img/logo.png" alt=""/> 账号信息</h1>
   </ion-nav-title>
 
-  <ion-content overflow-scroll="false" class="stable-bg account " has-bouncing="true">
+  <ion-content overflow-scroll="false" class="stable-bg account " has-bouncing="true" id="accountinfo">
     <div class="list  ">
       <a ui-sref="uploadhead({figure:userinfo.userfigure})" class="item item-avatar item-icon-right  item-borderless">
         <img ng-src="{{userinfo.userfigure||img/head.jpg}}" class="border-radius-50" alt=""
@@ -29,8 +29,8 @@
       </a>
 
       <div ng-if="usertype==1" class="item stable-bg item-borderless">
-        <h2 class=" text-right"><span ui-sref="organizingdata"><i
-          class="iconfont icon-xiangyou positive"></i> 升级成为回收商</span></h2>
+        <h2 class="text-right calm"><span ui-sref="organizingdata"><i
+          class="icon ion-android-arrow-up calm"></i> 升级成为回收商</span></h2>
       </div>
 
       <a ng-href="#/updateuser/sex/{{userinfo.sex}}" class="item item-icon-right {{usertype==1?'item-borderless':''}}">

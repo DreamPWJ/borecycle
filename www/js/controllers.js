@@ -2277,10 +2277,18 @@ angular.module('starter.controllers', [])
   })
 
   //我的设置
-  .controller('SettingCtrl', function ($scope, $rootScope, $state, $ionicPlatform, BoRecycle) {
+  .controller('SettingCtrl', function ($scope, $rootScope, $state, $ionicPlatform, BoRecycle,AccountService) {
     $scope.version = BoRecycle.version;
     $scope.securitylevel = '未知';
-    var certstate = JSON.parse(localStorage.getItem("user")).certstate;
+    if(localStorage.getItem("user"))
+    {
+       AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
+         if (data.code == 1001) {
+           localStorage.setItem("user", JSON.stringify(data.data));
+         }
+       });
+    }
+    var certstate =JSON.parse(localStorage.getItem("user")).certstate;
     if (certstate.indexOf('2') == -1) {
       $scope.securitylevel = '极低';
     }
