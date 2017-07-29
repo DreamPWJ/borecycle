@@ -21,10 +21,6 @@
         <ion-item>
           联系人 : {{orderDetail.name}}
         </ion-item>
-        <ion-item class="text-wrap">
-          回收品类 : {{orderDetail.category}} <span
-          class=" {{orderDetail.hytype==1?'bhytype':(orderDetail.hytype==2?'ehytype':'')}} ">{{orderDetail.hytype==1?'废品':(orderDetail.hytype==2?'二手':'')}}</span>
-        </ion-item>
         <a ng-if="type==2" class="item item-icon-right" href="tel:{{orderDetail.motel}}">
           联系电话 : {{orderDetail.motel }}
           <i class="icon iconfont icon-phone energized"></i>
@@ -46,7 +42,8 @@
       <p></p>
       <div ng-if="orderDetail.djdetails">
         <ion-item class=" item-icon-right item-borderless" ng-click="toggle(1)">
-          登记{{orderDetail.type==1?'信息':'货源'}}
+          登记{{orderDetail.type==1?'信息':'货源'}} <span
+          class=" {{orderDetail.hytype==1?'bhytype':(orderDetail.hytype==2?'ehytype':'')}} ">{{orderDetail.hytype==1?'废品':(orderDetail.hytype==2?'二手':'')}}</span>
           <i ng-class="{true:'ion-ios-arrow-right',false:'ion-ios-arrow-down'}[showme1]"
              class="icon iconfont "></i>
         </ion-item>

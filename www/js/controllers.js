@@ -3234,6 +3234,14 @@ angular.module('starter.controllers', [])
     $scope.total = 1;
     $scope.blc = [];//银行logo及颜色
 
+    $scope.isadd=true;
+    MyWalletService.existisauth(localStorage.getItem("userid")).success(function (data) {
+         if(data.code!=1001)
+         {
+           $scope.isadd=false;
+         }
+    });
+
     if (!$ionicHistory.backView() || $ionicHistory.backView().stateName != "cash") {
       $rootScope.defaultBank = null;
     }

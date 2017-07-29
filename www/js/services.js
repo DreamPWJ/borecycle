@@ -495,13 +495,30 @@ angular.module('starter.services', [])
         event.preventDefault();
         CommonService = this;
         if ($scope.paraclass) { //按钮可用
-          //60s倒计时
-          this.countDown($scope);
           if (/^1(3|4|5|7|8)\d{9}$/.test(account)) {
             AccountService.sendCode({mobile: account}).success(function (data) {
               $scope.verifycode = data.data;
               if (data.code != 1001) {
                 CommonService.platformPrompt("手机验证码获取失败", 'close');
+                 $scope.paracont = "重发验证码";
+                 $scope.paraclass = true;
+              }
+              else {
+                //120s倒计时
+                // this.countDown($scope);
+                var second = 120,
+                  timePromise = undefined;
+                timePromise = $interval(function () {
+                  if (second <= 0) {
+                    $interval.cancel(timePromise);
+                    $scope.paracont = "重发验证码";
+                    $scope.paraclass = true;
+                  } else {
+                    $scope.paraclass = false;
+                    $scope.paracont = second + "秒后重试";
+                    second--;
+                  }
+                }, 1000, 122);
               }
             })
           } else if (/^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(account)) {
@@ -509,6 +526,25 @@ angular.module('starter.services', [])
               $scope.verifycode = data.data;
               if (data.code != 1001) {
                 CommonService.platformPrompt("邮箱验证码获取失败", 'close');
+                 $scope.paracont = "重发验证码";
+                 $scope.paraclass = true;
+              }
+              else {
+                //120s倒计时
+               // this.countDown($scope);
+                var second = 120,
+                  timePromise = undefined;
+                timePromise = $interval(function () {
+                  if (second <= 0) {
+                    $interval.cancel(timePromise);
+                    $scope.paracont = "重发验证码";
+                    $scope.paraclass = true;
+                  } else {
+                    $scope.paraclass = false;
+                    $scope.paracont = second + "秒后重试";
+                    second--;
+                  }
+                }, 1000, 122);
               }
             })
           }
@@ -2583,6 +2619,20 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'GET',
           url: BoRecycle.api + "/api/bank/get_defualt/" + uid
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+
+      existisauth: function (uid) {
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BoRecycle.api + "/api/bank/existisauth/" + uid
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {

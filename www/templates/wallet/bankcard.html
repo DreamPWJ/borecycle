@@ -5,9 +5,9 @@
   <ion-nav-title>
     <h1 class="title"><img id="logo" src="img/logo.png" alt=""/> 我的银行卡</h1>
   </ion-nav-title>
-  <ion-nav-buttons side="right">
-    <a class="button button-clear icon iconfont icon-add" ng-href="#/addcard"></a>
-  </ion-nav-buttons>
+  <!--<ion-nav-buttons side="right">-->
+    <!--<a class="button button-clear icon iconfont icon-add" ng-href="#/addcard"></a>-->
+  <!--</ion-nav-buttons>-->
   <ion-content overflow-scroll="false" style="background: #212f3c" has-bouncing="true" id="bankcard">
     <ion-refresher on-refresh="getUserBanklist(0)" pulling-text="下拉更新"></ion-refresher>
     <div ng-if="isNotBCData" class="isNotDataHint">
@@ -40,7 +40,7 @@
           {{item.accountno|splitBandCardNumberFilter}}
         </div>
       </div></div>
-    <a href="#/addcard" class="item light no-border border-bottom row-no-padding padding-left"style="background: #212f3c;margin: 0 10px;padding: 8px 0 10px 10px;">
+    <a ng-if="isadd" href="#/addcard" class="item light no-border border-bottom row-no-padding padding-left"style="background: #212f3c;margin: 0 10px;padding: 8px 0 10px 10px;">
       <i class="ion-plus-round">&nbsp;&nbsp;添加银行卡</i>
 
     </a>
