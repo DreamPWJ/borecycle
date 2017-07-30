@@ -500,8 +500,8 @@ angular.module('starter.services', [])
               $scope.verifycode = data.data;
               if (data.code != 1001) {
                 CommonService.platformPrompt("手机验证码获取失败", 'close');
-                 $scope.paracont = "重发验证码";
-                 $scope.paraclass = true;
+                $scope.paracont = "重发验证码";
+                $scope.paraclass = true;
               }
               else {
                 //120s倒计时
@@ -526,12 +526,12 @@ angular.module('starter.services', [])
               $scope.verifycode = data.data;
               if (data.code != 1001) {
                 CommonService.platformPrompt("邮箱验证码获取失败", 'close');
-                 $scope.paracont = "重发验证码";
-                 $scope.paraclass = true;
+                $scope.paracont = "重发验证码";
+                $scope.paraclass = true;
               }
               else {
                 //120s倒计时
-               // this.countDown($scope);
+                // this.countDown($scope);
                 var second = 120,
                   timePromise = undefined;
                 timePromise = $interval(function () {
@@ -1019,8 +1019,9 @@ angular.module('starter.services', [])
             });
             var url = appurl; //可以从服务端获取更新APP的路径
             try {
-              var targetPath = cordova.file.externalRootDirectory + "/borecycle/borecycle.apk"; //APP下载存放的路径，可以使用cordova file插件进行相关配置
+              var targetPath = cordova.file.dataDirectory + "/borecycle/borecycle.apk"; //APP下载存放的路径，可以使用cordova file插件进行相关配置
             } catch (e) {
+              $cordovaToast.showLongCenter("收收APP获取文件目录失败:" + JSON.stringify(e));
               $ionicLoading.hide();
             }
 
@@ -1036,7 +1037,7 @@ angular.module('starter.services', [])
               });
               $ionicLoading.hide();
             }, function (err) {
-              $cordovaToast.showLongCenter("收收APP下载失败," + JSON.stringify(err));
+              $cordovaToast.showLongCenter("收收APP下载失败:" + JSON.stringify(err));
               $ionicLoading.hide();
               return;
             }, function (progress) {
