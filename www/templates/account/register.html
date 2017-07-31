@@ -45,8 +45,8 @@
           <input type="text" ng-model="user.invitecode" check-form
                  placeholder="请输入邀请码" required maxlength="6"/>
         </label>
-        <ion-item class="item-divider border-bottom light-bg usertype row">
-          <h2 class="icon iconfont icon-yonghuleixing col">用户类型 </h2>
+        <ion-item class="border-bottom light-bg usertype row item item-input">
+          <span class="input-label border-left col">用户类型 </span>
           <div class="col">
           <label ng-click="user.usertype=1" for="xinxi">
             <input type="checkbox" id="xinxi" ng-checked="user.usertype==1">

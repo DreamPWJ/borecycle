@@ -173,7 +173,7 @@ angular.module('starter.services', [])
       },
       shareActionSheet: function (title, desc, link, imgUrl, type) { //分享功能
         if (imgUrl == null || imgUrl == "") { //默认分享图片链接
-          imgUrl = "http://f.boolv.com/logo/boolv.recycle.s.png";
+          imgUrl =BoRecycle.imgUrl+ "/logo/boolv.recycle.s.png";
         }
         CommonService = this;
         if (ionic.Platform.isWebView()) {
@@ -500,8 +500,8 @@ angular.module('starter.services', [])
               $scope.verifycode = data.data;
               if (data.code != 1001) {
                 CommonService.platformPrompt("手机验证码获取失败", 'close');
-                 $scope.paracont = "重发验证码";
-                 $scope.paraclass = true;
+                $scope.paracont = "重发验证码";
+                $scope.paraclass = true;
               }
               else {
                 //120s倒计时
@@ -526,12 +526,12 @@ angular.module('starter.services', [])
               $scope.verifycode = data.data;
               if (data.code != 1001) {
                 CommonService.platformPrompt("邮箱验证码获取失败", 'close');
-                 $scope.paracont = "重发验证码";
-                 $scope.paraclass = true;
+                $scope.paracont = "重发验证码";
+                $scope.paraclass = true;
               }
               else {
                 //120s倒计时
-               // this.countDown($scope);
+                // this.countDown($scope);
                 var second = 120,
                   timePromise = undefined;
                 timePromise = $interval(function () {
@@ -875,7 +875,7 @@ angular.module('starter.services', [])
         params.callback = 'JSON_CALLBACK';
         promise = $http({
           method: 'JSONP',
-          url: "http://restapi.amap.com/v3/geocode/regeo",
+          url: "https://restapi.amap.com/v3/geocode/regeo",
           params: params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
@@ -890,7 +890,7 @@ angular.module('starter.services', [])
         params.callback = 'JSON_CALLBACK';
         promise = $http({
           method: 'JSONP',
-          url: "http://restapi.amap.com/v3/place/text",
+          url: "https://restapi.amap.com/v3/place/text",
           params: params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
@@ -905,7 +905,7 @@ angular.module('starter.services', [])
         params.callback = 'JSON_CALLBACK';
         promise = $http({
           method: 'JSONP',
-          url: "http://restapi.amap.com/v3/config/district",
+          url: "https://restapi.amap.com/v3/config/district",
           params: params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
@@ -1021,6 +1021,7 @@ angular.module('starter.services', [])
             try {
               var targetPath = cordova.file.externalRootDirectory + "/borecycle/borecycle.apk"; //APP下载存放的路径，可以使用cordova file插件进行相关配置
             } catch (e) {
+              $cordovaToast.showLongCenter("收收APP获取文件目录失败:" + JSON.stringify(e));
               $ionicLoading.hide();
             }
 
@@ -1036,7 +1037,7 @@ angular.module('starter.services', [])
               });
               $ionicLoading.hide();
             }, function (err) {
-              $cordovaToast.showLongCenter("收收APP下载失败," + JSON.stringify(err));
+              $cordovaToast.showLongCenter("收收APP下载失败:" + JSON.stringify(err));
               $ionicLoading.hide();
               return;
             }, function (progress) {
@@ -1668,7 +1669,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise
         promise = $http({
           method: 'GET',
-          url: "http://m.amap.com/navi/?start=116.403124,39.940693&dest=116.481488,39.990464&destName=阜通西&naviBy=car&key=0ffd53eb83c2cea2181a5fbfa9f3c311",
+          url: "https://m.amap.com/navi/?start=116.403124,39.940693&dest=116.481488,39.990464&destName=阜通西&naviBy=car&key=0ffd53eb83c2cea2181a5fbfa9f3c311",
           params: params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
