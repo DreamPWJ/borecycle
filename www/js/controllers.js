@@ -2026,14 +2026,15 @@ angular.module('starter.controllers', [])
     }
     $scope.location();//自动定位
 
+    //modal打开 加载数据
+    $scope.$on('modal.shown', function (e,modal) {
+      AccountService.selectCity($scope); //选择城市
+    })
+
     //点击选择城市
     $scope.openCustomModal = function () {
       $scope.city = {};//城市相关json数据
       $scope.modal.show();
-      setTimeout(function () {
-        AccountService.selectCity($scope); //选择城市
-      }, 400);//延迟400毫米
-
     }
 
     //修改回收区域
