@@ -1019,7 +1019,7 @@ angular.module('starter.services', [])
             });
             var url = appurl; //可以从服务端获取更新APP的路径
             try {
-              var targetPath = cordova.file.dataDirectory + "/borecycle/borecycle.apk"; //APP下载存放的路径，可以使用cordova file插件进行相关配置
+              var targetPath = cordova.file.externalRootDirectory + "/borecycle/borecycle.apk"; //APP下载存放的路径，可以使用cordova file插件进行相关配置
             } catch (e) {
               $cordovaToast.showLongCenter("收收APP获取文件目录失败:" + JSON.stringify(e));
               $ionicLoading.hide();
