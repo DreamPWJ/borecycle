@@ -767,13 +767,17 @@ angular.module('starter.controllers', [])
       AddressService.getAddressPCCList($scope, item);
     }
 
+    //modal打开 加载数据
+    $scope.$on('modal.shown', function () {
+      if ($scope.modalName == 'addressmodal') {
+        $scope.getAddressPCCList();
+      }
+    })
 
 //打开选择省市县modal
     $scope.openModal = function () {
+      $scope.modalName = 'addressmodal'
       $scope.modal.show();
-      setTimeout(function () {
-        $scope.getAddressPCCList();
-      }, 100);//延迟100毫米
     }
 
     //打开附近地址modal
@@ -2027,13 +2031,16 @@ angular.module('starter.controllers', [])
     $scope.location();//自动定位
 
     //modal打开 加载数据
-    $scope.$on('modal.shown', function (e,modal) {
-      AccountService.selectCity($scope); //选择城市
+    $scope.$on('modal.shown', function () {
+      if ($scope.modalName == 'citymodal') {
+        AccountService.selectCity($scope); //选择城市
+      }
     })
 
     //点击选择城市
     $scope.openCustomModal = function () {
       $scope.city = {};//城市相关json数据
+      $scope.modalName = 'citymodal';
       $scope.modal.show();
     }
 
@@ -2206,13 +2213,20 @@ angular.module('starter.controllers', [])
     $scope.getAddressPCCList = function (item) {
       AddressService.getAddressPCCList($scope, item)
     }
+
+    //modal打开 加载数据
+    $scope.$on('modal.shown', function () {
+      if ($scope.modalName == 'addressmodal') {
+        $scope.getAddressPCCList();
+      }
+    })
+
     //打开选择省市县modal
     $scope.openModal = function () {
+      $scope.modalName = 'addressmodal'
       $scope.modal.show();
-      setTimeout(function () {
-        $scope.getAddressPCCList();
-      }, 100);//延迟100毫米
     }
+
     //打开附近地址modal
     $scope.openNearAddrModal = function () {
       $scope.location();//自动定位
@@ -2705,12 +2719,17 @@ angular.module('starter.controllers', [])
 
     }
 
+    //modal打开 加载数据
+    $scope.$on('modal.shown', function () {
+      if ($scope.modalName == 'addressmodal') {
+        $scope.getAddressPCCList();
+      }
+    })
+
     //打开选择省市县modal
     $scope.openModal = function () {
+      $scope.modalName = 'addressmodal'
       $scope.modal.show();
-      setTimeout(function () {
-        $scope.getAddressPCCList();
-      }, 100);//延迟100毫米
     }
 
     //打开附近地址modal

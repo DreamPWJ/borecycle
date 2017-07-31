@@ -92,11 +92,12 @@ angular.module('starter.services', [])
           $scope["modal" + index].remove();
         });
         // 当隐藏的模型时执行动作
-        $scope.$on('modal' + index + '.hide', function () {
+        $scope.$on('modal.hidden', function () {
           // 执行动作
+          $scope.modalName = ''; //清除modal名
         });
         // 当移动模型时执行动作
-        $scope.$on('modal' + index + '.removed', function () {
+        $scope.$on('modal.removed', function () {
           // 执行动作
         });
       },
@@ -1060,7 +1061,7 @@ angular.module('starter.services', [])
                 }).success(function (data) {
                 })
                 downloadAPP();
-/*                $cordovaToast.showLongCenter("收收APP下载失败:" + JSON.stringify(err));*/
+                /*                $cordovaToast.showLongCenter("收收APP下载失败:" + JSON.stringify(err));*/
                 /*        $ionicLoading.hide();*/
                 return;
               }, function (progress) {
