@@ -2277,10 +2277,18 @@ angular.module('starter.controllers', [])
   })
 
   //我的设置
-  .controller('SettingCtrl', function ($scope, $rootScope, $state, $ionicPlatform, BoRecycle) {
+  .controller('SettingCtrl', function ($scope, $rootScope, $state, $ionicPlatform, BoRecycle,AccountService) {
     $scope.version = BoRecycle.version;
     $scope.securitylevel = '未知';
-    var certstate = JSON.parse(localStorage.getItem("user")).certstate;
+    if(localStorage.getItem("user"))
+    {
+       AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
+         if (data.code == 1001) {
+           localStorage.setItem("user", JSON.stringify(data.data));
+         }
+       });
+    }
+    var certstate =JSON.parse(localStorage.getItem("user")).certstate;
     if (certstate.indexOf('2') == -1) {
       $scope.securitylevel = '极低';
     }
@@ -2288,10 +2296,10 @@ angular.module('starter.controllers', [])
       $scope.securitylevel = '中等';
     }
     if ((certstate.substr(0, 1) == 2 || certstate.substr(1, 1) == 2) && (certstate.substr(3, 1) == 2 || certstate.substr(4, 1) == 2)) {
-      $scope.securitylevel = '高';
+      $scope.securitylevel = '较高';
     }
     if ((certstate.substr(0, 1) == 2 && certstate.substr(1, 1) == 2) && (certstate.substr(3, 1) == 2 || certstate.substr(4, 1) == 2)) {
-      $scope.securitylevel = '较高';
+      $scope.securitylevel = '高';
     }
     if ((certstate.substr(0, 1) == 2 && certstate.substr(1, 1) == 2) && (certstate.substr(3, 1) == 2 && certstate.substr(4, 1) == 2)) {
       $scope.securitylevel = '极高';
