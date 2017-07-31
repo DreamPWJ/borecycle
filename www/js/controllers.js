@@ -543,7 +543,7 @@ angular.module('starter.controllers', [])
     };
     $scope.agreedeal = true;//同意用户协议
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
-    $scope.paraclass = false; //控制验证码的disable;
+    $scope.paraclass = true; //控制验证码的disable;
     $scope.services = [{key: 2, value: "上门回收者"}, {key: 3, value: "货场"}, {key: 4, value: "二手商家"}];//用户类型数组
 
     $scope.checkphoneandemail = function (account) {//检查手机号和邮箱
