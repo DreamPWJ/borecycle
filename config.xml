@@ -42,6 +42,8 @@
     <splash src="resources\android\splash\drawable-port-xhdpi-screen.png" density="port-xhdpi"/>
     <splash src="resources\android\splash\drawable-port-xxhdpi-screen.png" density="port-xxhdpi"/>
     <splash src="resources\android\splash\drawable-port-xxxhdpi-screen.png" density="port-xxxhdpi"/>
+    <!--    如果设备有SD卡（或等效的存储分区）。那么持久性文件将被存储在该空间的根路径下-->
+    <preference name="AndroidPersistentFileLocation" value="Compatibility" />
   </platform>
   <platform name="ios">
     <allow-intent href="itms:*"/>
