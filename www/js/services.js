@@ -1039,42 +1039,46 @@ angular.module('starter.services', [])
               $cordovaToast.showLongCenter("收收APP获取文件目录失败:" + JSON.stringify(e));
               $ionicLoading.hide();
             }
-
             var trustHosts = true;
             var options = {};
-            $cordovaFileTransfer.download(url, targetPath, options, trustHosts).then(function (result) {
-              // 打开下载下来的APP
-              $cordovaFileOpener2.open(targetPath, 'application/vnd.android.package-archive'
-              ).then(function () {
-                // 成功
-              }, function (err) {
-                // 错误
-              });
-              $ionicLoading.hide();
-            }, function (err) {
-              //错误信息收集 传到服务器
-              AccountService.getErrorlog({
-                key: localStorage.getItem("userid") || "",
-                url: "AccountService.getVersionsList",
-                content: "收收APP下载失败原因:" + JSON.stringify(err)
-              }).success(function (data) {
-              })
-              $cordovaToast.showLongCenter("收收APP下载失败:" + JSON.stringify(err));
-              $ionicLoading.hide();
-              return;
-            }, function (progress) {
-              //进度，这里使用文字显示下载百分比
-              $timeout(function () {
-                var downloadProgress = (progress.loaded / progress.total) * 100;
-                $ionicLoading.show({
-                  template: Math.floor(downloadProgress) + "%",
-                  noBackdrop: true
+            var downloadAPP = function () {
+              $cordovaFileTransfer.download(url, targetPath, options, trustHosts).then(function (result) {
+                // 打开下载下来的APP
+                $cordovaFileOpener2.open(targetPath, 'application/vnd.android.package-archive'
+                ).then(function () {
+                  // 成功
+                }, function (err) {
+                  // 错误
                 });
-                if (downloadProgress > 99) {
-                  $ionicLoading.hide();
-                }
-              })
-            });
+                $ionicLoading.hide();
+              }, function (err) {
+                //错误信息收集 传到服务器
+                AccountService.getErrorlog({
+                  key: localStorage.getItem("userid") || "",
+                  url: "AccountService.getVersionsList",
+                  content: "收收APP下载失败原因:" + JSON.stringify(err)
+                }).success(function (data) {
+                })
+                downloadAPP();
+/*                $cordovaToast.showLongCenter("收收APP下载失败:" + JSON.stringify(err));*/
+                /*        $ionicLoading.hide();*/
+                return;
+              }, function (progress) {
+                //进度，这里使用文字显示下载百分比
+                $timeout(function () {
+                  var downloadProgress = (progress.loaded / progress.total) * 100;
+                  $ionicLoading.show({
+                    template: Math.floor(downloadProgress) + "%",
+                    noBackdrop: true
+                  });
+                  if (downloadProgress > 99) {
+                    $ionicLoading.hide();
+                  }
+                })
+              });
+            }
+            downloadAPP();
+
           } else {
             // 取消更新
           }
