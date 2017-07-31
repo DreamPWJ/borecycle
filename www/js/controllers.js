@@ -71,7 +71,7 @@ angular.module('starter.controllers', [])
               AccountService.getErrorlog({
                 key: localStorage.getItem("userid") || "",
                 url: "/api/MessagePush/set",
-                content: "提交设备信息(极光ID)到服务器失败原因:" + data.message+", 提交的数据是:"+JSON.stringify($scope.datas)
+                content: "提交设备信息(极光ID)到服务器失败原因:" + data.message + ", 提交的数据是:" + JSON.stringify($scope.datas)
               }).success(function (data) {
               })
             }
@@ -771,7 +771,9 @@ angular.module('starter.controllers', [])
 //打开选择省市县modal
     $scope.openModal = function () {
       $scope.modal.show();
-      $scope.getAddressPCCList();
+      setTimeout(function () {
+        $scope.getAddressPCCList();
+      }, 100);//延迟100毫米
     }
 
     //打开附近地址modal
@@ -900,7 +902,7 @@ angular.module('starter.controllers', [])
           AccountService.getErrorlog({
             key: localStorage.getItem("userid") || "",
             url: "/api/user/set_info",
-            content: "完善资料提交失败原因:" + data.message+", 提交的数据是:"+JSON.stringify($scope.user)
+            content: "完善资料提交失败原因:" + data.message + ", 提交的数据是:" + JSON.stringify($scope.user)
           }).success(function (data) {
           })
         }
@@ -2028,7 +2030,10 @@ angular.module('starter.controllers', [])
     $scope.openCustomModal = function () {
       $scope.city = {};//城市相关json数据
       $scope.modal.show();
-      AccountService.selectCity($scope); //选择城市
+      setTimeout(function () {
+        AccountService.selectCity($scope); //选择城市
+      }, 400);//延迟400毫米
+
     }
 
     //修改回收区域
@@ -2203,7 +2208,9 @@ angular.module('starter.controllers', [])
     //打开选择省市县modal
     $scope.openModal = function () {
       $scope.modal.show();
-      $scope.getAddressPCCList();
+      setTimeout(function () {
+        $scope.getAddressPCCList();
+      }, 100);//延迟100毫米
     }
     //打开附近地址modal
     $scope.openNearAddrModal = function () {
@@ -2700,7 +2707,9 @@ angular.module('starter.controllers', [])
     //打开选择省市县modal
     $scope.openModal = function () {
       $scope.modal.show();
-      $scope.getAddressPCCList();
+      setTimeout(function () {
+        $scope.getAddressPCCList();
+      }, 100);//延迟100毫米
     }
 
     //打开附近地址modal

@@ -72,7 +72,7 @@ angular.module('starter.services', [])
           }
         });
       },
-      customModal: function ($scope, templateurl, index, animation) { //自定义modal ndex页面出现多个模态框的情况 进行命名区别 index 可以为1.2.3.   animation动画slide-in-left slide-in-right
+      customModal: function ($scope, templateurl, index, animation) { //自定义modal index页面出现多个模态框的情况 进行命名区别 index 可以为1.2.3.   animation动画slide-in-left slide-in-right
         index = index == undefined ? "" : index;
         $ionicModal.fromTemplateUrl(templateurl, {
           scope: $scope,
@@ -2074,7 +2074,7 @@ angular.module('starter.services', [])
           this.getPList().success(function (data) {
             if (data.code == 1001) {
               $scope.addressinfo = data.data;
-              $ionicScrollDelegate.scrollTop()
+              $ionicScrollDelegate.scrollTop();
             }
           })
           return;
@@ -2085,7 +2085,7 @@ angular.module('starter.services', [])
           this.getCList({pid: item.ID}).success(function (data) {
             if (data.code == 1001) {
               $scope.addressinfo = data.data;
-              $ionicScrollDelegate.scrollTop()
+              $ionicScrollDelegate.scrollTop();
             }
           })
         }
@@ -2095,7 +2095,7 @@ angular.module('starter.services', [])
           this.getDList({cid: item.ID}).success(function (data) {
             if (data.code == 1001) {
               $scope.addressinfo = data.data;
-              $ionicScrollDelegate.scrollTop()
+              $ionicScrollDelegate.scrollTop();
             }
 
           })
