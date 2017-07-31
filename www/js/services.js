@@ -2797,7 +2797,7 @@ angular.module('starter.services', [])
         if (config.url.toString().indexOf('http') === 0) {
           //http请求Loading加载动画
           $injector.get('$ionicLoading').show({
-            template: '<ion-spinner icon="spiral" class="spinner-light"></ion-spinner><p>',
+            template: '<p><ion-spinner icon="spiral" class="spinner-light"></ion-spinner><p>',
             noBackdrop: true
           });
         }
