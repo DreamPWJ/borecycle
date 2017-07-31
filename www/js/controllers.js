@@ -359,6 +359,10 @@ angular.module('starter.controllers', [])
 
     $scope.user = {};//提前定义用户对象
     $scope.agreedeal = true;//同意用户协议
+    $scope.checkphoneandemail = function (account) {//检查手机号和邮箱
+      AccountService.checkMobilePhoneAndEmail($scope, account);
+    }
+
 
     //根据会员账号检查是否需要邀请码
     $scope.getIsInvite = function (account) {

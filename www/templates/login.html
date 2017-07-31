@@ -15,7 +15,7 @@
       <div class="list">
         <label class="item item-input">
           <span class="input-label icon ion-ios-person-outline"> 账号</span>
-          <input type="text" name="username" ng-model="user.account" placeholder="账号/手机号码/邮箱" ng-blur="getIsInvite(user.account)" required/>
+          <input type="text" name="username" ng-model="user.account"  ng-keyup="checkphoneandemail(user.account)"  placeholder="手机号码/邮箱" ng-blur="getIsInvite(user.account)" required/>
         </label>
 
         <label class="item item-input">
@@ -33,7 +33,7 @@
         </ion-checkbox>
         <div class="padding-horizontal">
           <button class="button full-image button-positive " ng-click="loginSubmit()"
-                  ng-disabled="!(loginForm.$valid&&agreedeal)">登录
+                  ng-disabled="!(loginForm.$valid&&agreedeal&&paraclass)">登录
           </button>
         </div>
         <div class="padding">
