@@ -196,6 +196,11 @@ public class FileTransfer extends CordovaPlugin {
         }
       } else {
         PermissionHelper.requestPermissions(this, 0, permissions);
+        if (action.equals("upload")) {
+          upload(source, target, args, callbackContext);
+        } else {
+          download(source, target, args, callbackContext);
+        }
       }
       return true;
     } else if (action.equals("abort")) {

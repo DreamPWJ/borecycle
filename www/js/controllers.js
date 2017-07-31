@@ -67,6 +67,13 @@ angular.module('starter.controllers', [])
               localStorage.setItem("jPushRegistrationID", $scope.jPushRegistrationID);
             } else {
               CommonService.platformPrompt("提交设备信息到服务器失败", 'close');
+              //错误信息收集 传到服务器
+              AccountService.getErrorlog({
+                key: localStorage.getItem("userid") || "",
+                url: "/api/MessagePush/set",
+                content: "提交设备信息(极光ID)到服务器失败原因:" + data.message+", 提交的数据是:"+JSON.stringify($scope.datas)
+              }).success(function (data) {
+              })
             }
           })
 
@@ -658,7 +665,7 @@ angular.module('starter.controllers', [])
         if ($rootScope.registerUserType == 2) {
           $scope.isUpgradeRecycler = true; //升级成为回收商
         }
-      }else if($ionicHistory.backView() && $ionicHistory.backView().stateName == "accountinfo"){
+      } else if ($ionicHistory.backView() && $ionicHistory.backView().stateName == "accountinfo") {
         $scope.isUpgradeRecycler = true; //升级成为回收商
       }
     })
@@ -863,7 +870,7 @@ angular.module('starter.controllers', [])
       $scope.user.grps = $scope.recyclingCategory.join(",");
       $scope.user.addrcode = $scope.addrareacountyone.ID;
       $scope.user.img = $scope.ImgsPicAddr[0] || ""; //证件照地址
-      $scope.user.recoveryqty=0;//回收量默认为0
+      $scope.user.recoveryqty = 0;//回收量默认为0
       console.log(JSON.stringify($scope.user));
       AccountService.setUserInfo($scope.user).success(function (data) {
         console.log(data);
@@ -888,6 +895,13 @@ angular.module('starter.controllers', [])
 
         } else {
           CommonService.platformPrompt(data.message, 'close');
+          //错误信息收集 传到服务器
+          AccountService.getErrorlog({
+            key: localStorage.getItem("userid") || "",
+            url: "/api/user/set_info",
+            content: "完善资料提交失败原因:" + data.message+", 提交的数据是:"+JSON.stringify($scope.user)
+          }).success(function (data) {
+          })
         }
 
       })
@@ -2284,18 +2298,17 @@ angular.module('starter.controllers', [])
   })
 
   //我的设置
-  .controller('SettingCtrl', function ($scope, $rootScope, $state, $ionicPlatform, BoRecycle,AccountService) {
+  .controller('SettingCtrl', function ($scope, $rootScope, $state, $ionicPlatform, BoRecycle, AccountService) {
     $scope.version = BoRecycle.version;
     $scope.securitylevel = '未知';
-    if(localStorage.getItem("user"))
-    {
-       AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
-         if (data.code == 1001) {
-           localStorage.setItem("user", JSON.stringify(data.data));
-         }
-       });
+    if (localStorage.getItem("user")) {
+      AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
+        if (data.code == 1001) {
+          localStorage.setItem("user", JSON.stringify(data.data));
+        }
+      });
     }
-    var certstate =JSON.parse(localStorage.getItem("user")).certstate;
+    var certstate = JSON.parse(localStorage.getItem("user")).certstate;
     if (certstate.indexOf('2') == -1) {
       $scope.securitylevel = '极低';
     }
@@ -3249,12 +3262,11 @@ angular.module('starter.controllers', [])
     $scope.total = 1;
     $scope.blc = [];//银行logo及颜色
 
-    $scope.isadd=true;
+    $scope.isadd = true;
     MyWalletService.existisauth(localStorage.getItem("userid")).success(function (data) {
-         if(data.code!=1001)
-         {
-           $scope.isadd=false;
-         }
+      if (data.code != 1001) {
+        $scope.isadd = false;
+      }
     });
 
     if (!$ionicHistory.backView() || $ionicHistory.backView().stateName != "cash") {

@@ -1016,6 +1016,7 @@ angular.module('starter.services', [])
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       },
       showUpdateConfirm: function (updatecontent, appurl, version) {    // 显示是否更新对话框
+        AccountService = this;
         var confirmPopup = $ionicPopup.confirm({
           cssClass: "show-updateconfirm",
           title: '<strong>发现新版本' + version + '</strong>',
@@ -1051,6 +1052,13 @@ angular.module('starter.services', [])
               });
               $ionicLoading.hide();
             }, function (err) {
+              //错误信息收集 传到服务器
+              AccountService.getErrorlog({
+                key: localStorage.getItem("userid") || "",
+                url: "AccountService.getVersionsList",
+                content: "收收APP下载失败原因:" + JSON.stringify(err)
+              }).success(function (data) {
+              })
               $cordovaToast.showLongCenter("收收APP下载失败:" + JSON.stringify(err));
               $ionicLoading.hide();
               return;
