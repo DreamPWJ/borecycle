@@ -3551,7 +3551,7 @@ angular.module('starter.controllers', [])
     if (!CommonService.isLogin()) {
       return;
     }
-    $scope.ut = localStorage.removeItem("usertype");
+    $scope.ut = localStorage.getItem("usertype");
     NewsService.getInfo_fee().success(function (data) {
       $scope.infeels = data.data;
     });

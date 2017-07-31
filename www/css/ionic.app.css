@@ -106,6 +106,15 @@ $dark:                            #444 !default;
   flex: 0 0 95%;
   max-width: 95%; }
 
+.col-offset-5 {
+  margin-left: 5%; }
+
+.col-offset-15 {
+  margin-left: 15%; }
+
+.col-offset-95 {
+  margin-left: 95%; }
+
 /*!
   Ionicons, v2.0.1
   Created by Ben Sperry for the Ionic Framework, http://ionicons.com/
