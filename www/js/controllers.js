@@ -374,6 +374,7 @@ angular.module('starter.controllers', [])
 
     //根据会员账号检查是否需要邀请码
     $scope.getIsInvite = function (account) {
+      AccountService.checkMobilePhoneAndEmail($scope, account);
       AccountService.getIsInvite({account: account}).success(function (data) {
         console.log(data);
         if (data.code == 1001) {
