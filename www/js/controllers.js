@@ -85,7 +85,7 @@ angular.module('starter.controllers', [])
           }
         };
 
-       //延迟调用获取极光注册ID
+        //延迟调用获取极光注册ID
         window.setTimeout(getRegistrationID, 3000);
       }
 
@@ -365,6 +365,17 @@ angular.module('starter.controllers', [])
     localStorage.removeItem("usertype");
     localStorage.removeItem("openid");
 
+    //如果没有授权先授权 或者超过两个小时
+    if (!localStorage.getItem("token") || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
+      //接口授权
+      MainService.authLogin({grant_type: 'client_credentials'}).success(function (data) {
+        if (data.access_token) {
+          localStorage.setItem("token", data.access_token);//公共接口授权token
+          localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
+        }
+      })
+    }
+
     $scope.user = {};//提前定义用户对象
     $scope.agreedeal = true;//同意用户协议
     $scope.paraclass = true;
@@ -453,6 +464,16 @@ angular.module('starter.controllers', [])
     localStorage.removeItem("usertype");
     localStorage.removeItem("openid");
 
+    //如果没有授权先授权 或者超过两个小时
+    if (!localStorage.getItem("token") || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
+      //接口授权
+      MainService.authLogin({grant_type: 'client_credentials'}).success(function (data) {
+        if (data.access_token) {
+          localStorage.setItem("token", data.access_token);//公共接口授权token
+          localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
+        }
+      })
+    }
     $scope.user = {};//提前定义用户对象
     $scope.agreedeal = true;//同意用户协议
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
@@ -539,7 +560,7 @@ angular.module('starter.controllers', [])
   })
 
   //注册页面
-  .controller('RegisterCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
+  .controller('RegisterCtrl', function ($scope, $rootScope, $state, CommonService, MainService, AccountService) {
     $scope.user = {//定义用户对象
       usertype: 1 //用户类型
     };
@@ -548,6 +569,16 @@ angular.module('starter.controllers', [])
     $scope.paraclass = true; //控制验证码的disable;
     $scope.services = [{key: 2, value: "上门回收者"}, {key: 3, value: "货场"}, {key: 4, value: "二手商家"}];//用户类型数组
 
+    //如果没有授权先授权 或者超过两个小时
+    if (!localStorage.getItem("token") || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
+      //接口授权
+      MainService.authLogin({grant_type: 'client_credentials'}).success(function (data) {
+        if (data.access_token) {
+          localStorage.setItem("token", data.access_token);//公共接口授权token
+          localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
+        }
+      })
+    }
     $scope.checkphoneandemail = function (account) {//检查手机号和邮箱
       AccountService.checkMobilePhoneAndEmail($scope, account);
     }
@@ -601,11 +632,21 @@ angular.module('starter.controllers', [])
   })
 
   //找回密码
-  .controller('FindPasswordCtrl', function ($scope, $state, CommonService, AccountService) {
+  .controller('FindPasswordCtrl', function ($scope, $state, CommonService, MainService, AccountService) {
     $scope.user = {};//定义用户对象
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable;
 
+    //如果没有授权先授权 或者超过两个小时
+    if (!localStorage.getItem("token") || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
+      //接口授权
+      MainService.authLogin({grant_type: 'client_credentials'}).success(function (data) {
+        if (data.access_token) {
+          localStorage.setItem("token", data.access_token);//公共接口授权token
+          localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
+        }
+      })
+    }
     $scope.checkphoneandemail = function (account) {//检查手机号和邮箱
       AccountService.checkMobilePhoneAndEmail($scope, account);
     }
@@ -639,7 +680,7 @@ angular.module('starter.controllers', [])
   })
 
   //完善资料页面
-  .controller('OrganizingDataCtrl', function ($scope, $rootScope, CommonService, $ionicHistory, BoRecycle, OrderService, AccountService, AddressService) {
+  .controller('OrganizingDataCtrl', function ($scope, $rootScope, CommonService, MainService, $ionicHistory, BoRecycle, OrderService, AccountService, AddressService) {
     //上传图片数组集合
     $scope.imageList = [];
     $scope.ImgsPicAddr = [];//图片信息数组
@@ -723,6 +764,17 @@ angular.module('starter.controllers', [])
           CommonService.platformPrompt(datas.message, 'close');
         }
       })
+    } else {
+      //如果没有授权先授权 或者超过两个小时
+      if (!localStorage.getItem("token") || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
+        //接口授权
+        MainService.authLogin({grant_type: 'client_credentials'}).success(function (data) {
+          if (data.access_token) {
+            localStorage.setItem("token", data.access_token);//公共接口授权token
+            localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
+          }
+        })
+      }
     }
 //获取产品品类
     OrderService.getProductList({ID: "", Name: ""}).success(function (data) {
@@ -979,11 +1031,35 @@ angular.module('starter.controllers', [])
   })
 
   //我的回收订单页面
-  .controller('OrderCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, OrderService, $ionicHistory, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
+  .controller('OrderCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, MainService, OrderService, $ionicHistory, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
     //是否登录
     if (!CommonService.isLogin(true)) {
       return;
     }
+
+    $scope.$on('$ionicView.beforeEnter', function () {
+      if (!$ionicHistory.backView()) { //有没有上级
+        //如果授权超过两个小时 单独授权
+        if (((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
+          //接口授权
+          MainService.authLogin(
+            {
+              grant_type: 'password',
+              username: localStorage.getItem("userid"),
+              password: localStorage.getItem("usersecret")
+            }).success(function (data) {
+            console.log(data);
+            if (data.access_token) {
+              localStorage.setItem("token", data.access_token);//登录接口授权token
+              localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
+            } else {
+              CommonService.platformPrompt("获取登录接口授权token失败", 'close');
+              return;
+            }
+          })
+        }
+      }
+    })
 
     var user = JSON.parse(localStorage.getItem("user"));//用户信息
     if (!user.userext) {
@@ -2649,16 +2725,35 @@ angular.module('starter.controllers', [])
   })
 
   //登记信息
-  .controller('InformationCtrl', function ($scope, CommonService, BoRecycle, $ionicHistory, AccountService, AddressService, OrderService) {
+  .controller('InformationCtrl', function ($scope, CommonService, BoRecycle, $ionicHistory, MainService, AccountService, AddressService, OrderService) {
     //是否登录
     if (!CommonService.isLogin(true)) {
       return;
     }
-    /*     $scope.$on('$ionicView.afterEnter', function () { //动态清除页面缓存
-     if($ionicHistory.backView() && $ionicHistory.backView().stateName=="tab.main"){ //上一级路由名称
+    $scope.$on('$ionicView.beforeEnter', function () {
+      if (!$ionicHistory.backView()) { //有没有上级
+        //如果授权超过两个小时 单独授权
+        if (((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
+          //接口授权
+          MainService.authLogin(
+            {
+              grant_type: 'password',
+              username: localStorage.getItem("userid"),
+              password: localStorage.getItem("usersecret")
+            }).success(function (data) {
+            console.log(data);
+            if (data.access_token) {
+              localStorage.setItem("token", data.access_token);//登录接口授权token
+              localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
+            } else {
+              CommonService.platformPrompt("获取登录接口授权token失败", 'close');
+              return;
+            }
+          })
+        }
+      }
+    })
 
-     }
-     })*/
     CommonService.customModal($scope, 'templates/modal/addressmodal.html');
     CommonService.customModal($scope, 'templates/modal/nearbyaddressmodal.html', 1);
     $scope.dengji = {};//登记信息
@@ -2667,7 +2762,7 @@ angular.module('starter.controllers', [])
     $scope.addresspois = [];//附近地址数组
     $scope.productLists = [];//产品品类
     $scope.imgUrl = BoRecycle.imgUrl;//图片路径
-    //获取产品品类
+//获取产品品类
     OrderService.getProductList({ID: "", Name: ""}).success(function (data) {
       console.log(data);
       if (data.code == 1001) {
@@ -2718,33 +2813,33 @@ angular.module('starter.controllers', [])
       }
     })
 
-    //获取省市县
+//获取省市县
     $scope.getAddressPCCList = function (item) {
       //获取省份信息
       AddressService.getAddressPCCList($scope, item)
 
     }
 
-    //modal打开 加载数据
+//modal打开 加载数据
     $scope.$on('modal.shown', function () {
       if ($scope.modalName == 'addressmodal') {
         $scope.getAddressPCCList();
       }
     })
 
-    //打开选择省市县modal
+//打开选择省市县modal
     $scope.openModal = function () {
       $scope.modalName = 'addressmodal'
       $scope.modal.show();
     }
 
-    //打开附近地址modal
+//打开附近地址modal
     $scope.openNearAddrModal = function () {
       $scope.location(0);
       $scope.modal1.show();
     }
 
-    // 选择打开附近地址
+// 选择打开附近地址
     $scope.getAddressPois = function (item) {
       $scope.dengji.addrdetail = item.name;
       $scope.longitude = item.location.split(",")[0];//经度
@@ -2752,7 +2847,7 @@ angular.module('starter.controllers', [])
       $scope.modal1.hide();
     }
 
-    //关键字搜索：通过用POI的关键字进行条件搜索，例如：肯德基、朝阳公园等；同时支持设置POI类型搜索，例如：银行称
+//关键字搜索：通过用POI的关键字进行条件搜索，例如：肯德基、朝阳公园等；同时支持设置POI类型搜索，例如：银行称
     $scope.getPlaceBySearch = function (addrname) {
       AccountService.getPlaceBySearch({
         key: BoRecycle.gaoDeKey,
@@ -2765,7 +2860,7 @@ angular.module('starter.controllers', [])
       })
     }
 
-    //获取当前位置 定位
+//获取当前位置 定位
     $scope.location = function (param) {
       CommonService.getLocation(function () {
         //当前位置 定位
@@ -2801,7 +2896,7 @@ angular.module('starter.controllers', [])
 
     }
     $scope.location(1);//自动定位
-    //实现单选
+//实现单选
     $scope.multipleChoice = function (array, item) {
       item.checked ? item.checked = false : item.checked = true;
       if (item.checked) {
@@ -2812,7 +2907,7 @@ angular.module('starter.controllers', [])
         });
       }
     }
-    //信息登记提交
+//信息登记提交
     $scope.informationSubmit = function () {
       if ($scope.dengji.acttype == 1) {//当用户选择“以旧换新”时，先判断用户有没有“完善信息”和“实名认证”，如果没有则必须先“完善信息”和“实名认证”
         var user = JSON.parse(localStorage.getItem("user"));
@@ -2874,12 +2969,34 @@ angular.module('starter.controllers', [])
   })
 
   //登记货源
-  .controller('SupplyOfGoodsCtrl', function ($scope, $rootScope, $ionicHistory, CommonService, OrderService, AddressService) {
+  .controller('SupplyOfGoodsCtrl', function ($scope, $rootScope, $ionicHistory, CommonService, MainService, OrderService, AddressService) {
     //是否登录
     if (!CommonService.isLogin(true)) {
       return;
     }
-
+    $scope.$on('$ionicView.beforeEnter', function () {
+      if (!$ionicHistory.backView()) { //有没有上级
+        //如果授权超过两个小时 单独授权
+        if (((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
+          //接口授权
+          MainService.authLogin(
+            {
+              grant_type: 'password',
+              username: localStorage.getItem("userid"),
+              password: localStorage.getItem("usersecret")
+            }).success(function (data) {
+            console.log(data);
+            if (data.access_token) {
+              localStorage.setItem("token", data.access_token);//登录接口授权token
+              localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
+            } else {
+              CommonService.platformPrompt("获取登录接口授权token失败", 'close');
+              return;
+            }
+          })
+        }
+      }
+    })
     $scope.supplyOfGoods = function () {
       $scope.goods = {//货源信息
         delivery: 1//默认上门回收
