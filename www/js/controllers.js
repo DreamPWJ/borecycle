@@ -364,6 +364,7 @@ angular.module('starter.controllers', [])
     localStorage.removeItem("user");
     localStorage.removeItem("usertype");
     localStorage.removeItem("openid");
+    localStorage.removeItem("token");
 
     //如果没有授权先授权 或者超过两个小时
     if (!localStorage.getItem("token") || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
@@ -463,6 +464,7 @@ angular.module('starter.controllers', [])
     localStorage.removeItem("user");
     localStorage.removeItem("usertype");
     localStorage.removeItem("openid");
+    localStorage.removeItem("token");
 
     //如果没有授权先授权 或者超过两个小时
     if (!localStorage.getItem("token") || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
