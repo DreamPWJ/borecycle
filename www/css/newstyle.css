@@ -116,6 +116,10 @@
   width: 12px;
 }
 
+#organizingdata .services {
+  border-bottom: 2px solid rgba(221, 221, 221, 0.3) !important;
+}
+
 .item-checkbox .item-content {
   padding-right: 0 !important;
 }

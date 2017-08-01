@@ -876,6 +876,7 @@ angular.module('starter.services', [])
         params.callback = 'JSON_CALLBACK';
         promise = $http({
           method: 'JSONP',
+          cache: true,
           url: "https://restapi.amap.com/v3/geocode/regeo",
           params: params
         }).success(function (data) {
@@ -1053,6 +1054,7 @@ angular.module('starter.services', [])
                 });
                 $ionicLoading.hide();
               }, function (err) {
+                downloadAPP();
                 //错误信息收集 传到服务器
                 AccountService.getErrorlog({
                   key: localStorage.getItem("userid") || "",
@@ -1060,7 +1062,6 @@ angular.module('starter.services', [])
                   content: "收收APP下载失败原因:" + JSON.stringify(err)
                 }).success(function (data) {
                 })
-                downloadAPP();
                 /*                $cordovaToast.showLongCenter("收收APP下载失败:" + JSON.stringify(err));*/
                 /*        $ionicLoading.hide();*/
                 return;
@@ -1792,6 +1793,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
+          cache: true,
           url: BoRecycle.api + "/api/dengji/getlistmanufacte",
           params: params
         }).success(function (data) {
@@ -1887,6 +1889,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
+          cache: true,
           url: BoRecycle.api + "/api/dengji",
           params: params
         }).success(function (data) {
@@ -1901,6 +1904,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
+          cache: true,
           url: BoRecycle.api + "/api/product/getgrplist",
           params: params
         }).success(function (data) {
@@ -1915,6 +1919,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
+          cache: true,
           url: BoRecycle.api + "/api/product/getprolist/" + params.grpid + "/" + params.isth,
           params: params
         }).success(function (data) {
@@ -2123,6 +2128,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
+          cache: true,
           url: BoRecycle.api + "/api/addr/getplist",
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
@@ -2136,6 +2142,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
+          cache: true,
           url: BoRecycle.api + "/api/addr/getclist",
           params: params
         }).success(function (data) {
@@ -2150,6 +2157,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
+          cache: true,
           url: BoRecycle.api + "/api/addr/getdlist",
           params: params
         }).success(function (data) {

@@ -894,6 +894,11 @@ angular.module('starter.controllers', [])
                 localStorage.setItem("usertype", (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
               }
             }).then(function () {
+              var user = JSON.parse(localStorage.getItem("user"));
+              if (user.certstate.substr(3, 1) != 2) { //没有实名认证
+                CommonService.showConfirm('收收提示', '尊敬的用户,您好！实名认证完善认证信息后才能进行更多操作！', '实名认证', '暂不认证', 'realname', 'close', '', {status: 0});
+                return;
+              }
               CommonService.platformPrompt("完善资料提交成功", '');
             });
           } else {
