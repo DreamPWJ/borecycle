@@ -1273,6 +1273,10 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt("会员类型审核通过后才能操作", 'close');
         return;
       }
+      if (user.certstate.substr(3, 1) != 2) { //没有实名认证
+        CommonService.showConfirm('收收提示', '尊敬的用户,您好！实名认证完善认证信息后才能进行更多操作！', '实名认证', '暂不认证', 'realname', 'close', '', {status: 0});
+        return;
+      }
       if (user.services.length == 1 && user.services.indexOf('1') != -1) {
         CommonService.platformPrompt("信息供应者用户不能接单,申请成为回收商", 'close');
         return;
