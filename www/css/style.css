@@ -100,7 +100,11 @@
 }
 
 .bottom-0 .button {
-  padding: 2px;
+  padding:0 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.9rem !important;
 }
 
 .has-button-footer {
