@@ -71,7 +71,7 @@ angular.module('starter.controllers', [])
               AccountService.getErrorlog({
                 key: localStorage.getItem("userid") || "",
                 url: "/api/MessagePush/set",
-                content: "提交设备信息(极光ID)到服务器失败原因:" + data.message+", 提交的数据是:"+JSON.stringify($scope.datas)
+                content: "提交设备信息(极光ID)到服务器失败原因:" + data.message + ", 提交的数据是:" + JSON.stringify($scope.datas)
               }).success(function (data) {
               })
             }
@@ -767,11 +767,17 @@ angular.module('starter.controllers', [])
       AddressService.getAddressPCCList($scope, item);
     }
 
+    //modal打开 加载数据
+    $scope.$on('modal.shown', function () {
+      if ($scope.modalName == 'addressmodal') {
+        $scope.getAddressPCCList();
+      }
+    })
 
 //打开选择省市县modal
     $scope.openModal = function () {
+      $scope.modalName = 'addressmodal'
       $scope.modal.show();
-      $scope.getAddressPCCList();
     }
 
     //打开附近地址modal
@@ -888,6 +894,11 @@ angular.module('starter.controllers', [])
                 localStorage.setItem("usertype", (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
               }
             }).then(function () {
+              var user = JSON.parse(localStorage.getItem("user"));
+              if (user.certstate.substr(3, 1) != 2) { //没有实名认证
+                CommonService.showConfirm('收收提示', '尊敬的用户,您好！实名认证完善认证信息后才能进行更多操作！', '实名认证', '暂不认证', 'realname', 'close', '', {status: 0});
+                return;
+              }
               CommonService.platformPrompt("完善资料提交成功", '');
             });
           } else {
@@ -900,7 +911,7 @@ angular.module('starter.controllers', [])
           AccountService.getErrorlog({
             key: localStorage.getItem("userid") || "",
             url: "/api/user/set_info",
-            content: "完善资料提交失败原因:" + data.message+", 提交的数据是:"+JSON.stringify($scope.user)
+            content: "完善资料提交失败原因:" + data.message + ", 提交的数据是:" + JSON.stringify($scope.user)
           }).success(function (data) {
           })
         }
@@ -2024,11 +2035,18 @@ angular.module('starter.controllers', [])
     }
     $scope.location();//自动定位
 
+    //modal打开 加载数据
+    $scope.$on('modal.shown', function () {
+      if ($scope.modalName == 'citymodal') {
+        AccountService.selectCity($scope); //选择城市
+      }
+    })
+
     //点击选择城市
     $scope.openCustomModal = function () {
       $scope.city = {};//城市相关json数据
+      $scope.modalName = 'citymodal';
       $scope.modal.show();
-      AccountService.selectCity($scope); //选择城市
     }
 
     //修改回收区域
@@ -2200,11 +2218,20 @@ angular.module('starter.controllers', [])
     $scope.getAddressPCCList = function (item) {
       AddressService.getAddressPCCList($scope, item)
     }
+
+    //modal打开 加载数据
+    $scope.$on('modal.shown', function () {
+      if ($scope.modalName == 'addressmodal') {
+        $scope.getAddressPCCList();
+      }
+    })
+
     //打开选择省市县modal
     $scope.openModal = function () {
+      $scope.modalName = 'addressmodal'
       $scope.modal.show();
-      $scope.getAddressPCCList();
     }
+
     //打开附近地址modal
     $scope.openNearAddrModal = function () {
       $scope.location();//自动定位
@@ -2697,10 +2724,17 @@ angular.module('starter.controllers', [])
 
     }
 
+    //modal打开 加载数据
+    $scope.$on('modal.shown', function () {
+      if ($scope.modalName == 'addressmodal') {
+        $scope.getAddressPCCList();
+      }
+    })
+
     //打开选择省市县modal
     $scope.openModal = function () {
+      $scope.modalName = 'addressmodal'
       $scope.modal.show();
-      $scope.getAddressPCCList();
     }
 
     //打开附近地址modal

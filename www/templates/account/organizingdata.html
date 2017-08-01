@@ -26,7 +26,7 @@
               <span>回收商</span>
             </label>
           </ion-item>
-          <div class="services padding light-bg text-wrap " ng-if="user.usertype==2">
+          <div class="services padding light-bg text-wrap" ng-if="user.usertype==2">
             <ion-checkbox class="item-borderless checkbox-positive " ng-click="checkChecded(services)"
                           ng-repeat="item in services" ng-model="item.checked">
               {{item.value}}
@@ -34,9 +34,9 @@
           </div>
         </div>
         <div ng-if="user.usertype!=0">
-          <label class="item item-input">
+          <label ng-if="user.usertype==1"  class="item item-input">
             <span class="input-label icon ion-ios-person-outline"> 姓名</span>
-            <input type="text" name="username" ng-model="user.username" placeholder="请输入真实姓名" required/>
+            <input type="text" name="username" ng-model="user.username" placeholder="请输入真实姓名" ng-required="user.usertype==1"/>
           </label>
           <label class="item item-input" ng-if="!isPhoneRegister">
             <span class="input-label icon ion-iphone"> 手机号码</span>
@@ -81,7 +81,7 @@
             <span class="input-label icon ion-ios-location-outline"> 详细地址</span>
             <textarea class="col-50" rows="1" ng-model="user.addrdetail" ng-focus="openNearAddrModal()" placeholder="街道 门牌号等详细地址"
                       ng-required="user.usertype==1"></textarea>
-            <div class="positive padding-left" ng-click="openNearAddrModal()"><i
+            <div class="positive padding-left" ng-click="location()"><i
               class="iconfont icon-locationfill" style="font-size: 16px;"></i>定位
             </div>
           </div>
@@ -113,7 +113,7 @@
           <div class="padding-horizontal">
             <button class="button full-image button-positive " ng-click="organizingdataSubmit()"
                     ng-disabled="!(organizingdataForm.$valid&&(user.usertype==1?verify:true)&&(user.usertype==1?true:(ischecked&&ischecked1))&&(addresspcd||ssx))">
-              提交
+              下一步
             </button>
             <p></p>
             <a ng-href="#/{{isLogin?'tab/account':'login'}}"

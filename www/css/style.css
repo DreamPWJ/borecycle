@@ -200,8 +200,13 @@ a {
 .loading-container .loading {
   width: 4.5rem;
   height: 4.5rem;
-  padding:20px 5px;
+  padding: 20px 5px;
   /*  background-color: rgba(0, 0, 0, 0);*/
+}
+
+.loading-container .loading span {
+  display: inline-block;
+  margin-top: 0.2rem;
 }
 
 .item-image:not(img) {
@@ -476,25 +481,37 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
 #facteSelect input:checked + div {
   border: 1px solid #00ACFF;
 }
-#download{
+
+#download {
   background: url("../img/down-bg.png") no-repeat;
   background-size: 100% 100%;
 }
-#download img{
+
+#download img {
   max-width: 98%;
   margin-top: 2rem;
 }
-#pay-sure.modal{top:auto;min-height:415px;height:auto!important;bottom: 0;}
-#payment.item-content{
-  padding-top: 10px!important;
-  padding-bottom: 10px!important;
+
+#pay-sure.modal {
+  top: auto;
+  min-height: 415px;
+  height: auto !important;
+  bottom: 0;
 }
-#organizingdata .iconfont{
-  font-size: 16px!important;
+
+#payment.item-content {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
 }
-#accountinfo .icon{
-  font-size: 1rem!important;
+
+#organizingdata .iconfont {
+  font-size: 16px !important;
 }
-#accountinfo .calm{
-  color: #11c1f3!important;
+
+#accountinfo .icon {
+  font-size: 1rem !important;
+}
+
+#accountinfo .calm {
+  color: #11c1f3 !important;
 }

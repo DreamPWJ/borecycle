@@ -72,7 +72,7 @@ angular.module('starter.services', [])
           }
         });
       },
-      customModal: function ($scope, templateurl, index, animation) { //自定义modal ndex页面出现多个模态框的情况 进行命名区别 index 可以为1.2.3.   animation动画slide-in-left slide-in-right
+      customModal: function ($scope, templateurl, index, animation) { //自定义modal index页面出现多个模态框的情况 进行命名区别 index 可以为1.2.3.   animation动画slide-in-left slide-in-right
         index = index == undefined ? "" : index;
         $ionicModal.fromTemplateUrl(templateurl, {
           scope: $scope,
@@ -92,11 +92,12 @@ angular.module('starter.services', [])
           $scope["modal" + index].remove();
         });
         // 当隐藏的模型时执行动作
-        $scope.$on('modal' + index + '.hide', function () {
+        $scope.$on('modal.hidden', function () {
           // 执行动作
+          $scope.modalName = ''; //清除modal名
         });
         // 当移动模型时执行动作
-        $scope.$on('modal' + index + '.removed', function () {
+        $scope.$on('modal.removed', function () {
           // 执行动作
         });
       },
@@ -875,6 +876,7 @@ angular.module('starter.services', [])
         params.callback = 'JSON_CALLBACK';
         promise = $http({
           method: 'JSONP',
+          cache: true,
           url: "https://restapi.amap.com/v3/geocode/regeo",
           params: params
         }).success(function (data) {
@@ -1052,6 +1054,7 @@ angular.module('starter.services', [])
                 });
                 $ionicLoading.hide();
               }, function (err) {
+                downloadAPP();
                 //错误信息收集 传到服务器
                 AccountService.getErrorlog({
                   key: localStorage.getItem("userid") || "",
@@ -1059,8 +1062,7 @@ angular.module('starter.services', [])
                   content: "收收APP下载失败原因:" + JSON.stringify(err)
                 }).success(function (data) {
                 })
-                downloadAPP();
-/*                $cordovaToast.showLongCenter("收收APP下载失败:" + JSON.stringify(err));*/
+                /*                $cordovaToast.showLongCenter("收收APP下载失败:" + JSON.stringify(err));*/
                 /*        $ionicLoading.hide();*/
                 return;
               }, function (progress) {
@@ -1791,6 +1793,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
+          cache: true,
           url: BoRecycle.api + "/api/dengji/getlistmanufacte",
           params: params
         }).success(function (data) {
@@ -1886,6 +1889,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
+          cache: true,
           url: BoRecycle.api + "/api/dengji",
           params: params
         }).success(function (data) {
@@ -1900,6 +1904,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
+          cache: true,
           url: BoRecycle.api + "/api/product/getgrplist",
           params: params
         }).success(function (data) {
@@ -1914,6 +1919,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
+          cache: true,
           url: BoRecycle.api + "/api/product/getprolist/" + params.grpid + "/" + params.isth,
           params: params
         }).success(function (data) {
@@ -2074,7 +2080,7 @@ angular.module('starter.services', [])
           this.getPList().success(function (data) {
             if (data.code == 1001) {
               $scope.addressinfo = data.data;
-              $ionicScrollDelegate.scrollTop()
+              $ionicScrollDelegate.scrollTop();
             }
           })
           return;
@@ -2085,7 +2091,7 @@ angular.module('starter.services', [])
           this.getCList({pid: item.ID}).success(function (data) {
             if (data.code == 1001) {
               $scope.addressinfo = data.data;
-              $ionicScrollDelegate.scrollTop()
+              $ionicScrollDelegate.scrollTop();
             }
           })
         }
@@ -2095,7 +2101,7 @@ angular.module('starter.services', [])
           this.getDList({cid: item.ID}).success(function (data) {
             if (data.code == 1001) {
               $scope.addressinfo = data.data;
-              $ionicScrollDelegate.scrollTop()
+              $ionicScrollDelegate.scrollTop();
             }
 
           })
@@ -2122,6 +2128,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
+          cache: true,
           url: BoRecycle.api + "/api/addr/getplist",
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
@@ -2135,6 +2142,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
+          cache: true,
           url: BoRecycle.api + "/api/addr/getclist",
           params: params
         }).success(function (data) {
@@ -2149,6 +2157,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
+          cache: true,
           url: BoRecycle.api + "/api/addr/getdlist",
           params: params
         }).success(function (data) {
@@ -2797,7 +2806,7 @@ angular.module('starter.services', [])
         if (config.url.toString().indexOf('http') === 0) {
           //http请求Loading加载动画
           $injector.get('$ionicLoading').show({
-            template: '<ion-spinner icon="spiral" class="spinner-light"></ion-spinner><p>',
+            template: '<p><ion-spinner icon="spiral" class="spinner-light"></ion-spinner><p>',
             noBackdrop: true
           });
         }
