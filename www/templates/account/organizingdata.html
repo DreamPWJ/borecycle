@@ -112,7 +112,7 @@
           <p></p>
           <div class="padding-horizontal">
             <button class="button full-image button-positive " ng-click="organizingdataSubmit()"
-                    ng-disabled="!(organizingdataForm.$valid&&(user.usertype==1?verify:true)&&(user.usertype==1?true:(ischecked&&ischecked1))&&(addresspcd||ssx)&&(user.usertype == 1&&ImgsPicAddr.length != 0))">
+                    ng-disabled="!(organizingdataForm.$valid&&(user.usertype==1?verify:true)&&(user.usertype==1?true:(ischecked&&ischecked1))&&(addresspcd||ssx)&&(user.usertype == 1?ImgsPicAddr.length != 0:true))">
               {{user.usertype == 1?'提交':'下一步'}}
             </button>
             <p></p>

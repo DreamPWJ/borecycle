@@ -623,6 +623,7 @@ angular.module('starter.controllers', [])
       AccountService.register($scope.user).success(function (data) {
         if (data.code == 1001) {
           $rootScope.registerUserType = $scope.user.usertype;
+          $rootScope.registerUserServices = $scope.user.services;
           $rootScope.isPhoneRegister = (/^1(3|4|5|7|8)\d{9}$/.test($scope.user.account))
           if ($rootScope.isPhoneRegister) {
             $rootScope.phoneRegister = $scope.user.account;
@@ -769,6 +770,16 @@ angular.module('starter.controllers', [])
         }
       })
     } else {
+      //注册页面进入默认选中注册选中的回收商类型
+      if ($scope.user.usertype == 2) {
+        angular.forEach($scope.services, function (item, index) {
+          if ($rootScope.registerUserServices.indexOf(item.key) != -1) {
+            $scope.services[index].checked = true;
+            $scope.ischecked = true;
+          }
+        })
+      }
+
       //如果没有授权先授权 或者超过两个小时
       if (!localStorage.getItem("token") || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
         //接口授权
