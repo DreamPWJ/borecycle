@@ -966,6 +966,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise
         promise = $http({
           method: 'GET',
+          cache: true,
           url: BoRecycle.api + "/api/AboutUs/getaboutus",
           params: params
         }).success(function (data) {
@@ -2809,12 +2810,12 @@ angular.module('starter.services', [])
             template: '<p><ion-spinner icon="spiral" class="spinner-light"></ion-spinner><p>',
             noBackdrop: true
           });
-        }
-        //授权
-        config.headers = config.headers || {};
-        var token = localStorage.getItem('token');
-        if (token && token != "undefined" && config.url.toString().indexOf('//hs.api.boolv.com/token') == -1) {
-          config.headers.authorization = "Bearer " + token;
+          //授权
+          config.headers = config.headers || {};
+          var token = localStorage.getItem('token');
+          if (token && token != "undefined" && config.url.toString().indexOf('//hs.api.boolv.com/token') == -1) {
+            config.headers.authorization = "Bearer " + token;
+          }
         }
         return config;
       },
