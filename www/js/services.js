@@ -411,7 +411,19 @@ angular.module('starter.services', [])
             localStorage.setItem("longitude", success.longitude);
             callback.call(this);
           }, function (error) {
-            CommonService.platformPrompt("高德获取定位失败", 'close');
+            if (ionic.Platform.isWebView()) {
+              CommonService.showConfirm('允许收收定位', '请在系统设置 -> 隐私 -> 定位服务中允许收收使用您的位置', '设置', '取消', '', 'close', function () {
+                window.cordova.plugins.settings.open("location", function () {
+                  },
+                  function () {
+                    CommonService.platformPrompt('打开设置失败', 'close');
+                  }
+                );
+              });
+            } else {
+              CommonService.platformPrompt("高德获取定位失败", 'close');
+            }
+
           })
         } else {
           var posOptions = {timeout: 10000, enableHighAccuracy: false};
@@ -421,7 +433,20 @@ angular.module('starter.services', [])
               localStorage.setItem("longitude", position.coords.longitude);
               callback.call(this);
             }, function (err) {
-              CommonService.platformPrompt("获取定位失败", 'close');
+
+              if (ionic.Platform.isWebView()) {
+                CommonService.showConfirm('允许收收定位', '请在系统设置 -> 隐私 -> 定位服务中允许收收使用您的位置', '设置', '取消', '', 'close', function () {
+                  window.cordova.plugins.settings.open("location", function () {
+                    },
+                    function () {
+                      CommonService.platformPrompt('打开设置失败', 'close');
+                    }
+                  );
+                });
+              } else {
+                CommonService.platformPrompt("获取定位失败", 'close');
+              }
+
             });
         }
 

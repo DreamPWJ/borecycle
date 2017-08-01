@@ -84,6 +84,9 @@
         },
         "phonegap-plugin-barcodescanner": {
             "PACKAGE_NAME": "com.boolv.recycle"
+        },
+        "cordova-open-native-settings": {
+            "PACKAGE_NAME": "com.boolv.recycle"
         }
     },
     "dependent_plugins": {
