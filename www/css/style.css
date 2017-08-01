@@ -125,12 +125,11 @@
 
 .show-alert .popup .popup-head, .show-confirm .popup .popup-head, .show-updateconfirm .popup .popup-head {
   border: none;
-  height: 1.6rem !important;
-  min-height: 1.6rem !important;
+  padding: 8px;
+  color: #585858 !important;
 }
 
 .show-alert .popup .popup-title, .show-confirm .popup .popup-title, .show-updateconfirm .popup .popup-title {
-  line-height: 0.2rem;
   color: #585858 !important;
 }
 
@@ -152,7 +151,7 @@
   height: 2.6rem !important;
   min-height: 2.6rem !important;
   background-color: #ffffff;
-
+  color: #00ACFF !important;
 }
 
 .show-alert .button:first-child, .show-confirm .button:first-child, .show-updateconfirm .button:first-child {
@@ -165,8 +164,9 @@
 }
 
 .show-alert .button:nth-child(2), .show-confirm .button:nth-child(2), .show-updateconfirm .button:nth-child(2) {
-  border-left: 1px solid rgba(221, 221, 221, 0.3);
   color: #00ACFF !important;
+  border-left: 1px solid rgba(221, 221, 221, 0.3);
+
 }
 
 /*修改覆盖ActionSheet框默认样式*/
