@@ -156,7 +156,7 @@
 }
 
 .show-alert .button:first-child, .show-confirm .button:first-child, .show-updateconfirm .button:first-child {
-  color: #33cd5f;
+  color: #33cd5f !important;
   border-radius: 0 0 0rem 0.5rem;
 }
 
