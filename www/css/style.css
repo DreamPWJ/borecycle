@@ -100,7 +100,15 @@
 }
 
 .bottom-0 .button {
-  padding: 2px;
+  padding: 0 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 1rem !important;
+}
+
+.bottom-0 .button.icon:before, .bottom-0 .button.iconfont:before {
+  font-size: 1.2rem !important;
 }
 
 .has-button-footer {
