@@ -67,13 +67,13 @@
 
           </div>
           <label ng-if="user.usertype==1" class="item item-input">
-            <span class="input-label icon ion-ios-home-outline"> 企业名称</span>
-            <input type="text" name="shopname" ng-model="user.shopname" placeholder="请输入门店名称" maxlength="10"
+            <span class="input-label icon ion-ios-home-outline"> 工作单位</span>
+            <input type="text" name="shopname" ng-model="user.shopname" placeholder="请输入工作单位" maxlength="10"
                    ng-required="user.usertype==1"/>
           </label>
 
           <label class="item item-input " ng-click="openModal()">
-            <span class="input-label icon ion-ios-location-outline"> {{user.usertype==1?'企业地址':'地区'}}  </span>
+            <span class="input-label icon ion-ios-location-outline"> {{user.usertype==1?'单位地址':'地区'}}  </span>
             <p class="{{(addresspcd||ssx)?'dard':'grey'}}">{{addresspcd?addresspcd:(ssx?ssx:"请选择地区")}}</p>
           </label>
 
