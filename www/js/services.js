@@ -2004,7 +2004,8 @@ angular.module('starter.services', [])
           userid: userid,
           amount: amount,
           name: name,
-          productname: productname
+          productname: productname,
+          hytype:hytype
         }
         $state.go("recycleorder", {orderinfo: JSON.stringify(json)});
       },

@@ -1741,7 +1741,8 @@ angular.module('starter.controllers', [])
             fromuser: localStorage.getItem("userid"),
             touser: $scope.orderinfo.userid,
             amount: $scope.orderinfo.amount,
-            name: $scope.orderinfo.name
+            name: $scope.orderinfo.name,
+            hytype: $scope.orderinfo.hytype
           }
           $state.go("payment", {orderinfo: JSON.stringify(json)})
 
@@ -1855,7 +1856,8 @@ angular.module('starter.controllers', [])
           if (data.code == 1001) {
             CommonService.platformPrompt("回收付款成功", "orderdetails", {
               no: $scope.orderinfo.orno,
-              type: 2
+              type: 2,
+              hytype:$scope.orderinfo.hytype
             })
           } else {
             CommonService.platformPrompt(data.message, "close")
