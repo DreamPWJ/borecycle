@@ -672,7 +672,7 @@ angular.module('starter.controllers', [])
           if ($rootScope.isPhoneRegister) {
             $rootScope.phoneRegister = $scope.user.account;
           }
-          $state.go('organizingdata');
+          $state.go('organizingdata',{type:$scope.user.usertype});
         }
         CommonService.platformPrompt(data.message, 'close');
       })
@@ -746,7 +746,7 @@ angular.module('starter.controllers', [])
     CommonService.customModal($scope, 'templates/modal/addressmodal.html');
     CommonService.customModal($scope, 'templates/modal/nearbyaddressmodal.html', 1);
     $scope.$on('$ionicView.beforeEnter', function () {
-      if ($ionicHistory.backView() && $ionicHistory.backView().stateName == "register"||$stateParams.type==1) { //上一级路由名称
+      if ($ionicHistory.backView() && $ionicHistory.backView().stateName == "register") { //上一级路由名称
         $scope.usertype = $rootScope.registerUserType; //是从注册页面进入
         $scope.user.usertype = $rootScope.registerUserType;
         $scope.isPhoneRegister = $rootScope.isPhoneRegister;
@@ -756,9 +756,11 @@ angular.module('starter.controllers', [])
         if ($rootScope.registerUserType == 2) {
           $scope.isUpgradeRecycler = true; //升级成为回收商
         }
-      } else if ($ionicHistory.backView() && $ionicHistory.backView().stateName == "accountinfo"||$ionicHistory.backView() && $ionicHistory.backView().stateName == "jiedan") {
+      }else if ($ionicHistory.backView() && $ionicHistory.backView().stateName == "accountinfo"||$ionicHistory.backView() && $ionicHistory.backView().stateName == "jiedan") {
         if($stateParams.type==2){
           $scope.isUpgradeRecycler = true; //升级成为回收商
+        }else if($stateParams.type==1){
+          $scope.user.usertype=1;
         }
       }
     })
