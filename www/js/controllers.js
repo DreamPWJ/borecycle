@@ -1734,15 +1734,24 @@ angular.module('starter.controllers', [])
   .controller('RecycleOrderCtrl', function ($scope, $state, $stateParams, CommonService, OrderService) {
     $scope.orderinfo = JSON.parse($stateParams.orderinfo);
     $scope.productLists = [];//产品品类
+    $scope.productList=[];
     //获取产品品类
-    OrderService.getProductList({ID: "", Name: $scope.orderinfo.productname}).success(function (data) {
+    OrderService.getProductList({ID: "", Name:""}).success(function (data) {
       console.log(data);
       if (data.code == 1001) {
-        $scope.productList = data.data;
-        if ($scope.productList.length == 1) {//只有一个直接默认选择
-          $scope.productList[0].checked = true;
-          $scope.ischecked = true;
-        }
+        //$scope.productList = data.data;
+        console.log($scope.orderinfo.productname);
+        angular.forEach(data.data,function (item) {
+          if((","+$scope.orderinfo.productname+",").indexOf(","+item.name+",")>=0){
+            item.checked=true;
+          }
+          $scope.productList.push(item);
+        });
+        $scope.ischecked = true;
+        // if ($scope.productList.length == 1) {//只有一个直接默认选择
+        //   $scope.productList[0].checked = true;
+        //   $scope.ischecked = true;
+        // }
       } else {
         CommonService.platformPrompt(data.message, 'close');
       }
@@ -1757,15 +1766,16 @@ angular.module('starter.controllers', [])
             $scope.productLists.push(items);
           }
         })
-      })
+
+      });
+
       // $scope.productList = $scope.productLists;
 
       $scope.checkChecded = function () {
         CommonService.checkChecded($scope, $scope.productList);
       }
 
-    })
-
+    });
     //回收录单选择下一步
     $scope.recycleNext = function () {
       $state.go("recyclewrite", {

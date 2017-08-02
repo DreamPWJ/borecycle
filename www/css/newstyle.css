@@ -37,7 +37,7 @@
   position: relative;
   display: inline-block;;
   margin-bottom: 0.3rem;
-  width: 95%;
+  width: 90%;
   height: 4rem;
 }
 
@@ -55,11 +55,11 @@
   content: '已选';
   position: absolute;
   color: #fff !important;
-  font-size: 10px;
+  font-size: 9px;
   -webkit-transform: rotate(45deg);
   transform: rotate(45deg);
   right: 0;
-  top: 2px;
+  top: 4px;
   z-index: 2000;
 }
 
