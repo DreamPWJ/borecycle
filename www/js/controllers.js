@@ -1361,6 +1361,7 @@ angular.module('starter.controllers', [])
         }
       }
     })
+    var user = JSON.parse(localStorage.getItem("user"));//用户信息
     $scope.tabOrderIndex= $stateParams.state;
     $scope.tabIndex = $scope.tabOrderIndex;//当前tabs页
     $scope.orderType= $scope.tabIndex;
