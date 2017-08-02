@@ -358,6 +358,7 @@ angular.module('starter.controllers', [])
 
   //用户密码登录页面
   .controller('LoginCtrl', function ($scope, $state, $rootScope, $interval, CommonService, MainService, AccountService) {
+    $rootScope.commonService = CommonService;
     //删除记住用户信息
     localStorage.removeItem("userid");
     localStorage.removeItem("usersecret");
@@ -381,22 +382,25 @@ angular.module('starter.controllers', [])
     $scope.user = {};//提前定义用户对象
     $scope.agreedeal = true;//同意用户协议
     $scope.paraclass = true;
-    $scope.checkphoneandemail = function (account) {//检查手机号和邮箱
-      AccountService.checkMobilePhoneAndEmail($scope, account);
-    }
-
 
     //根据会员账号检查是否需要邀请码
     $scope.getIsInvite = function (account) {
-      AccountService.checkMobilePhoneAndEmail($scope, account);
-      AccountService.getIsInvite({account: account}).success(function (data) {
-        console.log(data);
-        if (data.code == 1001) {
-          $scope.isInvite = false;
-        } else {
-          $scope.isInvite = true;
+      //是否存在
+      AccountService.getuserexist(account).success(function (datas) {
+        if (datas.code!= 1001) {
+          CommonService.toolTip(datas.message, "")
         }
-      })
+        else {
+          AccountService.getIsInvite({account: account}).success(function (data) {
+            console.log(data);
+            if (data.code == 1001) {
+              $scope.isInvite = false;
+            } else {
+              $scope.isInvite = true;
+            }
+          });
+        }
+      });
     }
     $scope.loginSubmit = function () {
       $scope.user.openID = localStorage.getItem("openid") || "";//微信openID
@@ -459,6 +463,7 @@ angular.module('starter.controllers', [])
 
   //手机验证登录页面
   .controller('MobileLoginCtrl', function ($scope, $state, $rootScope, $interval, CommonService, MainService, AccountService) {
+    $rootScope.commonService = CommonService;
     //删除记住用户信息
     localStorage.removeItem("userid");
     localStorage.removeItem("usersecret");
@@ -483,23 +488,42 @@ angular.module('starter.controllers', [])
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable
     $scope.checkphone = function (mobilephone) {//检查手机号
-      AccountService.checkMobilePhone($scope, mobilephone);
+      if (/^1(3|4|5|7|8)\d{9}$/.test(mobilephone)) {
+        //是否存在
+        AccountService.getuserexist(mobilephone).success(function (datas) {
+          if (datas.code != 1001) {
+            CommonService.toolTip(datas.message, "")
+            $scope.paraclass = false;
+          }
+          else {
+            $scope.paraclass = true;
+          }
+        });
+      }
     }
     //获取验证码
     $scope.getVerifyCode = function () {
       CommonService.getVerifyCode($scope, $scope.user.mobile);
     }
 
-    //根据会员账号检查是否需要邀请码
+//根据会员账号检查是否需要邀请码
     $scope.getIsInvite = function (account) {
-      AccountService.getIsInvite({account: account}).success(function (data) {
-        console.log(data);
-        if (data.code == 1001) {
-          $scope.isInvite = false;
-        } else {
-          $scope.isInvite = true;
+      //是否存在
+      AccountService.getuserexist(account).success(function (datas) {
+        if (datas.code!= 1001) {
+          CommonService.toolTip(datas.message, "")
         }
-      })
+        else {
+          AccountService.getIsInvite({account: account}).success(function (data) {
+            console.log(data);
+            if (data.code == 1001) {
+              $scope.isInvite = false;
+            } else {
+              $scope.isInvite = true;
+            }
+          });
+        }
+      });
     }
     $scope.loginSubmit = function () {
       if ($scope.verifycode != $scope.user.code) {
@@ -570,7 +594,7 @@ angular.module('starter.controllers', [])
     };
     $scope.agreedeal = true;//同意用户协议
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
-    $scope.paraclass = true; //控制验证码的disable;
+    $scope.paraclass = false; //控制验证码的disable;
     $scope.services = [{key: 2, value: "上门回收者"}, {key: 3, value: "货场"}, {key: 4, value: "二手商家"}];//用户类型数组
 
     //如果没有授权先授权 或者超过两个小时
@@ -583,8 +607,22 @@ angular.module('starter.controllers', [])
         }
       })
     }
-    $scope.checkphoneandemail = function (account) {//检查手机号和邮箱
-      AccountService.checkMobilePhoneAndEmail($scope, account);
+    // $scope.checkphoneandemail = function (account) {//检查手机号和邮箱
+    //   AccountService.checkMobilePhoneAndEmail($scope, account);
+    // }
+    $scope.checkphoneandemail = function (mobilephone) {//检查手机号
+      if (/^1(3|4|5|7|8)\d{9}$/.test(mobilephone)) {
+        //是否存在
+        AccountService.getuserexist(mobilephone).success(function (datas) {
+          if (datas.code != 1001) {
+            $scope.paraclass = true;
+          }
+          else {
+            CommonService.toolTip("注册账号已存在,请重新输入!", "")
+            $scope.paraclass = false;
+          }
+        });
+      }
     }
 
     //获取验证码
@@ -1054,6 +1092,29 @@ angular.module('starter.controllers', [])
     if (!CommonService.isLogin(true)) {
       return;
     }
+    $scope.$on('$ionicView.beforeEnter', function () {
+      if (!$ionicHistory.backView()) { //有没有上级
+        //如果授权超过两个小时 单独授权
+        if (((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
+          //接口授权
+          MainService.authLogin(
+            {
+              grant_type: 'password',
+              username: localStorage.getItem("userid"),
+              password: localStorage.getItem("usersecret")
+            }).success(function (data) {
+            console.log(data);
+            if (data.access_token) {
+              localStorage.setItem("token", data.access_token);//登录接口授权token
+              localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
+            } else {
+              CommonService.platformPrompt("获取登录接口授权token失败", 'close');
+              return;
+            }
+          })
+        }
+      }
+    })
     $rootScope.hytype= $stateParams.hytype;
     $scope.isxinxi=false;
     $scope.isfeipin=false;
@@ -1231,6 +1292,30 @@ angular.module('starter.controllers', [])
     if (!CommonService.isLogin(true)) {
       return;
     }
+    $scope.$on('$ionicView.beforeEnter', function () {
+      if (!$ionicHistory.backView()) { //有没有上级
+        //如果授权超过两个小时 单独授权
+        if (((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
+          //接口授权
+          MainService.authLogin(
+            {
+              grant_type: 'password',
+              username: localStorage.getItem("userid"),
+              password: localStorage.getItem("usersecret")
+            }).success(function (data) {
+            console.log(data);
+            if (data.access_token) {
+              localStorage.setItem("token", data.access_token);//登录接口授权token
+              localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
+            } else {
+              CommonService.platformPrompt("获取登录接口授权token失败", 'close');
+              return;
+            }
+          })
+        }
+      }
+    })
+
     var user = JSON.parse(localStorage.getItem("user"));//用户信息
     $scope.tabOrderIndex= $stateParams.state;
     $scope.tabIndex = $scope.tabOrderIndex;//当前tabs页
