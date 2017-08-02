@@ -723,7 +723,7 @@ angular.module('starter.controllers', [])
   })
 
   //完善资料页面
-  .controller('OrganizingDataCtrl', function ($scope, $rootScope, CommonService, MainService, $ionicHistory, BoRecycle, OrderService, AccountService, AddressService) {
+  .controller('OrganizingDataCtrl', function ($scope, $rootScope,$stateParams, CommonService, MainService, $ionicHistory, BoRecycle, OrderService, AccountService, AddressService) {
     //上传图片数组集合
     $scope.imageList = [];
     $scope.ImgsPicAddr = [];//图片信息数组
@@ -751,8 +751,10 @@ angular.module('starter.controllers', [])
         if ($rootScope.registerUserType == 2) {
           $scope.isUpgradeRecycler = true; //升级成为回收商
         }
-      } else if ($ionicHistory.backView() && $ionicHistory.backView().stateName == "accountinfo") {
-        $scope.isUpgradeRecycler = true; //升级成为回收商
+      } else if ($ionicHistory.backView() && $ionicHistory.backView().stateName == "accountinfo"||$ionicHistory.backView() && $ionicHistory.backView().stateName == "jiedan") {
+        if($stateParams.type==2){
+          $scope.isUpgradeRecycler = true; //升级成为回收商
+        }
       }
     })
     $scope.isLogin = localStorage.getItem("userid") ? true : false;//是否登录
@@ -2095,7 +2097,7 @@ angular.module('starter.controllers', [])
       }
       //调用分享面板
       $scope.shareActionSheet = function (type) {
-        CommonService.shareActionSheet("关于收收", "“收收”为提高回收效率而生，为环保拆解企业低价、稳定货源，让回收更简单，是帮生产企业“零成本回收”，专业为生产者责任延伸制提供一站式逆向物流服务，是近3000多万回收相关人员的首要选择！", BoRecycle.mobApi + '/#/download', '', type);
+        CommonService.shareActionSheet("没有收入？你需要这款动动手指就能赚钱的回收APP，下载试试吧！", "收收是一款可以提供回收信息赚钱的众包模式APP，专业为生产者责任延伸制提供一站式逆向物流服务，帮生产企业“零成本回收”、稳定货源、提高回收效率，让回收更简单！", BoRecycle.mobApi + '/#/download', '', type);
       }
     })
 

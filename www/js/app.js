@@ -471,7 +471,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
       //完善资料页面
       .state('organizingdata', {
-        url: '/organizingdata',
+        url: '/organizingdata/:type',
         cache: false,
         templateUrl: 'templates/account/organizingdata.html',
         controller: 'OrganizingDataCtrl'
