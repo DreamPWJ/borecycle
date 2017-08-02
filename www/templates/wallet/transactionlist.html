@@ -7,7 +7,7 @@
     <h1 class="title"><img id="logo" src="img/logo.png" alt=""/> 交易记录</h1>
   </ion-nav-title>
   <ion-content overflow-scroll="false" class="stable-bg" has-bouncing="true">
-    <ion-refresher on-refresh="getAddrlist(0)" pulling-text="下拉更新"></ion-refresher>
+    <ion-refresher on-refresh="gettradelist(0)" pulling-text="下拉更新"></ion-refresher>
     <div ng-if="isNotData" class="isNotDataHint">
       <i class="iconfont icon-xiaoxi"></i>
       <p>无交易数据</p>
