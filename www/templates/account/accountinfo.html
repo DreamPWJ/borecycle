@@ -22,14 +22,14 @@
         <h2>手机号码 <span class="item-note">{{userinfo.mobile}}</span></h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
-      <a ng-href="{{!isOrganizingData?'#/organizingdata':''}}" class="item {{!isOrganizingData?'item-icon-right':''}}">
+      <a ng-href="{{!isOrganizingData?'#/organizingdata/1':''}}" class="item {{!isOrganizingData?'item-icon-right':''}}">
         <h2>会员类型 <span class="item-note ">{{usertype!=0?servicesstr:''}}  <span class="positive">{{!isOrganizingData?'去完善信息':''}}</span></span>
         </h2>
         <i ng-if="!isOrganizingData" class="icon ion-ios-arrow-right"></i>
       </a>
 
       <div ng-if="usertype==1" class="item stable-bg item-borderless">
-        <h2 class="text-right calm"><span ui-sref="organizingdata"><i
+        <h2 class="text-right calm"><span ui-sref="organizingdata({type:2})"><i
           class="icon ion-android-arrow-up calm"></i> 升级成为回收商</span></h2>
       </div>
 

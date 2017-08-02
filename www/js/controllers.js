@@ -737,11 +737,10 @@ angular.module('starter.controllers', [])
     $scope.uploadActionSheet = function () {
       CommonService.uploadActionSheet($scope, 'User', true);
     }
-
     CommonService.customModal($scope, 'templates/modal/addressmodal.html');
     CommonService.customModal($scope, 'templates/modal/nearbyaddressmodal.html', 1);
     $scope.$on('$ionicView.beforeEnter', function () {
-      if ($ionicHistory.backView() && $ionicHistory.backView().stateName == "register") { //上一级路由名称
+      if ($ionicHistory.backView() && $ionicHistory.backView().stateName == "register"||$stateParams.type==1) { //上一级路由名称
         $scope.usertype = $rootScope.registerUserType; //是从注册页面进入
         $scope.user.usertype = $rootScope.registerUserType;
         $scope.isPhoneRegister = $rootScope.isPhoneRegister;
@@ -2097,7 +2096,7 @@ angular.module('starter.controllers', [])
       }
       //调用分享面板
       $scope.shareActionSheet = function (type) {
-        CommonService.shareActionSheet("没有收入？你需要这款动动手指就能赚钱的回收APP，下载试试吧！", "收收是一款可以提供回收信息赚钱的众包模式APP，专业为生产者责任延伸制提供一站式逆向物流服务，帮生产企业“零成本回收”、稳定货源、提高回收效率，让回收更简单！", BoRecycle.mobApi + '/#/download', '', type);
+        CommonService.shareActionSheet("提供回收信息能赚钱，几千万回收人员的必备工具", "人人提供信息有收益，为回收人员增加货源实现在家接单，为企业提供“零成本”回收服务", BoRecycle.mobApi + '/#/download', '', type);
       }
     })
 
