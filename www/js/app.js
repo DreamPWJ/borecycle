@@ -231,8 +231,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       })
 
       //我的回收订单页面
+      .state('jiedan', {
+        url: '/jiedan/:hytype', //orderType类型 0是我的回收单  1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
+        cache: false,
+        templateUrl: 'templates/order/jiedan.html',
+        controller: 'jiedanCtrl'
+
+      })
       .state('order', {
-        url: '/order/:orderType', //orderType类型 0是我的回收单  1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
+        url: '/order/:state', //orderType类型 0是我的回收单  1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
         cache: false,
         templateUrl: 'templates/order.html',
         controller: 'OrderCtrl'
@@ -241,7 +248,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
       //我的回收单订单详情页面
       .state('orderdetails', {
-        url: '/orderdetails/:no/:type',
+        url: '/orderdetails/:no/:type/:hytype',
         cache: false,
         templateUrl: 'templates/order/orderdetails.html',
         controller: 'OrderDetailsCtrl'

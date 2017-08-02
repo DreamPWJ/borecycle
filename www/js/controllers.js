@@ -1049,37 +1049,15 @@ angular.module('starter.controllers', [])
 
   })
 
-  //我的回收订单页面
-  .controller('OrderCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, MainService, OrderService, $ionicHistory, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
+  .controller('jiedanCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, OrderService, $ionicHistory, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
     //是否登录
     if (!CommonService.isLogin(true)) {
       return;
     }
-
-    $scope.$on('$ionicView.beforeEnter', function () {
-      if (!$ionicHistory.backView()) { //有没有上级
-        //如果授权超过两个小时 单独授权
-        if (((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
-          //接口授权
-          MainService.authLogin(
-            {
-              grant_type: 'password',
-              username: localStorage.getItem("userid"),
-              password: localStorage.getItem("usersecret")
-            }).success(function (data) {
-            console.log(data);
-            if (data.access_token) {
-              localStorage.setItem("token", data.access_token);//登录接口授权token
-              localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
-            } else {
-              CommonService.platformPrompt("获取登录接口授权token失败", 'close');
-              return;
-            }
-          })
-        }
-      }
-    })
-
+    $rootScope.hytype= $stateParams.hytype;
+    $scope.isxinxi=false;
+    $scope.isfeipin=false;
+    $scope.isershou=false;
     var user = JSON.parse(localStorage.getItem("user"));//用户信息
     if (!user.userext) {
       CommonService.showConfirm('收收提示', '尊敬的用户,您好！完善资料并且申请成为回收商才能查看订单！', '完善资料', '暂不完善', 'organizingdata', '');
@@ -1090,210 +1068,114 @@ angular.module('starter.controllers', [])
       CommonService.showConfirm('收收提示', '尊敬的用户,您好！信息供应者没有权限查看订单,请申请成为回收商！', '申请回收商', '暂不申请', 'organizingdata', '');
       return;
     }
+    $scope.tabIndex = $rootScope.hytype;//当前tabs页
+    //如果取信息单，当会员不是上门回收者时取货场，否则到二手商家
+    if($scope.tabIndex==0 && user.services.indexOf('2') == -1) {
+      if(user.services.indexOf('3')!=-1)
+      {
+        $scope.tabIndex = 1;
+      }
+      else {
+        $scope.tabIndex =2;
+      }
+    }
+    //如果取废品单，当会员不是货场时取二手商家，否则到上门回收者
+    if($scope.tabIndex==1 && user.services.indexOf('3') == -1)
+    {
+      if(user.services.indexOf('4')!=-1)
+      {
+        $scope.tabIndex = 2;
+      }
+      else {
+        $scope.tabIndex =0;
+      }
+    }
+    //如果取二手单，当会员不是二手商家时取货场，否则到上门回收者
+    if($scope.tabIndex==2 && user.services.indexOf('4') == -1) {
+      if(user.services.indexOf('3')!=-1)
+      {
+        $scope.tabIndex = 1;
+      }
+      else {
+        $scope.tabIndex =0;
+      }
+    }
+    //如果是上门回收者时
+    if (user.services.indexOf('2') != -1) {
+      $scope.isxinxi = true;
+    }
+    //如果是货场时
+    if (user.services.indexOf('3') != -1) {
+      $scope.isfeipin=true;
+    }
+    //如果是二手时
+    if (user.services.indexOf('4') != -1) {
+      $scope.isershou = true;
+    }
 
-    $scope.order = {
-      showDelete: false
-    };
-    $rootScope.orderType = $stateParams.orderType; //orderType类型 0.是我的回收订单 1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
 
-    var isorderdetails = $ionicHistory.forwardView() && $ionicHistory.forwardView().stateName == 'orderdetails';
-    $scope.tabIndex = isorderdetails ? $rootScope.tabOrderIndex : 0;//当前tabs页
-
-    //待接单订单
-    $scope.jiedanorderList = [];
-    $scope.jiedanpage = 0;
-    $scope.jiedantotal = 1;
-    //待处理订单
-    $scope.chuliorderList = [];
-    $scope.chulipage = 0;
-    $scope.chulitotal = 1;
-    //所有订单
+    $rootScope.orderType= $scope.tabIndex;
     $scope.orderList = [];
     $scope.page = 0;
     $scope.total = 1;
     $scope.getOrderList = function () { //查询登记信息/货源信息分页列
-      $rootScope.tabOrderIndex = $scope.tabIndex;
-
+      $rootScope.hytype = $scope.tabIndex;
       if (arguments != [] && arguments[0] == 0) {
-
-        if ($scope.tabIndex == 0) {  //待接单订单
-          $scope.jiedanorderList = [];
-          $scope.jiedanpage = 0;
-        }
-        if ($scope.tabIndex == 1) {   //待处理订单
-          $scope.chuliorderList = [];
-          $scope.chulipage = 0;
-        }
-        if ($scope.tabIndex == 2) {   //所有订单
-          $scope.page = 0;
-          $scope.orderList = [];
-        }
+        $scope.page = 0;
+        $scope.orderList = [];
       }
-      if ($scope.tabIndex == 0 || $scope.jiedanpage == 0) {  //待接单订单
-        $scope.jiedanpage++;
-      }
-      if ($scope.tabIndex == 1 || $scope.chulipage == 0) {  //待处理订单
-        $scope.chulipage++;
-      }
-      if ($scope.tabIndex == 2 || $scope.page == 0) {  //所有订单
-        $scope.page++;
-      }
-
+      $scope.page++;
       $scope.params = {
-        page: $scope.tabIndex == 0 ? $scope.jiedanpage : ($scope.tabIndex == 1 ? $scope.chulipage : $scope.page),//页码
+        page:  $scope.page,//页码
         size: 10//条数
       }
-      var hytype = [];//货物类别
-
-      if (user.services.indexOf('2') != -1) {
-        hytype.push(0)
+      $scope.datas = {
+        DJNo: "",//登记单号(可为空)
+        Type: "",//类型1.登记信息 2.登记货源(可为空)
+        ORuserid: localStorage.getItem("userid"),//接单人
+        userid: "",//用户userid
+        Category: "",//货物品类 多个用逗号隔开(可为空)
+        HYType: $scope.tabIndex,//货物类别 0.未区分 1废料 2二手(可为空)  上门回收(2)接登记信息（0）的单;货场(3)接废料（1）二手商家（4）接二手的(2)
+        State: "2,3",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
+        longt: localStorage.getItem("longitude") || "", //当前经度（获取距离）(可为空)
+        lat: localStorage.getItem("latitude") || "",//当前纬度（获取距离）(可为空)
+        expiry: ""//小时 取预警数据 订单预警数据（24小时截至马上过期的（expiry=3表示取3小时内）
       }
-      if (user.services.indexOf('3') != -1) {
-        hytype.push(1)
-      }
-      if (user.services.indexOf('4') != -1) {
-        hytype.push(2)
-      }
-
-      //待接单接口
-      if ($scope.tabIndex == 0) {
-        $scope.datas = {
-          DJNo: "",//登记单号(可为空)
-          Type: "",//类型1.登记信息 2.登记货源(可为空)
-          ORuserid: localStorage.getItem("userid"),//接单人
-          userid: "",//用户userid
-          Category: "",//货物品类 多个用逗号隔开(可为空)
-          HYType: hytype.join(","),//货物类别 0.未区分 1废料 2二手(可为空)  上门回收(2)接登记信息（0）的单;货场(3)接废料（1）二手商家（4）接二手的(2)
-          State: "2,3",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
-          longt: localStorage.getItem("longitude") || "", //当前经度（获取距离）(可为空)
-          lat: localStorage.getItem("latitude") || "",//当前纬度（获取距离）(可为空)
-          expiry: ""//小时 取预警数据 订单预警数据（24小时截至马上过期的（expiry=3表示取3小时内）
-        }
-
-        OrderService.getDengJiList($scope.params, $scope.datas).success(function (data) {
-          console.log(data);
-          $scope.isNotjiedanData = false;
-
+      console.log( $scope.datas);
+      OrderService.getDengJiList($scope.params, $scope.datas).success(function (data) {
+          $scope.isNotData = false;
           if (data.data == null || data.data.data_list.length == 0) {
-            if ($scope.tabIndex == 0) {  //待接单订单
-              $scope.isNotjiedanData = true;
-            }
+            $scope.isNotData = true;
+            $scope.total = 1;
+            $scope.$broadcast('scroll.infiniteScrollComplete');
             return;
           }
-
           angular.forEach(data.data.data_list, function (item) {
-            if ($scope.tabIndex == 0) {  //待接单订单
-              $scope.jiedanorderList.push(item);
-            }
-
-          })
-
-          if ($scope.tabIndex == 0) {  //待接单订单
-            $scope.jiedantotal = data.data.page_count;
-          }
-
+            $scope.orderList.push(item);
+          });
+          $scope.total = data.data.page_count;
+          $scope.$broadcast('scroll.infiniteScrollComplete');
           $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
-        }).finally(function () {
-          $scope.$broadcast('scroll.refreshComplete');
-          $scope.$broadcast('scroll.infiniteScrollComplete');
-        })
-      }
-
-
-      //待处理接口, 所有订单就是看这个人接的单，而不是发布信息(加一个类型及会员参数)
-      if ($scope.tabIndex == 1 || $scope.tabIndex == 2) {
-        $scope.datas = {
-          DJNo: "",//登记单号(可为空)
-          Type: "",//类型1.登记信息 2.登记货源(可为空)
-          userid: "",//用户userid
-          Category: "",//货物品类 多个用逗号隔开(可为空)
-          HYType: "",//货物类别 0.未区分 1废料 2二手(可为空) 上门回收(2)接登记信息（0）的单;货场(3)接废料（1）二手商家（4）接二手的(2)
-          State: $scope.tabIndex == 1 ? "4,5" : "4,5,6,7",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
-          longt: localStorage.getItem("longitude") || "", //当前经度（获取距离）(可为空)
-          lat: localStorage.getItem("latitude") || "",//当前纬度（获取距离）(可为空)
-          ORNO: "",//接单单号(可为空)
-          ORuserid: localStorage.getItem("userid")//接单人(不能为空)
         }
-        console.log($scope.datas);
-        OrderService.getOrderReceiptList($scope.params, $scope.datas).success(function (data) {
-            console.log(data);
-            $scope.isNotchuliData = false;
-            $scope.isNotData = false;
-            if (data.data == null || data.data.data_list.length == 0) {
-              if ($scope.tabIndex == 1) {   //待处理订单
-                $scope.isNotchuliData = true;
-              }
-              if ($scope.tabIndex == 2) {    //所有订单
-                $scope.isNotData = true;
-              }
-              return;
-            }
-
-            angular.forEach(data.data.data_list, function (item) {
-
-              if ($scope.tabIndex == 1) {   //待处理订单
-                $scope.chuliorderList.push(item);
-              }
-              if ($scope.tabIndex == 2) {   //所有订单
-                $scope.orderList.push(item);
-              }
-            })
-
-            if ($scope.tabIndex == 1) {   //待处理订单
-              $scope.chulitotal = data.data.page_count;
-            }
-            if ($scope.tabIndex == 2) {   //所有订单
-              $scope.total = data.data.page_count;
-            }
-
-            $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
-          }
-        ).finally(function () {
-          $scope.$broadcast('scroll.refreshComplete');
-          $scope.$broadcast('scroll.infiniteScrollComplete');
-        })
-      }
+      ).finally(function () {
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+      })
     }
-
-
-//左右滑动列表
-    $scope.slideChanged = function (index) {
-      $scope.tabIndex = index;
-      $scope.getOrderList(0); //获取订单数据
-    };
+    $scope.getOrderList(0);//产品加载刷新
 //点击选项卡
     $scope.selectedTab = function (index) {
       $scope.tabIndex = index;
-      //滑动的索引和速度
-      $ionicSlideBoxDelegate.$getByHandle("slidebox-orderlist").slide(index)
+      $scope.page = 0;
+      $scope.total = 1;
+      $scope.getOrderList(0);
     }
-
-    $scope.$on('$ionicView.afterEnter', function () {
-      if ($rootScope.tabOrderIndex != 0 && isorderdetails) {
-        $scope.selectedTab($rootScope.tabOrderIndex);
-      } else if ($rootScope.orderType == 0 || $rootScope.orderType == 2) {
-        $scope.selectedTab(1);
-      } else {
-        $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
-      }
-    });
-
 //接单
     $rootScope.jieDan = function (djno, userid, type, hytype) {
       event.preventDefault();
       var user = JSON.parse(localStorage.getItem("user"));//用户信息
-      /*  如果会员是1（信息提供者）,不能接单
-       如果会员是2（上门回收者）,只能接登记信息单 加条件type=1或者HYType=0
-       如果会员是3（货场）,只能接登记货源单 加条件type=2且HYType=1
-       如果会员是4（二手商家）,只能接登记货源单 加条件type=2且HYType=2
-       会员角色你还要判断他有没有申请通过  0 审核不通过 1 未审核 2 审核通过*/
-
       if (!user.userext || user.userext.autit != 2) {
         CommonService.platformPrompt("会员类型审核通过后才能操作", 'close');
-        return;
-      }
-      if (user.certstate.substr(3, 1) != 2) { //没有实名认证
-        CommonService.showConfirm('收收提示', '尊敬的用户,您好！实名认证完善认证信息后才能进行更多操作！', '实名认证', '暂不认证', 'realname', 'close', '', {status: 0});
         return;
       }
       if (user.services.length == 1 && user.services.indexOf('1') != -1) {
@@ -1325,12 +1207,12 @@ angular.module('starter.controllers', [])
       }
       OrderService.addOrderReceipt($scope.jiedandata).success(function (data) {
         if (data.code == 1001) {
-          CommonService.showConfirm('接单提示', '尊敬的用户,您好！恭喜您,接单成功！订单有效期为24小时,请您务必在24小时之内上门回收！', '查看订单', '继续接单', 'orderdetails', 'order', '', {
-            no: data.data,
-            type: 2
-          }, {
-            orderType: 1
-          })
+          CommonService.showConfirm('接单提示', '尊敬的用户,您好！恭喜您,接单成功！订单有效期为24小时,请您务必在24小时之内上门回收！', '查看订单', '继续接单', 'orderdetails', 'jiedan', '',
+            {
+              no: data.data,
+              type: 2,
+              hytype:hytype
+            }, {hytype:hytype})
           $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
         } else if (data.code == 1005) { //接单的时候返回值是1005,就跳转到“待处理”页面
           CommonService.platformPrompt(data.message, "close");
@@ -1341,48 +1223,113 @@ angular.module('starter.controllers', [])
       })
 
     }
+  })
+
+  //我的回收订单页面
+  .controller('OrderCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, OrderService, $ionicHistory, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
+    //是否登录
+    if (!CommonService.isLogin(true)) {
+      return;
+    }
+    var user = JSON.parse(localStorage.getItem("user"));//用户信息
+    $scope.tabOrderIndex= $stateParams.state;
+    $scope.tabIndex = $scope.tabOrderIndex;//当前tabs页
+    $scope.orderType= $scope.tabIndex;
+    $scope.orderList = [];
+    $scope.page = 0;
+    $scope.total = 1;
+    $scope.getOrderList = function () { //查询登记信息/货源信息分页列
+      $scope.tabOrderIndex = $scope.tabIndex;
+      if (arguments != [] && arguments[0] == 0) {
+        $scope.page = 0;
+        $scope.orderList = [];
+      }
+      $scope.page++;
+      $scope.params = {
+        page:  $scope.page,//页码
+        size: 10//条数
+      }
+      $scope.datas = {
+        DJNo: "",//登记单号(可为空)
+        Type:"",//类型1.登记信息 2.登记货源(可为空)
+        userid: "",//用户userid
+        Category: "",//货物品类 多个用逗号隔开(可为空)
+        HYType: "",//货物类别 0.未区分 1废料 2二手(可为空) 上门回收(2)接登记信息（0）的单;货场(3)接废料（1）二手商家（4）接二手的(2)
+        State: $scope.tabIndex== 2  ? "4,5" : "4,5,6,7",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
+        longt: localStorage.getItem("longitude") || "", //当前经度（获取距离）(可为空)
+        lat: localStorage.getItem("latitude") || "",//当前纬度（获取距离）(可为空)
+        ORNO: "",//接单单号(可为空)
+        ORuserid: localStorage.getItem("userid")//接单人(不能为空)
+      }
+      console.log( $scope.datas);
+      OrderService.getOrderReceiptList($scope.params, $scope.datas).success(function (data) {
+          $scope.isNotData = false;
+          if (data.data == null || data.data.data_list.length == 0) {
+            $scope.isNotData = true;
+            $scope.total = 1;
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+            return;
+          }
+          angular.forEach(data.data.data_list, function (item) {
+            $scope.orderList.push(item);
+          });
+          $scope.total = data.data.page_count;
+          $scope.$broadcast('scroll.infiniteScrollComplete');
+          $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
+        }
+      ).finally(function () {
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+      })
+
+    }
+    $scope.getOrderList(0);//产品加载刷新
+//点击选项卡
+    $scope.selectedTab = function (index) {
+      $scope.tabIndex = index;
+      $scope.page = 0;
+      $scope.total = 1;
+      $scope.getOrderList(0);
+    }
 //在回收订单中 取消订单
     $scope.cancelOrder = function (orno) {
       $state.go("cancelorder", {no: orno, type: 1});//订单类型 1.回收单 2.登记单
-      /*      OrderService.cancelOrderReceipt({orno: orno}).success(function (data) {
-       if (data.code == 1001) {
-       CommonService.platformPrompt("取消接单成功", "close");
-       $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
-       } else {
-       CommonService.platformPrompt(data.message, "close");
-       }
-       })*/
     }
 //联系他
     $scope.relation = function (phonenumber) {
       event.preventDefault();
       window.open('tel:' + phonenumber);
     }
-
 //去收货
     $scope.recycle = function (orno, djno, type, userid, amount, name, productname, hytype) {
       OrderService.torecycle(user, orno, djno, type, userid, amount, name, productname, hytype);
 
     }
-
 //导航
     $scope.navigation = function (longitude, latitude) {
       event.preventDefault();
       $state.go("navigation", {longitude: longitude, latitude: latitude})
     }
-
 //去付款
     $scope.topay = function (type, djno, orno, fromuser, touser, amount, name, informationmoney) {
       OrderService.topay(type, djno, orno, fromuser, touser, amount, name, informationmoney);
     }
-
   })
 
   //我的回收订单详情页面
   .controller('OrderDetailsCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, OrderService) {
     var user = JSON.parse(localStorage.getItem("user"));//用户信息
-    $scope.type = $stateParams.type;//1.待接单 2 待处理和所有订单
-    $rootScope.orderType = $rootScope.orderType || 2; //orderType类型 0.是我的回收订单 1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
+    $rootScope.hytype = $stateParams.hytype;//1.待接单 2 待处理和所有订单
+    $rootScope.type =$stateParams.type;
+    $scope.url="";
+    //跳转地址
+    if($rootScope.type==1)
+    {
+      $scope.url="#/jiedan/"+ $rootScope.hytype ;
+    }
+    else {
+      $scope.url="#/order/0" ;
+    }
     $scope.getOrderListDetails = function () {
       if ($scope.type == 1) {
         OrderService.getDengJiDetail({djno: $stateParams.no}).success(function (data) {
