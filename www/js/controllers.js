@@ -412,7 +412,25 @@ angular.module('starter.controllers', [])
         if (data.code == 1001) {
           localStorage.setItem("userid", data.data.userid);
           localStorage.setItem("usersecret", data.data.usersecret);
-          CommonService.getStateName();   //跳转页面
+          //根据会员ID获取会员账号基本信息
+          if (localStorage.getItem("userid")) {
+            AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
+              if (data.code == 1001) {
+                localStorage.setItem("user", JSON.stringify(data.data));
+                var services = data.data.services;
+                //用户会员类型  0 无 1信息提供者  2回收者
+                localStorage.setItem("usertype", (services == null || services.length == 0 ) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
+                if (services == null || services.length == 0) {//旧会员 完善信息
+                  CommonService.showConfirm('收收提示', '尊敬的用户,您好！旧会员需完善资料后才能进行更多的操作！', '完善资料', '暂不完善', 'organizingdata', 'close');
+                }
+              } else {
+                CommonService.platformPrompt(data.message, 'close');
+              }
+            }).then(function () {
+              CommonService.getStateName();   //跳转页面
+            })
+          }
+
         } else {
           CommonService.platformPrompt(data.message, 'close');
           return;
@@ -441,22 +459,6 @@ angular.module('starter.controllers', [])
           authLogin();
         }, 7199000);
         authLogin();
-        //根据会员ID获取会员账号基本信息
-        if (localStorage.getItem("userid")) {
-          AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
-            if (data.code == 1001) {
-              localStorage.setItem("user", JSON.stringify(data.data));
-              var services = data.data.services;
-              //用户会员类型  0 无 1信息提供者  2回收者
-              localStorage.setItem("usertype", (services == null || services.length == 0 ) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
-              if (services == null || services.length == 0) {//旧会员 完善信息
-                CommonService.showConfirm('收收提示', '尊敬的用户,您好！旧会员需完善资料后才能进行更多的操作！', '完善资料', '暂不完善', 'organizingdata', 'close');
-              }
-            } else {
-              CommonService.platformPrompt(data.message, 'close');
-            }
-          })
-        }
       })
     }
   })
@@ -539,7 +541,25 @@ angular.module('starter.controllers', [])
         if (data.code == 1001) {
           localStorage.setItem("userid", data.data.userid);
           localStorage.setItem("usersecret", data.data.usersecret);
-          CommonService.getStateName();   //跳转页面
+          //根据会员ID获取会员账号基本信息
+          if (localStorage.getItem("userid")) {
+            AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
+              if (data.code == 1001) {
+                localStorage.setItem("user", JSON.stringify(data.data));
+                var services = data.data.services;
+                //用户会员类型  0 无 1信息提供者  2回收者
+                localStorage.setItem("usertype", (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
+                if (services == null || services.length == 0) {//旧会员 完善信息
+                  CommonService.showConfirm('收收提示', '尊敬的用户,您好！旧会员需完善资料后才能进行更多的操作！', '完善资料', '暂不完善', 'organizingdata', 'close');
+                }
+              } else {
+                CommonService.platformPrompt(data.message, 'close');
+              }
+            }).then(function () {
+              CommonService.getStateName();   //跳转页面
+            })
+
+          }
         } else {
           CommonService.platformPrompt(data.message, 'close');
         }
@@ -567,23 +587,9 @@ angular.module('starter.controllers', [])
           authLogin();
         }, 7199000);
         authLogin();
+
       })
-      //根据会员ID获取会员账号基本信息
-      if (localStorage.getItem("userid")) {
-        AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
-          if (data.code == 1001) {
-            localStorage.setItem("user", JSON.stringify(data.data));
-            var services = data.data.services;
-            //用户会员类型  0 无 1信息提供者  2回收者
-            localStorage.setItem("usertype", (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
-            if (services == null || services.length == 0) {//旧会员 完善信息
-              CommonService.showConfirm('收收提示', '尊敬的用户,您好！旧会员需完善资料后才能进行更多的操作！', '完善资料', '暂不完善', 'organizingdata', 'close');
-            }
-          } else {
-            CommonService.platformPrompt(data.message, 'close');
-          }
-        })
-      }
+
     }
   })
 
@@ -1116,6 +1122,7 @@ angular.module('starter.controllers', [])
         }
       }
     })
+
     $rootScope.hytype= $stateParams.hytype;
     $scope.isxinxi=false;
     $scope.isfeipin=false;
@@ -1316,8 +1323,6 @@ angular.module('starter.controllers', [])
         }
       }
     })
-
-    var user = JSON.parse(localStorage.getItem("user"));//用户信息
     $scope.tabOrderIndex= $stateParams.state;
     $scope.tabIndex = $scope.tabOrderIndex;//当前tabs页
     $scope.orderType= $scope.tabIndex;
@@ -3065,6 +3070,7 @@ angular.module('starter.controllers', [])
         }
       }
     })
+    console.log(localStorage.getItem("user"));
     $scope.supplyOfGoods = function () {
       $scope.goods = {//货源信息
         delivery: 1//默认上门回收
