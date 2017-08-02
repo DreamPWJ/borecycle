@@ -44,9 +44,9 @@ public class GaoDeLocation extends CordovaPlugin {
   * */
   @Override
   public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+    cb = callbackContext;
     if (action.equals("getCurrentPosition")) {
       if (hasPermisssion()) {
-        cb = callbackContext;
         PluginResult pluginResult = new PluginResult(PluginResult.Status.NO_RESULT);
         pluginResult.setKeepCallback(true);
         cb.sendPluginResult(pluginResult);
