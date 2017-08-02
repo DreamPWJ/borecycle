@@ -462,9 +462,9 @@ angular.module('starter.services', [])
                 return;
               }
             }
-            $state.go('login');
+            $state.go('mobilelogin');
           } else {
-            this.showConfirm('收收', '温馨提示:此功能需要登录才能使用,请先登录', '登录', '关闭', 'login');
+            this.showConfirm('收收', '温馨提示:此功能需要登录才能使用,请先登录', '登录', '关闭', 'mobilelogin');
             return;
           }
           return false;
