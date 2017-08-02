@@ -1096,11 +1096,47 @@ angular.module('starter.controllers', [])
 
   })
 
-  .controller('jiedanCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, OrderService, $ionicHistory, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
+  .controller('jiedanCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, OrderService, $ionicHistory, $ionicSlideBoxDelegate, $ionicScrollDelegate,AccountService) {
     //是否登录
     if (!CommonService.isLogin(true)) {
       return;
     }
+    //获取当前位置 定位
+    $scope.location = function (param) {
+      CommonService.getLocation(function () {
+        //当前位置 定位
+        AccountService.getCurrentCity({
+          key: BoRecycle.gaoDeKey,
+          location: Number($scope.handlongitude || localStorage.getItem("longitude")).toFixed(6) + "," + Number($scope.handlatitude || localStorage.getItem("latitude")).toFixed(6),
+          radius: 3000,//  查询POI的半径范围。取值范围：0~3000,单位：米
+          extensions: 'all',//返回结果控制
+          batch: false, //batch=true为批量查询。batch=false为单点查询
+          roadlevel: 0//可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
+        }).success(function (data) {
+          console.log(data);
+          var addressComponent = data.regeocode.addressComponent;
+          $scope.addresspois = data.regeocode.pois;
+          $scope.city = addressComponent.city;
+          $scope.ssx = addressComponent.province + addressComponent.city + addressComponent.district;//省市县
+          if (param == 0) {
+            $scope.dengji.addrdetail = addressComponent.township + addressComponent.streetNumber.street;
+          }
+        }).then(function () {
+          if (param == 1) {
+            AddressService.getAddressBySSX({ssx: $scope.ssx, level: 3}).success(function (data) {
+              console.log(data);
+              if (data.code == 1001) {
+                $scope.addrareacountyone = data.data;
+              } else {
+                CommonService.platformPrompt(data.message, "close")
+              }
+            })
+          }
+        })
+      })
+
+    }
+    $scope.location(1);//自动定位
     $scope.$on('$ionicView.beforeEnter', function () {
       if (!$ionicHistory.backView()) { //有没有上级
         //如果授权超过两个小时 单独授权
@@ -1131,12 +1167,12 @@ angular.module('starter.controllers', [])
     $scope.isershou=false;
     var user = JSON.parse(localStorage.getItem("user"));//用户信息
     if (!user.userext) {
-      CommonService.showConfirm('收收提示', '尊敬的用户,您好！完善资料并且升级成为回收商才能查看订单！', '完善资料', '暂不完善', 'organizingdata', '','',{type:2},'');
+      CommonService.showConfirm('收收提示', '尊敬的用户,您好！完善资料并且升级成为回收商才能查看订单！', '升级回收商', '暂不升级', 'organizingdata', '','',{type:2},'');
       return;
     }
 
     if (user.services.length == 1 && user.services.indexOf('1') != -1) {
-      CommonService.showConfirm('收收提示', '尊敬的用户,您好！信息供应者没有权限查看订单,请升级成为回收商！', '申请回收商', '暂不申请','organizingdata', '','',{type:2},'');
+      CommonService.showConfirm('收收提示', '尊敬的用户,您好！信息供应者没有权限查看订单,请升级成为回收商！', '升级回收商', '暂不升级','organizingdata', '','',{type:2},'');
       return;
     }
     $scope.tabIndex = $rootScope.hytype;//当前tabs页
