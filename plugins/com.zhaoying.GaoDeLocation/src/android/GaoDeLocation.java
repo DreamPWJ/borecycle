@@ -36,7 +36,7 @@ public class GaoDeLocation extends CordovaPlugin {
   public static CallbackContext cb = null;
 
   String TAG = "GaoDeLocation";
-  CallbackContext context;
+
   String[] permissions = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
 
   /*
@@ -218,18 +218,18 @@ public class GaoDeLocation extends CordovaPlugin {
                                         int[] grantResults) throws JSONException {
     PluginResult result;
     //This is important if we're using Cordova without using Cordova, but we have the geolocation plugin installed
-    if (context != null) {
+    if (cb != null) {
       for (int r : grantResults) {
         if (r == PackageManager.PERMISSION_DENIED) {
           LOG.d(TAG, "Permission Denied!");
           result = new PluginResult(PluginResult.Status.ILLEGAL_ACCESS_EXCEPTION);
-          context.sendPluginResult(result);
+          cb.sendPluginResult(result);
           return;
         }
 
       }
       result = new PluginResult(PluginResult.Status.OK);
-      context.sendPluginResult(result);
+      cb.sendPluginResult(result);
     }
   }
 
