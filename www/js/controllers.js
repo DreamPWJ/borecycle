@@ -1123,12 +1123,12 @@ angular.module('starter.controllers', [])
     $scope.isershou=false;
     var user = JSON.parse(localStorage.getItem("user"));//用户信息
     if (!user.userext) {
-      CommonService.showConfirm('收收提示', '尊敬的用户,您好！完善资料并且申请成为回收商才能查看订单！', '完善资料', '暂不完善', 'organizingdata', '');
+      CommonService.showConfirm('收收提示', '尊敬的用户,您好！完善资料并且升级成为回收商才能查看订单！', '完善资料', '暂不完善', 'organizingdata', '{type:2}');
       return;
     }
 
     if (user.services.length == 1 && user.services.indexOf('1') != -1) {
-      CommonService.showConfirm('收收提示', '尊敬的用户,您好！信息供应者没有权限查看订单,请申请成为回收商！', '申请回收商', '暂不申请', 'organizingdata', '');
+      CommonService.showConfirm('收收提示', '尊敬的用户,您好！信息供应者没有权限查看订单,请升级成为回收商！', '申请回收商', '暂不申请', 'organizingdata', '{type:2}');
       return;
     }
     $scope.tabIndex = $rootScope.hytype;//当前tabs页
