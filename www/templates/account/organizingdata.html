@@ -101,19 +101,19 @@
               <img ng-repeat="item in imageList" ng-click="shouBigImage(item)" ng-src="{{item}}" alt="上传工作证图片"
                    style="height: 12rem" class="col-80 padding">
             </div>
-            <div ng-if="imageList.length==0" class="row row-wrap padding-top grey">
-              <span class="padding-horizontal col">示例 ：</span>
+            <div ng-if="imageList.length==0" class="row  row-wrap padding-top grey">
+              <span class="padding">示例 ：</span>
               <img ng-click="shouBigImage('img/account/employeecard.jpg')" ng-src="img/account/employeecard.jpg"
                    alt="上传工作证示例"
                    style="height: 12rem"
-                   class="col">
+                   class="col-80 padding">
             </div>
           </div>
           <p></p>
           <div class="padding-horizontal">
             <button class="button full-image button-positive " ng-click="organizingdataSubmit()"
-                    ng-disabled="!(organizingdataForm.$valid&&(user.usertype==1?verify:true)&&(user.usertype==1?true:(ischecked&&ischecked1))&&(addresspcd||ssx))">
-              下一步
+                    ng-disabled="!(organizingdataForm.$valid&&(user.usertype==1?verify:true)&&(user.usertype==1?true:(ischecked&&ischecked1))&&(addresspcd||ssx)&&(user.usertype == 1?ImgsPicAddr.length != 0:true))">
+              {{user.usertype == 1?'提交':'下一步'}}
             </button>
             <p></p>
             <a ng-href="#/{{isLogin?'tab/account':'login'}}"

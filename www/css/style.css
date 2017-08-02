@@ -125,13 +125,12 @@
 
 .show-alert .popup .popup-head, .show-confirm .popup .popup-head, .show-updateconfirm .popup .popup-head {
   border: none;
-  height: 1.6rem !important;
-  min-height: 1.6rem !important;
+  padding: 8px;
+  color: #585858 !important;
 }
 
 .show-alert .popup .popup-title, .show-confirm .popup .popup-title, .show-updateconfirm .popup .popup-title {
-  line-height: 0.2rem;
-  color: #585858;
+  color: #585858 !important;
 }
 
 /*.show-alert .popup .popup-body, .show-confirm .popup .popup-body, .show-updateconfirm .popup .popup-body {
@@ -148,25 +147,26 @@
 .show-alert .button, .show-confirm .button, .show-updateconfirm .button {
   margin: 0;
   padding: 0;
-  bottom: 0rem;
+  bottom: 0;
   height: 2.6rem !important;
   min-height: 2.6rem !important;
   background-color: #ffffff;
-
+  color: #00ACFF !important;
 }
 
 .show-alert .button:first-child, .show-confirm .button:first-child, .show-updateconfirm .button:first-child {
-  color: #33cd5f;
-  border-radius: 0 0 0rem 0.5rem;
+  color: #33cd5f !important;
+  border-radius: 0 0 0 0.5rem;
 }
 
 .show-alert .button:last-child, .show-confirm .button:last-child, .show-updateconfirm .button:last-child {
-  border-radius: 0 0 0.5rem 0rem;
+  border-radius: 0 0 0.5rem 0;
 }
 
 .show-alert .button:nth-child(2), .show-confirm .button:nth-child(2), .show-updateconfirm .button:nth-child(2) {
-  border-left: 1px solid rgba(221, 221, 221, 0.3);
   color: #00ACFF !important;
+  border-left: 1px solid rgba(221, 221, 221, 0.3);
+
 }
 
 /*修改覆盖ActionSheet框默认样式*/

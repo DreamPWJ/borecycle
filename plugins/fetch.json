@@ -233,5 +233,13 @@
         "variables": {
             "API_KEY": "3488bd077a9ae79bfff7180f5092c35e"
         }
+    },
+    "cordova-open-native-settings": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-open-native-settings"
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }
