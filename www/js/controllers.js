@@ -1209,7 +1209,7 @@ angular.module('starter.controllers', [])
       return;
     }
     if ((user.services.indexOf('2') != -1 || user.services.indexOf('3') != -1 ||user.services.indexOf('4') != -1)&& !user.userext) {
-      CommonService.showConfirm('收收提示', '尊敬的用户您好!完善资料才能接单!', '完善资料', '暂不资料', 'organizingdata', '', '', {type: 2}, '');
+      CommonService.showConfirm('收收提示', '尊敬的用户您好!完善资料才能接单!', '完善资料', '暂不完善', 'organizingdata', '', '', {type: 2}, '');
       return;
     }
     if (!user.userext) {
