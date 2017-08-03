@@ -1172,15 +1172,21 @@ angular.module('starter.controllers', [])
     $scope.isfeipin = false;
     $scope.isershou = false;
     var user = JSON.parse(localStorage.getItem("user"));//用户信息
+    console.log(user);
+    if (user.services.length == 1 && user.services.indexOf('1') != -1) {
+      CommonService.showConfirm('收收提示', '尊敬的用户您好!信息供应者没有权限接单,请升级成为回收商!', '升级回收商', '暂不升级', 'organizingdata', '', '', {type: 2}, '');
+      return;
+    }
+    if ((user.services.indexOf('2') != -1 || user.services.indexOf('3') != -1 ||user.services.indexOf('4') != -1)&& !user.userext) {
+      CommonService.showConfirm('收收提示', '尊敬的用户您好!完善资料才能接单!', '完善资料', '暂不资料', 'organizingdata', '', '', {type: 2}, '');
+      return;
+    }
     if (!user.userext) {
-      CommonService.showConfirm('收收提示', '尊敬的用户,您好！完善资料并且升级成为回收商才能查看订单！', '升级回收商', '暂不升级', 'organizingdata', '', '', {type: 2}, '');
+      CommonService.showConfirm('收收提示', '尊敬的用户您好!完善资料并且升级成为回收商才能接单!', '升级回收商', '暂不升级', 'organizingdata', '', '', {type: 2}, '');
       return;
     }
 
-    if (user.services.length == 1 && user.services.indexOf('1') != -1) {
-      CommonService.showConfirm('收收提示', '尊敬的用户,您好！信息供应者没有权限查看订单,请升级成为回收商！', '升级回收商', '暂不升级', 'organizingdata', '', '', {type: 2}, '');
-      return;
-    }
+
     $scope.tabIndex = $rootScope.hytype;//当前tabs页
     //如果取信息单，当会员不是上门回收者时取货场，否则到二手商家
     if ($scope.tabIndex == 0 && user.services.indexOf('2') == -1) {
