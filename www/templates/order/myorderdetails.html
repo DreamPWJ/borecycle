@@ -12,7 +12,7 @@
                id="orderdetails">
     <ion-list hide-show>
       <ion-item class=" item-icon-right" style="padding-right: 12px;" ng-click="toggle(0)">
-        {{orderDetail.orno||orderDetail.djno}} 状态 : <span class="positive">{{orderDetail.strstate}}</span>
+        {{orderDetail.orno||orderDetail.djno}} <span class="phytype">{{orderDetail.strstate}}</span>
         <i ng-class="{true:'ion-ios-arrow-right',false:'ion-ios-arrow-down'}[showme]"
            class="icon iconfont "></i>
       </ion-item>

@@ -1,7 +1,7 @@
 <ion-view>
   <ion-nav-buttons side="left">
     <a class="button button-clear icon ion-ios-arrow-left"
-            ng-href="{{url}}"></a>
+       ng-href="{{url}}"></a>
   </ion-nav-buttons>
   <ion-nav-title>
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 回收单详情</h1>
@@ -12,8 +12,7 @@
                id="orderdetails">
     <ion-list hide-show>
       <ion-item class=" item-icon-right" style="padding-right: 12px;" ng-click="toggle(0)">
-        {{type==1?orderDetail.djno:orderDetail.orno}} 状态 : <span
-        class="positive">{{orderDetail.strstate}}</span>
+        {{type==1?orderDetail.djno:orderDetail.orno}} <span class="phytype">{{orderDetail.strstate}}</span>
         <i ng-class="{true:'ion-ios-arrow-right',false:'ion-ios-arrow-down'}[showme]"
            class="icon iconfont "></i>
       </ion-item>
