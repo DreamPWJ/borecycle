@@ -557,3 +557,13 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
   border-top: 0;
   border-right: 0;
 }
+.border-bottom-1px{
+  margin-bottom: 1px;
+  border-bottom: 1px solid rgba(221, 221, 221, 0.6) !important;
+}
+#recyclewrite .padding-left{
+  padding-left: 10px;
+}
+#recyclewrite .border-r{
+  border-right: 1px solid rgba(221, 221, 221, 0.3);
+}

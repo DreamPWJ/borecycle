@@ -9,26 +9,23 @@
     <ion-content overflow-scroll="false" id="recyclewrite" class="has-button-footer stable-bg" has-bouncing="true">
       <ion-list>
         <div ng-repeat="item in productList" ng-if="item.checked" >
-          <div ng-repeat="items in item.details" ng-if="items.checked" hide-show>
-            <ion-item class="item-icon-left item-icon-right " ng-click="toggle(0)">
+          <div ng-repeat="items in item.details" ng-if="items.checked" class="light-bg" hide-show>
+            <ion-item class="item-icon-left item-icon-right border-bottom-1px" ng-click="toggle(0)">
               <i class="icon iconfont {{item.imgurl}}"></i>
               {{items.name}}
               <i ng-class="{true:'ion-ios-arrow-right',false:'ion-ios-arrow-down'}[showme]"
                  class="icon iconfont "></i>
             </ion-item>
-            <div ng-hide="showme">
-              <ion-item class="item-input">
-                <span class="input-label icon iconfont icon-suobanxin " style="font-size: 1rem!important;"> 回收数量</span>
-                <input type="number" placeholder="请输入回收数量" ng-model="items.recyclenum" check-form
+            <div ng-hide="showme" class="row">
+                <!--<span class="input-label icon iconfont icon-suobanxin " style="font-size: 1rem!important;"> </span>-->
+                <input type="number" placeholder="回收数量" ng-model="items.recyclenum" check-form class="col-50 padding-left border-r"
                        ng-change="checkForm(items.recyclenum,'输入回收数量错误',items.unit==1?'positiveinteger':'positivenumber','')"
                        required/>
-              </ion-item>
-              <ion-item class="item-input">
-                <span class="input-label icon iconfont icon-recharge " style="font-size: 1rem!important;"> 回收单价</span>
-                <input type="number" placeholder="请输入回收单价" ng-model="items.recycleprice" check-form
+                <!--<span class="input-label icon iconfont icon-recharge " style="font-size: 1rem!important;"> </span>-->
+                <input type="number" placeholder="回收单价" ng-model="items.recycleprice" check-form class="col-50 padding-left"
                        ng-change="checkForm(items.recycleprice,'输入回收单价错误','positivenumber','')" required/>
-              </ion-item>
             </div>
+            <p></p>
           </div>
         </div>
       </ion-list>
