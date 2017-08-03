@@ -404,34 +404,30 @@ angular.module('starter.services', [])
           })
           return;
         }
+
         CommonService = this;
+        var positionshowConfirm = function () {  //允许收收定位设置弹出框
+          CommonService.showConfirm('允许收收定位', '请在系统设置 -> 隐私 -> 定位服务中允许收收使用您的位置', '设置', '取消', '', 'close', function () {
+            window.cordova.plugins.settings.open("location", function () {
+              },
+              function () {
+                CommonService.platformPrompt('打开定位设置失败', 'close');
+              }
+            );
+          });
+        }
         if (ionic.Platform.isWebView() && $ionicPlatform.is('android')) {//android系统APP 高德定位提高定位精度和成功率
           GaoDe.getCurrentPosition(function (success) {
             if (success.status == '定位失败') {
-              CommonService.showConfirm('允许收收定位', '请在系统设置 -> 隐私 -> 定位服务中允许收收使用您的位置', '设置', '取消', '', 'close', function () {
-                window.cordova.plugins.settings.open("location", function () {
-                  },
-                  function () {
-                    CommonService.platformPrompt('打开定位设置失败', 'close');
-                  }
-                );
-              });
+              positionshowConfirm();
               return;
             }
-
             localStorage.setItem("latitude", success.latitude);
             localStorage.setItem("longitude", success.longitude);
             callback.call(this);
           }, function (error) {
             if (ionic.Platform.isWebView()) {
-              CommonService.showConfirm('允许收收定位', '请在系统设置 -> 隐私 -> 定位服务中允许收收使用您的位置', '设置', '取消', '', 'close', function () {
-                window.cordova.plugins.settings.open("location", function () {
-                  },
-                  function () {
-                    CommonService.platformPrompt('打开定位设置失败', 'close');
-                  }
-                );
-              });
+              positionshowConfirm();
             } else {
               CommonService.platformPrompt("高德获取定位失败", 'close');
             }
@@ -447,14 +443,7 @@ angular.module('starter.services', [])
             }, function (err) {
 
               if (ionic.Platform.isWebView()) {
-                CommonService.showConfirm('允许收收定位', '请在系统设置 -> 隐私 -> 定位服务中允许收收使用您的位置', '设置', '取消', '', 'close', function () {
-                  window.cordova.plugins.settings.open("location", function () {
-                    },
-                    function () {
-                      CommonService.platformPrompt('打开设置失败', 'close');
-                    }
-                  );
-                });
+                positionshowConfirm();
               } else {
                 CommonService.platformPrompt("获取定位失败", 'close');
               }
