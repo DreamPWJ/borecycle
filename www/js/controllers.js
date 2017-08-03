@@ -387,7 +387,7 @@ angular.module('starter.controllers', [])
     $scope.getIsInvite = function (account) {
       //是否存在
       AccountService.getuserexist(account).success(function (datas) {
-        if (datas.code!= 1001) {
+        if (datas.code!= 1001 &&  account.length==11) {
           CommonService.toolTip(datas.message, "")
         }
         else {
@@ -493,7 +493,7 @@ angular.module('starter.controllers', [])
       if (/^1(3|4|5|7|8)\d{9}$/.test(mobilephone)) {
         //是否存在
         AccountService.getuserexist(mobilephone).success(function (datas) {
-          if (datas.code != 1001) {
+          if (datas.code != 1001 && mobilephone.length==11) {
             CommonService.toolTip(datas.message, "")
             $scope.paraclass = false;
           }
