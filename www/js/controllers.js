@@ -638,7 +638,7 @@ angular.module('starter.controllers', [])
     if($rootScope.account_login){
       $scope.user.account=$rootScope.account_login;
       $rootScope.account_login=null;
-      $scope.checkphoneandemail($scope.user.account);
+      $scope.paraclass = true;
     }
     //如果没有授权先授权 或者超过两个小时
     if (!localStorage.getItem("token") || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
