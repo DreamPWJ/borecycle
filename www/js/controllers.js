@@ -502,6 +502,9 @@ angular.module('starter.controllers', [])
           }
         });
       }
+      else {
+        $scope.paraclass = false;
+      }
     }
     //获取验证码
     $scope.getVerifyCode = function () {
@@ -628,6 +631,9 @@ angular.module('starter.controllers', [])
             $scope.paraclass = false;
           }
         });
+      }
+      else {
+        $scope.paraclass = false;
       }
     }
 
