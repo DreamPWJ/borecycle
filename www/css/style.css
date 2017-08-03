@@ -349,7 +349,7 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
 .platform-android .action-sheet .action-sheet-title {
   text-align: center;
   font-size: 12px;
-  color: #8f8f8f;
+  color: #8f8f8f !important;
 }
 
 .nomarginpadding {
@@ -523,21 +523,26 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
 #accountinfo .calm {
   color: #11c1f3 !important;
 }
-#recycleorder .checkbox input,#recycleorder .checkbox-icon{
-  width: 20px!important;
-  height: 20px!important;
+
+#recycleorder .checkbox input, #recycleorder .checkbox-icon {
+  width: 20px !important;
+  height: 20px !important;
 }
+
 #recycleorder .item-divider {
   padding-top: 8px;
   padding-bottom: 8px;
   background: #FFFFFF;
   min-height: 30px;
   color: #222;
-  font-weight:normal; }
-#recycleorder .checkbox{
+  font-weight: normal;
+}
+
+#recycleorder .checkbox {
   padding-top: 11px;
 }
-#recycleorder .checkbox input:after,#recycleorder .checkbox-icon:after {
+
+#recycleorder .checkbox input:after, #recycleorder .checkbox-icon:after {
   -webkit-transition: opacity .05s ease-in-out;
   transition: opacity .05s ease-in-out;
   -webkit-transform: rotate(-45deg);
