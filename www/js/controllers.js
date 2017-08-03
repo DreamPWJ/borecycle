@@ -2727,7 +2727,7 @@ angular.module('starter.controllers', [])
       AccountService.realNameAuthenticate($scope.datas).success(function (data) {
         console.log(JSON.stringify(data));
         if (data.code == 1001) {
-          CommonService.platformPrompt('实名认证提交成功', '');
+          CommonService.platformPrompt('实名认证提交成功', 'accountsecurity');
           var user = JSON.parse(localStorage.getItem('user'));
           var certstate = user.certstate.split('');//转换成数组
           certstate.splice(3, 1, 2)//将3这个位置的字符，替换成'xxxxx'. 用的是原生js的splice方法
