@@ -407,6 +407,18 @@ angular.module('starter.services', [])
         CommonService = this;
         if (ionic.Platform.isWebView() && $ionicPlatform.is('android')) {//android系统APP 高德定位提高定位精度和成功率
           GaoDe.getCurrentPosition(function (success) {
+            if (success.status == '定位失败') {
+              CommonService.showConfirm('允许收收定位', '请在系统设置 -> 隐私 -> 定位服务中允许收收使用您的位置', '设置', '取消', '', 'close', function () {
+                window.cordova.plugins.settings.open("location", function () {
+                  },
+                  function () {
+                    CommonService.platformPrompt('打开定位设置失败', 'close');
+                  }
+                );
+              });
+              return;
+            }
+
             localStorage.setItem("latitude", success.latitude);
             localStorage.setItem("longitude", success.longitude);
             callback.call(this);
@@ -416,7 +428,7 @@ angular.module('starter.services', [])
                 window.cordova.plugins.settings.open("location", function () {
                   },
                   function () {
-                    CommonService.platformPrompt('打开设置失败', 'close');
+                    CommonService.platformPrompt('打开定位设置失败', 'close');
                   }
                 );
               });
@@ -667,7 +679,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise
         promise = $http({
           method: 'GET',
-          url: BoRecycle.api + "/api/user/exist/"+account,
+          url: BoRecycle.api + "/api/user/exist/" + account,
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -2018,7 +2030,7 @@ angular.module('starter.services', [])
           amount: amount,
           name: name,
           productname: productname,
-          hytype:hytype
+          hytype: hytype
         }
         $state.go("recycleorder", {orderinfo: JSON.stringify(json)});
       },
