@@ -387,7 +387,7 @@ angular.module('starter.controllers', [])
     $scope.getIsInvite = function (account) {
       //是否存在
       AccountService.getuserexist(account).success(function (datas) {
-        if (datas.code!= 1001 &&  account.toString().length==11) {
+        if (datas.code != 1001 && account.toString().length == 11) {
           CommonService.toolTip(datas.message, "")
         }
         else {
@@ -493,7 +493,7 @@ angular.module('starter.controllers', [])
       if (/^1(3|4|5|7|8)\d{9}$/.test(mobilephone)) {
         //是否存在
         AccountService.getuserexist(mobilephone).success(function (datas) {
-          if (datas.code != 1001 && mobilephone.toString().length==11) {
+          if (datas.code != 1001 && mobilephone.toString().length == 11) {
             CommonService.toolTip(datas.message, "")
             $scope.paraclass = false;
           }
@@ -515,7 +515,7 @@ angular.module('starter.controllers', [])
     $scope.getIsInvite = function (account) {
       //是否存在
       AccountService.getuserexist(account).success(function (datas) {
-        if (datas.code!= 1001  && account.toString().length==11) {
+        if (datas.code != 1001 && account.toString().length == 11) {
           CommonService.toolTip(datas.message, "")
         }
         else {
@@ -678,7 +678,7 @@ angular.module('starter.controllers', [])
           if ($rootScope.isPhoneRegister) {
             $rootScope.phoneRegister = $scope.user.account;
           }
-          $state.go('organizingdata',{type:$scope.user.usertype});
+          $state.go('organizingdata', {type: $scope.user.usertype});
         }
         CommonService.platformPrompt(data.message, 'close');
       })
@@ -735,7 +735,7 @@ angular.module('starter.controllers', [])
   })
 
   //完善资料页面
-  .controller('OrganizingDataCtrl', function ($scope, $rootScope,$stateParams, CommonService, MainService, $ionicHistory, BoRecycle, OrderService, AccountService, AddressService) {
+  .controller('OrganizingDataCtrl', function ($scope, $rootScope, $stateParams, CommonService, MainService, $ionicHistory, BoRecycle, OrderService, AccountService, AddressService) {
     //上传图片数组集合
     $scope.imageList = [];
     $scope.ImgsPicAddr = [];//图片信息数组
@@ -762,11 +762,11 @@ angular.module('starter.controllers', [])
         if ($rootScope.registerUserType == 2) {
           $scope.isUpgradeRecycler = true; //升级成为回收商
         }
-      }else if ($ionicHistory.backView() && $ionicHistory.backView().stateName == "accountinfo"||$ionicHistory.backView() && $ionicHistory.backView().stateName == "jiedan") {
-        if($stateParams.type==2){
+      } else if ($ionicHistory.backView() && $ionicHistory.backView().stateName == "accountinfo" || $ionicHistory.backView() && $ionicHistory.backView().stateName == "jiedan") {
+        if ($stateParams.type == 2) {
           $scope.isUpgradeRecycler = true; //升级成为回收商
-        }else if($stateParams.type==1){
-          $scope.user.usertype=1;
+        } else if ($stateParams.type == 1) {
+          $scope.user.usertype = 1;
         }
       }
     })
@@ -1102,7 +1102,7 @@ angular.module('starter.controllers', [])
 
   })
 
-  .controller('jiedanCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, OrderService, $ionicHistory, $ionicSlideBoxDelegate, $ionicScrollDelegate,AccountService) {
+  .controller('jiedanCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, OrderService, $ionicHistory, $ionicSlideBoxDelegate, $ionicScrollDelegate, AccountService) {
     //是否登录
     if (!CommonService.isLogin(true)) {
       return;
@@ -1167,50 +1167,46 @@ angular.module('starter.controllers', [])
       }
     })
 
-    $rootScope.hytype= $stateParams.hytype;
-    $scope.isxinxi=false;
-    $scope.isfeipin=false;
-    $scope.isershou=false;
+    $rootScope.hytype = $stateParams.hytype;
+    $scope.isxinxi = false;
+    $scope.isfeipin = false;
+    $scope.isershou = false;
     var user = JSON.parse(localStorage.getItem("user"));//用户信息
     if (!user.userext) {
-      CommonService.showConfirm('收收提示', '尊敬的用户,您好！完善资料并且升级成为回收商才能查看订单！', '升级回收商', '暂不升级', 'organizingdata', '','',{type:2},'');
+      CommonService.showConfirm('收收提示', '尊敬的用户,您好！完善资料并且升级成为回收商才能查看订单！', '升级回收商', '暂不升级', 'organizingdata', '', '', {type: 2}, '');
       return;
     }
 
     if (user.services.length == 1 && user.services.indexOf('1') != -1) {
-      CommonService.showConfirm('收收提示', '尊敬的用户,您好！信息供应者没有权限查看订单,请升级成为回收商！', '升级回收商', '暂不升级','organizingdata', '','',{type:2},'');
+      CommonService.showConfirm('收收提示', '尊敬的用户,您好！信息供应者没有权限查看订单,请升级成为回收商！', '升级回收商', '暂不升级', 'organizingdata', '', '', {type: 2}, '');
       return;
     }
     $scope.tabIndex = $rootScope.hytype;//当前tabs页
     //如果取信息单，当会员不是上门回收者时取货场，否则到二手商家
-    if($scope.tabIndex==0 && user.services.indexOf('2') == -1) {
-      if(user.services.indexOf('3')!=-1)
-      {
+    if ($scope.tabIndex == 0 && user.services.indexOf('2') == -1) {
+      if (user.services.indexOf('3') != -1) {
         $scope.tabIndex = 1;
       }
       else {
-        $scope.tabIndex =2;
+        $scope.tabIndex = 2;
       }
     }
     //如果取废品单，当会员不是货场时取二手商家，否则到上门回收者
-    if($scope.tabIndex==1 && user.services.indexOf('3') == -1)
-    {
-      if(user.services.indexOf('4')!=-1)
-      {
+    if ($scope.tabIndex == 1 && user.services.indexOf('3') == -1) {
+      if (user.services.indexOf('4') != -1) {
         $scope.tabIndex = 2;
       }
       else {
-        $scope.tabIndex =0;
+        $scope.tabIndex = 0;
       }
     }
     //如果取二手单，当会员不是二手商家时取货场，否则到上门回收者
-    if($scope.tabIndex==2 && user.services.indexOf('4') == -1) {
-      if(user.services.indexOf('3')!=-1)
-      {
+    if ($scope.tabIndex == 2 && user.services.indexOf('4') == -1) {
+      if (user.services.indexOf('3') != -1) {
         $scope.tabIndex = 1;
       }
       else {
-        $scope.tabIndex =0;
+        $scope.tabIndex = 0;
       }
     }
     //如果是上门回收者时
@@ -1219,7 +1215,7 @@ angular.module('starter.controllers', [])
     }
     //如果是货场时
     if (user.services.indexOf('3') != -1) {
-      $scope.isfeipin=true;
+      $scope.isfeipin = true;
     }
     //如果是二手时
     if (user.services.indexOf('4') != -1) {
@@ -1227,7 +1223,7 @@ angular.module('starter.controllers', [])
     }
 
 
-    $rootScope.orderType= $scope.tabIndex;
+    $rootScope.orderType = $scope.tabIndex;
     $scope.orderList = [];
     $scope.page = 0;
     $scope.total = 1;
@@ -1239,7 +1235,7 @@ angular.module('starter.controllers', [])
       }
       $scope.page++;
       $scope.params = {
-        page:  $scope.page,//页码
+        page: $scope.page,//页码
         size: 10//条数
       }
       $scope.datas = {
@@ -1254,7 +1250,7 @@ angular.module('starter.controllers', [])
         lat: localStorage.getItem("latitude") || "",//当前纬度（获取距离）(可为空)
         expiry: ""//小时 取预警数据 订单预警数据（24小时截至马上过期的（expiry=3表示取3小时内）
       }
-      console.log( $scope.datas);
+      console.log($scope.datas);
       OrderService.getDengJiList($scope.params, $scope.datas).success(function (data) {
           $scope.isNotData = false;
           if (data.data == null || data.data.data_list.length == 0) {
@@ -1324,8 +1320,8 @@ angular.module('starter.controllers', [])
             {
               no: data.data,
               type: 2,
-              hytype:hytype
-            }, {hytype:hytype})
+              hytype: hytype
+            }, {hytype: hytype})
           $scope.getOrderList(0);//查询登记信息/货源信息分页列刷新
         } else if (data.code == 1005) { //接单的时候返回值是1005,就跳转到“待处理”页面
           CommonService.platformPrompt(data.message, "close");
@@ -1368,9 +1364,9 @@ angular.module('starter.controllers', [])
       }
     })
     var user = JSON.parse(localStorage.getItem("user"));//用户信息
-    $scope.tabOrderIndex= $stateParams.state;
+    $scope.tabOrderIndex = $stateParams.state;
     $scope.tabIndex = $scope.tabOrderIndex;//当前tabs页
-    $scope.orderType= $scope.tabIndex;
+    $scope.orderType = $scope.tabIndex;
     $scope.orderList = [];
     $scope.page = 0;
     $scope.total = 1;
@@ -1382,22 +1378,22 @@ angular.module('starter.controllers', [])
       }
       $scope.page++;
       $scope.params = {
-        page:  $scope.page,//页码
+        page: $scope.page,//页码
         size: 10//条数
       }
       $scope.datas = {
         DJNo: "",//登记单号(可为空)
-        Type:"",//类型1.登记信息 2.登记货源(可为空)
+        Type: "",//类型1.登记信息 2.登记货源(可为空)
         userid: "",//用户userid
         Category: "",//货物品类 多个用逗号隔开(可为空)
         HYType: "",//货物类别 0.未区分 1废料 2二手(可为空) 上门回收(2)接登记信息（0）的单;货场(3)接废料（1）二手商家（4）接二手的(2)
-        State: $scope.tabIndex== 2  ? "4,5" : "4,5,6,7",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
+        State: $scope.tabIndex == 2 ? "4,5" : "4,5,6,7",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
         longt: localStorage.getItem("longitude") || "", //当前经度（获取距离）(可为空)
         lat: localStorage.getItem("latitude") || "",//当前纬度（获取距离）(可为空)
         ORNO: "",//接单单号(可为空)
         ORuserid: localStorage.getItem("userid")//接单人(不能为空)
       }
-      console.log( $scope.datas);
+      console.log($scope.datas);
       OrderService.getOrderReceiptList($scope.params, $scope.datas).success(function (data) {
           $scope.isNotData = false;
           if (data.data == null || data.data.data_list.length == 0) {
@@ -1456,15 +1452,14 @@ angular.module('starter.controllers', [])
   .controller('OrderDetailsCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, OrderService) {
     var user = JSON.parse(localStorage.getItem("user"));//用户信息
     $rootScope.hytype = $stateParams.hytype;//1.待接单 2 待处理和所有订单
-    $rootScope.type =$stateParams.type;
-    $scope.url="";
+    $rootScope.type = $stateParams.type;
+    $scope.url = "";
     //跳转地址
-    if($rootScope.type==1)
-    {
-      $scope.url="#/jiedan/"+ $rootScope.hytype ;
+    if ($rootScope.type == 1) {
+      $scope.url = "#/jiedan/" + $rootScope.hytype;
     }
     else {
-      $scope.url="#/order/0" ;
+      $scope.url = "#/order/0";
     }
     $scope.getOrderListDetails = function () {
       if ($scope.type == 1) {
@@ -1785,16 +1780,16 @@ angular.module('starter.controllers', [])
   .controller('RecycleOrderCtrl', function ($scope, $state, $stateParams, CommonService, OrderService) {
     $scope.orderinfo = JSON.parse($stateParams.orderinfo);
     $scope.productLists = [];//产品品类
-    $scope.productList=[];
+    $scope.productList = [];
     //获取产品品类
-    OrderService.getProductList({ID: "", Name:""}).success(function (data) {
+    OrderService.getProductList({ID: "", Name: ""}).success(function (data) {
       console.log(data);
       if (data.code == 1001) {
         //$scope.productList = data.data;
         console.log($scope.orderinfo.productname);
-        angular.forEach(data.data,function (item) {
-          if((","+$scope.orderinfo.productname+",").indexOf(","+item.name+",")>=0){
-            item.checked=true;
+        angular.forEach(data.data, function (item) {
+          if (("," + $scope.orderinfo.productname + ",").indexOf("," + item.name + ",") >= 0) {
+            item.checked = true;
           }
           $scope.productList.push(item);
         });
@@ -2003,7 +1998,7 @@ angular.module('starter.controllers', [])
             CommonService.platformPrompt("回收付款成功", "orderdetails", {
               no: $scope.orderinfo.orno,
               type: 2,
-              hytype:$scope.orderinfo.hytype
+              hytype: $scope.orderinfo.hytype
             })
           } else {
             CommonService.platformPrompt(data.message, "close")
@@ -2649,7 +2644,7 @@ angular.module('starter.controllers', [])
   })
 
   //实名认证
-  .controller('RealNameCtrl', function ($scope, $rootScope, $stateParams, CommonService, AccountService) {
+  .controller('RealNameCtrl', function ($scope, $rootScope, $stateParams, $ionicHistory, CommonService, AccountService) {
     $scope.status = $stateParams.status;//认证状态
     $scope.realname = {};//实名认证数据
     //上传图片数组集合
@@ -2733,12 +2728,17 @@ angular.module('starter.controllers', [])
       AccountService.realNameAuthenticate($scope.datas).success(function (data) {
         console.log(JSON.stringify(data));
         if (data.code == 1001) {
-          CommonService.platformPrompt('实名认证提交成功', 'accountsecurity');
+
           var user = JSON.parse(localStorage.getItem('user'));
           var certstate = user.certstate.split('');//转换成数组
           certstate.splice(3, 1, 2)//将3这个位置的字符，替换成'xxxxx'. 用的是原生js的splice方法
           user.certstate = certstate.join(''); //将数组转换成字符串
           localStorage.setItem('user', JSON.stringify(user));
+          if ($ionicHistory.backView() && $ionicHistory.backView().stateName == "organizingdata") { //上一级路由名称
+            CommonService.platformPrompt('实名认证提交成功', 'tab.main');
+          } else {
+            CommonService.platformPrompt('实名认证提交成功', '');
+          }
         } else {
           CommonService.platformPrompt(data.message, 'close');
         }
