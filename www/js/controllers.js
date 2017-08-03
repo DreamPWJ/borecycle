@@ -512,7 +512,7 @@ angular.module('starter.controllers', [])
     $scope.getIsInvite = function (account) {
       //是否存在
       AccountService.getuserexist(account).success(function (datas) {
-        if (datas.code!= 1001) {
+        if (datas.code!= 1001  && account.length==11) {
           CommonService.toolTip(datas.message, "")
         }
         else {
