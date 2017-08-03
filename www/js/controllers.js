@@ -392,7 +392,7 @@ angular.module('starter.controllers', [])
       //是否存在
       AccountService.getuserexist(account).success(function (datas) {
         if (datas.code != 1001 && account.toString().length == 11) {
-          $rootScope.acccount_login=account;
+          $rootScope.account_login=account;
           CommonService.showConfirm('收收提示', datas.message, '立即注册', '返回登陆', 'register', 'login', '', '', '');
         }
         else {
@@ -500,7 +500,7 @@ angular.module('starter.controllers', [])
         //是否存在
         AccountService.getuserexist(mobilephone).success(function (datas) {
           if (datas.code != 1001 && mobilephone.toString().length == 11) {
-            $rootScope.acccount_login=mobilephone;
+            $rootScope.account_login=mobilephone;
             CommonService.showConfirm('收收提示', datas.message, '立即注册', '返回登陆', 'register', 'mobilelogin', '', '', '');
             $scope.paraclass = false;
             $scope.isKeyup=true;
@@ -527,7 +527,7 @@ angular.module('starter.controllers', [])
       //是否存在
       AccountService.getuserexist(account).success(function (datas) {
         if (datas.code != 1001 && account.toString().length == 11) {
-          $rootScope.acccount_login=account;
+          $rootScope.account_login=account;
           CommonService.showConfirm('收收提示', datas.message, '立即注册', '返回登陆', 'register', 'mobilelogin', '', '', '');
         }
         else {
