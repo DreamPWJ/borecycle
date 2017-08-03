@@ -1158,9 +1158,6 @@ angular.module('starter.controllers', [])
           $scope.addresspois = data.regeocode.pois;
           $scope.city = addressComponent.city;
           $scope.ssx = addressComponent.province + addressComponent.city + addressComponent.district;//省市县
-          if (param == 0) {
-            $scope.dengji.addrdetail = addressComponent.township + addressComponent.streetNumber.street;
-          }
         }).then(function () {
           if (param == 1) {
             AddressService.getAddressBySSX({ssx: $scope.ssx, level: 3}).success(function (data) {
