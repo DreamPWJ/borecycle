@@ -228,8 +228,10 @@ public class GaoDeLocation extends CordovaPlugin {
         }
 
       }
-      result = new PluginResult(PluginResult.Status.OK);
-      cb.sendPluginResult(result);
+      PluginResult pluginResult = new PluginResult(PluginResult.Status.NO_RESULT);
+      pluginResult.setKeepCallback(true);
+      cb.sendPluginResult(pluginResult);
+      this.getCurrentPosition();
     }
   }
 
