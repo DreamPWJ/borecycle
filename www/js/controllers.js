@@ -1340,7 +1340,10 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt("登记货源单二手接单会员身份必须是二手商家", 'close');
         return;
       }
-
+      if(user.certstate.substr(3,1)!="2"){
+        CommonService.showConfirm('接单提示','尊敬的用户，您好！请先进行“实名认证”后再接单！', '实名认证', '暂不认证', 'realname', '', '', '', '');
+        return;
+      }
       //添加接单收货/货源归集(添加回收时明细不能为空，接单时明细为空)
       $scope.jiedandata = {
         orno: "",//接单收货单号(回收时不能为空)
