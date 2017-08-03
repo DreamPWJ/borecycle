@@ -567,3 +567,28 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
 #recyclewrite .border-r{
   border-right: 1px solid rgba(221, 221, 221, 0.3);
 }
+#login .checkbox input,#login  .checkbox-icon {
+  width: 20px;
+  height: 20px;
+}
+#login .checkbox input:after, #login .checkbox-icon:after {
+  -webkit-transition: opacity .05s ease-in-out;
+  transition: opacity .05s ease-in-out;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  position: absolute;
+  top: 28%;
+  left: 18%;
+  display: table;
+  width: 12px;
+  height: 6px;
+  border: 1px solid #fff;
+  border-top: 0;
+  border-right: 0;
+}
+#login .checkbox {
+  padding-top: 11px;
+}
+#login .iconfont{
+  font-size: 16px!important;
+}

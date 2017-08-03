@@ -392,7 +392,8 @@ angular.module('starter.controllers', [])
       //是否存在
       AccountService.getuserexist(account).success(function (datas) {
         if (datas.code != 1001 && account.toString().length == 11) {
-          CommonService.toolTip(datas.message, "")
+          $rootScope.acccount_login=account;
+          CommonService.showConfirm('收收提示', datas.message, '立即注册', '返回登陆', 'register', 'login', '', '', '');
         }
         else {
           AccountService.getIsInvite({account: account}).success(function (data) {
@@ -468,7 +469,7 @@ angular.module('starter.controllers', [])
   })
 
   //手机验证登录页面
-  .controller('MobileLoginCtrl', function ($scope, $state, $rootScope, $interval, CommonService, MainService, AccountService) {
+  .controller('MobileLoginCtrl', function ($scope, $state, $rootScope, $interval,$ionicGesture, CommonService, MainService, AccountService) {
     $rootScope.commonService = CommonService;
     //删除记住用户信息
     localStorage.removeItem("userid");
@@ -493,13 +494,16 @@ angular.module('starter.controllers', [])
     $scope.agreedeal = true;//同意用户协议
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable
+    $scope.isKeyup=false;//是否执行Keyup事件
     $scope.checkphone = function (mobilephone) {//检查手机号
       if (/^1(3|4|5|7|8)\d{9}$/.test(mobilephone)) {
         //是否存在
         AccountService.getuserexist(mobilephone).success(function (datas) {
           if (datas.code != 1001 && mobilephone.toString().length == 11) {
-            CommonService.toolTip(datas.message, "")
+            $rootScope.acccount_login=mobilephone;
+            CommonService.showConfirm('收收提示', datas.message, '立即注册', '返回登陆', 'register', 'mobilelogin', '', '', '');
             $scope.paraclass = false;
+            $scope.isKeyup=true;
           }
           else {
             $scope.paraclass = true;
@@ -517,13 +521,14 @@ angular.module('starter.controllers', [])
 
 //根据会员账号检查是否需要邀请码
     $scope.getIsInvite = function (account) {
-      if(!account||account==undefined||account==""){
+      if(!account||account==undefined||account==""||$scope.isKeyup){
         return;
       }
       //是否存在
       AccountService.getuserexist(account).success(function (datas) {
         if (datas.code != 1001 && account.toString().length == 11) {
-          CommonService.toolTip(datas.message, "")
+          $rootScope.acccount_login=account;
+          CommonService.showConfirm('收收提示', datas.message, '立即注册', '返回登陆', 'register', 'mobilelogin', '', '', '');
         }
         else {
           AccountService.getIsInvite({account: account}).success(function (data) {
@@ -612,7 +617,10 @@ angular.module('starter.controllers', [])
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable;
     $scope.services = [{key: 2, value: "上门回收者"}, {key: 3, value: "货场"}, {key: 4, value: "二手商家"}];//用户类型数组
-
+    if($rootScope.account_login){
+      $scope.user.account=$rootScope.account_login;
+      $rootScope.account_login=null;
+    }
     //如果没有授权先授权 或者超过两个小时
     if (!localStorage.getItem("token") || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
       //接口授权

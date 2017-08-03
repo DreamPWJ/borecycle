@@ -28,13 +28,14 @@
           <input type="text" ng-model="user.invitecode" check-form
                  placeholder="请输入邀请码"  ng-required="isInvite"  maxlength="6"/>
         </label>
-        <ion-checkbox class=" stable-bg item-borderless checkbox-positive" ng-model="agreedeal" ng-checked="true">
+        <ion-checkbox class="stable-bg item-borderless checkbox-positive" ng-model="agreedeal" ng-checked="true">
           同意登录协议
         </ion-checkbox>
         <div class="padding-horizontal">
           <button class="button full-image button-positive " ng-click="loginSubmit()"
                   ng-disabled="!(loginForm.$valid&&agreedeal&&paraclass)">登录
-          </button>
+          </button><p></p>
+          <a ng-href="#/register" class="button full-image button-energized button-outline energized ">没有账号，请先注册</a>
         </div>
         <div class="padding">
           <p class="text-right padding-top" style="font-size: 1rem"><a class="positive subdued" ng-href="#/mobilelogin"
@@ -48,10 +49,11 @@
 
 
     </form>
-
-
+    <!--<div class="padding-horizontal">-->
+    <!--<a ng-href="#/register" class="button full-image button-energized button-outline energized ">没有账号，请先注册</a>-->
+    <!--</div>-->
   </ion-content>
-  <p class="fixed-bottom text-center hide-on-keyboard-open">你还没有账号，请点击<a class="positive subdued" ng-href="#/register"
-                                                                         nav-direction=forward> 立即注册</a></p>
+  <!--<p class="fixed-bottom text-center hide-on-keyboard-open">你还没有账号，请点击<a class="positive subdued" ng-href="#/register"-->
+                                                                         <!--nav-direction=forward> 立即注册</a></p>-->
 </ion-view>
 
