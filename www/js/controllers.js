@@ -382,17 +382,22 @@ angular.module('starter.controllers', [])
     $scope.user = {};//提前定义用户对象
     $scope.agreedeal = true;//同意用户协议
     $scope.paraclass = true;
-
+    console.log($rootScope.account_login);
+    //从上一个登陆页面传递账号
+    if($rootScope.account_login){
+      $scope.user.account=$rootScope.account_login;
+      $rootScope.account_login=null;
+    }
     //根据会员账号检查是否需要邀请码
     $scope.getIsInvite = function (account) {
-      if(!account||account==undefined||account==""){
+      $rootScope.account_login=account;
+      if(!account||account==undefined||account==""||!localStorage.getItem("token")){
         return;
       }
 
       //是否存在
       AccountService.getuserexist(account).success(function (datas) {
-        if (datas.code != 1001 && account.toString().length == 11) {
-          $rootScope.account_login=account;
+        if (datas.code == 1401 && account.toString().length == 11) {
           CommonService.showConfirm('收收提示', datas.message, '立即注册', '返回登陆', 'register', 'login', '', '', '');
         }
         else {
@@ -490,17 +495,23 @@ angular.module('starter.controllers', [])
         }
       })
     }
+
     $scope.user = {};//提前定义用户对象
     $scope.agreedeal = true;//同意用户协议
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable
     $scope.isKeyup=false;//是否执行Keyup事件
+    //从上一个登陆页面传递账号
+    if($rootScope.account_login){
+      $scope.user.mobile=$rootScope.account_login;
+      $rootScope.account_login=null;
+    }
     $scope.checkphone = function (mobilephone) {//检查手机号
       if (/^1(3|4|5|7|8)\d{9}$/.test(mobilephone)) {
+        $rootScope.account_login=mobilephone;
         //是否存在
         AccountService.getuserexist(mobilephone).success(function (datas) {
-          if (datas.code != 1001 && mobilephone.toString().length == 11) {
-            $rootScope.account_login=mobilephone;
+          if (datas.code == 1401 && mobilephone.toString().length == 11) {
             CommonService.showConfirm('收收提示', datas.message, '立即注册', '返回登陆', 'register', 'mobilelogin', '', '', '');
             $scope.paraclass = false;
             $scope.isKeyup=true;
@@ -521,13 +532,15 @@ angular.module('starter.controllers', [])
 
 //根据会员账号检查是否需要邀请码
     $scope.getIsInvite = function (account) {
-      if(!account||account==undefined||account==""||$scope.isKeyup){
+      $rootScope.account_login=account;
+      if(!account||account==undefined||account==""||$scope.isKeyup||!localStorage.getItem("token")){
         return;
       }
+
       //是否存在
       AccountService.getuserexist(account).success(function (datas) {
-        if (datas.code != 1001 && account.toString().length == 11) {
-          $rootScope.account_login=account;
+        console.log(datas);
+        if (datas.code == 1401 && account.toString().length == 11) {
           CommonService.showConfirm('收收提示', datas.message, '立即注册', '返回登陆', 'register', 'mobilelogin', '', '', '');
         }
         else {
