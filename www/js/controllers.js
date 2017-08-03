@@ -385,6 +385,10 @@ angular.module('starter.controllers', [])
 
     //根据会员账号检查是否需要邀请码
     $scope.getIsInvite = function (account) {
+      if(!account||account==undefined||account==""){
+        return;
+      }
+
       //是否存在
       AccountService.getuserexist(account).success(function (datas) {
         if (datas.code != 1001 && account.toString().length == 11) {
@@ -513,6 +517,9 @@ angular.module('starter.controllers', [])
 
 //根据会员账号检查是否需要邀请码
     $scope.getIsInvite = function (account) {
+      if(!account||account==undefined||account==""){
+        return;
+      }
       //是否存在
       AccountService.getuserexist(account).success(function (datas) {
         if (datas.code != 1001 && account.toString().length == 11) {
