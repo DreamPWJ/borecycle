@@ -41,6 +41,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //主页面显示退出提示
       $ionicPlatform.registerBackButtonAction(function (e) {
         e.preventDefault();
+        if ($location.path() == '/mobilelogin') {//登录页面
+          $state.go("tab.main");//返回主页
+          return;
+        }
         // Is there a page to go back to? 制定页面返回退出程序
         if ($location.path() == '/tab/main') {
           if ($rootScope.backButtonPressedOnceToExit) {
