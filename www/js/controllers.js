@@ -390,8 +390,11 @@ angular.module('starter.controllers', [])
     }
     //根据会员账号检查是否需要邀请码
     $scope.getIsInvite = function (account) {
+      if(!account||account==undefined||account==""){
+        return;
+      }
       $rootScope.account_login=account;
-      if(!account||account==undefined||account==""||!localStorage.getItem("token")){
+      if(!localStorage.getItem("token")){
         return;
       }
 
@@ -532,11 +535,13 @@ angular.module('starter.controllers', [])
 
 //根据会员账号检查是否需要邀请码
     $scope.getIsInvite = function (account) {
-      $rootScope.account_login=account;
-      if(!account||account==undefined||account==""||$scope.isKeyup||!localStorage.getItem("token")){
+      if(!account||account==undefined||account==""||$scope.isKeyup){
         return;
       }
-
+      $rootScope.account_login=account;
+      if(!localStorage.getItem("token")){
+        return;
+      }
       //是否存在
       AccountService.getuserexist(account).success(function (datas) {
         console.log(datas);
