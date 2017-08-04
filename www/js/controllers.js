@@ -385,7 +385,6 @@ angular.module('starter.controllers', [])
     //从上一个登陆页面传递账号
     if($rootScope.account_login){
       $scope.user.account=$rootScope.account_login;
-      $rootScope.account_login=null;
     }
     //根据会员账号检查是否需要邀请码
     $scope.getIsInvite = function (account) {
@@ -421,6 +420,7 @@ angular.module('starter.controllers', [])
         console.log(data);
         $scope.userdata = data.data;
         if (data.code == 1001) {
+          $rootScope.account_login=null;
           localStorage.setItem("userid", data.data.userid);
           localStorage.setItem("usersecret", data.data.usersecret);
           //根据会员ID获取会员账号基本信息
@@ -505,7 +505,6 @@ angular.module('starter.controllers', [])
     //从上一个登陆页面传递账号
     if($rootScope.account_login){
       $scope.user.mobile=$rootScope.account_login;
-      $rootScope.account_login=null;
       $scope.paraclass =true;
     }
     $scope.checkphone = function (mobilephone) {//检查手机号
@@ -571,6 +570,7 @@ angular.module('starter.controllers', [])
         console.log(data);
         $scope.userdata = data.data;
         if (data.code == 1001) {
+          $rootScope.account_login=null;
           localStorage.setItem("userid", data.data.userid);
           localStorage.setItem("usersecret", data.data.usersecret);
           //根据会员ID获取会员账号基本信息
