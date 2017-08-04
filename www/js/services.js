@@ -584,7 +584,8 @@ angular.module('starter.services', [])
           if (item.checked) {
             $scope.ischecked = true;
           }
-        })
+        });
+        console.log(array);
       }
     }
 

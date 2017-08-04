@@ -1893,6 +1893,7 @@ angular.module('starter.controllers', [])
         item: JSON.stringify($scope.productLists)
       })
     }
+    console.log($scope.productLists);
   })
 
   //回收数量以及报价

@@ -38,7 +38,7 @@
           </ion-item>
           <div ng-show="showme1" ng-repeat="items in item.details">
             <ion-checkbox class="checkbox-positive item-divider" check-form ng-click="checkAtLeastOne(item.details,'checked')" ng-model="items.checked">
-              {{((items.type=="不限"||items.type==null)?"":items.type)+((items.size=="不限"||items.size==null)?"":items.size)+((items.other=="不限"||items.other==null)?"":items.other)}}
+              {{(((items.type=="不限"||items.type==null)?"":items.type)+((items.size=="不限"||items.size==null)?"":items.size)+((items.other=="不限"||items.other==null)?"":items.other))==""?items.name:(((items.type=="不限"||items.type==null)?"":items.type)+((items.size=="不限"||items.size==null)?"":items.size)+((items.other=="不限"||items.other==null)?"":items.other))}}
             </ion-checkbox>
           </div>
           <p></p>
