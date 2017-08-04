@@ -1202,8 +1202,8 @@ angular.module('starter.controllers', [])
     $scope.isxinxi = false;
     $scope.isfeipin = false;
     $scope.isershou = false;
+    $scope.isalldan=true;
     var user = JSON.parse(localStorage.getItem("user"));//用户信息
-    console.log(user);
     if (user.services.length == 1 && user.services.indexOf('1') != -1) {
       CommonService.showConfirm('收收提示', '尊敬的用户您好!信息供应者没有权限接单,请升级成为回收商!', '升级回收商', '暂不升级', 'organizingdata', '', '', {type: 2}, '');
       return;
@@ -1216,8 +1216,6 @@ angular.module('starter.controllers', [])
       CommonService.showConfirm('收收提示', '尊敬的用户您好!完善资料并且升级成为回收商才能接单!', '升级回收商', '暂不升级', 'organizingdata', '', '', {type: 2}, '');
       return;
     }
-
-
     $scope.tabIndex = $rootScope.hytype;//当前tabs页
     //如果取信息单，当会员不是上门回收者时取货场，否则到二手商家
     if ($scope.tabIndex == 0 && user.services.indexOf('2') == -1) {
@@ -1258,7 +1256,14 @@ angular.module('starter.controllers', [])
     if (user.services.indexOf('4') != -1) {
       $scope.isershou = true;
     }
-
+    //隐藏上面的选项卡
+    if(user.userext!=null)
+    {
+      if(user.userext.type=="2" || user.userext.type=="3" ||user.userext.type=="4" || user.userext.type=="2,"|| user.userext.type=="3,"|| user.userext.type=="4,")
+      {
+        $scope.isalldan=false;
+      }
+    }
 
     $rootScope.orderType = $scope.tabIndex;
     $scope.orderList = [];

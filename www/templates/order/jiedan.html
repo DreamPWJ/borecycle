@@ -6,8 +6,8 @@
   <ion-nav-title>
     <h1 class="title"><img id="logo" src="img/logo.png" alt=""/> 接单列表</h1>
   </ion-nav-title>
-  <ion-tabs id="orderlist-tab" class="tabs-light tabs-top" delegate-handle="my-handle-orderlist">
-    <div class="row row-horizontal-around text-center">
+  <ion-tabs  ng-if="isalldan"  id="orderlist-tab" class="tabs-light tabs-top" delegate-handle="my-handle-orderlist">
+    <div  class="row row-horizontal-around text-center">
       <span  ng-if="isxinxi" class="col-25 {{tabIndex==0?'active':''}}" ng-click="selectedTab(0)">信息单 </span>
       <span  ng-if="isfeipin" class="col-25 {{tabIndex==1?'active':''}}" ng-click="selectedTab(1)">废品货源</span>
       <span  ng-if="isershou" class="col-25 {{tabIndex==2?'active':''}}" ng-click="selectedTab(2)">二手货源</span>
@@ -16,7 +16,7 @@
   <ion-slide-box show-pager="false"
                  id="orderlist">
     <ion-slide>
-      <ion-content overflow-scroll="false" class="has-tabs-top stable-bg" has-bouncing="true">
+      <ion-content overflow-scroll="false" ng-class="isalldan?'has-tabs-top stable-bg':'stable-bg'" has-bouncing="true">
         <ion-refresher on-refresh="getOrderList(0)" pulling-text="下拉刷新"></ion-refresher>
         <p></p>
         <div ng-if="isNotData" class="isNotDataHint">
