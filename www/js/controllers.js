@@ -399,6 +399,7 @@ angular.module('starter.controllers', [])
       //是否存在
       AccountService.getuserexist(account).success(function (datas) {
         if (datas.code == 1401 && account.toString().length == 11) {
+          $rootScope.noExists=true;
           CommonService.showConfirm('收收提示', datas.message, '立即注册', '返回登陆', 'register', 'login', '', '', '');
         }
         else {
@@ -513,6 +514,7 @@ angular.module('starter.controllers', [])
         //是否存在
         AccountService.getuserexist(mobilephone).success(function (datas) {
           if (datas.code == 1401 && mobilephone.toString().length == 11) {
+            $rootScope.noExists=true;
             CommonService.showConfirm('收收提示', datas.message, '立即注册', '返回登陆', 'register', 'mobilelogin', '', '', '');
             $scope.paraclass = false;
             $scope.isKeyup=true;
@@ -544,6 +546,7 @@ angular.module('starter.controllers', [])
       AccountService.getuserexist(account).success(function (datas) {
         console.log(datas);
         if (datas.code == 1401 && account.toString().length == 11) {
+          $rootScope.noExists=true;
           CommonService.showConfirm('收收提示', datas.message, '立即注册', '返回登陆', 'register', 'mobilelogin', '', '', '');
         }
         else {
@@ -634,9 +637,10 @@ angular.module('starter.controllers', [])
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable;
     $scope.services = [{key: 2, value: "上门回收者"}, {key: 3, value: "货场"}, {key: 4, value: "二手商家"}];//用户类型数组
-    if($rootScope.account_login){
+    if($rootScope.account_login&&$rootScope.noExists){
       $scope.user.account=$rootScope.account_login;
       $rootScope.account_login=null;
+      $rootScope.noExists=null;
       $scope.paraclass = true;
     }
 
@@ -655,6 +659,7 @@ angular.module('starter.controllers', [])
     // }
     $scope.checkphoneandemail = function (mobilephone) {//检查手机号
       if (/^1(3|4|5|7|8)\d{9}$/.test(mobilephone)) {
+
         //是否存在
         AccountService.getuserexist(mobilephone).success(function (datas) {
           if (datas.code != 1001) {
