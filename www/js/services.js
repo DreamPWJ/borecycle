@@ -663,6 +663,17 @@ angular.module('starter.services', [])
         });
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       },
+      //验证两个值是否相等 equals
+      checkPwdEqual:function($scope,obj1, controlObj) {
+        if (obj1 != 0 && controlObj != 0) {
+          if (obj1 == controlObj)
+            return true;
+          else
+            return false;
+        }
+        else
+          return false;
+      },
       getuserexist: function (account) { //判断账号是否已存在
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise

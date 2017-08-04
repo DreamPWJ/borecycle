@@ -639,6 +639,7 @@ angular.module('starter.controllers', [])
       $rootScope.account_login=null;
       $scope.paraclass = true;
     }
+
     //如果没有授权先授权 或者超过两个小时
     if (!localStorage.getItem("token") || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
       //接口授权
@@ -669,7 +670,14 @@ angular.module('starter.controllers', [])
         $scope.paraclass = false;
       }
     }
-
+    $scope.checkrepwd = function (pwd,repwd) {//检查密码一致
+      AccountService.checkPwdEqual($scope, pwd,repwd);
+    }
+    $scope.blurcheckrepwd = function (pwd,repwd) {
+      if (!AccountService.checkPwdEqual($scope, pwd,repwd)) {
+        CommonService.toolTip("请确保与上面密码一致", "");
+      }
+    }
     //获取验证码
     $scope.getVerifyCode = function () {
       CommonService.getVerifyCode($scope, $scope.user.account);
@@ -738,7 +746,14 @@ angular.module('starter.controllers', [])
     $scope.checkphoneandemail = function (account) {//检查手机号和邮箱
       AccountService.checkMobilePhoneAndEmail($scope, account);
     }
-
+    $scope.checkrepwd = function (pwd,repwd) {//检查密码一致
+      AccountService.checkPwdEqual($scope, pwd,repwd);
+    }
+    $scope.blurcheckrepwd = function (pwd,repwd) {
+      if (!AccountService.checkPwdEqual($scope, pwd,repwd)) {
+        CommonService.toolTip("请确保与上面密码一致", "");
+      }
+    }
     //获取验证码
     $scope.getVerifyCode = function () {
       CommonService.getVerifyCode($scope, $scope.user.account);
