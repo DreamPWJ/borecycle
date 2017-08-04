@@ -382,7 +382,6 @@ angular.module('starter.controllers', [])
     $scope.user = {};//提前定义用户对象
     $scope.agreedeal = true;//同意用户协议
     $scope.paraclass = true;
-    console.log($rootScope.account_login);
     //从上一个登陆页面传递账号
     if($rootScope.account_login){
       $scope.user.account=$rootScope.account_login;
@@ -405,7 +404,6 @@ angular.module('starter.controllers', [])
         }
         else {
           AccountService.getIsInvite({account: account}).success(function (data) {
-            console.log(data);
             if (data.code == 1001) {
               $scope.isInvite = false;
             } else {
@@ -508,6 +506,7 @@ angular.module('starter.controllers', [])
     if($rootScope.account_login){
       $scope.user.mobile=$rootScope.account_login;
       $rootScope.account_login=null;
+      $scope.paraclass =true;
     }
     $scope.checkphone = function (mobilephone) {//检查手机号
       if (/^1(3|4|5|7|8)\d{9}$/.test(mobilephone)) {
