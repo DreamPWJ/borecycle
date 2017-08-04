@@ -3250,6 +3250,8 @@ angular.module('starter.controllers', [])
       $scope.supplyofgoods = [];//要提交的json数组
       $scope.wastenumdetails = [];//废旧数据详情
       $scope.secondhandnumdetails = [];//二手数据详情
+      $scope.wasteCategoryName = [];//废旧数据填写的品类
+      $scope.secondCategoryName = [];//二手数据填写的品类
       var user = JSON.parse(localStorage.getItem("user"));
 
       //获取废旧和二手 填写的num数据
@@ -3264,6 +3266,7 @@ angular.module('starter.controllers', [])
                 proname: itemitem.name,
                 unit: itemitem.unit
               })
+              $scope.wasteCategoryName.push(item.name);//废旧数据填写的品类
             }
             if (itemitem.secondhandnum) { //二手数据
               $scope.secondhandnumdetails.push({
@@ -3273,6 +3276,7 @@ angular.module('starter.controllers', [])
                 proname: itemitem.name,
                 unit: itemitem.unit
               })
+              $scope.secondCategoryName.push(item.name);//二手数据填写的品类
             }
           })
         }
@@ -3285,7 +3289,7 @@ angular.module('starter.controllers', [])
         items.motel = user.mobile;//登记人电话
         items.longitude = localStorage.getItem("longitude") || $scope.address.Lng || 0;//经度 默认为0   地址表里有经纬度值 如果没值现在的地区取经纬度
         items.latitude = localStorage.getItem("latitude") || $scope.address.Lat || 0;//纬度 默认为0 地址表里有经纬度值 如果没值现在的地区取经纬度
-        items.category = $scope.recyclingCategoryName.join(",");//货物品类 多个用逗号隔开
+        items.category =i == 0 ? $scope.wasteCategoryName.join(",") :$scope.secondCategoryName.join(",");//货物品类 多个用逗号隔开
         items.manufactor = "";//单选 登记货源是空
         items.addrcode = $scope.address.AddrCode;//地址code
         items.delivery = $scope.goods.delivery; //交货方式 1 上门回收(默认) 2 送货上门 登记信息直接用1
