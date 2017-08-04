@@ -23,7 +23,7 @@
           应付货款总金额 : {{orderinfo.amount | currency:'￥'}}
         </ion-item>
         <ion-item ng-if="orderinfo.type==1&&orderDetail.informationmoney">
-          应付信息费 : {{orderDetail.informationmoney | currency:'￥'}}
+          应付信息费 : {{orderDetail.informationmoney | currency:'￥'}}(系统自动扣款)
         </ion-item>
         <ion-item class="item-button-right" ng-if="orderinfo.type==2&&pay.choice==2">
           我的余额 : {{orderSum.account| currency:'￥'}} {{(orderSum.account < orderinfo.amount)?' (余额不足)':''}}
