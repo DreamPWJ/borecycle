@@ -664,7 +664,7 @@ angular.module('starter.services', [])
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       },
       //验证两个值是否相等 equals
-      checkPwdEqual:function($scope,obj1, controlObj) {
+      checkPwdEqual: function ($scope, obj1, controlObj) {
         if (obj1 != 0 && controlObj != 0) {
           if (obj1 == controlObj)
             return true;
@@ -2856,6 +2856,7 @@ angular.module('starter.services', [])
     return {
       request: function (config) {//通过实现 request 方法拦截请求: 该方法会在 $http 发送请求道后台之前执行
         if (config.url.toString().indexOf('http') === 0) {
+          config.timeout = 6000; //默认超时时间6s
           //http请求Loading加载动画
           $injector.get('$ionicLoading').show({
             template: '<p><ion-spinner icon="spiral" class="spinner-light"></ion-spinner><p>',
