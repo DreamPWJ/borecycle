@@ -1847,10 +1847,9 @@ angular.module('starter.controllers', [])
     $scope.productList = [];
     //获取产品品类
     OrderService.getProductList({ID: "", Name: ""}).success(function (data) {
-      console.log(data);
+      //console.log(data);
       if (data.code == 1001) {
         //$scope.productList = data.data;
-        console.log($scope.orderinfo.productname);
         angular.forEach(data.data, function (item) {
           if (("," + $scope.orderinfo.productname + ",").indexOf("," + item.name + ",") >= 0) {
             item.checked = true;
@@ -1866,18 +1865,30 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt(data.message, 'close');
       }
     }).then(function () {
-      angular.forEach($scope.productList, function (item) { //根据产品品类及是否统货取产品列表(最新报价)
-        OrderService.getProductListIsth({grpid: item.grpid, isth: 0}).success(function (data) {
-          $scope.data = data;
-        }).then(function () {
-          if ($scope.data.code == 1001) {
-            var items = item;
-            items.details = $scope.data.data;
-            $scope.productLists.push(items);
-          }
-        })
+      OrderService.getProductListIsth({grpid:'', isth: 0}).success(function (data) {
+        $scope.data = data;
+      }).then(function () {
+        if ($scope.data.code == 1001) {
+          // var items = item;
+          // items.details = $scope.data.data;
+          // $scope.productLists.push(items);
+
+          angular.forEach($scope.productList, function (item) { //根据产品品类及是否统货取产品列表(最新报价)
+
+            item.details=[];
+            angular.forEach($scope.data.data,function (items,index) {
+              if(item.grpid==items.grpid){
+                item.details.push(items);
+                //$scope.data.data.splice(index);
+              }
+            });
+            $scope.productLists.push(item);
+          });
+          console.log($scope.productLists);
+        }
 
       });
+
 
       // $scope.productList = $scope.productLists;
 

@@ -31,14 +31,14 @@
         <div ng-repeat="item in productLists" ng-if="item.checked" hide-show>
           <ion-item class="item-icon-left item-icon-right item-divider border-bottom" style="margin-bottom: 1px;" ng-click="toggle(1)">
             <i class="icon iconfont {{item.imgurl}}"></i>
-            {{item.details[$index].no}}
+            {{item.name}}
             <span class="f-right" ng-class="showme1?'calm':'green'">{{showme1?"展开":"收起"}}</span>
             <i ng-class="{true:'ion-ios-arrow-down',false:'ion-ios-arrow-right'}[showme1]"
                class="icon iconfont "></i>
           </ion-item>
-          <div ng-show="showme1" ng-repeat="items in item.details">
+          <div ng-show="showme1" ng-if="items.id!=16" ng-repeat="items in item.details">
             <ion-checkbox class="checkbox-positive item-divider" check-form ng-click="checkAtLeastOne(item.details,'checked')" ng-model="items.checked">
-              {{(((items.type=="不限"||items.type==null)?"":items.type)+((items.size=="不限"||items.size==null)?"":items.size)+((items.other=="不限"||items.other==null)?"":items.other))==""?items.name:(((items.type=="不限"||items.type==null)?"":items.type)+((items.size=="不限"||items.size==null)?"":items.size)+((items.other=="不限"||items.other==null)?"":items.other))}}
+              {{items.grpid==1?items.name:(((items.type=="不限"||items.type==null)?"":items.type)+((items.size=="不限"||items.size==null)?"":items.size)+((items.other=="不限"||items.other==null)?"":items.other))}}
             </ion-checkbox>
           </div>
           <p></p>

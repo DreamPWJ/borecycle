@@ -1972,7 +1972,7 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'GET',
           cache: true,
-          url: BoRecycle.api + "/api/product/getprolist/" + params.grpid + "/" + params.isth,
+          url: BoRecycle.api + "/api/product/getpronew",
           params: params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
