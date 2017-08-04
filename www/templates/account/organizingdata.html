@@ -91,10 +91,10 @@
                    ng-blur="checkForm(user.shopphone,'手机或固话格式错误,请更正！','phoneandtel','',true,'')" placeholder="固话格式:075523485305"
                    ng-required="user.usertype==1"/>
           </label>
-          <div ng-if="user.usertype==1">
+          <div >
             <div class="item item-input ">
               <span class="input-label"> 上传工作证 </span>
-              <input type="text" placeholder="请参考示例" class="col-60 " style="background-color: #FFFFFF" readonly>
+              <input type="text" placeholder="请参考示例 误传请重新传" class="col-60 " style="background-color: #FFFFFF" readonly>
               <i ng-click="uploadActionSheet()" class="icon iconfont icon-add positive"></i>
             </div>
             <div class="row  row-wrap row-horizontal-around">
