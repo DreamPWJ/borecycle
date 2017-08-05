@@ -8,7 +8,7 @@ keytool -list -v -keystore boolv.recycle.keystore
 #签名应用文件命令
 jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore  boolv.recycle.keystore android-release-unsigned.apk boolv.recycle
 
-#优化已签名APK文件 减少占用空间和内存
+#优化已签名APK文件 减少占用空间和内存 （'zipalign' 不是内部或外部命令，也不是可运行的程序 D:\androidsdk\tools 下面缺少zipalign.exe 去D:\androidsdk\build-tools\25.0.1下面复制）
 zipalign -v 4 android-release-unsigned.apk boolv.recycle.apk
 
 
