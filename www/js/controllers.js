@@ -1088,10 +1088,10 @@ angular.module('starter.controllers', [])
                   return;
                 }
               }
-              CommonService.platformPrompt("完善资料提交成功", '');
+              CommonService.platformPrompt("完善资料提交成功", 'tab.main');
             });
           } else {
-            CommonService.platformPrompt("完善资料提交成功", 'login');
+            CommonService.platformPrompt("完善资料提交成功", 'tab.main');
           }
 
         } else {

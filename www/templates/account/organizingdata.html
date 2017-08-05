@@ -89,7 +89,7 @@
             <span class="input-label icon ion-ios-telephone-outline"> 联系电话</span>
             <input type="text" name="shopphone" ng-model="user.shopphone" check-form
                    ng-blur="checkForm(user.shopphone,'手机或固话格式错误,请更正！','phoneandtel','',true,'')" placeholder="固话格式:075523485305"
-                   ng-required="user.usertype==1"/>
+                   />
           </label>
           <div ng-if="user.usertype==1">
             <div class="item item-input ">
