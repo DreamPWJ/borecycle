@@ -716,7 +716,7 @@ angular.module('starter.controllers', [])
       $scope.user.openID = localStorage.getItem("openid") || "";//微信openID
       console.log($scope.user);
 
-      AccountService.register($scope.user).success(function (data) {
+      AccountService.registernew($scope.user).success(function (data) {
         if (data.code == 1001) {
           $rootScope.registerUserType = $scope.user.usertype;
           $rootScope.registerUserServices = $scope.user.services;
@@ -724,7 +724,18 @@ angular.module('starter.controllers', [])
           if ($rootScope.isPhoneRegister) {
             $rootScope.phoneRegister = $scope.user.account;
           }
-          $state.go('organizingdata', {type: $scope.user.usertype});
+       //   $state.go('organizingdata', {type: $scope.user.usertype});
+          localStorage.setItem("userid", data.data.userid);
+          localStorage.setItem("usersecret", data.data.usersecret);
+          //根据会员ID获取会员账号基本信息
+            AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
+              if (data.code == 1001) {
+                localStorage.setItem("user", JSON.stringify(data.data));
+                $state.go('organizingdata', {type: $scope.user.usertype});
+              } else {
+                CommonService.platformPrompt(data.message, 'close');
+              }
+            });
         }
         CommonService.platformPrompt(data.message, 'close');
       })
