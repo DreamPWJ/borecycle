@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.boolv.recycle" version="1.0.98" android-versionCode="100098" xmlns="http://www.w3.org/ns/widgets">
+<widget id="com.boolv.recycle" version="1.0.99" android-versionCode="100099" xmlns="http://www.w3.org/ns/widgets">
   <name>收收</name>
   <description>收收是专注于再生资源回收再利用行业，为行业上下游客户提供货源、渠道、资金、信息的第三方服务平台。网站以直卖模式为创新点，为上游回收商提供直卖到拆解企业的交易服务，为下游拆解企业提供直买的货源整合服务，上下游直接对接解决行业物流成本高、回收效率低、货源渠道受限、资金流通不畅等问题，为行业发展搭建直通桥梁，牵手上下游两端客户，齐头并进，共建循环经济、物资再生的新形态&#xD;
   </description>
@@ -25,33 +25,32 @@
   <preference name="orientation" value="portrait"/>
   <preference name="REDIRECTURI" value="http://sns.whalecloud.com/sina2/callback"/>
   <feature name="JPushPlugin">
-    <param name="ios-package" value="JPushPlugin" />
-    <param name="onload" value="true" />
+    <param name="ios-package" value="JPushPlugin"/>
+    <param name="onload" value="true"/>
   </feature>
   <feature name="File">
-    <param name="ios-package" value="CDVFile" />
-    <param name="android-package" value="org.apache.cordova.file.FileUtils" />
+    <param name="ios-package" value="CDVFile"/>
+    <param name="android-package" value="org.apache.cordova.file.FileUtils"/>
   </feature>
   <feature name="FileTransfer">
-    <param name="ios-package" value="CDVFileTransfer" />
-    <param name="android-package" value="org.apache.cordova.filetransfer.FileTransfer" />
+    <param name="ios-package" value="CDVFileTransfer"/>
+    <param name="android-package" value="org.apache.cordova.filetransfer.FileTransfer"/>
   </feature>
   <platform name="android">
     <allow-intent href="market:*"/>
-    <icon src="resources\android\icon\drawable-ldpi-icon.png" density="ldpi"/>
-    <icon src="resources\android\icon\drawable-mdpi-icon.png" density="mdpi"/>
-    <icon src="resources\android\icon\drawable-hdpi-icon.png" density="hdpi"/>
-    <icon src="resources\android\icon\drawable-xhdpi-icon.png" density="xhdpi"/>
-    <icon src="resources\android\icon\drawable-xxhdpi-icon.png" density="xxhdpi"/>
-    <icon src="resources\android\icon\drawable-xxxhdpi-icon.png" density="xxxhdpi"/>
-    <splash src="resources\android\splash\drawable-port-ldpi-screen.png" density="port-ldpi"/>
-    <splash src="resources\android\splash\drawable-port-mdpi-screen.png" density="port-mdpi"/>
-    <splash src="resources\android\splash\drawable-port-hdpi-screen.png" density="port-hdpi"/>
-    <splash src="resources\android\splash\drawable-port-xhdpi-screen.png" density="port-xhdpi"/>
-    <splash src="resources\android\splash\drawable-port-xxhdpi-screen.png" density="port-xxhdpi"/>
-    <splash src="resources\android\splash\drawable-port-xxxhdpi-screen.png" density="port-xxxhdpi"/>
-    <!--    如果设备有SD卡（或等效的存储分区）。那么持久性文件将被存储在该空间的根路径下-->
-    <preference name="AndroidPersistentFileLocation" value="Compatibility" />
+    <preference name="AndroidPersistentFileLocation" value="Compatibility"/>
+    <icon src="resources/android/icon/drawable-ldpi-icon.png" density="ldpi"/>
+    <icon src="resources/android/icon/drawable-mdpi-icon.png" density="mdpi"/>
+    <icon src="resources/android/icon/drawable-hdpi-icon.png" density="hdpi"/>
+    <icon src="resources/android/icon/drawable-xhdpi-icon.png" density="xhdpi"/>
+    <icon src="resources/android/icon/drawable-xxhdpi-icon.png" density="xxhdpi"/>
+    <icon src="resources/android/icon/drawable-xxxhdpi-icon.png" density="xxxhdpi"/>
+    <splash src="resources/android/splash/drawable-port-ldpi-screen.png" density="port-ldpi"/>
+    <splash src="resources/android/splash/drawable-port-mdpi-screen.png" density="port-mdpi"/>
+    <splash src="resources/android/splash/drawable-port-hdpi-screen.png" density="port-hdpi"/>
+    <splash src="resources/android/splash/drawable-port-xhdpi-screen.png" density="port-xhdpi"/>
+    <splash src="resources/android/splash/drawable-port-xxhdpi-screen.png" density="port-xxhdpi"/>
+    <splash src="resources/android/splash/drawable-port-xxxhdpi-screen.png" density="port-xxxhdpi"/>
   </platform>
   <platform name="ios">
     <allow-intent href="itms:*"/>
@@ -88,6 +87,5 @@
   <plugin name="cordova-plugin-statusbar" spec="2.2.1"/>
   <plugin name="cordova-plugin-device" spec="1.1.4"/>
   <plugin name="cordova-plugin-splashscreen" spec="~4.0.1"/>
-  <icon src="resources\android\icon\drawable-xhdpi-icon.png"/>
-  <icon src="resources/ios/icon/icon-small@3x.png"/>
+  <icon src="resources/android/icon/drawable-xhdpi-icon.png"/>
 </widget>
