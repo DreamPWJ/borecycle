@@ -2901,6 +2901,11 @@ angular.module('starter.services', [])
       responseError: function (response) {//通过实现 responseError 方法拦截响应异常:后台调用失败 响应异常拦截器可以帮助我们恢复后台调用
         if (response.config.url.toString().indexOf('http') === 0) {
           $injector.get('$ionicLoading').hide();
+          if (response.status == 401) {
+            $injector.get('CommonService').platformPrompt("访问授权失败");
+          } else if (response.status == 404) {
+            $injector.get('CommonService').platformPrompt("访问连接404");
+          }
         }
         return response;
       }
