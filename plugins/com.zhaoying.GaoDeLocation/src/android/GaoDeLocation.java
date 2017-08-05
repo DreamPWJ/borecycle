@@ -21,6 +21,7 @@ import android.content.pm.PackageManager;
 import android.Manifest;
 import android.os.Build;
 import org.apache.cordova.LOG;
+import javax.security.auth.callback.Callback;
 
 /**
  * @author zhaoying
@@ -214,6 +215,7 @@ public class GaoDeLocation extends CordovaPlugin {
     }
   }
 
+  //系统询问是否授予权限的页面结束后会有回调
   public void onRequestPermissionResult(int requestCode, String[] permissions,
                                         int[] grantResults) throws JSONException {
     PluginResult result;
