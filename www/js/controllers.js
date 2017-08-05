@@ -383,23 +383,23 @@ angular.module('starter.controllers', [])
     $scope.agreedeal = true;//同意用户协议
     $scope.paraclass = true;
     //从上一个登陆页面传递账号
-    if($rootScope.account_login){
-      $scope.user.account=$rootScope.account_login;
+    if ($rootScope.account_login) {
+      $scope.user.account = $rootScope.account_login;
     }
     //根据会员账号检查是否需要邀请码
     $scope.getIsInvite = function (account) {
-      if(!account||account==undefined||account==""){
+      if (!account || account == undefined || account == "") {
         return;
       }
-      $rootScope.account_login=account;
-      if(!localStorage.getItem("token")){
+      $rootScope.account_login = account;
+      if (!localStorage.getItem("token")) {
         return;
       }
 
       //是否存在
       AccountService.getuserexist(account).success(function (datas) {
         if (datas.code == 1401 && account.toString().length == 11) {
-          $rootScope.noExists=true;
+          $rootScope.noExists = true;
           CommonService.showConfirm('收收提示', datas.message, '立即注册', '返回登陆', 'register', 'login', '', '', '');
         }
         else {
@@ -421,7 +421,7 @@ angular.module('starter.controllers', [])
         console.log(data);
         $scope.userdata = data.data;
         if (data.code == 1001) {
-          $rootScope.account_login=null;
+          $rootScope.account_login = null;
           localStorage.setItem("userid", data.data.userid);
           localStorage.setItem("usersecret", data.data.usersecret);
           //根据会员ID获取会员账号基本信息
@@ -476,7 +476,7 @@ angular.module('starter.controllers', [])
   })
 
   //手机验证登录页面
-  .controller('MobileLoginCtrl', function ($scope, $state, $rootScope, $interval,$ionicGesture, CommonService, MainService, AccountService) {
+  .controller('MobileLoginCtrl', function ($scope, $state, $rootScope, $interval, $ionicGesture, CommonService, MainService, AccountService) {
     $rootScope.commonService = CommonService;
     //删除记住用户信息
     localStorage.removeItem("userid");
@@ -502,22 +502,22 @@ angular.module('starter.controllers', [])
     $scope.agreedeal = true;//同意用户协议
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable
-    $scope.isKeyup=false;//是否执行Keyup事件
+    $scope.isKeyup = false;//是否执行Keyup事件
     //从上一个登陆页面传递账号
-    if($rootScope.account_login){
-      $scope.user.mobile=$rootScope.account_login;
-      $scope.paraclass =true;
+    if ($rootScope.account_login) {
+      $scope.user.mobile = $rootScope.account_login;
+      $scope.paraclass = true;
     }
     $scope.checkphone = function (mobilephone) {//检查手机号
       if (/^1(3|4|5|7|8)\d{9}$/.test(mobilephone)) {
-        $rootScope.account_login=mobilephone;
+        $rootScope.account_login = mobilephone;
         //是否存在
         AccountService.getuserexist(mobilephone).success(function (datas) {
           if (datas.code == 1401 && mobilephone.toString().length == 11) {
-            $rootScope.noExists=true;
+            $rootScope.noExists = true;
             CommonService.showConfirm('收收提示', datas.message, '立即注册', '返回登陆', 'register', 'mobilelogin', '', '', '');
             $scope.paraclass = false;
-            $scope.isKeyup=true;
+            $scope.isKeyup = true;
           }
           else {
             $scope.paraclass = true;
@@ -535,18 +535,18 @@ angular.module('starter.controllers', [])
 
 //根据会员账号检查是否需要邀请码
     $scope.getIsInvite = function (account) {
-      if(!account||account==undefined||account==""||$scope.isKeyup){
+      if (!account || account == undefined || account == "" || $scope.isKeyup) {
         return;
       }
-      $rootScope.account_login=account;
-      if(!localStorage.getItem("token")){
+      $rootScope.account_login = account;
+      if (!localStorage.getItem("token")) {
         return;
       }
       //是否存在
       AccountService.getuserexist(account).success(function (datas) {
         console.log(datas);
         if (datas.code == 1401 && account.toString().length == 11) {
-          $rootScope.noExists=true;
+          $rootScope.noExists = true;
           CommonService.showConfirm('收收提示', datas.message, '立即注册', '返回登陆', 'register', 'mobilelogin', '', '', '');
         }
         else {
@@ -573,7 +573,7 @@ angular.module('starter.controllers', [])
         console.log(data);
         $scope.userdata = data.data;
         if (data.code == 1001) {
-          $rootScope.account_login=null;
+          $rootScope.account_login = null;
           localStorage.setItem("userid", data.data.userid);
           localStorage.setItem("usersecret", data.data.usersecret);
           //根据会员ID获取会员账号基本信息
@@ -637,10 +637,10 @@ angular.module('starter.controllers', [])
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable;
     $scope.services = [{key: 2, value: "上门回收者"}, {key: 3, value: "货场"}, {key: 4, value: "二手商家"}];//用户类型数组
-    if($rootScope.account_login&&$rootScope.noExists){
-      $scope.user.account=$rootScope.account_login;
-      $rootScope.account_login=null;
-      $rootScope.noExists=null;
+    if ($rootScope.account_login && $rootScope.noExists) {
+      $scope.user.account = $rootScope.account_login;
+      $rootScope.account_login = null;
+      $rootScope.noExists = null;
       $scope.paraclass = true;
     }
 
@@ -675,11 +675,11 @@ angular.module('starter.controllers', [])
         $scope.paraclass = false;
       }
     }
-    $scope.checkrepwd = function (pwd,repwd) {//检查密码一致
-      AccountService.checkPwdEqual($scope, pwd,repwd);
+    $scope.checkrepwd = function (pwd, repwd) {//检查密码一致
+      AccountService.checkPwdEqual($scope, pwd, repwd);
     }
-    $scope.blurcheckrepwd = function (pwd,repwd) {
-      if (!AccountService.checkPwdEqual($scope, pwd,repwd)) {
+    $scope.blurcheckrepwd = function (pwd, repwd) {
+      if (!AccountService.checkPwdEqual($scope, pwd, repwd)) {
         CommonService.toolTip("请确保与上面密码一致", "");
       }
     }
@@ -724,18 +724,18 @@ angular.module('starter.controllers', [])
           if ($rootScope.isPhoneRegister) {
             $rootScope.phoneRegister = $scope.user.account;
           }
-       //   $state.go('organizingdata', {type: $scope.user.usertype});
+          //   $state.go('organizingdata', {type: $scope.user.usertype});
           localStorage.setItem("userid", data.data.userid);
           localStorage.setItem("usersecret", data.data.usersecret);
           //根据会员ID获取会员账号基本信息
-            AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
-              if (data.code == 1001) {
-                localStorage.setItem("user", JSON.stringify(data.data));
-                $state.go('organizingdata', {type: $scope.user.usertype});
-              } else {
-                CommonService.platformPrompt(data.message, 'close');
-              }
-            });
+          AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
+            if (data.code == 1001) {
+              localStorage.setItem("user", JSON.stringify(data.data));
+              $state.go('organizingdata', {type: $scope.user.usertype});
+            } else {
+              CommonService.platformPrompt(data.message, 'close');
+            }
+          });
         }
         CommonService.platformPrompt(data.message, 'close');
       })
@@ -762,11 +762,11 @@ angular.module('starter.controllers', [])
     $scope.checkphoneandemail = function (account) {//检查手机号和邮箱
       AccountService.checkMobilePhoneAndEmail($scope, account);
     }
-    $scope.checkrepwd = function (pwd,repwd) {//检查密码一致
-      AccountService.checkPwdEqual($scope, pwd,repwd);
+    $scope.checkrepwd = function (pwd, repwd) {//检查密码一致
+      AccountService.checkPwdEqual($scope, pwd, repwd);
     }
-    $scope.blurcheckrepwd = function (pwd,repwd) {
-      if (!AccountService.checkPwdEqual($scope, pwd,repwd)) {
+    $scope.blurcheckrepwd = function (pwd, repwd) {
+      if (!AccountService.checkPwdEqual($scope, pwd, repwd)) {
         CommonService.toolTip("请确保与上面密码一致", "");
       }
     }
@@ -1024,7 +1024,10 @@ angular.module('starter.controllers', [])
       })
 
     }
-    $scope.location();//自动定位
+    //页面加载完成自动定位
+    $scope.$on('$ionicView.afterEnter', function () {
+      $scope.location();//自动定位
+    })
 
     //用户类型选择
     $scope.userTypeSelect = function (type) {
@@ -1171,39 +1174,7 @@ angular.module('starter.controllers', [])
     if (!CommonService.isLogin(true)) {
       return;
     }
-    //获取当前位置 定位
-    $scope.location = function (param) {
-      CommonService.getLocation(function () {
-        //当前位置 定位
-        AccountService.getCurrentCity({
-          key: BoRecycle.gaoDeKey,
-          location: Number($scope.handlongitude || localStorage.getItem("longitude")).toFixed(6) + "," + Number($scope.handlatitude || localStorage.getItem("latitude")).toFixed(6),
-          radius: 3000,//  查询POI的半径范围。取值范围：0~3000,单位：米
-          extensions: 'all',//返回结果控制
-          batch: false, //batch=true为批量查询。batch=false为单点查询
-          roadlevel: 0//可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
-        }).success(function (data) {
-          console.log(data);
-          var addressComponent = data.regeocode.addressComponent;
-          $scope.addresspois = data.regeocode.pois;
-          $scope.city = addressComponent.city;
-          $scope.ssx = addressComponent.province + addressComponent.city + addressComponent.district;//省市县
-        }).then(function () {
-          if (param == 1) {
-            AddressService.getAddressBySSX({ssx: $scope.ssx, level: 3}).success(function (data) {
-              console.log(data);
-              if (data.code == 1001) {
-                $scope.addrareacountyone = data.data;
-              } else {
-                CommonService.platformPrompt(data.message, "close")
-              }
-            })
-          }
-        })
-      })
 
-    }
-    $scope.location(1);//自动定位
     $scope.$on('$ionicView.beforeEnter', function () {
       if (!$ionicHistory.backView()) { //有没有上级
         //如果授权超过两个小时 单独授权
@@ -1228,17 +1199,27 @@ angular.module('starter.controllers', [])
       }
     })
 
+    //获取当前位置 定位
+    $scope.location = function () {
+      CommonService.getLocation(function () {
+      })
+    }
+    //页面加载完成自动定位
+    $scope.$on('$ionicView.afterEnter', function () {
+      $scope.location();//自动定位
+    })
+
     $rootScope.hytype = $stateParams.hytype;
     $scope.isxinxi = false;
     $scope.isfeipin = false;
     $scope.isershou = false;
-    $scope.isalldan=true;
+    $scope.isalldan = true;
     var user = JSON.parse(localStorage.getItem("user"));//用户信息
     if (user.services.length == 1 && user.services.indexOf('1') != -1) {
       CommonService.showConfirm('收收提示', '尊敬的用户您好!信息供应者没有权限接单,请升级成为回收商!', '升级回收商', '暂不升级', 'organizingdata', '', '', {type: 2}, '');
       return;
     }
-    if ((user.services.indexOf('2') != -1 || user.services.indexOf('3') != -1 ||user.services.indexOf('4') != -1)&& !user.userext) {
+    if ((user.services.indexOf('2') != -1 || user.services.indexOf('3') != -1 || user.services.indexOf('4') != -1) && !user.userext) {
       CommonService.showConfirm('收收提示', '尊敬的用户您好!完善资料才能接单!', '完善资料', '暂不完善', 'organizingdata', '', '', {type: 2}, '');
       return;
     }
@@ -1287,11 +1268,9 @@ angular.module('starter.controllers', [])
       $scope.isershou = true;
     }
     //隐藏上面的选项卡
-    if(user.userext!=null)
-    {
-      if(user.userext.type=="2" || user.userext.type=="3" ||user.userext.type=="4" || user.userext.type=="2,"|| user.userext.type=="3,"|| user.userext.type=="4,")
-      {
-        $scope.isalldan=false;
+    if (user.userext != null) {
+      if (user.userext.type == "2" || user.userext.type == "3" || user.userext.type == "4" || user.userext.type == "2," || user.userext.type == "3," || user.userext.type == "4,") {
+        $scope.isalldan = false;
       }
     }
 
@@ -1375,8 +1354,8 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt("登记货源单二手接单会员身份必须是二手商家", 'close');
         return;
       }
-      if(user.certstate.substr(3,1)!="2"){
-        CommonService.showConfirm('接单提示','尊敬的用户，您好！请先进行“实名认证”后再接单！', '实名认证', '暂不认证', 'realname', '', '', '', '');
+      if (user.certstate.substr(3, 1) != "2") {
+        CommonService.showConfirm('接单提示', '尊敬的用户，您好！请先进行“实名认证”后再接单！', '实名认证', '暂不认证', 'realname', '', '', '', '');
         return;
       }
       //添加接单收货/货源归集(添加回收时明细不能为空，接单时明细为空)
@@ -1876,7 +1855,7 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt(data.message, 'close');
       }
     }).then(function () {
-      OrderService.getProductListIsth({grpid:'', isth: 0}).success(function (data) {
+      OrderService.getProductListIsth({grpid: '', isth: 0}).success(function (data) {
         $scope.data = data;
       }).then(function () {
         if ($scope.data.code == 1001) {
@@ -1886,9 +1865,9 @@ angular.module('starter.controllers', [])
 
           angular.forEach($scope.productList, function (item) { //根据产品品类及是否统货取产品列表(最新报价)
 
-            item.details=[];
-            angular.forEach($scope.data.data,function (items,index) {
-              if(item.grpid==items.grpid){
+            item.details = [];
+            angular.forEach($scope.data.data, function (items, index) {
+              if (item.grpid == items.grpid) {
                 item.details.push(items);
                 //$scope.data.data.splice(index);
               }
@@ -2310,8 +2289,10 @@ angular.module('starter.controllers', [])
       })
 
     }
-    $scope.location();//自动定位
-
+    //页面加载完成自动定位
+    $scope.$on('$ionicView.afterEnter', function () {
+      $scope.location();//自动定位
+    })
     //modal打开 加载数据
     $scope.$on('modal.shown', function () {
       if ($scope.modalName == 'citymodal') {
@@ -2580,7 +2561,10 @@ angular.module('starter.controllers', [])
       $scope.buttonText = '修改';
     } else {//增加自动默认地址
       $scope.addrinfoother.isstatus = true;
-      $scope.location();//自动定位
+      //页面加载完成自动定位
+      $scope.$on('$ionicView.afterEnter', function () {
+        $scope.location();//自动定位
+      })
     }
     //增加地址方法
     $scope.dealaddresssubmit = function () {
@@ -3100,7 +3084,11 @@ angular.module('starter.controllers', [])
       })
 
     }
-    $scope.location(1);//自动定位
+    //页面加载完成自动定位
+    $scope.$on('$ionicView.afterEnter', function () {
+      $scope.location(1);//自动定位
+    })
+
 //实现单选
     $scope.multipleChoice = function (array, item) {
       item.checked ? item.checked = false : item.checked = true;
@@ -3312,7 +3300,7 @@ angular.module('starter.controllers', [])
         items.motel = user.mobile;//登记人电话
         items.longitude = localStorage.getItem("longitude") || $scope.address.Lng || 0;//经度 默认为0   地址表里有经纬度值 如果没值现在的地区取经纬度
         items.latitude = localStorage.getItem("latitude") || $scope.address.Lat || 0;//纬度 默认为0 地址表里有经纬度值 如果没值现在的地区取经纬度
-        items.category =i == 0 ? $scope.wasteCategoryName.join(",") :$scope.secondCategoryName.join(",");//货物品类 多个用逗号隔开
+        items.category = i == 0 ? $scope.wasteCategoryName.join(",") : $scope.secondCategoryName.join(",");//货物品类 多个用逗号隔开
         items.manufactor = "";//单选 登记货源是空
         items.addrcode = $scope.address.AddrCode;//地址code
         items.delivery = $scope.goods.delivery; //交货方式 1 上门回收(默认) 2 送货上门 登记信息直接用1
