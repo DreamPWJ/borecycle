@@ -3352,6 +3352,7 @@ angular.module('starter.controllers', [])
   .controller('ModifyCategoryCtrl', function ($scope, $rootScope, $stateParams, CommonService, OrderService, AccountService) {
     $scope.user = {};//用户信息
     var user = JSON.parse(localStorage.getItem("user"));//用户信息
+    console.log(user.userext.prodgroup);
     $scope.supplyOfGoods = function () {
       $scope.productLists = [];//产品品类
       //获取产品品类
@@ -3359,7 +3360,7 @@ angular.module('starter.controllers', [])
         if (data.code == 1001) {
           $scope.productList = data.data;
           angular.forEach($scope.productList, function (item, index) {
-            if (user.userext.prodgroup.toString().indexOf(item.grpid) != -1) {
+            if ((","+user.userext.prodgroup+",").indexOf(","+item.grpid+",") >=0) {
               $scope.productList[index].checked = true;
               $scope.ischecked = true;
             }
@@ -3379,11 +3380,20 @@ angular.module('starter.controllers', [])
     //修改回收品类
     $scope.modifycategorySubmit = function () {
       $scope.recyclingCategory = [];//回收品类
+      var isModify=true;//是否修改
+      var grpids=user.userext.prodgroup.split(',');
       angular.forEach($scope.productList, function (item) {
         if (item.checked) {
           $scope.recyclingCategory.push(item.grpid);
         }
-      })
+      });
+      if(grpids.sort().join(',')==$scope.recyclingCategory.sort().join(',')) {
+        isModify=false;
+      }
+      if(!isModify){
+        CommonService.platformPrompt("回收品类修改成功", '');
+        return;
+      }
       $scope.user.username = user.userext.name;//用户名
       $scope.user.mobile = user.userext.phone;//手机号码
       $scope.user.userid = localStorage.getItem("userid");//用户id
@@ -3391,11 +3401,10 @@ angular.module('starter.controllers', [])
       $scope.user.recoveryqty = user.userext.recovery;//月回收量
       $scope.user.grps = $scope.recyclingCategory.join(",");
       $scope.user.addrcode = user.userext.addrcode;
-      console.log($scope.user);return;
+
       AccountService.setUserInfo($scope.user).success(function (data) {
-        console.log(data);
         if (data.code == 1001) {
-          CommonService.platformPrompt("修改回收品类提交成功", '');
+          CommonService.platformPrompt("回收品类修改成功", '');
         } else {
           CommonService.platformPrompt(data.message, 'close');
         }
@@ -3410,7 +3419,7 @@ angular.module('starter.controllers', [])
               //用户会员类型  0 无 1信息提供者  2回收者
               localStorage.setItem("usertype", (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
             }
-          })
+          });
         }
       })
     }
