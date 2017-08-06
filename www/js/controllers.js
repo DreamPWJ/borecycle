@@ -1297,7 +1297,7 @@ angular.module('starter.controllers', [])
         State: "2,3",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
         longt: localStorage.getItem("longitude") || "", //当前经度（获取距离）(可为空)
         lat: localStorage.getItem("latitude") || "",//当前纬度（获取距离）(可为空)
-        expiry: ""//小时 取预警数据 订单预警数据（24小时截至马上过期的（expiry=3表示取3小时内）
+        expiry: ""//小时 取预警数据 订单预警数据（72小时截至马上过期的（expiry=3表示取3小时内）
       }
       OrderService.getDengJiList($scope.params, $scope.datas).success(function (data) {
           $scope.isNotData = false;
@@ -1368,7 +1368,7 @@ angular.module('starter.controllers', [])
       }
       OrderService.addOrderReceipt($scope.jiedandata).success(function (data) {
         if (data.code == 1001) {
-          CommonService.showConfirm('接单提示', '尊敬的用户,您好！恭喜您,接单成功！订单有效期为24小时,请您务必在24小时之内上门回收！', '查看订单', '继续接单', 'orderdetails', 'jiedan', '',
+          CommonService.showConfirm('接单提示', '尊敬的用户,您好！恭喜您,接单成功！订单有效期为72小时,请您务必在72小时之内上门回收！', '查看订单', '继续接单', 'orderdetails', 'jiedan', '',
             {
               no: data.data,
               type: 2,
@@ -1630,7 +1630,7 @@ angular.module('starter.controllers', [])
         State: $scope.tabIndex == 0 ? "1,2,3,4,5" : "",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
         longt: "", //当前经度（获取距离）(可为空)
         lat: "",//当前纬度（获取距离）(可为空)
-        expiry: ""//小时 取预警数据 订单预警数据（24小时截至马上过期的（expiry=3表示取3小时内）
+        expiry: ""//小时 取预警数据 订单预警数据（72小时截至马上过期的（expiry=3表示取3小时内）
       }
       OrderService.getDengJiList($scope.params, $scope.datas).success(function (data) {
         if ($scope.tabIndex == 0) {//未完成订单
@@ -1775,7 +1775,7 @@ angular.module('starter.controllers', [])
         lat: localStorage.getItem("latitude") || "",//当前纬度（获取距离）(可为空)
         ORNO: "",//接单单号(可为空)
         ORuserid: localStorage.getItem("userid"),//接单人(不能为空)
-        expiry: 6 //小时 取预警数据 订单预警数据（24小时截至马上过期的（expiry=3表示取3小时内））
+        expiry: 6 //小时 取预警数据 订单预警数据（72小时截至马上过期的（expiry=3表示取3小时内））
       }
 
       OrderService.getOrderReceiptList($scope.params, $scope.datas).success(function (data) {
