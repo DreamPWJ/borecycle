@@ -2904,6 +2904,8 @@ angular.module('starter.services', [])
             $injector.get('CommonService').platformPrompt("访问授权失败");
           } else if (response.status == 404) {
             $injector.get('CommonService').platformPrompt("访问连接404");
+          } else if (response.status == -1) {
+            $injector.get('CommonService').platformPrompt("网络请求超时");
           }
         }
         return response;
