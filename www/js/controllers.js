@@ -626,16 +626,7 @@ angular.module('starter.controllers', [])
       $scope.paraclass = true;
     }
 
-    //如果没有授权先授权 或者超过两个小时
-    if (!localStorage.getItem("token") || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
-      //接口授权
-      MainService.authLogin({grant_type: 'client_credentials'}).success(function (data) {
-        if (data.access_token) {
-          localStorage.setItem("token", data.access_token);//公共接口授权token
-          localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
-        }
-      })
-    }
+
     // $scope.checkphoneandemail = function (account) {//检查手机号和邮箱
     //   AccountService.checkMobilePhoneAndEmail($scope, account);
     // }
@@ -730,16 +721,7 @@ angular.module('starter.controllers', [])
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable;
 
-    //如果没有授权先授权 或者超过两个小时
-    if (!localStorage.getItem("token") || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
-      //接口授权
-      MainService.authLogin({grant_type: 'client_credentials'}).success(function (data) {
-        if (data.access_token) {
-          localStorage.setItem("token", data.access_token);//公共接口授权token
-          localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
-        }
-      })
-    }
+
     $scope.checkphoneandemail = function (account) {//检查手机号和邮箱
       AccountService.checkMobilePhoneAndEmail($scope, account);
     }
@@ -875,16 +857,6 @@ angular.module('starter.controllers', [])
         })
       }
 
-      //如果没有授权先授权 或者超过两个小时
-      if (!localStorage.getItem("token") || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
-        //接口授权
-        MainService.authLogin({grant_type: 'client_credentials'}).success(function (data) {
-          if (data.access_token) {
-            localStorage.setItem("token", data.access_token);//公共接口授权token
-            localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
-          }
-        })
-      }
     }
 
 //获取产品品类
@@ -1146,28 +1118,6 @@ angular.module('starter.controllers', [])
       return;
     }
 
-    $scope.$on('$ionicView.beforeEnter', function () {
-      if (!$ionicHistory.backView()) { //有没有上级
-        //如果授权超过两个小时 单独授权
-        if (((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
-          //接口授权
-          MainService.authLogin(
-            {
-              grant_type: 'password',
-              username: localStorage.getItem("userid"),
-              password: localStorage.getItem("usersecret")
-            }).success(function (data) {
-            if (data.access_token) {
-              localStorage.setItem("token", data.access_token);//登录接口授权token
-              localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
-            } else {
-              CommonService.platformPrompt("获取登录接口授权token失败", 'close');
-              return;
-            }
-          })
-        }
-      }
-    })
 
     //获取当前位置 定位
     $scope.location = function () {
@@ -1363,28 +1313,7 @@ angular.module('starter.controllers', [])
     if (!CommonService.isLogin(true)) {
       return;
     }
-    $scope.$on('$ionicView.beforeEnter', function () {
-      if (!$ionicHistory.backView()) { //有没有上级
-        //如果授权超过两个小时 单独授权
-        if (((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
-          //接口授权
-          MainService.authLogin(
-            {
-              grant_type: 'password',
-              username: localStorage.getItem("userid"),
-              password: localStorage.getItem("usersecret")
-            }).success(function (data) {
-            if (data.access_token) {
-              localStorage.setItem("token", data.access_token);//登录接口授权token
-              localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
-            } else {
-              CommonService.platformPrompt("获取登录接口授权token失败", 'close');
-              return;
-            }
-          })
-        }
-      }
-    })
+
     var user = JSON.parse(localStorage.getItem("user"));//用户信息
     $scope.tabOrderIndex = $stateParams.state;
     $scope.tabIndex = $scope.tabOrderIndex;//当前tabs页
@@ -2859,28 +2788,7 @@ angular.module('starter.controllers', [])
     if (!CommonService.isLogin(true)) {
       return;
     }
-    $scope.$on('$ionicView.beforeEnter', function () {
-      if (!$ionicHistory.backView()) { //有没有上级
-        //如果授权超过两个小时 单独授权
-        if (((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
-          //接口授权
-          MainService.authLogin(
-            {
-              grant_type: 'password',
-              username: localStorage.getItem("userid"),
-              password: localStorage.getItem("usersecret")
-            }).success(function (data) {
-            if (data.access_token) {
-              localStorage.setItem("token", data.access_token);//登录接口授权token
-              localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
-            } else {
-              CommonService.platformPrompt("获取登录接口授权token失败", 'close');
-              return;
-            }
-          })
-        }
-      }
-    })
+
 
     CommonService.customModal($scope, 'templates/modal/addressmodal.html');
     CommonService.customModal($scope, 'templates/modal/nearbyaddressmodal.html', 1);
@@ -3099,28 +3007,7 @@ angular.module('starter.controllers', [])
     if (!CommonService.isLogin(true)) {
       return;
     }
-    $scope.$on('$ionicView.beforeEnter', function () {
-      if (!$ionicHistory.backView()) { //有没有上级
-        //如果授权超过两个小时 单独授权
-        if (((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
-          //接口授权
-          MainService.authLogin(
-            {
-              grant_type: 'password',
-              username: localStorage.getItem("userid"),
-              password: localStorage.getItem("usersecret")
-            }).success(function (data) {
-            if (data.access_token) {
-              localStorage.setItem("token", data.access_token);//登录接口授权token
-              localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
-            } else {
-              CommonService.platformPrompt("获取登录接口授权token失败", 'close');
-              return;
-            }
-          })
-        }
-      }
-    });
+
     $scope.supplyOfGoods = function () {
       $scope.goods = {//货源信息
         delivery: 1//默认上门回收
