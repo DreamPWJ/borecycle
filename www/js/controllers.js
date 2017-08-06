@@ -31,7 +31,7 @@ angular.module('starter.controllers', [])
           CommonService.platformPrompt("获取统计货量数据失败", 'close');
         }
 
-      });
+      })
 
 
       //获取极光推送registrationID
@@ -168,9 +168,7 @@ angular.module('starter.controllers', [])
           } else {
             CommonService.platformPrompt(data.message, 'close');
           }
-        }).error(function (err) {
-          console.log(err);
-        });
+        })
       }
     }
 
@@ -181,7 +179,6 @@ angular.module('starter.controllers', [])
           //获取公共接口授权token  公共接口授权token两个小时失效  超过两个小时重新请求
           if (!localStorage.getItem("token") || localStorage.getItem("token") == "undefined" || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
             MainService.authLogin({grant_type: 'client_credentials'}).success(function (data) {
-
               if (data.access_token) {
                 localStorage.setItem("token", data.access_token);//公共接口授权token
                 localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
@@ -455,7 +452,7 @@ angular.module('starter.controllers', [])
           }).error(function () {
             CommonService.platformPrompt("获取登录接口授权token失败", 'close');
             return;
-          });
+          })
         }
         $rootScope.loginAuth = $interval(function () {
           authLogin();
@@ -715,30 +712,10 @@ angular.module('starter.controllers', [])
           AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
             if (data.code == 1001) {
               localStorage.setItem("user", JSON.stringify(data.data));
-              if($scope.user.usertype==1){
-                $state.go('tab.main');
-              }else {
-                $state.go('organizingdata', {type: $scope.user.usertype});
-              }
+              $state.go('organizingdata', {type: $scope.user.usertype});
             } else {
               CommonService.platformPrompt(data.message, 'close');
             }
-          }).then(function () {
-            MainService.authLogin(
-              {
-                grant_type: 'password',
-                username: localStorage.getItem("userid"),
-                password: localStorage.getItem("usersecret")
-              }).success(function (data) {
-              if (data.access_token) {
-                localStorage.setItem("token", data.access_token);//登录接口授权token
-                localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
-              }
-
-            }).error(function () {
-              CommonService.platformPrompt("获取登录接口授权token失败", 'close');
-              return;
-            });
           });
         }
         CommonService.platformPrompt(data.message, 'close');
@@ -801,7 +778,7 @@ angular.module('starter.controllers', [])
   })
 
   //完善资料页面
-  .controller('OrganizingDataCtrl', function ($scope, $rootScope,$state, $stateParams, CommonService, MainService, $ionicHistory, BoRecycle, OrderService, AccountService, AddressService) {
+  .controller('OrganizingDataCtrl', function ($scope, $rootScope, $stateParams, CommonService, MainService, $ionicHistory, BoRecycle, OrderService, AccountService, AddressService) {
     //上传图片数组集合
     $scope.imageList = [];
     $scope.ImgsPicAddr = [];//图片信息数组
@@ -887,8 +864,17 @@ angular.module('starter.controllers', [])
           CommonService.platformPrompt(datas.message, 'close');
         }
       })
-    }
-    else {
+    } else {
+      //注册页面进入默认选中注册选中的回收商类型
+      if ($scope.user.usertype == 2) {
+        angular.forEach($scope.services, function (item, index) {
+          if ($rootScope.registerUserServices.indexOf(item.key) != -1) {
+            $scope.services[index].checked = true;
+            $scope.ischecked = true;
+          }
+        })
+      }
+
       //如果没有授权先授权 或者超过两个小时
       if (!localStorage.getItem("token") || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
         //接口授权
@@ -900,18 +886,7 @@ angular.module('starter.controllers', [])
         })
       }
     }
-    //如果是从注册页面进来的，且是回收商用户，自动赋值回收商子类
-    if($rootScope.registerUserServices){
-      var uss=$rootScope.registerUserServices;
-      angular.forEach(uss,function (item) {
-        angular.forEach($scope.services,function (item2) {
-          if(item2.key==item){
-            item2.checked=true;
-            $scope.ischecked = true;
-          }
-        });
-      });
-    }
+
 //获取产品品类
     OrderService.getProductList({ID: "", Name: ""}).success(function (data) {
       if (data.code == 1001) {
@@ -1080,20 +1055,15 @@ angular.module('starter.controllers', [])
                 localStorage.setItem("usertype", (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
               }
             }).then(function () {
-              //if ($scope.user.usertype == 2) {
+              if ($scope.user.usertype == 2) {
                 CommonService.platformPrompt("完善资料提交成功", 'close');
-                //完善资料提交成功后清除回收商选项值
-                if($rootScope.registerUserServices){
-                  $rootScope.registerUserServices=null;
-                }
                 var user = JSON.parse(localStorage.getItem("user"));
                 if (user.certstate.substr(3, 1) != 2) { //没有实名认证
-                  //CommonService.showConfirm('收收提示', '尊敬的用户,您好！实名认证完善认证信息后才能进行更多操作！', '实名认证', '暂不认证', 'realname', 'close', '', {status: 0});
-                  $state.go('realname',{status: 0});
+                  CommonService.showConfirm('收收提示', '尊敬的用户,您好！实名认证完善认证信息后才能进行更多操作！', '实名认证', '暂不认证', 'realname', 'close', '', {status: 0});
                   return;
                 }
-              //}
-              //CommonService.platformPrompt("完善资料提交成功", 'tab.main');
+              }
+              CommonService.platformPrompt("完善资料提交成功", 'tab.main');
             });
           } else {
             CommonService.platformPrompt("完善资料提交成功", 'tab.main');
@@ -1369,7 +1339,7 @@ angular.module('starter.controllers', [])
       }
       OrderService.addOrderReceipt($scope.jiedandata).success(function (data) {
         if (data.code == 1001) {
-          CommonService.showConfirm('接单提示', '尊敬的用户,您好！恭喜您,接单成功！订单有效期为72小时,请您务必在72小时之内上门回收！', '查看订单', '继续接单', 'orderdetails', 'jiedan', '',
+          CommonService.showConfirm('接单提示', '尊敬的用户,您好！恭喜您,接单成功！订单有效期为24小时,请您务必在24小时之内上门回收！', '查看订单', '继续接单', 'orderdetails', 'jiedan', '',
             {
               no: data.data,
               type: 2,
@@ -1631,7 +1601,7 @@ angular.module('starter.controllers', [])
         State: $scope.tabIndex == 0 ? "1,2,3,4,5" : "",//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
         longt: "", //当前经度（获取距离）(可为空)
         lat: "",//当前纬度（获取距离）(可为空)
-        expiry: ""//小时 取预警数据 订单预警数据（72小时截至马上过期的（expiry=3表示取3小时内）
+        expiry: ""//小时 取预警数据 订单预警数据（24小时截至马上过期的（expiry=3表示取3小时内）
       }
       OrderService.getDengJiList($scope.params, $scope.datas).success(function (data) {
         if ($scope.tabIndex == 0) {//未完成订单
@@ -1776,7 +1746,7 @@ angular.module('starter.controllers', [])
         lat: localStorage.getItem("latitude") || "",//当前纬度（获取距离）(可为空)
         ORNO: "",//接单单号(可为空)
         ORuserid: localStorage.getItem("userid"),//接单人(不能为空)
-        expiry: 6 //小时 取预警数据 订单预警数据（72小时截至马上过期的（expiry=3表示取3小时内））
+        expiry: 6 //小时 取预警数据 订单预警数据（24小时截至马上过期的（expiry=3表示取3小时内））
       }
 
       OrderService.getOrderReceiptList($scope.params, $scope.datas).success(function (data) {
@@ -3073,7 +3043,7 @@ angular.module('starter.controllers', [])
           return;
         }
         if (user.certstate.substr(3, 1) != 2) { //没有实名认证
-          CommonService.showConfirm('登记提示', '尊敬的用户,您好！选择以旧换新类型必须先实名认证后才能操作！', '实名认证', '暂不认证', 'organizingdata', 'close');
+          CommonService.showConfirm('登记提示', '尊敬的用户,您好！选择以旧换新类型必须先实名认证后才能操作！', '实名认证', '暂不认证', 'realname', 'close', '', {status: 0});
           return;
         }
       }
@@ -3353,7 +3323,6 @@ angular.module('starter.controllers', [])
   .controller('ModifyCategoryCtrl', function ($scope, $rootScope, $stateParams, CommonService, OrderService, AccountService) {
     $scope.user = {};//用户信息
     var user = JSON.parse(localStorage.getItem("user"));//用户信息
-    console.log(user);
     $scope.supplyOfGoods = function () {
       $scope.productLists = [];//产品品类
       //获取产品品类
@@ -3393,7 +3362,7 @@ angular.module('starter.controllers', [])
       $scope.user.recoveryqty = user.userext.recovery;//月回收量
       $scope.user.grps = $scope.recyclingCategory.join(",");
       $scope.user.addrcode = user.userext.addrcode;
-      //console.log($scope.user);return;
+      console.log($scope.user);return;
       AccountService.setUserInfo($scope.user).success(function (data) {
         console.log(data);
         if (data.code == 1001) {

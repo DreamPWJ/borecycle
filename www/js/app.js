@@ -7,7 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.config', 'starter.directive', 'starter.filter', 'ngCordova', 'ionic-native-transitions'])
 
-  .run(function ($ionicPlatform, $rootScope, $location, $ionicHistory, $cordovaToast, $cordovaNetwork, CommonService, $state) {
+  .run(function ($ionicPlatform, $rootScope, $location, $ionicHistory, $cordovaToast, $cordovaNetwork, CommonService, MainService, $state) {
     $ionicPlatform.ready(function () {
       localStorage.setItem("isStart", true);//记录首页启动轮播展示图已经展示
 
@@ -133,6 +133,37 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         window.open = window.cordova.InAppBrowser.open;
       }
 
+      //统一授权
+      $rootScope.$on('$ionicView.beforeEnter', function (event, data) {
+        //获取公共接口授权token  公共接口授权token两个小时失效  超过两个小时重新请求
+        if (!localStorage.getItem("userid") && (!localStorage.getItem("token") || localStorage.getItem("token") == "undefined" || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199)) {
+          MainService.authLogin({grant_type: 'client_credentials'}).success(function (data) {
+            if (data.access_token) {
+              localStorage.setItem("token", data.access_token);//公共接口授权token
+              localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
+            } else {
+              CommonService.platformPrompt("获取公众接口授权token失败", 'close');
+              return;
+            }
+          })
+        } else if (localStorage.getItem("userid") && ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
+          //登录授权
+          MainService.authLogin(
+            {
+              grant_type: 'password',
+              username: localStorage.getItem("userid"),
+              password: localStorage.getItem("usersecret")
+            }).success(function (data) {
+            if (data.access_token) {
+              localStorage.setItem("token", data.access_token);//登录接口授权token
+              localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
+            } else {
+              CommonService.platformPrompt("获取登录接口授权token失败", 'close');
+              return;
+            }
+          })
+        }
+      });
 
     });
   })
@@ -234,7 +265,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
       })
 
-      //我的回收订单页面
+      //我的接单订单页面
       .state('jiedan', {
         url: '/jiedan/:hytype', //orderType类型 0是我的回收单  1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
         cache: false,
@@ -242,6 +273,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'jiedanCtrl'
 
       })
+
+      //我的回收订单页面
       .state('order', {
         url: '/order/:state', //orderType类型 0是我的回收单  1.接单收货（回收者接的是“登记信息”） 2.货源归集（货场接的是“登记货源”）
         cache: false,
@@ -568,6 +601,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/wallet/recharge.html',
         controller: 'RechargeCtrl'
       })
+
       //生成邀请码
       .state('tuiguang', {
         url: '/tuiguang',
@@ -575,6 +609,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/tuiguang/index.html',
         controller: 'tuiguangCtrl'
       })
+
       //信息费标准
       .state('infee', {
         url: '/infee',
@@ -582,6 +617,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/infofee.html',
         controller: 'infeeCtrl'
       })
+
       //下载页
       .state('download', {
         url: '/download',
@@ -589,6 +625,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/download.html',
         controller: 'downloadCtrl'
       })
+
     // if none of the above states are matched, use this as the fallback
     //动态判断是否显示初始化页面
     if (localStorage.getItem('isStart')) {
