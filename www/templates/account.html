@@ -9,7 +9,7 @@
   <ion-content overflow-scroll="false" class="stable-bg account " has-bouncing="false">
     <div class="list  ">
       <a nav-direction=forward ng-href="#/accountinfo" class="item item-positive item-avatar   item-icon-right user">
-        <img ng-src="{{userdata.userfigure||img/head.jpg}}" class="border-radius-50" alt=""
+        <img ng-src="{{userdata.userfigure||'img/head.jpg'}}" class="border-radius-50" alt=""
              onerror="this.src='img/head.jpg'">
         <h2 ng-class={true:'padding-top'}[userdata.username==null&&userdata.nickname==null]>
           {{userdata.username||userdata.nickname}}</h2>
