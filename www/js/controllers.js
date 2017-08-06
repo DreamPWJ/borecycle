@@ -25,7 +25,6 @@ angular.module('starter.controllers', [])
       //首页统计货量
       $scope.cargoQuantity = {};
       OrderService.getCargoQuantity().success(function (data) {
-        console.log(data);
         if (data.code == 1001) {
           $scope.cargoQuantity = data.data;
         } else {
@@ -50,8 +49,7 @@ angular.module('starter.controllers', [])
               return;
             }
             $scope.jPushRegistrationID = data;
-            localStorage.setItem("jPushRegistrationID", data)
-            console.log("JPushPlugin:registrationID is " + data);
+            localStorage.setItem("jPushRegistrationID", data);
             //提交设备信息到服务器
             $scope.datas = {
               registration_id: $scope.jPushRegistrationID,	//极光注册id
@@ -63,9 +61,7 @@ angular.module('starter.controllers', [])
               Lon: localStorage.getItem("longitude") || 114.0557100,
               type: 2 //新app 2
             }
-            console.log(JSON.stringify($scope.datas));
             NewsService.setDeviceInfo($scope.datas).success(function (data) {
-              console.log(JSON.stringify(data));
               if (data.code == 1001) {
                 localStorage.setItem("jPushRegistrationID", $scope.jPushRegistrationID);
               } else {
@@ -81,7 +77,7 @@ angular.module('starter.controllers', [])
             })
 
           } catch (exception) {
-            console.log(exception);
+            //console.log(exception);
           }
         };
 
@@ -98,7 +94,6 @@ angular.module('starter.controllers', [])
           Enable: 1 //是否启用 1启用 2禁用
         }
         AccountService.getVersionsList($scope.versionparams).success(function (data) {
-          console.log(data);
           if (data.code == 1001) {
             $scope.versions = data.data.data_list[0];
             if (BoRecycle.version < $scope.versions.vercode) {
@@ -113,14 +108,12 @@ angular.module('starter.controllers', [])
 
         if (!localStorage.getItem("openid")) { //微信登录授权
           var wxcode = WeiXinService.getQueryString(window.location, "code");
-          console.log("================" + wxcode);
           if (wxcode) {
             //获取微信openid获取会员账号，如果没有则添加
             WeiXinService.getWCOpenId({
               code: wxcode,
               UserLogID: localStorage.getItem("userid") || ""
             }).success(function (data) {
-              console.log(data);
               if (data.code == 1001) {
                 localStorage.setItem("openid", data.data.OpenId);
                 if (data.data.UserLogID != null && data.data.usersecret != null) {
@@ -147,7 +140,6 @@ angular.module('starter.controllers', [])
           url: location.href.split('#')[0] //当前网页的URL，不包含#及其后面部分
         }
         WeiXinService.getWCSignature($scope.wxparams).success(function (data) {
-          console.log(data);
           if (data.code == 1001) {
             localStorage.setItem("timestamp", data.data.timestamp);//生成签名的时间戳
             localStorage.setItem("noncestr", data.data.noncestr);//生成签名的随机串
@@ -187,7 +179,6 @@ angular.module('starter.controllers', [])
           //获取公共接口授权token  公共接口授权token两个小时失效  超过两个小时重新请求
           if (!localStorage.getItem("token") || localStorage.getItem("token") == "undefined" || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
             MainService.authLogin({grant_type: 'client_credentials'}).success(function (data) {
-              console.log(data);
               if (data.access_token) {
                 localStorage.setItem("token", data.access_token);//公共接口授权token
                 localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
@@ -216,7 +207,6 @@ angular.module('starter.controllers', [])
               username: localStorage.getItem("userid"),
               password: localStorage.getItem("usersecret")
             }).success(function (data) {
-            console.log(data);
             if (data.access_token) {
               localStorage.setItem("token", data.access_token);//登录接口授权token
               localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
@@ -416,9 +406,7 @@ angular.module('starter.controllers', [])
     $scope.loginSubmit = function () {
       $scope.user.openID = localStorage.getItem("openid") || "";//微信openID
       $scope.user.client = ionic.Platform.isWebView() ? 0 : (ionic.Platform.is('android') ? 1 : 2);
-      console.log(JSON.stringify($scope.user));
       AccountService.login($scope.user).success(function (data) {
-        console.log(data);
         $scope.userdata = data.data;
         if (data.code == 1001) {
           $rootScope.account_login = null;
@@ -456,7 +444,6 @@ angular.module('starter.controllers', [])
               username: $scope.userdata.userid,
               password: $scope.userdata.usersecret
             }).success(function (data) {
-            console.log(data);
             if (data.access_token) {
               localStorage.setItem("token", data.access_token);//登录接口授权token
               localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
@@ -544,14 +531,12 @@ angular.module('starter.controllers', [])
       }
       //是否存在
       AccountService.getuserexist(account).success(function (datas) {
-        console.log(datas);
         if (datas.code == 1401 && account.toString().length == 11) {
           $rootScope.noExists = true;
           CommonService.showConfirm('收收提示', datas.message, '立即注册', '返回登陆', 'register', 'mobilelogin', '', '', '');
         }
         else {
           AccountService.getIsInvite({account: account}).success(function (data) {
-            console.log(data);
             if (data.code == 1001) {
               $scope.isInvite = false;
             } else {
@@ -568,9 +553,7 @@ angular.module('starter.controllers', [])
       }
       $scope.user.openID = localStorage.getItem("openid") || "";//微信openID
       $scope.user.client = ionic.Platform.isWebView() ? 0 : (ionic.Platform.is('android') ? 1 : 2);
-      console.log($scope.user);
       AccountService.loginMobile($scope.user).success(function (data) {
-        console.log(data);
         $scope.userdata = data.data;
         if (data.code == 1001) {
           $rootScope.account_login = null;
@@ -607,7 +590,6 @@ angular.module('starter.controllers', [])
               username: $scope.userdata.userid,
               password: $scope.userdata.usersecret
             }).success(function (data) {
-            console.log(data);
             if (data.access_token) {
               localStorage.setItem("token", data.access_token);//登录接口授权token
               localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
@@ -714,7 +696,6 @@ angular.module('starter.controllers', [])
 
       $scope.user.client = ionic.Platform.isWebView() ? 0 : (ionic.Platform.is('android') ? 1 : 2);
       $scope.user.openID = localStorage.getItem("openid") || "";//微信openID
-      console.log($scope.user);
 
       AccountService.registernew($scope.user).success(function (data) {
         if (data.code == 1001) {
@@ -785,9 +766,7 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt("输入的验证码不正确", 'close');
         return;
       }
-      console.log($scope.user);
       AccountService.findPassword($scope.user).success(function (data) {
-        console.log(data);
         if (data.code == 1001) {
           CommonService.platformPrompt("新密码设置成功", 'login');
         } else {
@@ -846,7 +825,6 @@ angular.module('starter.controllers', [])
     if (localStorage.getItem("userid")) {  //获取用户信息
       //根据会员ID获取会员账号基本信息
       AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (datas) {
-        console.log(datas);
         if (datas.code == 1001) {
           $rootScope.userdata = datas.data;
           localStorage.setItem("user", JSON.stringify(datas.data));
@@ -911,7 +889,6 @@ angular.module('starter.controllers', [])
 
 //获取产品品类
     OrderService.getProductList({ID: "", Name: ""}).success(function (data) {
-      console.log(data);
       if (data.code == 1001) {
         $scope.productList = data.data;
       } else {
@@ -1002,7 +979,6 @@ angular.module('starter.controllers', [])
           batch: false, //batch=true为批量查询。batch=false为单点查询
           roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
         }).success(function (data) {
-          console.log(data);
           var addressComponent = data.regeocode.addressComponent;
           $scope.addresspois = data.regeocode.pois;
           $scope.city = addressComponent.city;
@@ -1013,7 +989,6 @@ angular.module('starter.controllers', [])
             ssx: $scope.ssx,
             level: $scope.user.usertype == 2 ? 2 : 3
           }).success(function (data) {
-            console.log(data);
             if (data.code == 1001) {
               $scope.addrareacountyone = data.data;
             } else {
@@ -1067,14 +1042,11 @@ angular.module('starter.controllers', [])
       $scope.user.addrcode = $scope.addrareacountyone.ID;
       $scope.user.img = $scope.ImgsPicAddr[0] || ""; //证件照地址
       $scope.user.recoveryqty = 0;//回收量默认为0
-      console.log(JSON.stringify($scope.user));
       AccountService.setUserInfo($scope.user).success(function (data) {
-        console.log(data);
         if (data.code == 1001) {
           if (localStorage.getItem("userid")) {  //更新用户信息
             //根据会员ID获取会员账号基本信息
             AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (datas) {
-              console.log(datas);
               if (datas.code == 1001) {
                 $rootScope.userdata = datas.data;
                 localStorage.setItem("user", JSON.stringify(datas.data));
@@ -1134,7 +1106,6 @@ angular.module('starter.controllers', [])
     $scope.getClassify = function () {
       //获取产品品类
       OrderService.getProductList({ID: "", Name: ""}).success(function (data) {
-        console.log(data);
         if (data.code == 1001) {
           $scope.productList = data.data;
         } else {
@@ -1186,7 +1157,6 @@ angular.module('starter.controllers', [])
               username: localStorage.getItem("userid"),
               password: localStorage.getItem("usersecret")
             }).success(function (data) {
-            console.log(data);
             if (data.access_token) {
               localStorage.setItem("token", data.access_token);//登录接口授权token
               localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
@@ -1301,7 +1271,6 @@ angular.module('starter.controllers', [])
         lat: localStorage.getItem("latitude") || "",//当前纬度（获取距离）(可为空)
         expiry: ""//小时 取预警数据 订单预警数据（24小时截至马上过期的（expiry=3表示取3小时内）
       }
-      console.log($scope.datas);
       OrderService.getDengJiList($scope.params, $scope.datas).success(function (data) {
           $scope.isNotData = false;
           if (data.data == null || data.data.data_list.length == 0) {
@@ -1405,7 +1374,6 @@ angular.module('starter.controllers', [])
               username: localStorage.getItem("userid"),
               password: localStorage.getItem("usersecret")
             }).success(function (data) {
-            console.log(data);
             if (data.access_token) {
               localStorage.setItem("token", data.access_token);//登录接口授权token
               localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
@@ -1447,7 +1415,6 @@ angular.module('starter.controllers', [])
         ORNO: "",//接单单号(可为空)
         ORuserid: localStorage.getItem("userid")//接单人(不能为空)
       }
-      console.log($scope.datas);
       OrderService.getOrderReceiptList($scope.params, $scope.datas).success(function (data) {
           $scope.isNotData = false;
           if (data.data == null || data.data.data_list.length == 0) {
@@ -1518,7 +1485,6 @@ angular.module('starter.controllers', [])
     $scope.getOrderListDetails = function () {
       if ($scope.type == 1) {
         OrderService.getDengJiDetail({djno: $stateParams.no}).success(function (data) {
-          console.log(data);
           if (data.code == 1001) {
             $scope.orderDetail = data.data;
           } else {
@@ -1531,7 +1497,6 @@ angular.module('starter.controllers', [])
       }
       if ($scope.type == 2) {
         OrderService.getOrderReceiptDetail({orno: $stateParams.no}).success(function (data) {
-          console.log(data);
           if (data.code == 1001) {
             $scope.orderDetail = data.data;
           } else {
@@ -1639,7 +1604,6 @@ angular.module('starter.controllers', [])
         expiry: ""//小时 取预警数据 订单预警数据（24小时截至马上过期的（expiry=3表示取3小时内）
       }
       OrderService.getDengJiList($scope.params, $scope.datas).success(function (data) {
-        console.log(data);
         if ($scope.tabIndex == 0) {//未完成订单
           $scope.isNotunfinishedData = false;
           if (data.data == null || data.data.data_list.length == 0) {
@@ -1724,7 +1688,6 @@ angular.module('starter.controllers', [])
     }
     $scope.getMyOrderDetail = function () {
       OrderService.getDengJiDetail({djno: $stateParams.no}).success(function (data) {
-        console.log(data);
         if (data.code == 1001) {
           $scope.orderDetail = data.data;
         } else {
@@ -1787,7 +1750,6 @@ angular.module('starter.controllers', [])
       }
 
       OrderService.getOrderReceiptList($scope.params, $scope.datas).success(function (data) {
-        console.log(data);
         $scope.isNotData = false;
         if (data.data == null || data.data.data_list.length == 0) {
           $scope.isNotData = true;
@@ -1874,7 +1836,6 @@ angular.module('starter.controllers', [])
             });
             $scope.productLists.push(item);
           });
-          console.log($scope.productLists);
         }
 
       });
@@ -1894,7 +1855,6 @@ angular.module('starter.controllers', [])
         item: JSON.stringify($scope.productLists)
       })
     }
-    console.log($scope.productLists);
   })
 
   //回收数量以及报价
@@ -1934,10 +1894,8 @@ angular.module('starter.controllers', [])
         orstate: 5,//状态 0已取消 1审核不通过 2未审核（待审核） 3审核通过 4回收不通过 5回收未审核 6回收审核通过 (接单时为2，回收时为5) 7已过期 必填参数
         details: details //接单回收记录明细数据
       }
-      console.log($scope.huishoudata);
 
       OrderService.addOrderReceipt($scope.huishoudata).success(function (data) {
-        console.log(data);
         if (data.code == 1001) {
           CommonService.platformPrompt("回收单提交成功", "close");
           //去付款
@@ -2054,12 +2012,10 @@ angular.module('starter.controllers', [])
         fwamount: 0,//服务费金额
         paymentmethod: $scope.pay.choice //支付方式1.	现金支付2.	在线支付
       }
-      console.log($scope.data);
 
       //回收付款
       $scope.payOrderReceipt = function () {
         OrderService.payOrderReceipt($scope.data).success(function (data) {
-          console.log(data);
           if (data.code == 1001) {
             CommonService.platformPrompt("回收付款成功", "orderdetails", {
               no: $scope.orderinfo.orno,
@@ -2126,7 +2082,6 @@ angular.module('starter.controllers', [])
         userid: localStorage.getItem("userid")//用户id
       }
       NewsService.getNewsList($scope.params).success(function (data) {
-        console.log(data);
         $scope.isNotData = false;
         if (data == null || data.data.data_list == 0) {
           $scope.isNotData = true;
@@ -2182,7 +2137,6 @@ angular.module('starter.controllers', [])
 
     //根据会员ID获取会员账号基本信息
     AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
-      console.log(data);
       if (data.code == 1001) {
         $rootScope.userdata = data.data;
         localStorage.setItem("user", JSON.stringify(data.data));
@@ -2280,7 +2234,6 @@ angular.module('starter.controllers', [])
           batch: false, //batch=true为批量查询。batch=false为单点查询
           roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
         }).success(function (data) {
-          console.log(data);
           var addressComponent = data.regeocode.addressComponent;
           $scope.cityName = addressComponent.city ? addressComponent.city : addressComponent.province;
 
@@ -2319,9 +2272,7 @@ angular.module('starter.controllers', [])
       $scope.user.recoveryqty = user.userext.recovery;//月回收量
       $scope.user.grps = user.userext.prodgroup;
       $scope.user.addrcode = addrcode;
-      console.log($scope.user);
       AccountService.setUserInfo($scope.user).success(function (data) {
-        console.log(data);
         if (data.code == 1001) {
           CommonService.platformPrompt("修改回收区域成功", '');
         } else {
@@ -2369,7 +2320,6 @@ angular.module('starter.controllers', [])
         sex: $scope.user.sex,
         nickname: $scope.user.nickname
       }
-      console.log($scope.params);
       if ($scope.type == 'nickname') { //修改昵称
         AccountService.modifyNickname($scope.params).success(function (data) {
           CommonService.platformPrompt(data.message, data.code = 1001 ? '' : 'close');
@@ -2402,7 +2352,6 @@ angular.module('starter.controllers', [])
       }
       //获取用户常用地址
       AddressService.getAddrList($scope.params).success(function (data) {
-        console.log(data);
         $scope.isNotData = false;
         if (data.data == null || data.data.length == 0) {
           $scope.isNotData = true;
@@ -2512,7 +2461,6 @@ angular.module('starter.controllers', [])
         city: $scope.city || "深圳",
         extensions: 'all'//返回结果控制
       }).success(function (data) {
-        console.log(data);
         $scope.addresspois = data.pois;
       })
     }
@@ -2529,7 +2477,6 @@ angular.module('starter.controllers', [])
           batch: false, //batch=true为批量查询。batch=false为单点查询
           roadlevel: 0//可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
         }).success(function (data) {
-          console.log(data);
           var addressComponent = data.regeocode.addressComponent;
           $scope.addresspois = data.regeocode.pois;
           $scope.city = addressComponent.city;
@@ -2537,7 +2484,6 @@ angular.module('starter.controllers', [])
           $scope.addrinfo.addr = addressComponent.township + addressComponent.streetNumber.street;
         }).then(function () {
           AddressService.getAddressBySSX({ssx: $scope.ssx, level: 3}).success(function (data) {
-            console.log(data);
             if (data.code == 1001) {
               $scope.addrareacountyone = data.data;
             } else {
@@ -2574,7 +2520,6 @@ angular.module('starter.controllers', [])
       $scope.addrinfo.is_default = $scope.addrinfoother.isstatus ? 1 : 0;	//是否默认0-否，1-是
       $scope.addrinfo.lat = $scope.addrareacountyone ? $scope.latitude || localStorage.getItem("latitude") || $scope.addrareacountyone.Lat : $scope.latitude || localStorage.getItem("latitude") || $scope.addressiteminfo.Lat;	//纬度
       $scope.addrinfo.lng = $scope.addrareacountyone ? $scope.longitude || localStorage.getItem("longitude") || $scope.addrareacountyone.Lng : $scope.longitude || localStorage.getItem("longitude") || $scope.addressiteminfo.Lng; 	//经度
-      console.log($scope.addrinfo);
       AddressService.addAddress($scope.addrinfo).success(function (data) {
         if (data.code == 1001) {
           CommonService.platformPrompt('恭喜您 地址信息' + $scope.buttonText + '成功', '');
@@ -2704,7 +2649,6 @@ angular.module('starter.controllers', [])
       }
 
       AccountService.authenticateEmail($scope.params).success(function (data) {
-        console.log(data);
         if (data.code == 1001) {
           CommonService.platformPrompt('绑定邮箱成功', 'accountsecurity');
         } else {
@@ -2742,7 +2686,6 @@ angular.module('starter.controllers', [])
         cardno: $scope.realname.idcardno //银行卡号
       }
       AccountService.authenticateSign($scope.params).success(function (data) {
-        console.log(JSON.stringify(data));
         if (data.data.serviceId != null) {
           $scope.serviceId = data.data.serviceId;//e签宝服务id
         } else {
@@ -2762,7 +2705,6 @@ angular.module('starter.controllers', [])
         userid: localStorage.getItem("userid")
       }
       AccountService.getrealNameIdentity($scope.params).success(function (data) {
-        console.log(data);
         if (data.code == 1001) {
           $scope.realname = data.data;
 
@@ -2795,9 +2737,7 @@ angular.module('starter.controllers', [])
         createdate: "",//日期
         remark: ""//审核备注
       }
-      console.log(JSON.stringify($scope.datas));
       AccountService.realNameAuthenticate($scope.datas).success(function (data) {
-        console.log(JSON.stringify(data));
         if (data.code == 1001) {
 
           var user = JSON.parse(localStorage.getItem('user'));
@@ -2930,7 +2870,6 @@ angular.module('starter.controllers', [])
               username: localStorage.getItem("userid"),
               password: localStorage.getItem("usersecret")
             }).success(function (data) {
-            console.log(data);
             if (data.access_token) {
               localStorage.setItem("token", data.access_token);//登录接口授权token
               localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
@@ -2953,7 +2892,6 @@ angular.module('starter.controllers', [])
     $scope.imgUrl = BoRecycle.imgUrl;//图片路径
 //获取产品品类
     OrderService.getProductList({ID: "", Name: ""}).success(function (data) {
-      console.log(data);
       if (data.code == 1001) {
         $scope.productList = data.data;
       } else {
@@ -2990,7 +2928,6 @@ angular.module('starter.controllers', [])
           Name: '',
           GrpID: ''// $scope.recyclingCategory.join(",")
         }).success(function (data) {
-          console.log(data);
           if (data.code == 1001) {
             $scope.manufacteList = [];
             $scope.manufacteList = data.data
@@ -3044,7 +2981,6 @@ angular.module('starter.controllers', [])
         city: $scope.city || "深圳",
         extensions: 'all'//返回结果控制
       }).success(function (data) {
-        console.log(data);
         $scope.addresspois = data.pois;
       })
     }
@@ -3061,7 +2997,6 @@ angular.module('starter.controllers', [])
           batch: false, //batch=true为批量查询。batch=false为单点查询
           roadlevel: 0//可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
         }).success(function (data) {
-          console.log(data);
           var addressComponent = data.regeocode.addressComponent;
           $scope.addresspois = data.regeocode.pois;
           $scope.city = addressComponent.city;
@@ -3072,7 +3007,6 @@ angular.module('starter.controllers', [])
         }).then(function () {
           if (param == 1) {
             AddressService.getAddressBySSX({ssx: $scope.ssx, level: 3}).success(function (data) {
-              console.log(data);
               if (data.code == 1001) {
                 $scope.addrareacountyone = data.data;
               } else {
@@ -3144,12 +3078,10 @@ angular.module('starter.controllers', [])
             })
           })
         }
-      })
-      console.log($scope.dengji);
+      });
 
       //添加登记信息/货源信息(添加登记货源时明细不能为空，添加登记信息时明细为空)
       OrderService.addDengJi([$scope.dengji]).success(function (data) {
-        console.log(data);
         if (data.code == 1001) {
           CommonService.platformPrompt("登记信息提交成功", 'myorder');
         } else {
@@ -3178,7 +3110,6 @@ angular.module('starter.controllers', [])
               username: localStorage.getItem("userid"),
               password: localStorage.getItem("usersecret")
             }).success(function (data) {
-            console.log(data);
             if (data.access_token) {
               localStorage.setItem("token", data.access_token);//登录接口授权token
               localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
@@ -3189,8 +3120,7 @@ angular.module('starter.controllers', [])
           })
         }
       }
-    })
-    console.log(localStorage.getItem("user"));
+    });
     $scope.supplyOfGoods = function () {
       $scope.goods = {//货源信息
         delivery: 1//默认上门回收
@@ -3199,7 +3129,6 @@ angular.module('starter.controllers', [])
 
       //获取产品品类
       OrderService.getProductList({ID: "", Name: ""}).success(function (data) {
-        console.log(data);
         if (data.code == 1001) {
           $scope.productList = data.data;
         } else {
@@ -3242,7 +3171,6 @@ angular.module('starter.controllers', [])
     } else {
       //获取当前用户默认地址
       AddressService.getDefualtAddr({userid: localStorage.getItem("userid")}).success(function (data) {
-        console.log(data);
         if (data.code == 1001) {
           $scope.address = data.data;
         }
@@ -3311,11 +3239,9 @@ angular.module('starter.controllers', [])
           $scope.supplyofgoods.push(items);
         }
       }
-      console.log($scope.supplyofgoods);
 
       //添加登记信息/货源信息(添加登记货源时明细不能为空，添加登记信息时明细为空)
       OrderService.addDengJi($scope.supplyofgoods).success(function (data) {
-        console.log(data);
         if (data.code == 1001) {
           CommonService.platformPrompt("登记货源提交成功", 'myorder');
         } else {
@@ -3355,7 +3281,6 @@ angular.module('starter.controllers', [])
       }
 
       OrderService.addComment($scope.datas).success(function (data) {
-        console.log(data);
         if (data.code == 1001) {
           CommonService.platformPrompt('恭喜您 评价成功', '');
         } else {
@@ -3381,10 +3306,8 @@ angular.module('starter.controllers', [])
         reason: $scope.cancelorder.reason,//取消原因 1.	联系不上 2.	交易没谈拢 3.	其他
         remark: $scope.cancelorder.remark  //补充说明
       }
-      console.log($scope.datas);
       CommonService.showConfirm('取消提示', '您是否要取消此订单?"是"点击"确定",否则请点击"取消"', '确定', '取消', '', 'close', function () {
         OrderService.newCancelOrderReceipt($scope.datas).success(function (data) {
-          console.log(data);
           if (data.code == 1001) {
             CommonService.platformPrompt('取消订单成功', '');
           } else {
@@ -3400,12 +3323,10 @@ angular.module('starter.controllers', [])
   .controller('ModifyCategoryCtrl', function ($scope, $rootScope, $stateParams, CommonService, OrderService, AccountService) {
     $scope.user = {};//用户信息
     var user = JSON.parse(localStorage.getItem("user"));//用户信息
-
     $scope.supplyOfGoods = function () {
       $scope.productLists = [];//产品品类
       //获取产品品类
       OrderService.getProductList({ID: "", Name: ""}).success(function (data) {
-        console.log(data);
         if (data.code == 1001) {
           $scope.productList = data.data;
           angular.forEach($scope.productList, function (item, index) {
@@ -3441,7 +3362,7 @@ angular.module('starter.controllers', [])
       $scope.user.recoveryqty = user.userext.recovery;//月回收量
       $scope.user.grps = $scope.recyclingCategory.join(",");
       $scope.user.addrcode = user.userext.addrcode;
-      console.log($scope.user);
+      console.log($scope.user);return;
       AccountService.setUserInfo($scope.user).success(function (data) {
         console.log(data);
         if (data.code == 1001) {
@@ -3573,7 +3494,6 @@ angular.module('starter.controllers', [])
         userid: localStorage.getItem("userid"),//用户id
       }
       MyWalletService.get_tradelist($scope.params).success(function (data) {
-        console.log(data);
         $scope.isNotData = false;
         if (data.data == null || data.data.data_list.length == 0) {
           $scope.isNotData = true;
@@ -3643,7 +3563,6 @@ angular.module('starter.controllers', [])
       }
       MyWalletService.getbanklist($scope.params).success(function (data) {
         $scope.isNotData = false;
-        console.log(data);
         if (data.data.total_count == 0) {
           $scope.isNotData = true;
           $rootScope.userbankliststatus = [];//无银行账号的时候清除数据
@@ -3799,7 +3718,6 @@ angular.module('starter.controllers', [])
 
   //充值
   .controller('RechargeCtrl', function ($scope, CommonService, PayService, WeiXinService) {
-    console.log(window.location);
     $scope.pay = { //支付相关
       choice: "B",//选择支付方式默认
       money: ""
@@ -3816,9 +3734,7 @@ angular.module('starter.controllers', [])
           name: JSON.parse(localStorage.getItem("user")).username,//用户名
           openid: localStorage.getItem("openid") //微信openid
         }
-        console.log($scope.wxh5datas);
         PayService.wxpayGZH($scope.wxh5datas).success(function (data) {
-          console.log(data);
           if (data.code == 1001) {
             WeiXinService.wxchooseWXPay(data.data);
           } else {
@@ -3836,10 +3752,8 @@ angular.module('starter.controllers', [])
           userid: localStorage.getItem("userid"),//用户userid
           name: JSON.parse(localStorage.getItem("user")).username//用户名
         }
-        console.log($scope.appdatas);
         if ($scope.pay.choice == "A") {//支付宝支付
           PayService.aliPayRecharge($scope.appdatas).success(function (data) {
-            console.log(data);
             if (data.code == 1001) {
               PayService.aliPay(data.data);
             } else {
@@ -3849,7 +3763,6 @@ angular.module('starter.controllers', [])
           })
         } else if ($scope.pay.choice == "B") {//微信支付
           PayService.wxPayRecharge($scope.appdatas).success(function (data) {
-            console.log(data);
             if (data.code == 1001) {
               PayService.weixinPay(data.data);
             } else {
@@ -3871,12 +3784,10 @@ angular.module('starter.controllers', [])
           userid: localStorage.getItem("userid"),//用户userid
           name: JSON.parse(localStorage.getItem("user")).username//用户名
         }
-        console.log($scope.h5datas);
         if ($scope.pay.choice == "A") {//支付宝支付
 
         } else if ($scope.pay.choice == "B") {//微信支付
           PayService.wxpayH5($scope.h5datas).success(function (data) {
-            console.log(data);
             if (data.code == 1001) {
               CommonService.windowOpen(data.data.mweb_url);//支付跳转
             } else {
