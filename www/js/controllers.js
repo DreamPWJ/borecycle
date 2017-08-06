@@ -31,7 +31,7 @@ angular.module('starter.controllers', [])
           CommonService.platformPrompt("获取统计货量数据失败", 'close');
         }
 
-      })
+      });
 
 
       //获取极光推送registrationID
@@ -179,6 +179,7 @@ angular.module('starter.controllers', [])
           //获取公共接口授权token  公共接口授权token两个小时失效  超过两个小时重新请求
           if (!localStorage.getItem("token") || localStorage.getItem("token") == "undefined" || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
             MainService.authLogin({grant_type: 'client_credentials'}).success(function (data) {
+
               if (data.access_token) {
                 localStorage.setItem("token", data.access_token);//公共接口授权token
                 localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
@@ -712,10 +713,30 @@ angular.module('starter.controllers', [])
           AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
             if (data.code == 1001) {
               localStorage.setItem("user", JSON.stringify(data.data));
-              $state.go('organizingdata', {type: $scope.user.usertype});
+              if($scope.user.usertype==1){
+                $state.go('tab.main');
+              }else {
+                $state.go('organizingdata', {type: $scope.user.usertype});
+              }
             } else {
               CommonService.platformPrompt(data.message, 'close');
             }
+          }).then(function () {
+            MainService.authLogin(
+              {
+                grant_type: 'password',
+                username: localStorage.getItem("userid"),
+                password: localStorage.getItem("usersecret")
+              }).success(function (data) {
+              if (data.access_token) {
+                localStorage.setItem("token", data.access_token);//登录接口授权token
+                localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
+              }
+
+            }).error(function () {
+              CommonService.platformPrompt("获取登录接口授权token失败", 'close');
+              return;
+            })
           });
         }
         CommonService.platformPrompt(data.message, 'close');
@@ -778,7 +799,7 @@ angular.module('starter.controllers', [])
   })
 
   //完善资料页面
-  .controller('OrganizingDataCtrl', function ($scope, $rootScope, $stateParams, CommonService, MainService, $ionicHistory, BoRecycle, OrderService, AccountService, AddressService) {
+  .controller('OrganizingDataCtrl', function ($scope, $rootScope, $stateParams,$state, CommonService, MainService, $ionicHistory, BoRecycle, OrderService, AccountService, AddressService) {
     //上传图片数组集合
     $scope.imageList = [];
     $scope.ImgsPicAddr = [];//图片信息数组
@@ -865,15 +886,6 @@ angular.module('starter.controllers', [])
         }
       })
     } else {
-      //注册页面进入默认选中注册选中的回收商类型
-      if ($scope.user.usertype == 2) {
-        angular.forEach($scope.services, function (item, index) {
-          if ($rootScope.registerUserServices.indexOf(item.key) != -1) {
-            $scope.services[index].checked = true;
-            $scope.ischecked = true;
-          }
-        })
-      }
 
       //如果没有授权先授权 或者超过两个小时
       if (!localStorage.getItem("token") || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
@@ -886,7 +898,18 @@ angular.module('starter.controllers', [])
         })
       }
     }
-
+    //如果是从注册页面进来的，且是回收商用户，自动赋值回收商子类
+    if($rootScope.registerUserServices){
+      var uss=$rootScope.registerUserServices;
+      angular.forEach(uss,function (item) {
+        angular.forEach($scope.services,function (item2) {
+          if(item2.key==item){
+            item2.checked=true;
+            $scope.ischecked = true;
+          }
+        });
+      });
+    }
 //获取产品品类
     OrderService.getProductList({ID: "", Name: ""}).success(function (data) {
       if (data.code == 1001) {
@@ -1055,15 +1078,20 @@ angular.module('starter.controllers', [])
                 localStorage.setItem("usertype", (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
               }
             }).then(function () {
-              if ($scope.user.usertype == 2) {
+              //if ($scope.user.usertype == 2) {
                 CommonService.platformPrompt("完善资料提交成功", 'close');
                 var user = JSON.parse(localStorage.getItem("user"));
+              //完善资料提交成功后清除回收商选项值
+              if($rootScope.registerUserServices){
+                $rootScope.registerUserServices=null;
+              }
                 if (user.certstate.substr(3, 1) != 2) { //没有实名认证
-                  CommonService.showConfirm('收收提示', '尊敬的用户,您好！实名认证完善认证信息后才能进行更多操作！', '实名认证', '暂不认证', 'realname', 'close', '', {status: 0});
+                  //CommonService.showConfirm('收收提示', '尊敬的用户,您好！实名认证完善认证信息后才能进行更多操作！', '实名认证', '暂不认证', 'realname', 'close', '', {status: 0});
+                  $state.go('realname',{status: 0});
                   return;
                 }
-              }
-              CommonService.platformPrompt("完善资料提交成功", 'tab.main');
+              //}
+              //CommonService.platformPrompt("完善资料提交成功", 'tab.main');
             });
           } else {
             CommonService.platformPrompt("完善资料提交成功", 'tab.main');
@@ -1282,6 +1310,7 @@ angular.module('starter.controllers', [])
           angular.forEach(data.data.data_list, function (item) {
             $scope.orderList.push(item);
           });
+        console.log($scope.orderList);
           $scope.total = data.data.page_count;
           $scope.$broadcast('scroll.infiniteScrollComplete');
           $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
@@ -3043,7 +3072,7 @@ angular.module('starter.controllers', [])
           return;
         }
         if (user.certstate.substr(3, 1) != 2) { //没有实名认证
-          CommonService.showConfirm('登记提示', '尊敬的用户,您好！选择以旧换新类型必须先实名认证后才能操作！', '实名认证', '暂不认证', 'realname', 'close', '', {status: 0});
+          CommonService.showConfirm('登记提示', '尊敬的用户,您好！选择以旧换新类型必须先实名认证后才能操作！', '实名认证', '暂不认证', 'organizingdata', 'close');
           return;
         }
       }

@@ -26,7 +26,7 @@
         <ion-list>
           <a ng-href="#/orderdetails/{{item.djno}}/1/{{item.hytype}}" class="item "
              ng-repeat="item in orderList | orderBy:'range'">
-            <h2 class="positive">{{item.addrdetail}}</h2>
+            <h2 class="positive">{{item.area.Name+"："+item.addrdetail}}</h2>
             <p class="text-wrap" style="margin-right: 4rem;">交易品类 : {{item.category}} <span class=" {{item.hytype==1?'bhytype':(item.hytype==2?'ehytype':'')}} ">{{item.hytype==1?'废品':(item.hytype==2?'二手':'')}}</span>
               <span class="jiedan  item-note right-1" ng-click="jieDan(item.djno,item.userid,item.type,item.hytype)"><!-- <i
                class="iconfont icon-formfill"></i>--> 接单</span></p>
