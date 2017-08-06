@@ -111,6 +111,9 @@ angular.module('starter.directive', [])
             scope.publicCheckForm(/^1(3|4|5|7|8)\d{9}$/.test(value), value, content, isShow)
           }
           if (type == 'phoneandtel') {//验证手机号和电话
+            if(!value){
+              return;
+            }
             RegExp = /^((0[1-9]\d{1,2}\d{7,8})|(1[3584]\d{9})|(400|800)\d{7,9})$/;
             scope.publicCheckForm(RegExp.test(value), value, content, isShow)
           }

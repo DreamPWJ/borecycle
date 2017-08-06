@@ -585,7 +585,6 @@ angular.module('starter.services', [])
             $scope.ischecked = true;
           }
         });
-        console.log(array);
       }
     }
 
