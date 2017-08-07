@@ -3881,6 +3881,7 @@ angular.module('starter.controllers', [])
 
   //下载页面
   .controller('downloadCtrl', function ($scope, $ionicPlatform, BoRecycle, CommonService, WeiXinService, AccountService) {
+    CommonService.customModal($scope, 'templates/modal/dl_modal.html');
     var ua = window.navigator.userAgent.toLowerCase(); //浏览器的用户代理设置为小写，再进行匹配
     var isIpad = ua.match(/ipad/i) == "ipad"; //或者利用indexOf方法来匹配
     var isIphoneOs = ua.match(/iphone os/i) == "iphone os";
@@ -3888,7 +3889,13 @@ angular.module('starter.controllers', [])
     //$scope.dbg = BoRecycle.imgUrl + "/ShouShou/down-bg/drawable-port-xxxhdpi-screen.png";;//背景
     $scope.dld = function (pa) {
       if (WeiXinService.isWeiXin()) {
-        CommonService.windowOpen("http://a.app.qq.com/o/simple.jsp?pkgname=com.boolv.recycle");
+        if (pa == 1) {
+          CommonService.windowOpen("http://a.app.qq.com/o/simple.jsp?pkgname=com.boolv.recycle");
+        }else {
+          $scope.share_arrow="./img/share_arrow.png";
+          $scope.dl_word="./img/dl-word.png";
+          $scope.modal.show();
+        }
         return;
       } else {
         if (isAndroid) {
@@ -3906,15 +3913,10 @@ angular.module('starter.controllers', [])
           CommonService.windowOpen("https://itunes.apple.com/cn/app/id1260924490");
           return;
         } else {
-          if (pa == 1) {
+
             CommonService.platformPrompt("很抱歉，“收收”只提供安卓版及Iphone版！", 'close');
-          }
         }
       }
     }
-    $scope.dloading = function () {
-      $scope.dld(1);
-    }
-    // $scope.dld(0);
   })
 ;
