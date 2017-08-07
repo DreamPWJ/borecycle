@@ -3450,6 +3450,7 @@ angular.module('starter.controllers', [])
 
   //提现
   .controller('CashCtrl', function ($scope, $rootScope, $state, $ionicHistory, MyWalletService, CommonService) {
+    $rootScope.commonService = CommonService;
     //是否登录
     if (!CommonService.isLogin()) {
       return;
@@ -3490,6 +3491,10 @@ angular.module('starter.controllers', [])
         amount: $scope.cashinfo.amount,
       };
       MyWalletService.cash($scope.datas).success(function (data) {
+        if($scope.cashinfo.amount<=3) {
+          $rootScope.commonService.toolTip('提现金额必须大于3元！', '');
+          return;
+        }
         if (data.code == 1001) {
           $rootScope.defaultBank = null;
           CommonService.showAlert('', '<p>恭喜您！</p><p>操作成功，工作日24小时之内到账，请注意查收！</p>', 'wallet');
@@ -3571,10 +3576,10 @@ angular.module('starter.controllers', [])
     $scope.total = 1;
     $scope.blc = [];//银行logo及颜色
 
-    $scope.isadd = true;
+    $scope.isadd = false;
     MyWalletService.existisauth(localStorage.getItem("userid")).success(function (data) {
-      if (data.code != 1001) {
-        $scope.isadd = false;
+      if (data.code == 1001) {
+        $scope.isadd = true;
       }
     });
 

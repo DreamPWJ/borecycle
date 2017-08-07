@@ -25,13 +25,16 @@
         </label>
         <label class="item item-input ">
           <span class="input-label">提现金额 : </span>
-          <input type="number" placeholder="请输入提现金额" ng-model="cashinfo.amount" check-form
+          <input type="number" placeholder="请输入提现金额(大于3元)" ng-model="cashinfo.amount" check-form
                  ng-change="checkForm(cashinfo.amount,'提现金额不能超过可用金额','maxvaule','提现',true,subaccount.cashamount)"
                  ng-maxlength="10" required/>
         </label>
         <p class="text-right padding-right padding-top" ng-class="isAll?'calm':'grey'" ng-click="allCash()">
           <i ng-class="isAll?'ion-ios-checkmark':'ion-ios-circle-outline'" class=""></i>
           全部提现
+        </p>
+        <p class="text-right padding-right padding-top" ng-class="true?'assertive':'assertive'">
+          (注:提现金额小于100时额外扣除3元手续费)
         </p>
       </div>
     </ion-content>
