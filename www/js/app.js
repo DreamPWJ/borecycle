@@ -65,6 +65,44 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
         return false;
       }, 101);
+
+      //接口授权方法
+      function authLogin() {
+        //获取公共接口授权token  公共接口授权token两个小时失效  超过两个小时重新请求
+        if (!localStorage.getItem("userid") && (!localStorage.getItem("token") || localStorage.getItem("token") == "undefined" || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199)) {
+          MainService.authLogin({grant_type: 'client_credentials'}).success(function (data) {
+            if (data.access_token) {
+              localStorage.setItem("token", data.access_token);//公共接口授权token
+              localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
+            } else {
+              CommonService.platformPrompt("获取公众接口授权token失败", 'close');
+              return;
+            }
+          })
+        } else if (localStorage.getItem("userid") && ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
+          //登录授权
+          MainService.authLogin(
+            {
+              grant_type: 'password',
+              username: localStorage.getItem("userid"),
+              password: localStorage.getItem("usersecret")
+            }).success(function (data) {
+            if (data.access_token) {
+              localStorage.setItem("token", data.access_token);//登录接口授权token
+              localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
+            } else {
+              CommonService.platformPrompt("获取登录接口授权token失败", 'close');
+              return;
+            }
+          })
+        }
+      }
+
+      //统一授权 当路由状态改变开始的时候被触发
+      $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+        authLogin();
+      });
+
       //启动极光推送服务
       try {
         window.plugins.jPushPlugin.init();
@@ -81,9 +119,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           window.plugins.jPushPlugin.setLatestNotificationNum(5);
           window.plugins.jPushPlugin.clearAllNotification();
         }
+        authLogin();
       }
 
-      // System events
+      // System events APP从后台进入前台触发
       document.addEventListener("resume", resume, false);
 
       //点击极光推送跳转到相应页面/点击通知栏的回调
@@ -133,37 +172,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         window.open = window.cordova.InAppBrowser.open;
       }
 
-      //统一授权
-      $rootScope.$on('$ionicView.beforeEnter', function (event, data) {
-        //获取公共接口授权token  公共接口授权token两个小时失效  超过两个小时重新请求
-        if (!localStorage.getItem("userid") && (!localStorage.getItem("token") || localStorage.getItem("token") == "undefined" || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199)) {
-          MainService.authLogin({grant_type: 'client_credentials'}).success(function (data) {
-            if (data.access_token) {
-              localStorage.setItem("token", data.access_token);//公共接口授权token
-              localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
-            } else {
-              CommonService.platformPrompt("获取公众接口授权token失败", 'close');
-              return;
-            }
-          })
-        } else if (localStorage.getItem("userid") && ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
-          //登录授权
-          MainService.authLogin(
-            {
-              grant_type: 'password',
-              username: localStorage.getItem("userid"),
-              password: localStorage.getItem("usersecret")
-            }).success(function (data) {
-            if (data.access_token) {
-              localStorage.setItem("token", data.access_token);//登录接口授权token
-              localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
-            } else {
-              CommonService.platformPrompt("获取登录接口授权token失败", 'close');
-              return;
-            }
-          })
-        }
-      });
 
     });
   })
