@@ -14,7 +14,7 @@
 
     <ion-list>
       <div ng-repeat="item in orderList">
-        <a ng-href="#/orderdetails/{{item.orno}}/2" class="item ">
+        <a ng-href="#/orderdetails/{{item.orno}}/2/{{item.hytype}}" class="item ">
           <h2 class="positive">{{item.addrdetail}}</h2>
           <p class="text-wrap ">交易品类 : {{item.category}} <span class=" {{item.hytype==1?'bhytype':(item.hytype==2?'ehytype':'')}} ">{{item.hytype==1?'废品':(item.hytype==2?'二手':'')}}</span>
           </p>
@@ -28,7 +28,7 @@
             class="iconfont icon-phone"></i> 联系他</span>
           <span ng-if="item.state==4" class="balanced"
                 ng-click="recycle(item.orno,item.djno,item.type,item.userid,item.totalprice,item.name,item.category,item.hytype)"><i
-            class="iconfont icon-huishou"></i> 去收货</span>
+            class="iconfont icon-huishou"></i> 已回收</span>
           <span ng-if="item.state==5" class="balanced"
                 ng-click="topay(item.type,item.djno,item.orno,item.oruserid,item.userid,item.totalprice,item.name,item.informationmoney)"><i
             class="iconfont icon-sponsor"></i> 去付款</span><span
@@ -37,6 +37,7 @@
           <span ng-if="item.orstate==2 || item.orstate==3" class="assertive" ng-click="cancelOrder(item.orno)"><i
             class="iconfont icon-jian"></i> 取消</span>
         </p>
+
         <p></p>
       </div>
     </ion-list>

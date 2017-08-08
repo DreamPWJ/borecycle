@@ -37,6 +37,9 @@
         <ion-item ng-if="orderDetail.oraddtime!='0001-01-01T00:00:00'">
           接单时间 : {{orderDetail.oraddtime |date :'yyyy-MM-dd HH:mm'}}
         </ion-item>
+        <ion-item ng-if="orderDetail.appointtime!='0001-01-01T00:00:00' && orderDetail.isappoint==2">
+          预约时间 : {{orderDetail.appointtime |date :'yyyy-MM-dd'}}
+        </ion-item>
       </div>
       <p></p>
       <div ng-if="orderDetail.djdetails">
