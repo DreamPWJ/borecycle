@@ -493,7 +493,16 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
 #download {
   background: #66b6ff;
 }
-
+#download .invitedl{
+  position:relative;
+  padding: 0.8rem 10px 0 10px;
+  height: 90%;
+}
+#download .invitedl img{
+  margin-top:0;
+  max-width: none;
+  max-height: 100%;
+}
 #download img {
   max-width: 98%;
   margin-top: 2rem;

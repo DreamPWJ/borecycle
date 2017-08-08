@@ -3901,22 +3901,95 @@ angular.module('starter.controllers', [])
         }
         return;
       } else {
-        if (isAndroid) {
+        if (true) {
           $scope.versionparams = {
             ID: 3,//编码 ,等于空时取所有
             Name: '',//软件名称（中文）
             NameE: '',//软件名称（英文）
             Enable: 1 //是否启用 1启用 2禁用
           }
+          if (!localStorage.getItem("token") || localStorage.getItem("token") == "undefined" || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
+            MainService.authLogin({grant_type: 'client_credentials'}).success(function (data) {
+
+              if (data.access_token) {
+                localStorage.setItem("token", data.access_token);//公共接口授权token
+                localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
+              } else {
+                CommonService.platformPrompt("获取公众接口授权token失败", 'close');
+                return;
+              }
+            }).then(function () {
+              AccountService.getVersionsList($scope.versionparams).success(function (data) {
+                CommonService.windowOpen(data.data.data_list[0].attached);
+              });
+            });
+          }else{
             AccountService.getVersionsList($scope.versionparams).success(function (data) {
               CommonService.windowOpen(data.data.data_list[0].attached);
             });
+          }
           return;
         } else if (isIpad || isIphoneOs) {
           CommonService.windowOpen("https://itunes.apple.com/cn/app/id1260924490");
           return;
         } else {
-
+          CommonService.platformPrompt("很抱歉，“收收”只提供安卓版及Iphone版！", 'close');
+        }
+      }
+    }
+  })
+  //下载页面
+  .controller('invitedownCtrl', function ($scope, $ionicPlatform, BoRecycle, CommonService, WeiXinService, MainService,AccountService) {
+    CommonService.customModal($scope, 'templates/modal/dl_modal.html');
+    var ua = window.navigator.userAgent.toLowerCase(); //浏览器的用户代理设置为小写，再进行匹配
+    var isIpad = ua.match(/ipad/i) == "ipad"; //或者利用indexOf方法来匹配
+    var isIphoneOs = ua.match(/iphone os/i) == "iphone os";
+    var isAndroid = ua.match(/android/i) == "android";
+    $scope.isWX=WeiXinService.isWeiXin();
+    $scope.share_arrow;
+    $scope.dl_word;
+    $scope.dld = function (pa) {
+      if ($scope.isWX) {
+        if (pa == 1) {
+          CommonService.windowOpen("http://a.app.qq.com/o/simple.jsp?pkgname=com.boolv.recycle");
+        } else {
+          $scope.share_arrow = "./img/share_arrow.png";
+          $scope.dl_word = "./img/dl-word.png";
+          $scope.modal.show();
+        }
+        return;
+      } else {
+        if (true) {
+          $scope.versionparams = {
+            ID: 3,//编码 ,等于空时取所有
+            Name: '',//软件名称（中文）
+            NameE: '',//软件名称（英文）
+            Enable: 1 //是否启用 1启用 2禁用
+          }
+          if (!localStorage.getItem("token") || localStorage.getItem("token") == "undefined" || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
+            MainService.authLogin({grant_type: 'client_credentials'}).success(function (data) {
+              if (data.access_token) {
+                localStorage.setItem("token", data.access_token);//公共接口授权token
+                localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
+              } else {
+                CommonService.platformPrompt("获取公众接口授权token失败", 'close');
+                return;
+              }
+            }).then(function () {
+              AccountService.getVersionsList($scope.versionparams).success(function (data) {
+                CommonService.windowOpen(data.data.data_list[0].attached);
+              });
+            });
+          }else{
+            AccountService.getVersionsList($scope.versionparams).success(function (data) {
+              CommonService.windowOpen(data.data.data_list[0].attached);
+            });
+          }
+          return;
+        } else if (isIpad || isIphoneOs) {
+          CommonService.windowOpen("https://itunes.apple.com/cn/app/id1260924490");
+          return;
+        } else {
           CommonService.platformPrompt("很抱歉，“收收”只提供安卓版及Iphone版！", 'close');
         }
       }
