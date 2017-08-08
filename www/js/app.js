@@ -633,7 +633,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/download.html',
         controller: 'downloadCtrl'
       })
-      //下载页
+      //邀请码分享页
       .state('invitedown', {
         url: '/invitedown',
         cache: true,
