@@ -713,9 +713,9 @@ angular.module('starter.controllers', [])
           AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
             if (data.code == 1001) {
               localStorage.setItem("user", JSON.stringify(data.data));
-              if($scope.user.usertype==1){
+              if ($scope.user.usertype == 1) {
                 $state.go('tab.main');
-              }else {
+              } else {
                 $state.go('organizingdata', {type: $scope.user.usertype});
               }
             } else {
@@ -799,7 +799,7 @@ angular.module('starter.controllers', [])
   })
 
   //完善资料页面
-  .controller('OrganizingDataCtrl', function ($scope, $rootScope, $stateParams,$state, CommonService, MainService, $ionicHistory, BoRecycle, OrderService, AccountService, AddressService) {
+  .controller('OrganizingDataCtrl', function ($scope, $rootScope, $stateParams, $state, CommonService, MainService, $ionicHistory, BoRecycle, OrderService, AccountService, AddressService) {
     //上传图片数组集合
     $scope.imageList = [];
     $scope.ImgsPicAddr = [];//图片信息数组
@@ -899,12 +899,12 @@ angular.module('starter.controllers', [])
       }
     }
     //如果是从注册页面进来的，且是回收商用户，自动赋值回收商子类
-    if($rootScope.registerUserServices){
-      var uss=$rootScope.registerUserServices;
-      angular.forEach(uss,function (item) {
-        angular.forEach($scope.services,function (item2) {
-          if(item2.key==item){
-            item2.checked=true;
+    if ($rootScope.registerUserServices) {
+      var uss = $rootScope.registerUserServices;
+      angular.forEach(uss, function (item) {
+        angular.forEach($scope.services, function (item2) {
+          if (item2.key == item) {
+            item2.checked = true;
             $scope.ischecked = true;
           }
         });
@@ -1079,17 +1079,17 @@ angular.module('starter.controllers', [])
               }
             }).then(function () {
               //if ($scope.user.usertype == 2) {
-                CommonService.platformPrompt("完善资料提交成功", 'close');
-                var user = JSON.parse(localStorage.getItem("user"));
+              CommonService.platformPrompt("完善资料提交成功", 'close');
+              var user = JSON.parse(localStorage.getItem("user"));
               //完善资料提交成功后清除回收商选项值
-              if($rootScope.registerUserServices){
-                $rootScope.registerUserServices=null;
+              if ($rootScope.registerUserServices) {
+                $rootScope.registerUserServices = null;
               }
-                if (user.certstate.substr(3, 1) != 2) { //没有实名认证
-                  //CommonService.showConfirm('收收提示', '尊敬的用户,您好！实名认证完善认证信息后才能进行更多操作！', '实名认证', '暂不认证', 'realname', 'close', '', {status: 0});
-                  $state.go('realname',{status: 0});
-                  return;
-                }
+              if (user.certstate.substr(3, 1) != 2) { //没有实名认证
+                //CommonService.showConfirm('收收提示', '尊敬的用户,您好！实名认证完善认证信息后才能进行更多操作！', '实名认证', '暂不认证', 'realname', 'close', '', {status: 0});
+                $state.go('realname', {status: 0});
+                return;
+              }
               //}
               //CommonService.platformPrompt("完善资料提交成功", 'tab.main');
             });
@@ -1310,7 +1310,7 @@ angular.module('starter.controllers', [])
           angular.forEach(data.data.data_list, function (item) {
             $scope.orderList.push(item);
           });
-        console.log($scope.orderList);
+          console.log($scope.orderList);
           $scope.total = data.data.page_count;
           $scope.$broadcast('scroll.infiniteScrollComplete');
           $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
@@ -3360,7 +3360,7 @@ angular.module('starter.controllers', [])
         if (data.code == 1001) {
           $scope.productList = data.data;
           angular.forEach($scope.productList, function (item, index) {
-            if ((","+user.userext.prodgroup+",").indexOf(","+item.grpid+",") >=0) {
+            if (("," + user.userext.prodgroup + ",").indexOf("," + item.grpid + ",") >= 0) {
               $scope.productList[index].checked = true;
               $scope.ischecked = true;
             }
@@ -3380,17 +3380,17 @@ angular.module('starter.controllers', [])
     //修改回收品类
     $scope.modifycategorySubmit = function () {
       $scope.recyclingCategory = [];//回收品类
-      var isModify=true;//是否修改
-      var grpids=user.userext.prodgroup.split(',');
+      var isModify = true;//是否修改
+      var grpids = user.userext.prodgroup.split(',');
       angular.forEach($scope.productList, function (item) {
         if (item.checked) {
           $scope.recyclingCategory.push(item.grpid);
         }
       });
-      if(grpids.sort().join(',')==$scope.recyclingCategory.sort().join(',')) {
-        isModify=false;
+      if (grpids.sort().join(',') == $scope.recyclingCategory.sort().join(',')) {
+        isModify = false;
       }
-      if(!isModify){
+      if (!isModify) {
         CommonService.platformPrompt("回收品类修改成功", '');
         return;
       }
@@ -3491,7 +3491,7 @@ angular.module('starter.controllers', [])
         amount: $scope.cashinfo.amount,
       };
       MyWalletService.cash($scope.datas).success(function (data) {
-        if($scope.cashinfo.amount<=3) {
+        if ($scope.cashinfo.amount <= 3) {
           $rootScope.commonService.toolTip('提现金额必须大于3元！', '');
           return;
         }
@@ -3880,7 +3880,7 @@ angular.module('starter.controllers', [])
   })
 
   //下载页面
-  .controller('downloadCtrl', function ($scope, $ionicPlatform, BoRecycle, CommonService, WeiXinService, AccountService) {
+  .controller('downloadCtrl', function ($scope, $ionicPlatform, BoRecycle, CommonService, WeiXinService, MainService,AccountService) {
     CommonService.customModal($scope, 'templates/modal/dl_modal.html');
     var ua = window.navigator.userAgent.toLowerCase(); //浏览器的用户代理设置为小写，再进行匹配
     var isIpad = ua.match(/ipad/i) == "ipad"; //或者利用indexOf方法来匹配
@@ -3891,9 +3891,9 @@ angular.module('starter.controllers', [])
       if (WeiXinService.isWeiXin()) {
         if (pa == 1) {
           CommonService.windowOpen("http://a.app.qq.com/o/simple.jsp?pkgname=com.boolv.recycle");
-        }else {
-          $scope.share_arrow="./img/share_arrow.png";
-          $scope.dl_word="./img/dl-word.png";
+        } else {
+          $scope.share_arrow = "./img/share_arrow.png";
+          $scope.dl_word = "./img/dl-word.png";
           $scope.modal.show();
         }
         return;
@@ -3905,16 +3905,31 @@ angular.module('starter.controllers', [])
             NameE: '',//软件名称（英文）
             Enable: 1 //是否启用 1启用 2禁用
           }
-          AccountService.getVersionsList($scope.versionparams).success(function (data) {
-            CommonService.windowOpen(data.data.data_list[0].attached);
-          });
+          if (!localStorage.getItem("token") || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {//如果没有授权先授权 或者超过两个小时
+            //接口授权
+            MainService.authLogin({grant_type: 'client_credentials'}).success(function (data) {
+              if (data.access_token) {
+                localStorage.setItem("token", data.access_token);//公共接口授权token
+                localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
+              }
+            }).then(function () {
+              AccountService.getVersionsList($scope.versionparams).success(function (data) {
+                CommonService.windowOpen(data.data.data_list[0].attached);
+              });
+            })
+          } else {
+            AccountService.getVersionsList($scope.versionparams).success(function (data) {
+              CommonService.windowOpen(data.data.data_list[0].attached);
+            });
+          }
+
           return;
         } else if (isIpad || isIphoneOs) {
           CommonService.windowOpen("https://itunes.apple.com/cn/app/id1260924490");
           return;
         } else {
 
-            CommonService.platformPrompt("很抱歉，“收收”只提供安卓版及Iphone版！", 'close');
+          CommonService.platformPrompt("很抱歉，“收收”只提供安卓版及Iphone版！", 'close');
         }
       }
     }
