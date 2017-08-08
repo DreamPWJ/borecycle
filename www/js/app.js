@@ -633,6 +633,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/download.html',
         controller: 'downloadCtrl'
       })
+      //邀请码分享页
+      .state('invitedown', {
+        url: '/invitedown',
+        cache: true,
+        templateUrl: 'templates/tuiguang/invitationdown.html',
+        controller: 'invitedownCtrl'
+      })
 
     // if none of the above states are matched, use this as the fallback
     //动态判断是否显示初始化页面
