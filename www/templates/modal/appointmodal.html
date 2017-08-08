@@ -1,30 +1,26 @@
-<ion-view>
-  <ion-nav-buttons side="left">
-    <button class="button button-clear icon ion-ios-arrow-left" nav-direction=back
-            ui-sref="tab.main"></button>
-  </ion-nav-buttons>
-  <ion-nav-title>
-    <h1 class="title"><img id="logo" src="img/logo.png" alt=""/> 预约时间</h1>
-  </ion-nav-title>
+
+<ion-modal-view id="appoint-sure">
+  <ion-header-bar class="bar bar-header bar-light">
+    <button class="button button-clear icon ion-ios-close-empty" ng-click="modal.hide()"></button>
+    <h1 class="title">选择预约时间</h1>
+  </ion-header-bar>
+
   <form name="appointForm">
-  <ion-content overflow-scroll="false" class="has-tabs-top stable-bg" has-bouncing="true">
-    <div  class="row row-center row-wrap text-center light-bg select-category padding-top">
-      <div ng-click="appointChoice(dateList,item)" ng-repeat="item in dateList" ng-class="item.checked?'showDiv':''" class="col-20">
+  <ion-content overflow-scroll="false" class="has-tabs light-bg" has-bouncing="true">
+    <div  class="row row-wrap text-center  select-category ">
+      <div ng-click="appointChoice(dateList,item)" ng-repeat="item in dateList" ng-class="item.checked?'showDiv':''" class="col-20"
+           style="border: 1px solid rgba(221, 221, 221, 1);">
         <input type="checkbox"  ng-model="item.checked" class="ng-pristine ng-untouched ng-valid ng-empty">
         <label>
-          <p style="font-size:85%;">{{item.addtime|date :'yyyy-MM-dd'}}</p>
+          <p style="margin-top: 30px;">{{item.addtime|date :'MM-dd'}}</p>
           <span class="showSpan" ng-show="item.checked"></span>
         </label>
       </div>
-
     </div>
   </ion-content>
     <div class="padding light-bg  bottom-0" keyboard-attach>
-      <button
-              class="button button-positive full-image "
-              ng-click="AppointSubmit()">
-        提交
-      </button>
+      <button class="button button-positive full-image " ng-click="AppointSubmit()">确认预约</button>
     </div>
     </form>
-</ion-view>
+</ion-modal-view>
+<!--</ion-view>-->

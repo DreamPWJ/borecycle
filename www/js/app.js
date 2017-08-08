@@ -633,13 +633,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/download.html',
         controller: 'downloadCtrl'
       })
-      //预约时间
-      .state('appointmodal', {
-        url: '/appointmodal/:orderinfo',
-        cache: false,
-        templateUrl: 'templates/modal/appointmodal.html',
-        controller: 'appointmodalCtrl'
-      })
 
     // if none of the above states are matched, use this as the fallback
     //动态判断是否显示初始化页面

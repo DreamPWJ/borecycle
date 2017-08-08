@@ -1387,11 +1387,12 @@ angular.module('starter.controllers', [])
   })
 
   //我的回收订单页面
-  .controller('OrderCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, OrderService, $ionicHistory, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
+  .controller('OrderCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, OrderService,$filter, $ionicHistory, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
     //是否登录
     if (!CommonService.isLogin(true)) {
       return;
     }
+    $rootScope.commonService = CommonService;
     $scope.$on('$ionicView.beforeEnter', function () {
       if (!$ionicHistory.backView()) { //有没有上级
         //如果授权超过两个小时 单独授权
@@ -1413,7 +1414,9 @@ angular.module('starter.controllers', [])
           })
         }
       }
-    })
+    });
+    //调出确认付款面板
+    CommonService.customModal($scope, 'templates/modal/appointmodal.html');
     var user = JSON.parse(localStorage.getItem("user"));//用户信息
     $scope.tabOrderIndex = $stateParams.state;
     $scope.tabIndex = $scope.tabOrderIndex;//当前tabs页
@@ -1421,6 +1424,7 @@ angular.module('starter.controllers', [])
     $scope.orderList = [];
     $scope.page = 0;
     $scope.total = 1;
+    $scope.yymodal={};
     $scope.getOrderList = function () { //查询登记信息/货源信息分页列
       $scope.tabOrderIndex = $scope.tabIndex;
       if (arguments != [] && arguments[0] == 0) {
@@ -1492,9 +1496,13 @@ angular.module('starter.controllers', [])
       event.preventDefault();
       $state.go("navigation", {longitude: longitude, latitude: latitude})
     }
-    //预约
+
+//去付款
+    $scope.topay = function (type, djno, orno, fromuser, touser, amount, name, informationmoney) {
+      OrderService.topay(type, djno, orno, fromuser, touser, amount, name, informationmoney);
+    }
+//预约时间
     $scope.Appoint = function (type,djno,userid,orno,oraddtime) {
-      event.preventDefault();
       var json = {
         type: type,
         djno: djno,
@@ -1502,11 +1510,57 @@ angular.module('starter.controllers', [])
         userid: userid,
         oraddtime: oraddtime
       }
-      $state.go("appointmodal",{orderinfo: JSON.stringify(json)});
+      $scope.yymodal=json;
+      $scope.datas={
+        N:10,
+        ORAddTime:oraddtime
+      }
+      OrderService.getappoint($scope.datas).success(function (data) {
+        if (data.code == 1001) {
+          $scope.dateList = [];
+          $scope.dateList = data.data;
+        }
+      });
+      $scope.modal.show();
     }
-//去付款
-    $scope.topay = function (type, djno, orno, fromuser, touser, amount, name, informationmoney) {
-      OrderService.topay(type, djno, orno, fromuser, touser, amount, name, informationmoney);
+    //实现单选
+    $scope.appointChoice = function (array, item) {
+      item.checked ? item.checked = false : item.checked = true;
+      if (item.checked) {
+        angular.forEach(array, function (child) {
+          if (item != child) {
+            child.checked = false;
+          }
+        });
+      }
+    }
+    $scope.AppointSubmit=function () {
+      var appointtime = [];//单选
+      angular.forEach($scope.dateList, function (item) {
+        if (item.checked) {
+          appointtime.push($filter('date')(item.addtime, "yyyy-MM-dd"));
+        }
+      });
+      if (appointtime.length==0) {
+        $rootScope.commonService.toolTip('请选择预约时间！', '');
+        return;
+      }
+      $scope.appointtime = {
+        type: $scope.yymodal.type,
+        djno:$scope.yymodal.djno,
+        userid:$scope.yymodal.userid,
+        orno:$scope.yymodal.orno,
+        oruserid:localStorage.getItem("userid"),
+        appointtime: appointtime.join(",")+" 23:59:59"
+      }
+      OrderService.addappoint($scope.appointtime).success(function (data) {
+        if (data.code == 1001) {
+           CommonService.platformPrompt("预约成功", "close");
+          $scope.modal.hide();
+        } else {
+          CommonService.platformPrompt(data.message, "close");
+        }
+      });
     }
   })
 
@@ -1815,19 +1869,6 @@ angular.module('starter.controllers', [])
       event.preventDefault();
       window.open('tel:' + phonenumber);
     }
-    //预约
-    $scope.Appoint = function (type,djno,userid,orno,oraddtime) {
-      event.preventDefault();
-      var json = {
-        type: type,
-        djno: djno,
-        orno: orno,
-        userid: userid,
-        oraddtime: oraddtime
-      }
-      $state.go("appointmodal",{orderinfo: JSON.stringify(json)});
-    }
-
     //去收货
     $scope.recycle = function (orno, djno, type, userid, amount, name, productname, hytype) {
       OrderService.torecycle(user, orno, djno, type, userid, amount, name, productname, hytype);
@@ -3947,63 +3988,4 @@ angular.module('starter.controllers', [])
     }
   })
 
-  //预约时间
-  .controller('appointmodalCtrl', function ($scope, $rootScope, $state, $stateParams,$filter, CommonService, OrderService) {
-    $rootScope.commonService = CommonService;
-    //是否登录
-    if (!CommonService.isLogin()) {
-      return;
-    }
-    $scope.orderinfo = JSON.parse($stateParams.orderinfo);
-    $scope.datas={
-      N:10,
-      ORAddTime:$scope.orderinfo.oraddtime
-    }
-    OrderService.getappoint($scope.datas).success(function (data) {
-      if (data.code == 1001) {
-        $scope.dateList = [];
-        $scope.dateList = data.data;
-      }
-    });
-    //实现单选
-    $scope.appointChoice = function (array, item) {
-      item.checked ? item.checked = false : item.checked = true;
-      if (item.checked) {
-        angular.forEach(array, function (child) {
-          if (item != child) {
-            child.checked = false;
-          }
-        });
-      }
-    }
-    $scope.AppointSubmit=function () {
-      var appointtime = [];//单选
-      angular.forEach($scope.dateList, function (item) {
-        if (item.checked) {
-          appointtime.push($filter('date')(item.addtime, "yyyy-MM-dd"));
-        }
-      });
-      if (appointtime.length==0) {
-        $rootScope.commonService.toolTip('请选择预约时间！', '');
-        return;
-      }
-      $scope.appointtime = {
-        type: $scope.orderinfo.type,
-        djno:$scope.orderinfo.djno,
-        userid:$scope.orderinfo.userid,
-        orno:$scope.orderinfo.orno,
-        oruserid:localStorage.getItem("userid"),
-        appointtime: appointtime.join(",")+" 23:59:59"
-      }
-      OrderService.addappoint($scope.appointtime).success(function (data) {
-        if (data.code == 1001) {
-          CommonService.platformPrompt("预约成功", "close");
-          $state.go("order", {state: 2});
-        } else {
-          CommonService.platformPrompt(data.message, "close");
-        }
-      });
-    }
-
-  })
 ;

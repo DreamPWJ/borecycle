@@ -527,6 +527,12 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
 #dl-modal .row{
   padding: 0 20px;
 }
+#appoint-sure.modal {
+  top: auto;
+  min-height: 285px;
+  height: auto !important;
+  bottom: 0;
+}
 #pay-sure.modal {
   top: auto;
   min-height: 415px;
@@ -618,3 +624,10 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
 #login .iconfont{
   font-size: 16px!important;
 }
+.keyword{display: flex;width:100%}
+.keyword .keynum{border-right:1px solid #e6e6e6;border-bottom:1px solid #e6e6e6;height:58px;line-height:58px !important;}
+.keyword .keynum:last-child{border-right:0px;}
+.keyword .keynum:nth-of-type(5){border-right:0px}
+.keyword .keynum .chose_cur{background-color:#09f;color:#fff}
+.keyword .keynum span:after{}
+.keyword .keynum span:before{}
