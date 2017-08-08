@@ -3,8 +3,8 @@
     <img src="./img/content.png" />
     <div class="text-center row row-center light-bg" style="position: fixed;bottom: 0;width:100%;height: 15%;border-radius: 30% 30% 0 0;padding-left: 5%;">
       <a class="button button-balanced full-image col-50 icon iconfont icon-xiazai" style="margin-top: 0.3em;margin-right: 5%;"
-         ng-click="dld(1)">应用市场下载</a>
-      <a class="button button-balanced full-image col-40 icon iconfont icon-xiazai" style="margin-top: 0.3em;"
+         ng-click="dld(1)" ng-if="isWX">应用市场下载</a>
+      <a class="button button-balanced full-image icon iconfont icon-xiazai" ng-class="{{isWX?'col-40':''}}" style="margin-top: 0.3em;"
          ng-click="dld()">官网下载</a>
     </div>
   </ion-content>

@@ -2761,7 +2761,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
-          url: BoRecycle.api + "/api/user/get_identity/" + userid,
+          url: BoRecycle.api + "/api/user/get_identity/" + userid
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -2788,7 +2788,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
-          url: BoRecycle.api + "/api/bank/get_count/" + userid,
+          url: BoRecycle.api + "/api/bank/get_count/" + userid
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -2829,7 +2829,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
-          url: BoRecycle.api + "/api/bank/get_cardinfo/" + cardNo,
+          url: BoRecycle.api + "/api/bank/get_cardinfo/" + cardNo
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -2842,7 +2842,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
-          url: BoRecycle.api + "/api/bank/setdefault/" + bid,
+          url: BoRecycle.api + "/api/bank/setdefault/" + bid
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -2856,6 +2856,7 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'GET',
           url: 'templates/data/bank.json',
+        cache:true
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {

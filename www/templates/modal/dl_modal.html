@@ -3,10 +3,10 @@
   <ion-content overflow-scroll="true" ng-click="modal.hide()">
     <div class="row">
       <p class="col-50"></p>
-      <img src="{{share_arrow}}" class="col-50 f-right" alt="收收">
+      <img ng-if="share_arrow" ng-src="{{share_arrow}}" class="col-50 f-right" alt="收收">
     </div>
     <!--<div class="row">-->
-      <img src="{{dl_word}}" style="width: 90%;margin-left: 5%;" alt="收收">
+      <img ng-if="dl_word" ng-src="{{dl_word}}" style="width: 90%;margin-left: 5%;" alt="收收">
     <div class="card padding-horizontal">
       <h2>1、点击右上角按钮<i class="icon iconfont icon-more"></i></h2>
 
