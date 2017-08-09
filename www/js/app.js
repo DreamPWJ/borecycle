@@ -644,7 +644,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       })
       //邀请码分享页
       .state('invitedown', {
-        url: '/invitedown',
+        url: '/invitedown/:cid',
         cache: true,
         templateUrl: 'templates/tuiguang/invitationdown.html',
         controller: 'invitedownCtrl'

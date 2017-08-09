@@ -503,6 +503,39 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
   max-width: none;
   max-height: 100%;
 }
+#download .invitedl .invitedl-content{
+  height: 25%;
+  width: 85%;
+  position:absolute;
+  margin-left: 1rem;
+  bottom: 6%;
+}
+#download .invitedl .invitedl-content div{
+  height: 50%;
+  position: relative;
+}
+#download .invitedl .invitedl-content div span.content1{
+  width: 100%;
+  height: 70%;
+  overflow: auto;
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  font-size: 4vw;
+  color: #05325b;
+  font-weight: bold;
+}
+#download .invitedl .invitedl-content div span.content2{
+  width: 100%;
+  height: 35%;
+  overflow: auto;
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  font-size: 6.8vw;
+  font-weight: bolder;
+  color: #f88206;
+}
 #download img {
   max-width: 98%;
   margin-top: 2rem;
@@ -633,6 +666,32 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
 #login .iconfont{
   font-size: 16px!important;
 }
+.button.button-golden {
+  border-color: transparent;
+  background-color: #e28504;
+  color: #fff; }
+.button.button-golden:hover {
+  color: #fff;
+  text-decoration: none; }
+.button.button-golden.active, .button.button-golden.activated {
+  border-color: #a2a2a2;
+  background-color: #e28504; }
+.button.button-golden.button-clear {
+  border-color: transparent;
+  background: none;
+  box-shadow: none;
+  color: #e28504; }
+.button.button-golden.button-icon {
+  border-color: transparent;
+  background: none; }
+.button.button-golden.button-outline {
+  border-color: #e28504;
+  background: transparent;
+  color: #e28504; }
+.button.button-golden.button-outline.active, .button.button-golden.button-outline.activated {
+  background-color: #e28504;
+  box-shadow: none;
+  color: #fff; }
 .searchbutton{
   border-color: transparent;
   background-color: #f8f8f8;
