@@ -135,7 +135,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             BLType= data.extras.BLType; //订单号
           } else {
             blno = data.BLNo; //订单号
-            BLType= data.BLType; //订单号
+            BLType= data.BLType; //查看类型
           }
           if(BLType==2)
           {

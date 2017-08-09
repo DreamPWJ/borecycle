@@ -1613,6 +1613,11 @@ angular.module('starter.controllers', [])
 
     //获取评论内容
     $scope.getComment = function () {
+      if($scope.orderDetail.oruserid!=null && $scope.orderDetail.oruserid!=localStorage.getItem("userid"))
+      {
+        CommonService.platformPrompt("非本人订单或该单已被抢！", 'tab.main');
+        return;
+      }
       OrderService.getComment({djno: $scope.orderDetail.djno}).success(function (data) {
         $scope.commentInfo = data.data;
 
