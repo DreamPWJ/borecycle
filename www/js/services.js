@@ -720,7 +720,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise
         promise = $http({
           method: 'GET',
-          url: BoRecycle.api + "/api/invitecode/generate/" + params
+          url: BoRecycle.api + "/api/invitecode/generate_code/" + params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
