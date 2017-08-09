@@ -1523,7 +1523,7 @@ angular.module('starter.controllers', [])
       });
       $scope.modal.show();
     }
-    //实现单选
+    //实现单选 
     $scope.appointChoice = function (array, item) {
       item.checked ? item.checked = false : item.checked = true;
       if (item.checked) {
