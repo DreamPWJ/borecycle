@@ -1518,7 +1518,8 @@ angular.module('starter.controllers', [])
       $scope.yymodal=json;
       $scope.datas={
         N:10,
-        ORAddTime:oraddtime
+      //  ORAddTime:oraddtime
+        ORAddTime:$filter('date')(new Date(),'yyyy-MM-dd')
       }
       OrderService.getappoint($scope.datas).success(function (data) {
         if (data.code == 1001) {
