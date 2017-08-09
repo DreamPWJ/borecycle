@@ -129,12 +129,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       var onOpenNotification = function (data) {
         try {
           var blno = ""; //订单号
+          var BLType="";//查看类型
           if (device.platform == "Android") {
             blno = data.extras.BLNo; //订单号
+            BLType= data.extras.BLType; //订单号
           } else {
             blno = data.BLNo; //订单号
+            BLType= data.BLType; //订单号
           }
-          $state.go("myorderdetails", {no: blno});//订单详情
+          if(BLType==2)
+          {
+            $state.go("orderdetails", {no: blno,type:1,hytype:0})
+          }
+          else {
+            $state.go("myorderdetails", {no: blno})
+          }
         } catch (exception) {
           console.log("JPushPlugin:onOpenNotification" + exception);
         }

@@ -2213,10 +2213,16 @@ angular.module('starter.controllers', [])
       })
     }
     //订单详情
-    $scope.newsDetails = function (relateno, id) {
+    $scope.newsDetails = function (relateno, id,receipttype) {
       if (relateno) {
         $scope.updateNewsLook(1, id)
-        $state.go("myorderdetails", {no: relateno})
+        if(receipttype==2)
+        {
+          $state.go("orderdetails", {no: relateno,type:1,hytype:0})
+        }
+        else {
+          $state.go("myorderdetails", {no: relateno})
+        }
 
       }
     }
