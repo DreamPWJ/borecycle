@@ -69,6 +69,17 @@
   white-space: nowrap;
 }
 
+.bhyyy:not(:empty) {
+  display: inline;
+  border-radius: 2px;
+  font-size: 0.7rem;
+  padding: 0 2px;
+  color: #33cd5f;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .pending {
   border-top: 2px solid rgba(221, 221, 221, 0.3);
   padding: 0.6rem 0;
