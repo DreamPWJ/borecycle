@@ -522,7 +522,6 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
   position: absolute;
   top: 0; left: 0; bottom: 0; right: 0;
   font-size: 4vw;
-  color: #05325b;
   font-weight: bold;
 }
 #download .invitedl .invitedl-content div span.content2{
@@ -717,3 +716,31 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
   background-color: #11c1f3;
   color: #fff;
 }
+#appoint-sure .select-category div{
+  height: 55px;
+  line-height: 55px!important;
+}
+.select-category .border-table{
+  border-right: 1px solid rgba(221, 221, 221, 1);
+  border-bottom: 1px solid rgba(221, 221, 221, 1);
+}
+.select-category .no-border-right{
+  border-right:none;
+}
+.select-category input:checked + div {
+  border: 1px solid #00ACFF;
+}
+#appoint-sure .select-category label {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  margin:0;
+  height: 55px;
+  line-height: 55px!important;
+  top: 0;
+}
+#appoint-sure .select-category label i{
+  font-size: 1.5rem;
+}
+

@@ -7,12 +7,11 @@
 
   <form name="appointForm">
   <ion-content overflow-scroll="false" class="has-tabs light-bg" has-bouncing="true">
-    <div  class="row row-wrap text-center  select-category ">
-      <div ng-click="appointChoice(dateList,item)" ng-repeat="item in dateList" ng-class="item.checked?'showDiv':''" class="col-20"
-           style="border: 1px solid rgba(221, 221, 221, 1);">
+    <div  class="row text-center row-no-padding select-category ">
+      <div ng-click="appointChoice(dateList,item)" ng-repeat="item in dateList" ng-class="item.checked?'showDiv':''" class="col-20 border-table {{($index+1)%5==0?'no-border-right':''}}">
         <input type="checkbox"  ng-model="item.checked" class="ng-pristine ng-untouched ng-valid ng-empty">
         <label>
-          <p style="margin-top: 30px;">{{item.addtime|date :'MM-dd'}}</p>
+          {{item.addtime|date :'dd'}}
           <span class="showSpan" ng-show="item.checked"></span>
         </label>
       </div>

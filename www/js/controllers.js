@@ -3942,7 +3942,7 @@ angular.module('starter.controllers', [])
   })
 
   //生成邀请码
-  .controller('tuiguangCtrl', function ($scope, $rootScope, AccountService, CommonService) {
+  .controller('tuiguangCtrl', function ($scope, $rootScope,$state, AccountService, CommonService,BoRecycle,WeiXinService) {
     //是否登录
     if (!CommonService.isLogin()) {
       return;
@@ -3960,6 +3960,7 @@ angular.module('starter.controllers', [])
     $scope.getCode = function () {
       AccountService.getInvitecode(localStorage.getItem("userid")).success(function (data) {
         $scope.invitecode = data.data;
+        console.log($scope.invitecode);
       }).error(function (err) {
         $scope.invitecode = "迷失在沙漠中，请重新生成！";
       });
@@ -4085,8 +4086,11 @@ angular.module('starter.controllers', [])
     }
   })
   //下载页面
-  .controller('invitedownCtrl', function ($scope, $ionicPlatform, BoRecycle, CommonService, WeiXinService, MainService,AccountService) {
-    CommonService.customModal($scope, 'templates/modal/dl_modal.html');
+  .controller('invitedownCtrl', function ($scope, $ionicPlatform,$stateParams, BoRecycle, CommonService, WeiXinService, MainService,AccountService) {
+    if(!$stateParams.cid){
+      CommonService.platformPrompt("无效邀请码", 'tab.main');
+      return;
+    }
     var ua = window.navigator.userAgent.toLowerCase(); //浏览器的用户代理设置为小写，再进行匹配
     var isIpad = ua.match(/ipad/i) == "ipad"; //或者利用indexOf方法来匹配
     var isIphoneOs = ua.match(/iphone os/i) == "iphone os";
@@ -4094,6 +4098,41 @@ angular.module('starter.controllers', [])
     $scope.isWX=WeiXinService.isWeiXin();
     $scope.share_arrow;
     $scope.dl_word;
+    $scope.invitecode;//邀请码
+    //获取邀请码
+    $scope.getCode = function () {
+      AccountService.getInvitecode_id($stateParams.cid).success(function (data) {
+        if(data.code==1001){
+          $scope.invitecode = data.data;
+        }
+        else {
+          CommonService.platformPrompt(data.message, 'tab.main');
+          return;
+        }
+      }).error(function (err) {
+        CommonService.platformPrompt(err, 'close');
+        return;
+      });
+    }
+    //判断授权
+    if (!localStorage.getItem("token") || localStorage.getItem("token") == "undefined" || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
+      MainService.authLogin({grant_type: 'client_credentials'}).success(function (data) {
+
+        if (data.access_token) {
+          localStorage.setItem("token", data.access_token);//公共接口授权token
+          localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
+        } else {
+          CommonService.platformPrompt("获取公众接口授权token失败", 'close');
+          return;
+        }
+      }).then(function () {
+        $scope.getCode();
+      });
+    }else{
+      $scope.getCode();
+    }
+    CommonService.customModal($scope, 'templates/modal/dl_modal.html');
+
     $scope.dld = function (pa) {
       if ($scope.isWX) {
         if (pa == 1) {
