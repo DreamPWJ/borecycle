@@ -633,10 +633,28 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
 #login .iconfont{
   font-size: 16px!important;
 }
-.keyword{display: flex;width:100%}
-.keyword .keynum{border-right:1px solid #e6e6e6;border-bottom:1px solid #e6e6e6;height:58px;line-height:58px !important;}
-.keyword .keynum:last-child{border-right:0px;}
-.keyword .keynum:nth-of-type(5){border-right:0px}
-.keyword .keynum .chose_cur{background-color:#09f;color:#fff}
-.keyword .keynum span:after{}
-.keyword .keynum span:before{}
+.searchbutton{
+  border-color: transparent;
+  background-color: #f8f8f8;
+  color: #444;
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding: 0 12px;
+  min-width: 52px;
+  min-height: 29px;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 4px;
+  vertical-align: top;
+  text-align: center;
+  text-overflow: ellipsis;
+  font-size: 16px;
+  line-height: 29px;
+  cursor: pointer;
+}
+.searchbutton-calm {
+  border-color: transparent;
+  background-color: #11c1f3;
+  color: #fff;
+}

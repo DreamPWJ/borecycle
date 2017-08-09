@@ -7,8 +7,11 @@
     <div class="bar-light  item-input-inset ">
       <label class="item-input-wrapper">
         <i class=" iconfont icon-search placeholder-icon" style="font-size: 0.9rem!important;"></i>
-        <input type="search" class="full-image" ng-model="addrinfo.addressname" ng-change="getPlaceBySearch(addrinfo.addressname)"  placeholder="您要搜索的地址">
+        <input type="search" class="full-image" ng-model="addrinfo.addressname" ng-change="getPlaceBySearch(addrinfo.addressname)"  placeholder="您要搜索的地址 + 门牌号(手动录入)">
       </label>
+      <button class="searchbutton searchbutton-calm" ng-click="searchaddrquery(addrinfo.addressname)">
+        确定
+      </button>
     </div>
     <ion-list>
       <div ng-if="addresspois==null||addresspois.length==0" class="isNotDataHint">

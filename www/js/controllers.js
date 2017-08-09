@@ -974,7 +974,12 @@ angular.module('starter.controllers', [])
 
     // 选择打开附近地址
     $scope.getAddressPois = function (item) {
-      $scope.user.addrdetail = item.name;
+     // $scope.user.addrdetail = item.name;
+     // $scope.modal1.hide();
+      $scope.addrinfo.addressname= item.name;
+    }
+    $scope.searchaddrquery = function (addressname) {
+      $scope.user.addrdetail =addressname;
       $scope.modal1.hide();
     }
 
@@ -2541,9 +2546,14 @@ angular.module('starter.controllers', [])
 
     // 选择打开附近地址
     $scope.getAddressPois = function (item) {
-      $scope.addrinfo.addr = item.name;
+     // $scope.addrinfo.addr = item.name;
       $scope.longitude = item.location.split(",")[0];//经度
       $scope.latitude = item.location.split(",")[1];//纬度
+     // $scope.modal1.hide();
+      $scope.addrinfo.addressname= item.name;
+    }
+    $scope.searchaddrquery = function (addressname) {
+      $scope.addrinfo.addr =addressname;
       $scope.modal1.hide();
     }
 
@@ -3061,9 +3071,14 @@ angular.module('starter.controllers', [])
 
 // 选择打开附近地址
     $scope.getAddressPois = function (item) {
-      $scope.dengji.addrdetail = item.name;
+     // $scope.dengji.addrdetail = item.name;
       $scope.longitude = item.location.split(",")[0];//经度
       $scope.latitude = item.location.split(",")[1];//纬度
+     // $scope.modal1.hide();
+      $scope.addrinfo.addressname= item.name;
+    }
+    $scope.searchaddrquery = function (addressname) {
+      $scope.dengji.addrdetail =addressname;
       $scope.modal1.hide();
     }
 
