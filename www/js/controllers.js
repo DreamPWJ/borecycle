@@ -3586,16 +3586,16 @@ angular.module('starter.controllers', [])
         $state.go('addcard');
         return;
       }
+      if ($scope.cashinfo.amount <= 3) {
+        $rootScope.commonService.toolTip('提现金额必须大于3元！', '');
+        return;
+      }
       $scope.datas = {
         userbankid: $rootScope.defaultBank.id,
         userid: localStorage.getItem("userid"),
         amount: $scope.cashinfo.amount,
       };
       MyWalletService.cash($scope.datas).success(function (data) {
-        if ($scope.cashinfo.amount <= 3) {
-          $rootScope.commonService.toolTip('提现金额必须大于3元！', '');
-          return;
-        }
         if (data.code == 1001) {
           $rootScope.defaultBank = null;
           CommonService.showAlert('', '<p>恭喜您！</p><p>操作成功，工作日24小时之内到账，请注意查收！</p>', 'wallet');
