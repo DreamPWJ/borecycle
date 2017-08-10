@@ -1525,10 +1525,12 @@ angular.module('starter.controllers', [])
         if (data.code == 1001) {
           $scope.dateList = [];
           $scope.dateList = data.data;
+          console.log($scope.dateList);
         }
       });
       $scope.modal.show();
     }
+
     //实现单选
     $scope.appointChoice = function (array, item) {
       item.checked ? item.checked = false : item.checked = true;

@@ -6,12 +6,12 @@
   </ion-header-bar>
 
   <form name="appointForm">
-  <ion-content overflow-scroll="false" class="has-tabs light-bg" has-bouncing="true">
-    <div  class="row text-center row-no-padding select-category ">
+  <ion-content overflow-scroll="true" class="has-tabs light-bg" has-bouncing="true">
+    <div  class="row text-center row-no-padding select-category row-wrap">
       <div ng-click="appointChoice(dateList,item)" ng-repeat="item in dateList" ng-class="item.checked?'showDiv':''" class="col-20 border-table {{($index+1)%5==0?'no-border-right':''}}">
         <input type="checkbox"  ng-model="item.checked" class="ng-pristine ng-untouched ng-valid ng-empty">
         <label>
-          {{item.addtime|date :'dd'}}
+          <i>{{item.addtime|date :'dd'}}<i style="font-size: 0.5rem;color: #6e6e6e;">{{item.addtime|date :'M'}}月</i></i>
           <span class="showSpan" ng-show="item.checked"></span>
         </label>
       </div>
