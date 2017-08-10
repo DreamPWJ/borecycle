@@ -5,7 +5,7 @@
   <ion-nav-title>
     <h1 class="title"><img id="logo" src="img/logo.png" alt=""/> 邀请朋友</h1>
   </ion-nav-title>
-  <ion-nav-buttons side="right">
+  <ion-nav-buttons ng-if="!isWebView" side="right">
     <button class="button button-clear" nav-direction=back ng-click="shareCode()">分享</button>
   </ion-nav-buttons>
   <ion-content overflow-scroll="true" class="light-bg has-subfooter text-center" style="padding: 50% 0;font-weight: bolder;font-size: 3.5rem;font-family: 'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif" has-bouncing="true">

@@ -3952,12 +3952,16 @@ angular.module('starter.controllers', [])
     if (!CommonService.isLogin()) {
       return;
     }
+    //判断是否是浏览器
+    if (ionic.Platform.isWebView()) {
+      $scope.isWebView = true;
+    }
     //调出分享面板
     CommonService.customModal($scope, 'templates/modal/share.html');
 
     if (!$rootScope.userdata || $rootScope.userdata.promoter != 1) {
       CommonService.platformPrompt("很抱歉，您不是收收的推广用户！", 'close');
-      $state.go("tab.account")
+      $state.go("tab.account");
       return;
     }
     $scope.invitecode;//邀请码
@@ -4053,7 +4057,7 @@ angular.module('starter.controllers', [])
         }
         return;
       } else {
-        if (true) {
+        if (isAndroid) {
           $scope.versionparams = {
             ID: 3,//编码 ,等于空时取所有
             Name: '',//软件名称（中文）
