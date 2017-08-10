@@ -769,3 +769,9 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
 #appoint-sure .overflow-scroll .scroll {
   height: auto;
 }
+#appoint-sure .overflow-scroll {
+  overflow-y: hidden;
+}
+#appoint-sure .bar-footer.has-tabs, #appoint-sure .has-tabs {
+  bottom: 70px;
+}
