@@ -697,7 +697,7 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
   color: #444;
   position: relative;
   display: inline-block;
-  margin: 0;
+  float: right;
   padding: 0 12px;
   min-width: 52px;
   min-height: 29px;
