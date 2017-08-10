@@ -15,7 +15,7 @@
     <ion-list>
       <div ng-repeat="item in orderList">
         <a ng-href="#/orderdetails/{{item.orno}}/2/{{item.hytype}}" class="item ">
-          <h2 class="positive"><span class="assertive">{{item.area.Name}}</span>{{item.addrdetail}} <span class="bhyyy">{{(item.isappoint==2 && item.state<5)?'(预约)':""}}</span></h2>
+          <h2 class="positive"><span class="assertive">{{item.area.Name}}</span>{{item.addrdetail}} <span class="bhyyy">{{(item.isappoint==2 && item.state<5)?'(已预约)':""}}</span></h2>
           <p class="text-wrap ">交易品类 : {{item.category}} <span class=" {{item.hytype==1?'bhytype':(item.hytype==2?'ehytype':'')}} ">{{item.hytype==1?'废品':(item.hytype==2?'二手':'')}}</span>
           </p>
           <p class="text-wrap ">{{item.name}} {{item.motel | hidepartinfo : 'phone'}} 有效期: <span class="assertive">{{item.expirydate}}</span>
