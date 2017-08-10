@@ -4153,7 +4153,7 @@ angular.module('starter.controllers', [])
         }
         return;
       } else {
-        if (true) {
+        if (isAndroid) {
           $scope.versionparams = {
             ID: 3,//编码 ,等于空时取所有
             Name: '',//软件名称（中文）
