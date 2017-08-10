@@ -3600,7 +3600,7 @@ angular.module('starter.controllers', [])
           $rootScope.defaultBank = null;
           CommonService.showAlert('', '<p>恭喜您！</p><p>操作成功，工作日24小时之内到账，请注意查收！</p>', 'wallet');
         } else {
-          CommonService.platformPrompt('提现失败', 'close');
+          CommonService.platformPrompt(data.message, 'close');
         }
       });
     }
