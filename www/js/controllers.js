@@ -4202,8 +4202,6 @@ angular.module('starter.controllers', [])
           CommonService.platformPrompt("获取微信签名失败", 'close');
         }
       });
-
-
     }else{
       $state.go("tab.main");
     }
