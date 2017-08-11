@@ -102,57 +102,6 @@ angular.module('starter.controllers', [])
           }
         })
       }
-
-      //是否是微信 初次获取签名 获取微信签名 获取微信登录授权
-      if (WeiXinService.isWeiXin()) {
-
-        if (!localStorage.getItem("openid")) { //微信登录授权
-          var wxcode = WeiXinService.getQueryString(window.location, "code");
-          if (wxcode) {
-            //获取微信openid获取会员账号，如果没有则添加
-            WeiXinService.getWCOpenId({
-              code: wxcode,
-              UserLogID: localStorage.getItem("userid") || ""
-            }).success(function (data) {
-              if (data.code == 1001) {
-                localStorage.setItem("openid", data.data.OpenId);
-                if (data.data.UserLogID != null && data.data.usersecret != null) {
-                  localStorage.setItem("userid", data.data.UserLogID);
-                  localStorage.setItem("usersecret", data.data.usersecret);
-                  $scope.getMainData();
-                }
-
-              } else {
-                CommonService.platformPrompt("获取微信OpenID失败", 'close');
-              }
-
-            })
-          } else {
-            CommonService.windowOpen('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx39ba5b2a2f59ef2c&redirect_uri=' + encodeURIComponent("http://m.boolv.com/WeChat") + '&response_type=code&scope=snsapi_base&state=shoushou#wechat_redirect')
-            return;
-          }
-
-        }
-
-
-        // 获取微信签名
-        $scope.wxparams = {
-          url: location.href.split('#')[0] //当前网页的URL，不包含#及其后面部分
-        }
-        WeiXinService.getWCSignature($scope.wxparams).success(function (data) {
-          if (data.code == 1001) {
-            localStorage.setItem("timestamp", data.data.timestamp);//生成签名的时间戳
-            localStorage.setItem("noncestr", data.data.noncestr);//生成签名的随机串
-            localStorage.setItem("signature", data.data.signature);//生成签名
-            //通过config接口注入权限验证配置
-            WeiXinService.weichatConfig(data.data.timestamp, data.data.noncestr, data.data.signature);
-          } else {
-            CommonService.platformPrompt("获取微信签名失败", 'close');
-          }
-        })
-
-
-      }
       //根据会员ID获取会员账号基本信息
       if (localStorage.getItem("userid")) {
         AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
@@ -2244,9 +2193,9 @@ angular.module('starter.controllers', [])
     if (!CommonService.isLogin(true)) {
       return;
     }
-    if (ionic.Platform.isWebView()) {
-      $scope.isWebView = true;
-    }
+    // if (ionic.Platform.isWebView()) {
+    //   $scope.isWebView = true;
+    // }
     //调出分享面板
     CommonService.customModal($scope, 'templates/modal/share.html');
 
@@ -4209,5 +4158,54 @@ angular.module('starter.controllers', [])
 
 
   })
+  //微信授权回调页
+  .controller('wechatCtrl', function ($scope, $rootScope,$stateParams,$state, CommonService, BoRecycle, AccountService, WeiXinService) {
+    //是否是微信 初次获取签名 获取微信签名 获取微信登录授权
+    if (WeiXinService.isWeiXin()) {
+      if (!localStorage.getItem("openid")) { //微信登录授权
+        if ($stateParams.code) {
+          var wxcode = $stateParams.code;
+          //获取微信openid获取会员账号，如果没有则添加
+          WeiXinService.getWCOpenId({
+            code: wxcode,
+            UserLogID: localStorage.getItem("userid") || ""
+          }).success(function (data) {
+            if (data.code == 1001) {
+              localStorage.setItem("openid", data.data.OpenId);
+              if (data.data.UserLogID != null && data.data.usersecret != null) {
+                localStorage.setItem("userid", data.data.UserLogID);
+                localStorage.setItem("usersecret", data.data.usersecret);
+                $scope.getMainData();
+              }
 
+            } else {
+              CommonService.platformPrompt("获取微信OpenID失败", 'close');
+            }
+          });
+        } else {
+          CommonService.windowOpen('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx39ba5b2a2f59ef2c&redirect_uri=' + encodeURIComponent("http://m.boolv.com/WeChat") + '&response_type=code&scope=snsapi_base&state=shoushou#wechat_redirect')
+          return;
+        }
+      }
+      // 获取微信签名
+      $scope.wxparams = {
+        url: location.href.split('#')[0] //当前网页的URL，不包含#及其后面部分
+      }
+      WeiXinService.getWCSignature($scope.wxparams).success(function (data) {
+        if (data.code == 1001) {
+          localStorage.setItem("timestamp", data.data.timestamp);//生成签名的时间戳
+          localStorage.setItem("noncestr", data.data.noncestr);//生成签名的随机串
+          localStorage.setItem("signature", data.data.signature);//生成签名
+          //通过config接口注入权限验证配置
+          WeiXinService.weichatConfig(data.data.timestamp, data.data.noncestr, data.data.signature);
+        } else {
+          CommonService.platformPrompt("获取微信签名失败", 'close');
+        }
+      });
+
+
+    }else{
+      $state.go("tab.main");
+    }
+  })
 ;

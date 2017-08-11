@@ -649,10 +649,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/tuiguang/invitationdown.html',
         controller: 'invitedownCtrl'
       })
-
+      //微信授权回调页
+      .state('wechat', {
+        url: '/wechat/:code',
+        cache: true,
+        templateUrl: 'templates/wechat.html',
+        controller: 'wechatCtrl'
+      })
     // if none of the above states are matched, use this as the fallback
     //动态判断是否显示初始化页面
-    if (localStorage.getItem('isStart')) {
+    if (localStorage.getItem('isStart')||!ionic.Platform.isWebView()) {
       $urlRouterProvider.otherwise('/tab/main');
     } else {
       $urlRouterProvider.otherwise('start');
