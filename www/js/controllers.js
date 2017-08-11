@@ -84,8 +84,6 @@ angular.module('starter.controllers', [])
         //延迟调用获取极光注册ID
         window.setTimeout(getRegistrationID, 3000);
       }
-
-
       if (ionic.Platform.isWebView() && $ionicPlatform.is('android')) {//android系统自动更新软件版本
         $scope.versionparams = {
           ID: 3,//编码 ,等于空时取所有
