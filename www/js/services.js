@@ -1,6 +1,6 @@
 angular.module('starter.services', [])
 //service在使用this指针，而factory直接返回一个对象
-  .service('CommonService', function ($ionicPopup, $ionicPopover, $rootScope, $http, BoRecycle, $state, $ionicModal, $cordovaCamera, $cordovaImagePicker, $ionicPlatform, $ionicActionSheet, $ionicHistory, $timeout, $cordovaToast, $cordovaGeolocation, $cordovaBarcodeScanner, $ionicViewSwitcher, $interval, AccountService, WeiXinService) {
+  .service('CommonService', function ($ionicPopup, $ionicPopover, $rootScope,$location, $http, BoRecycle, $state, $ionicModal, $cordovaCamera, $cordovaImagePicker, $ionicPlatform, $ionicActionSheet, $ionicHistory, $timeout, $cordovaToast, $cordovaGeolocation, $cordovaBarcodeScanner, $ionicViewSwitcher, $interval, AccountService, WeiXinService) {
     return {
       platformPrompt: function (msg, stateurl, stateparams) {
         CommonService = this;
@@ -454,6 +454,8 @@ angular.module('starter.services', [])
       },
       isLogin: function (flag) {//判断是否登录
         CommonService = this;
+        console.log($location.url());
+        $rootScope.returnUrl=$location.url();
         if (!localStorage.getItem("userid")) {
           if (flag) {
             //是否是微信 获取微信登录授权

@@ -4157,7 +4157,7 @@ angular.module('starter.controllers', [])
 
   })
   //微信授权回调页
-  .controller('wechatCtrl', function ($scope, $rootScope,$stateParams,$state, CommonService, BoRecycle, AccountService, WeiXinService) {
+  .controller('wechatCtrl', function ($scope, $rootScope,$location,$stateParams,$state, CommonService, BoRecycle, AccountService, WeiXinService) {
     //是否是微信 初次获取签名 获取微信签名 获取微信登录授权
     if (WeiXinService.isWeiXin()) {
       if (!localStorage.getItem("openid")) { //微信登录授权
