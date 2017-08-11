@@ -4175,7 +4175,6 @@ angular.module('starter.controllers', [])
                 localStorage.setItem("usersecret", data.data.usersecret);
                 $scope.getMainData();
               }
-
             } else {
               CommonService.platformPrompt("获取微信OpenID失败", 'close');
             }
