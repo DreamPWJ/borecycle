@@ -2914,7 +2914,7 @@ angular.module('starter.services', [])
     return {
       request: function (config) {//通过实现 request 方法拦截请求: 该方法会在 $http 发送请求道后台之前执行
         if (config.url.toString().indexOf('http') === 0) {
-          config.timeout = 6000; //默认超时时间6s
+          config.timeout = 10000; //默认超时时间10s
           //http请求Loading加载动画
           $injector.get('$ionicLoading').show({
             template: '<p><ion-spinner icon="spiral" class="spinner-light"></ion-spinner><p>',
