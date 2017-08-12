@@ -156,11 +156,11 @@
 
 .show-alert .button:first-child, .show-confirm .button:first-child, .show-updateconfirm .button:first-child {
   color: #33cd5f !important;
-  border-radius: 0 0 0 0.5rem;
+  border-bottom-left-radius: 0.5rem;
 }
 
 .show-alert .button:last-child, .show-confirm .button:last-child, .show-updateconfirm .button:last-child {
-  border-radius: 0 0 0.5rem 0;
+  border-bottom-right-radius: 0.5rem;
 }
 
 .show-alert .button:nth-child(2), .show-confirm .button:nth-child(2), .show-updateconfirm .button:nth-child(2) {
@@ -493,93 +493,116 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
 #download {
   background: #66b6ff;
 }
-#download .invitedl{
-  position:relative;
+
+#download .invitedl {
+  position: relative;
   padding: 0.8rem 10px 0 10px;
   height: 90%;
 }
-#download .invitedl img{
-  margin-top:0;
+
+#download .invitedl img {
+  margin-top: 0;
   max-width: none;
   max-height: 100%;
 }
-#download .invitedl .invitedl-content{
+
+#download .invitedl .invitedl-content {
   height: 25%;
   width: 85%;
-  position:absolute;
+  position: absolute;
   margin-left: 1rem;
   bottom: 6%;
 }
-#download .invitedl .invitedl-content div{
+
+#download .invitedl .invitedl-content div {
   height: 50%;
   position: relative;
 }
-#download .invitedl .invitedl-content div span.content1{
+
+#download .invitedl .invitedl-content div span.content1 {
   width: 100%;
   height: 70%;
   overflow: auto;
   margin: auto;
   position: absolute;
-  top: 0; left: 0; bottom: 0; right: 0;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
   font-size: 4vw;
   font-weight: bold;
 }
-#download .invitedl .invitedl-content div span.content2{
+
+#download .invitedl .invitedl-content div span.content2 {
   width: 100%;
   height: 35%;
   overflow: auto;
   margin: auto;
   position: absolute;
-  top: 0; left: 0; bottom: 0; right: 0;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
   font-size: 6.8vw;
   font-weight: bolder;
   color: #f88206;
 }
+
 #download img {
   max-width: 98%;
   margin-top: 2rem;
 }
-#download .iconfont{
-  font-size: 1rem!important;
+
+#download .iconfont {
+  font-size: 1rem !important;
 }
-#dl-modal.modal{
+
+#dl-modal.modal {
   background-color: rgba(0, 0, 0, 0.6);
 }
-#dl-modal .card{
+
+#dl-modal .card {
   background-color: #4996fe;
   margin: 0 40px;
   border-radius: 5px;
   padding: 20px 0 12px 10px;
 }
-#dl-modal .card h2{
+
+#dl-modal .card h2 {
   font-size: 1.2rem;
   color: #fff;
   font-family: "Microsoft YaHei";
 }
-#dl-modal i{
+
+#dl-modal i {
   background: #32d0fe;
   border-radius: 10%;
   padding: 0 5px;
   margin: 0 5px;
 }
-#dl-modal .iconfont{
-  font-size: 1rem!important;
+
+#dl-modal .iconfont {
+  font-size: 1rem !important;
 }
-#dl-modal .row{
+
+#dl-modal .row {
   padding: 0 20px;
 }
+
 #appoint-sure.modal {
   top: auto;
   min-height: 285px;
   height: auto !important;
   bottom: 0;
 }
+
 #pay-sure.modal {
   top: auto;
   min-height: 415px;
   height: auto !important;
   bottom: 0;
 }
+
 #payment.item-content {
   padding-top: 10px !important;
   padding-bottom: 10px !important;
@@ -630,20 +653,25 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
   border-top: 0;
   border-right: 0;
 }
-.border-bottom-1px{
+
+.border-bottom-1px {
   margin-bottom: 1px;
   border-bottom: 1px solid rgba(221, 221, 221, 0.6) !important;
 }
-#recyclewrite .padding-left{
+
+#recyclewrite .padding-left {
   padding-left: 10px;
 }
-#recyclewrite .border-r{
+
+#recyclewrite .border-r {
   border-right: 1px solid rgba(221, 221, 221, 0.3);
 }
-#login .checkbox input,#login  .checkbox-icon {
+
+#login .checkbox input, #login .checkbox-icon {
   width: 20px;
   height: 20px;
 }
+
 #login .checkbox input:after, #login .checkbox-icon:after {
   -webkit-transition: opacity .05s ease-in-out;
   transition: opacity .05s ease-in-out;
@@ -659,39 +687,58 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
   border-top: 0;
   border-right: 0;
 }
+
 #login .checkbox {
   padding-top: 11px;
 }
-#login .iconfont{
-  font-size: 16px!important;
+
+#login .iconfont {
+  font-size: 16px !important;
 }
+
 .button.button-golden {
   border-color: transparent;
   background-color: #e28504;
-  color: #fff; }
+  color: #fff;
+}
+
 .button.button-golden:hover {
   color: #fff;
-  text-decoration: none; }
+  text-decoration: none;
+}
+
 .button.button-golden.active, .button.button-golden.activated {
   border-color: #a2a2a2;
-  background-color: #e28504; }
+  background-color: #e28504;
+}
+
 .button.button-golden.button-clear {
   border-color: transparent;
   background: none;
+  -webkit-box-shadow: none;
   box-shadow: none;
-  color: #e28504; }
+  color: #e28504;
+}
+
 .button.button-golden.button-icon {
   border-color: transparent;
-  background: none; }
+  background: none;
+}
+
 .button.button-golden.button-outline {
   border-color: #e28504;
   background: transparent;
-  color: #e28504; }
+  color: #e28504;
+}
+
 .button.button-golden.button-outline.active, .button.button-golden.button-outline.activated {
   background-color: #e28504;
+  -webkit-box-shadow: none;
   box-shadow: none;
-  color: #fff; }
-.searchbutton{
+  color: #fff;
+}
+
+.searchbutton {
   border-color: transparent;
   background-color: #f8f8f8;
   color: #444;
@@ -711,37 +758,45 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
   line-height: 29px;
   cursor: pointer;
 }
+
 .searchbutton-calm {
   border-color: transparent;
   background-color: #11c1f3;
   color: #fff;
 }
-#appoint-sure .select-category div{
+
+#appoint-sure .select-category div {
   height: 60px;
-  line-height: 60px!important;
+  line-height: 60px !important;
 }
-.select-category .border-table{
+
+.select-category .border-table {
   border-right: 1px solid rgba(221, 221, 221, 1);
   border-bottom: 1px solid rgba(221, 221, 221, 1);
 }
-.select-category .no-border-right{
-  border-right:none;
+
+.select-category .no-border-right {
+  border-right: none;
 }
+
 .select-category input:checked + div {
   border: 1px solid #00ACFF;
 }
+
 #appoint-sure .select-category label {
   position: relative;
   display: inline-block;
   width: 100%;
   height: 100%;
-  margin:0;
+  margin: 0;
   height: 60px;
-  line-height: 60px!important;
+  line-height: 60px !important;
 }
-#appoint-sure .select-category label i{
+
+#appoint-sure .select-category label i {
   font-size: 1.2rem;
 }
+
 #appoint-sure .select-category label span:before {
   content: '√';
   position: absolute;
@@ -754,6 +809,7 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
   -webkit-transform: rotate(0deg);
   transform: rotate(0deg);
 }
+
 #appoint-sure .select-category label span:after {
   content: '';
   position: absolute;
@@ -766,12 +822,15 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
   bottom: 0;
   top: auto;
 }
+
 #appoint-sure .overflow-scroll .scroll {
   height: auto;
 }
+
 #appoint-sure .overflow-scroll {
   overflow-y: hidden;
 }
+
 #appoint-sure .bar-footer.has-tabs, #appoint-sure .has-tabs {
   bottom: 70px;
 }

@@ -2917,7 +2917,7 @@ angular.module('starter.services', [])
           config.timeout = 10000; //默认超时时间10s
           //http请求Loading加载动画
           $injector.get('$ionicLoading').show({
-            template: '<p><ion-spinner icon="spiral" class="spinner-light"></ion-spinner><p>',
+            template: '<p><ion-spinner icon="spiral" class="spinner-light"></ion-spinner></p>',
             noBackdrop: true
           });
           //授权
