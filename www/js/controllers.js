@@ -1567,7 +1567,7 @@ angular.module('starter.controllers', [])
     $scope.getComment = function () {
       if($scope.orderDetail.oruserid!=null && $scope.orderDetail.oruserid!=localStorage.getItem("userid"))
       {
-        CommonService.platformPrompt("非本人订单或该单已被抢！", 'tab.main');
+        CommonService.platformPrompt("该单已被其他回收商抢走！", 'tab.main');
         return;
       }
       OrderService.getComment({djno: $scope.orderDetail.djno}).success(function (data) {
@@ -2926,7 +2926,7 @@ angular.module('starter.controllers', [])
   })
 
   //登记信息
-  .controller('InformationCtrl', function ($scope, CommonService, BoRecycle, $ionicHistory, MainService, AccountService, AddressService, OrderService) {
+  .controller('InformationCtrl', function ($scope,$rootScope, CommonService, BoRecycle, $ionicHistory, MainService, AccountService, AddressService, OrderService) {
     //是否登录
     if (!CommonService.isLogin(true)) {
       return;
@@ -3124,7 +3124,8 @@ angular.module('starter.controllers', [])
           return;
         }
       }
-
+      //提交后就禁用按钮，防止多次点击
+      $rootScope.verify=false;
       var manufactor = [];//厂商 单选
       angular.forEach($scope.manufacteList, function (item) {
         if (item.checked) {
@@ -3160,7 +3161,7 @@ angular.module('starter.controllers', [])
       //添加登记信息/货源信息(添加登记货源时明细不能为空，添加登记信息时明细为空)
       OrderService.addDengJi([$scope.dengji]).success(function (data) {
         if (data.code == 1001) {
-          CommonService.platformPrompt("登记信息提交成功", 'myorder');
+         CommonService.platformPrompt("登记信息提交成功", 'myorder');
         } else {
           CommonService.platformPrompt(data.message, 'close');
         }
@@ -3262,7 +3263,8 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt("请选择货源地址", 'myaddress');
         return;
       }
-
+      //提交后就禁用按钮，防止多次点击
+      $rootScope.verify=false;
       $scope.supplyofgoods = [];//要提交的json数组
       $scope.wastenumdetails = [];//废旧数据详情
       $scope.secondhandnumdetails = [];//二手数据详情
