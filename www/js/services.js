@@ -454,8 +454,7 @@ angular.module('starter.services', [])
       },
       isLogin: function (flag) {//判断是否登录
         CommonService = this;
-        console.log($location.url());
-        $rootScope.returnUrl=$location.url();
+        localStorage.setItem("returnUrl",$location.url());
         if (!localStorage.getItem("userid")) {
           if (flag) {
             //是否是微信 获取微信登录授权
