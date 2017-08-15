@@ -19,7 +19,7 @@ angular.module('starter.controllers', [])
   })
 
   //APP首页面
-  .controller('MainCtrl', function ($scope, $rootScope, CommonService, MainService, OrderService, BoRecycle, $location, $ionicHistory, $interval, NewsService, AccountService, $ionicPlatform, WeiXinService) {
+  .controller('MainCtrl', function ($scope, $rootScope,$document, CommonService, MainService, OrderService, BoRecycle, $location, $ionicHistory, $interval, NewsService, AccountService, $ionicPlatform, WeiXinService) {
     //授权之后执行的方法
     $scope.afterAuth = function () {
       //首页统计货量
@@ -33,6 +33,49 @@ angular.module('starter.controllers', [])
 
       });
 
+      //判断是否是WebView或微信，如果是则显示广告
+      if (ionic.Platform.isWebView()) {
+        $scope.isWebView = true;
+      }
+      //加载广告图
+      if(!localStorage.getItem("adv")&&$scope.isWebView) {
+        MainService.getAdv().success(function (data) {
+          if (data.code = 1001 && data.data.length > 0) {
+            $scope.adv = data.data[0];
+            $scope.adv_img = BoRecycle.imgUrl + "/" + $scope.adv.imgurl;
+            CommonService.customModal($scope, 'templates/modal/advmodal.html');
+            localStorage.setItem("adv",1);
+            var adv_show = function () {
+              $scope.modal.show().then(function () {
+                console.log($document.find('img'));
+                //动态计算按钮高度及top值
+                $scope.btnstyle={
+                  'top':((angular.element(document).find('img')[2].offsetHeight+angular.element(document).find('img')[2].offsetTop)-angular.element(document).find('img')[2].offsetHeight*0.188)+'px',
+                  'height':angular.element(document).find('img')[2].offsetHeight*0.188+'px'
+                };
+                $scope.btnmargin={
+                  'margin-top':((angular.element(document).find('img')[2].offsetHeight*0.188-47)/2)+'px'
+                };
+                CommonService.customModal($scope, 'templates/modal/share.html',1);
+                //调用分享面板
+                $scope.shareActionSheet = function (type) {
+                  if ($scope.usertype == 1) {
+                    CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/download', '', type);
+                  } else {
+                    CommonService.shareActionSheet("告别风吹日晒的蹲点回收，为回收人员增加真实货源", "下载“收收”在家接单轻松回收，告别蹲点回收，几千万回收人员的必备工具", BoRecycle.mobApi + '/#/download', '', type);
+                  }
+                }
+              });
+            }
+            var adv_hide = function () {
+              $scope.modal.hide();
+            }
+
+            window.setTimeout(adv_show, 2000);
+            window.setTimeout(adv_hide, 7000);
+          }
+        });
+      }
 
       //获取极光推送registrationID
       if (ionic.Platform.isWebView() && localStorage.getItem("userid") && !localStorage.getItem("jPushRegistrationID")) { //包含cordova插件的应用
@@ -84,6 +127,7 @@ angular.module('starter.controllers', [])
         //延迟调用获取极光注册ID
         window.setTimeout(getRegistrationID, 3000);
       }
+
       if (ionic.Platform.isWebView() && $ionicPlatform.is('android')) {//android系统自动更新软件版本
         $scope.versionparams = {
           ID: 3,//编码 ,等于空时取所有
@@ -2199,9 +2243,10 @@ angular.module('starter.controllers', [])
     if (!CommonService.isLogin(true)) {
       return;
     }
-    // if (ionic.Platform.isWebView()) {
-    //   $scope.isWebView = true;
-    // }
+    //判断是否是WebView或微信，如果是则显示广告
+    if (ionic.Platform.isWebView()) {
+      $scope.isWebView = true;
+    }
     //调出分享面板
     CommonService.customModal($scope, 'templates/modal/share.html');
 
@@ -3909,8 +3954,8 @@ angular.module('starter.controllers', [])
     if (!CommonService.isLogin(true)) {
       return;
     }
-    //判断是否是浏览器
-    if (ionic.Platform.isWebView()) {
+    //判断是否是WebView或微信，如果是则显示广告
+    if (ionic.Platform.isWebView()||WeiXinService.isWeiXin()) {
       $scope.isWebView = true;
     }
     //调出分享面板

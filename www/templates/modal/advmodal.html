@@ -1,0 +1,7 @@
+<ion-modal-view id="adv-modal" hide-nav-bar="true">
+
+  <ion-content overflow-scroll="true" ng-click="modal.hide()">
+  <img ng-if="adv_img" id="adv-img" ng-src="{{adv_img}}" />
+  <div ng-show="btnstyle&&isWebView" class="text-center div-btn" ng-style="btnstyle"><button class="button" ng-style="btnmargin" ng-click="modal1.show()">立即分享</button></div>
+  </ion-content>
+</ion-modal-view>

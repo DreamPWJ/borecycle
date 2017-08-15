@@ -834,3 +834,30 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
 #appoint-sure .bar-footer.has-tabs, #appoint-sure .has-tabs {
   bottom: 70px;
 }
+#adv-modal.modal {
+  background-color: rgba(0, 0, 0, 0);
+}
+#adv-modal img{
+  max-width: 90%;
+  overflow: auto;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 100;
+}
+#adv-modal div.div-btn{
+  width: 100%;
+  position: absolute;
+  z-index: 101;
+}
+#adv-modal div button{
+  border-radius: 25px;
+  background: none;
+  width: 50%;
+  border-color: #fff;
+  color: #fff;
+  font-weight: 500;
+}
