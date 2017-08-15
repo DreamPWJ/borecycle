@@ -1584,7 +1584,7 @@ angular.module('starter.controllers', [])
           if (data.code == 1001) {
             $scope.orderDetail = data.data;
           } else {
-            CommonService.platformPrompt(data.message, "close");
+            CommonService.platformPrompt(data.message, "tab.main");
           }
 
         }).then(function () {
@@ -1596,7 +1596,7 @@ angular.module('starter.controllers', [])
           if (data.code == 1001) {
             $scope.orderDetail = data.data;
           } else {
-            CommonService.platformPrompt(data.message, "close");
+            CommonService.platformPrompt(data.message, "tab.main");
           }
 
         }).then(function () {
