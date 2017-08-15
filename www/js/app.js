@@ -475,7 +475,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/account/realname.html',
         controller: 'RealNameCtrl'
       })
-
+      //二要素实名认证
+      .state('tworealname',{
+        url:'/tworealname/:status',
+        cache:false,
+        templateUrl:'templates/account/tworealname.html',
+        controller:'tworealnameCtrl'
+      })
       //帮助与反馈
       .state('helpfeedback', {
         url: '/helpfeedback',

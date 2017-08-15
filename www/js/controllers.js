@@ -4250,4 +4250,113 @@ angular.module('starter.controllers', [])
       $state.go("tab.main");
     }
   })
+  //二要素实名认证
+  .controller('tworealnameCtrl',function ($scope, $rootScope, $stateParams, $ionicHistory, CommonService, AccountService) {
+    $scope.status = $stateParams.status;//认证状态
+    $scope.realname = {};//实名认证数据
+    //上传图片数组集合
+    $scope.imageList = [];
+    $scope.ImgsPicAddr = [];//图片信息数组
+    $scope.uploadName = 'realname';//上传图片的类别 用于区分
+    $scope.uploadtype = 4;//上传媒体操作类型 1.卖货单 2 供货单 3 买货单 4身份证 5 头像
+    $scope.paracont = "获取验证码"; //初始发送按钮中的文字
+    $scope.paraclass = false; //控制验证码的disable
+    $scope.serviceId = "";//e签宝服务id
+    $scope.checkphone = function (mobilephone) {//检查手机号
+      AccountService.checkMobilePhone($scope, mobilephone);
+    }
+
+    //e签宝验证码
+    $scope.getVerifyCode = function () {
+      event.preventDefault();
+      CommonService.countDown($scope)
+      //发送实名认证码，返回实名认证服务id,提交实名认证时需填写
+      $scope.params = {
+        idno: $scope.realname.idno,	//身份证号码
+        mobile: $scope.realname.mobile,//手机号码
+        name: $scope.realname.name,//真实姓名
+        cardno: $scope.realname.idcardno //银行卡号
+      }
+      AccountService.authenticateSign($scope.params).success(function (data) {
+        if (data.data.serviceId != null) {
+          $scope.serviceId = data.data.serviceId;//e签宝服务id
+        } else {
+          CommonService.platformPrompt(data.data.msg, 'close')
+        }
+      })
+    }
+
+    //上传照片
+    $scope.uploadActionSheet = function () {
+      CommonService.uploadActionSheet($scope, 'User', true);
+    }
+
+    //获取实名认证信息
+    if ($scope.status == 2) { //已认证
+      $scope.params = {
+        userid: localStorage.getItem("userid")
+      }
+      AccountService.getrealNameIdentity($scope.params).success(function (data) {
+        if (data.code == 1001) {
+          $scope.realname = data.data;
+
+        } else {
+          CommonService.platformPrompt(data.message, 'close');
+        }
+
+      })
+    }
+
+    //申请实名认证
+    $scope.addCertificationName = function () {
+
+      if ($scope.ImgsPicAddr.length == 0) {
+        CommonService.platformPrompt("请先上传认证照片后再提交", 'close');
+        return;
+      }
+
+      //提交实名认证，需要带入authenticate_sign 实名认证服务id
+      $scope.datas = {
+        userid: localStorage.getItem("userid"),	//当前用户userid
+        name: $scope.realname.name,	    //姓名
+        idno: $scope.realname.idno,	//身份证号码
+        idcardno: $scope.realname.idcardno, //银行卡号
+        mobile: $scope.realname.mobile,//手机号码
+        serviceid: $scope.serviceId,//e签宝服务id
+        code: $scope.realname.code,//e签宝验证码
+        frontpic: $scope.ImgsPicAddr[0],//身份证照片地址。必须上传、上传使用公用上传图片接口
+        state: "",//审核通过
+        createdate: "",//日期
+        remark: ""//审核备注
+      }
+      AccountService.realNameAuthenticate($scope.datas).success(function (data) {
+        if (data.code == 1001) {
+
+          var user = JSON.parse(localStorage.getItem('user'));
+          var certstate = user.certstate.split('');//转换成数组
+          certstate.splice(3, 1, 2)//将3这个位置的字符，替换成'xxxxx'. 用的是原生js的splice方法
+          user.certstate = certstate.join(''); //将数组转换成字符串
+          localStorage.setItem('user', JSON.stringify(user));
+          if ($ionicHistory.backView() && $ionicHistory.backView().stateName == "organizingdata") { //上一级路由名称
+            CommonService.platformPrompt('实名认证提交成功', 'tab.main');
+          } else {
+            CommonService.platformPrompt('实名认证提交成功', '');
+          }
+        } else {
+          CommonService.platformPrompt(data.message, 'close');
+        }
+      })
+
+
+    }
+    $scope.bigImage = false;    //初始默认大图是隐藏的
+    $scope.hideBigImage = function () {
+      $scope.bigImage = false;
+    };
+    //点击图片放大
+    $scope.shouBigImage = function (imageName) {  //传递一个参数（图片的URl）
+      $scope.Url = imageName;                   //$scope定义一个变量Url，这里会在大图出现后再次点击隐藏大图使用
+      $scope.bigImage = true;                   //显示大图
+    };
+  })
 ;
