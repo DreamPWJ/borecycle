@@ -3551,7 +3551,7 @@ angular.module('starter.controllers', [])
   })
 
   //我的钱包
-  .controller('WalletCtrl', function ($scope, $rootScope, CommonService, MyWalletService) {
+  .controller('WalletCtrl', function ($scope,$state, $rootScope, CommonService, MyWalletService) {
     $scope.totalamount = 0.00;//总金额
     $scope.kyamount = 0.00;//可用金额
     $scope.djamount = 0.00;//冻结金额
