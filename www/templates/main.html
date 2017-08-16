@@ -28,7 +28,7 @@
       </div>
     </div>
     <div style="margin-top: -3rem;">
-      <div class="card">
+      <div class="card" ng-if="isrole">
         <div class="row  light-bg row-center main-list">
           <a class="col border-rb" nav-direction=forward ng-href="#/information">
             <i class="icon iconfont icon-dengjixinxi energized"></i>
@@ -57,7 +57,37 @@
               <p>记得及时和货主联系</p></div>
           </a>
         </div>
-      </div>
+      </div ng>
+      <div class="card" ng-if="!isrole">
+        <div class="row  light-bg row-center main-list">
+          <a class="col border-rb" nav-direction=forward ng-href="#/information">
+            <i class="icon iconfont icon-dengjixinxi energized"></i>
+            <div>
+              <h5>信息登记</h5>
+              <p>提供回收信息就赚钱</p></div>
+          </a>
+          <a class="col border-b" nav-direction=forward ng-href="#/myorder">
+            <i class="icon iconfont icon-form"></i>
+            <div>
+              <h5>已登记信息</h5>
+              <p>查看登记订单的状态</p></div>
+          </a>
+        </div>
+        <div class="row  light-bg row-center  main-list">
+          <a nav-direction=forward ng-href="#/transactionlist" class="col border-r">
+            <i class="icon iconfont icon-balance"></i>
+            <div>
+              <h5>信息费收入</h5>
+              <p>随时查看收入明细</p></div>
+          </a>
+          <a nav-direction=forward ng-href="#/tuiguang" class="col">
+            <i class="icon iconfont ion-person-add"></i>
+            <div>
+              <h5>邀请同行好友</h5>
+              <p>邀请下单有现金奖励</p></div>
+          </a>
+        </div>
+      </div >
       <div class="card" style="margin-top: 8px;">
         <div class="row text-center light-bg row-center sub-menu border-bottom">
           <a nav-direction=forward ng-href="#/help/23" class="col border-r ">

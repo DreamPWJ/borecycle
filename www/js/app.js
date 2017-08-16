@@ -258,7 +258,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       .state('tab.main', {
         url: '/main',
         nativeTransitions: null,
-        cache: true,
+        cache: false,
         views: {
           'tab-main': {
             templateUrl: 'templates/main.html',

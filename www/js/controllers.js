@@ -33,6 +33,10 @@ angular.module('starter.controllers', [])
 
       });
 
+      $scope.isrole=true;
+      if (localStorage.getItem("usertype") == 1) {
+        $scope.isrole=false;
+      }
       //判断是否是WebView或微信，如果是则显示广告
       if (ionic.Platform.isWebView()) {
         $scope.isWebView = true;
@@ -59,7 +63,7 @@ angular.module('starter.controllers', [])
                 CommonService.customModal($scope, 'templates/modal/share.html',1);
                 //调用分享面板
                 $scope.shareActionSheet = function (type) {
-                  if ($scope.usertype == 1) {
+                  if (localStorage.getItem("usertype") == 1) {
                     CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/download', '', type);
                   } else {
                     CommonService.shareActionSheet("告别风吹日晒的蹲点回收，为回收人员增加真实货源", "下载“收收”在家接单轻松回收，告别蹲点回收，几千万回收人员的必备工具", BoRecycle.mobApi + '/#/download', '', type);
@@ -141,23 +145,6 @@ angular.module('starter.controllers', [])
             if (BoRecycle.version < $scope.versions.vercode) {
               AccountService.showUpdateConfirm($scope.versions.remark, $scope.versions.attached, $scope.versions.vercode);
             }
-          }
-        })
-      }
-      //根据会员ID获取会员账号基本信息
-      if (localStorage.getItem("userid")) {
-        AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
-          if (data.code == 1001) {
-            localStorage.setItem("user", JSON.stringify(data.data));
-            var services = data.data.services;
-            //用户会员类型  0 无 1信息提供者  2回收者
-            var usertype = (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2;
-            localStorage.setItem("usertype", usertype);
-            $scope.usertype = usertype;
-            //向父级传数据
-            /*    $scope.$emit("usertype", {usertype: usertype});*/
-          } else {
-            CommonService.platformPrompt(data.message, 'close');
           }
         })
       }
@@ -704,6 +691,9 @@ angular.module('starter.controllers', [])
           AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
             if (data.code == 1001) {
               localStorage.setItem("user", JSON.stringify(data.data));
+              var services = data.data.services;
+              //用户会员类型  0 无 1信息提供者  2回收者
+              localStorage.setItem("usertype", (services == null || services.length == 0 ) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
               if ($scope.user.usertype == 1) {
                 $state.go('tab.main');
               } else {
