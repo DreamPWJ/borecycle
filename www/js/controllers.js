@@ -4266,26 +4266,6 @@ angular.module('starter.controllers', [])
       AccountService.checkMobilePhone($scope, mobilephone);
     }
 
-    //e签宝验证码
-    $scope.getVerifyCode = function () {
-      event.preventDefault();
-      CommonService.countDown($scope)
-      //发送实名认证码，返回实名认证服务id,提交实名认证时需填写
-      $scope.params = {
-        idno: $scope.realname.idno,	//身份证号码
-        mobile: $scope.realname.mobile,//手机号码
-        name: $scope.realname.name,//真实姓名
-        cardno: $scope.realname.idcardno //银行卡号
-      }
-      AccountService.authenticateSign($scope.params).success(function (data) {
-        if (data.data.serviceId != null) {
-          $scope.serviceId = data.data.serviceId;//e签宝服务id
-        } else {
-          CommonService.platformPrompt(data.data.msg, 'close')
-        }
-      })
-    }
-
     //上传照片
     $scope.uploadActionSheet = function () {
       CommonService.uploadActionSheet($scope, 'User', true);
@@ -4320,34 +4300,20 @@ angular.module('starter.controllers', [])
         userid: localStorage.getItem("userid"),	//当前用户userid
         name: $scope.realname.name,	    //姓名
         idno: $scope.realname.idno,	//身份证号码
-        idcardno: $scope.realname.idcardno, //银行卡号
-        mobile: $scope.realname.mobile,//手机号码
-        serviceid: $scope.serviceId,//e签宝服务id
-        code: $scope.realname.code,//e签宝验证码
-        frontpic: $scope.ImgsPicAddr[0],//身份证照片地址。必须上传、上传使用公用上传图片接口
-        state: "",//审核通过
-        createdate: "",//日期
-        remark: ""//审核备注
+        frontpic: $scope.ImgsPicAddr[0]//身份证照片地址。必须上传、上传使用公用上传图片接口
       }
-      AccountService.realNameAuthenticate($scope.datas).success(function (data) {
+      AccountService.twoElementAuthenticate($scope.datas).success(function (data) {
         if (data.code == 1001) {
-
           var user = JSON.parse(localStorage.getItem('user'));
           var certstate = user.certstate.split('');//转换成数组
           certstate.splice(3, 1, 2)//将3这个位置的字符，替换成'xxxxx'. 用的是原生js的splice方法
           user.certstate = certstate.join(''); //将数组转换成字符串
           localStorage.setItem('user', JSON.stringify(user));
-          if ($ionicHistory.backView() && $ionicHistory.backView().stateName == "organizingdata") { //上一级路由名称
-            CommonService.platformPrompt('实名认证提交成功', 'tab.main');
-          } else {
-            CommonService.platformPrompt('实名认证提交成功', '');
-          }
+          CommonService.platformPrompt('实名认证提交成功', 'tab.main');
         } else {
           CommonService.platformPrompt(data.message, 'close');
         }
-      })
-
-
+      });
     }
     $scope.bigImage = false;    //初始默认大图是隐藏的
     $scope.hideBigImage = function () {

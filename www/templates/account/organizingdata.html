@@ -87,9 +87,8 @@
           </div>
           <label ng-if="user.usertype==1" class="item item-input">
             <span class="input-label icon ion-ios-telephone-outline"> 联系电话</span>
-            <input type="text" name="shopphone" ng-model="user.shopphone" check-form
-                   ng-blur="checkForm(user.shopphone,'手机或固话格式错误,请更正！','phoneandtel','',true,'')" placeholder="固话格式:075523485305"
-                   />
+            <input type="text" name="shopphone" ng-model="user.shopphone" placeholder="固话格式:075523485305" />
+            <!--ng-blur="checkForm(user.shopphone,'手机或固话格式错误,请更正！','phoneandtel','',true,'')"-->
           </label>
           <div ng-if="user.usertype==1">
             <div class="item item-input ">
@@ -100,6 +99,7 @@
             <div class="row  row-wrap row-horizontal-around">
               <img ng-repeat="item in imageList" ng-click="shouBigImage(item)" ng-src="{{item}}" alt="上传工作证图片"
                    style="height: 12rem" class="col-80 padding">
+              <div ng-if="imageList.length>0" class="grey text-center">点击查看大图</div>
             </div>
             <div ng-if="imageList.length==0" class="row  row-wrap padding-top grey">
               <span class="padding">示例 ：</span>
@@ -112,7 +112,7 @@
           <p></p>
           <div class="padding-horizontal">
             <button class="button full-image button-positive " ng-click="organizingdataSubmit()"
-                    ng-disabled="!(organizingdataForm.$valid&&(user.usertype==1?verify:true)&&(user.usertype==1?true:(ischecked&&ischecked1))&&(addresspcd||ssx)&&(user.usertype == 1?ImgsPicAddr.length != 0:true))">
+                    ng-disabled="!(organizingdataForm.$valid&&(user.usertype==1?true:(ischecked&&ischecked1))&&(addresspcd||ssx)&&(user.usertype == 1?ImgsPicAddr.length != 0:true))">
               下一步
             </button>
             <p></p>
@@ -130,6 +130,7 @@
   <div ng-if="bigImage" class="popover-backdrop dark-bg pic-has-header" ng-click="hideBigImage()">
     <img class="full-image"
          ng-src="{{Url}}"/>
+    <div class="grey text-center">点击恢复小图</div>
   </div>
 </ion-view>
 
