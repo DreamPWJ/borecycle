@@ -4282,7 +4282,16 @@ angular.module('starter.controllers', [])
               if (data.data.UserLogID != null && data.data.usersecret != null) {
                 localStorage.setItem("userid", data.data.UserLogID);
                 localStorage.setItem("usersecret", data.data.usersecret);
-                $scope.getMainData();
+                //根据会员ID获取会员账号基本信息
+                AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
+                  if (data.code == 1001) {
+                    localStorage.setItem("user", JSON.stringify(data.data));
+                    var services = data.data.services;
+                    //用户会员类型  0 无 1信息提供者  2回收者
+                    localStorage.setItem("usertype", (services == null || services.length == 0 ) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
+                    $scope.getMainData();
+                  }
+                })
               }
             } else {
               CommonService.platformPrompt("获取微信OpenID失败", 'close');
