@@ -32,10 +32,45 @@ angular.module('starter.controllers', [])
         }
 
       });
-
       $scope.isrole=true;
+      //当为信息提供者时
       if (localStorage.getItem("usertype") == 1) {
-        $scope.isrole=false;
+        $scope.isrole = false;
+        //调出分享面板
+        CommonService.customModal($scope, 'templates/modal/share.html');
+        $scope.invitecode;//邀请码
+        //获取邀请码
+          AccountService.getInvitecode(localStorage.getItem("userid")).success(function (data) {
+            $scope.invitecode = data.data;
+          });
+        //发起分享
+        $scope.shareCode=function () {
+          //判断是否是WebView或微信，如果是则显示广告
+          if (!WeiXinService.isWeiXin()) {
+            $scope.modal.show();
+          }
+        }
+        if($scope.invitecode) {
+          if (WeiXinService.isWeiXin()) { //如果是微信
+            CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/invitedown/' + $scope.invitecode.id, '');
+          } else {
+            //调用分享面板
+            $scope.shareActionSheet = function (type) {
+              CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/invitedown/' + $scope.invitecode.id, '', type);
+            }
+          }
+        }
+        else {
+          if (WeiXinService.isWeiXin()) { //如果是微信
+            CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/download', '');
+          } else {
+            //调用分享面板
+            $scope.shareActionSheet = function (type) {
+              CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/download', '', type);
+            }
+          }
+        }
+
       }
       //判断是否是WebView或微信，如果是则显示广告
       if (ionic.Platform.isWebView()) {
