@@ -861,3 +861,6 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
   color: #fff;
   font-weight: 500;
 }
+#adv-modal .icon{
+  font-size: 2.5rem;
+}

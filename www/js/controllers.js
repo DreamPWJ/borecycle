@@ -95,12 +95,11 @@ angular.module('starter.controllers', [])
                 console.log($document.find('img'));
                 //动态计算按钮高度及top值
                 $scope.btnstyle={
-                  'top':((angular.element(document).find('img')[2].offsetHeight+angular.element(document).find('img')[2].offsetTop)-angular.element(document).find('img')[2].offsetHeight*0.188)+'px',
-                  'height':angular.element(document).find('img')[2].offsetHeight*0.188+'px'
+                  'top':(angular.element(document).find('img')[2].offsetHeight+angular.element(document).find('img')[2].offsetTop+10)+'px'
                 };
-                $scope.btnmargin={
-                  'margin-top':((angular.element(document).find('img')[2].offsetHeight*0.188-47)/2)+'px'
-                };
+                // $scope.btnmargin={
+                //   'margin-top':((angular.element(document).find('img')[2].offsetHeight*0.188-47)/2)+'px'
+                // };
                 CommonService.customModal($scope, 'templates/modal/share.html',1);
                 //调用分享面板
                 $scope.shareActionSheet = function (type) {
@@ -116,8 +115,8 @@ angular.module('starter.controllers', [])
               $scope.modal3.hide();
             }
 
-            window.setTimeout(adv_show, 2000);
-            window.setTimeout(adv_hide, 7000);
+            window.setTimeout(adv_show, 1000);
+            window.setTimeout(adv_hide, 12000);
           }
         });
       }
