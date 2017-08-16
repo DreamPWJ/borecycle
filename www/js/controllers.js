@@ -83,7 +83,7 @@ angular.module('starter.controllers', [])
         $scope.isWebView = true;
       }
       //加载广告图
-      // if(!localStorage.getItem("adv")&&$scope.isWebView) {
+      if(!localStorage.getItem("adv")&&$scope.isWebView) {
         MainService.getAdv().success(function (data) {
           if (data.code = 1001 && data.data.length > 0) {
             $scope.adv = data.data[0];
@@ -118,10 +118,10 @@ angular.module('starter.controllers', [])
             }
 
             window.setTimeout(adv_show, 1000);
-            //window.setTimeout(adv_hide, 12000);
+            window.setTimeout(adv_hide, 12000);
           }
         });
-      // }
+      }
 
       //获取极光推送registrationID
       if (ionic.Platform.isWebView() && localStorage.getItem("userid") && !localStorage.getItem("jPushRegistrationID")) { //包含cordova插件的应用
