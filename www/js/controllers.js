@@ -3584,7 +3584,6 @@ angular.module('starter.controllers', [])
     }
     $scope.cash=function () {
       var userCertState=JSON.parse(localStorage.getItem("user")).certstate.split('');
-      console.log(userCertState);
       if(userCertState[3]!=2){
         CommonService.showConfirm('收收提示', '尊敬的用户,您好！为了您的账户安全，请先进行实名认证！', '实名认证', '暂不认证', 'tworealname', 'close', '', {status: 0});
         return;
@@ -3796,6 +3795,28 @@ angular.module('starter.controllers', [])
       })
     }
     $scope.getUserBanklist(0);//收款账号加载刷新
+    //根据会员ID获取会员账号基本信息
+    if(!localStorage.getItem("user")) {
+      AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
+        if (data.code == 1001) {
+          $rootScope.userdata = data.data;
+          localStorage.setItem("user", JSON.stringify(data.data));
+        } else {
+          CommonService.platformPrompt(data.message, 'close');
+        }
+      });
+    }
+    $scope.addcard=function () {
+      var userCertState=JSON.parse(localStorage.getItem("user")).certstate.split('');
+      if(userCertState[3]!=2){
+        CommonService.showConfirm('收收提示', '尊敬的用户,您好！为了您的账户安全，请先进行实名认证！', '实名认证', '暂不认证', 'tworealname', 'close', '', {status: 0});
+        return;
+      }else {
+        $state.go('addcard');
+        return;
+      }
+
+    }
     $scope.setDefault = function (item) {
       //防止事件冒泡
       if ($rootScope.defaultBank) {
