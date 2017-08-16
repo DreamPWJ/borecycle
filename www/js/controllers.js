@@ -37,7 +37,8 @@ angular.module('starter.controllers', [])
       if (localStorage.getItem("usertype") == 1) {
         $scope.isrole = false;
         //调出分享面板
-        CommonService.customModal($scope, 'templates/modal/share.html');
+        CommonService.customModal($scope, 'templates/modal/share.html',2);
+        CommonService.customModal($scope, 'templates/modal/dl_modal.html');
         $scope.invitecode;//邀请码
         //获取邀请码
           AccountService.getInvitecode(localStorage.getItem("userid")).success(function (data) {
@@ -47,6 +48,11 @@ angular.module('starter.controllers', [])
         $scope.shareCode=function () {
           //判断是否是WebView或微信，如果是则显示广告
           if (!WeiXinService.isWeiXin()) {
+            $scope.modal2.show();
+          }
+          else {
+            $scope.share_arrow = "./img/share_arrow.png";
+            $scope.dl_word = "./img/dl-word.png";
             $scope.modal.show();
           }
         }
@@ -82,10 +88,10 @@ angular.module('starter.controllers', [])
           if (data.code = 1001 && data.data.length > 0) {
             $scope.adv = data.data[0];
             $scope.adv_img = BoRecycle.imgUrl + "/" + $scope.adv.imgurl;
-            CommonService.customModal($scope, 'templates/modal/advmodal.html');
+            CommonService.customModal($scope, 'templates/modal/advmodal.html',3);
             localStorage.setItem("adv",1);
             var adv_show = function () {
-              $scope.modal.show().then(function () {
+              $scope.modal3.show().then(function () {
                 console.log($document.find('img'));
                 //动态计算按钮高度及top值
                 $scope.btnstyle={
@@ -107,7 +113,7 @@ angular.module('starter.controllers', [])
               });
             }
             var adv_hide = function () {
-              $scope.modal.hide();
+              $scope.modal3.hide();
             }
 
             window.setTimeout(adv_show, 2000);
