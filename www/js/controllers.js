@@ -1083,7 +1083,7 @@ angular.module('starter.controllers', [])
               }
               if (user.certstate.substr(3, 1) != 2) { //没有实名认证
                 //CommonService.showConfirm('收收提示', '尊敬的用户,您好！实名认证完善认证信息后才能进行更多操作！', '实名认证', '暂不认证', 'realname', 'close', '', {status: 0});
-                $state.go('realname', {status: 0});
+                $state.go('tworealname', {status: 0});
                 return;
               }
               //}
@@ -1349,7 +1349,7 @@ angular.module('starter.controllers', [])
         return;
       }
       if (user.certstate.substr(3, 1) != "2") {
-        CommonService.showConfirm('接单提示', '尊敬的用户，您好！请先进行“实名认证”后再接单！', '实名认证', '暂不认证', 'realname', '', '', '', '');
+        CommonService.showConfirm('接单提示', '尊敬的用户，您好！请先进行“实名认证”后再接单！', '实名认证', '暂不认证', 'tworealname', '', '', {status:0}, '');
         return;
       }
       //添加接单收货/货源归集(添加回收时明细不能为空，接单时明细为空)
@@ -4259,13 +4259,6 @@ angular.module('starter.controllers', [])
     $scope.ImgsPicAddr = [];//图片信息数组
     $scope.uploadName = 'realname';//上传图片的类别 用于区分
     $scope.uploadtype = 4;//上传媒体操作类型 1.卖货单 2 供货单 3 买货单 4身份证 5 头像
-    $scope.paracont = "获取验证码"; //初始发送按钮中的文字
-    $scope.paraclass = false; //控制验证码的disable
-    $scope.serviceId = "";//e签宝服务id
-    $scope.checkphone = function (mobilephone) {//检查手机号
-      AccountService.checkMobilePhone($scope, mobilephone);
-    }
-
     //上传照片
     $scope.uploadActionSheet = function () {
       CommonService.uploadActionSheet($scope, 'User', true);
