@@ -83,7 +83,7 @@ angular.module('starter.controllers', [])
         $scope.isWebView = true;
       }
       //加载广告图
-      if(!localStorage.getItem("adv")&&$scope.isWebView) {
+      // if(!localStorage.getItem("adv")&&$scope.isWebView) {
         MainService.getAdv().success(function (data) {
           if (data.code = 1001 && data.data.length > 0) {
             $scope.adv = data.data[0];
@@ -92,10 +92,12 @@ angular.module('starter.controllers', [])
             localStorage.setItem("adv",1);
             var adv_show = function () {
               $scope.modal3.show().then(function () {
-                console.log($document.find('img'));
+                console.log(document.querySelector("#adv-img"));
+                console.log(document.querySelector("#adv-img").offsetHeight);
+                console.log(document.querySelector("#adv-img").offsetTop);
                 //动态计算按钮高度及top值
                 $scope.btnstyle={
-                  'top':(angular.element(document).find('img')[2].offsetHeight+angular.element(document).find('img')[2].offsetTop+10)+'px'
+                  'top':(document.querySelector("#adv-img").offsetHeight+document.querySelector("#adv-img").offsetTop+10)+'px'
                 };
                 // $scope.btnmargin={
                 //   'margin-top':((angular.element(document).find('img')[2].offsetHeight*0.188-47)/2)+'px'
@@ -116,10 +118,10 @@ angular.module('starter.controllers', [])
             }
 
             window.setTimeout(adv_show, 1000);
-            window.setTimeout(adv_hide, 12000);
+            //window.setTimeout(adv_hide, 12000);
           }
         });
-      }
+      // }
 
       //获取极光推送registrationID
       if (ionic.Platform.isWebView() && localStorage.getItem("userid") && !localStorage.getItem("jPushRegistrationID")) { //包含cordova插件的应用
