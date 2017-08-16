@@ -4,13 +4,13 @@
   </ion-nav-buttons>
   </ion-nav-buttons>
   <ion-nav-title>
-    <h1 class="title"><img id="logo" src="img/logo.png" alt=""/> 交易记录</h1>
+    <h1 class="title"><img id="logo" src="img/logo.png" alt=""/> {{strchannel}}</h1>
   </ion-nav-title>
   <ion-content overflow-scroll="false" class="stable-bg" has-bouncing="true">
     <ion-refresher on-refresh="gettradelist(0)" pulling-text="下拉更新"></ion-refresher>
     <div ng-if="isNotData" class="isNotDataHint">
       <i class="iconfont icon-xiaoxi"></i>
-      <p>无交易数据</p>
+      <p>暂无{{strchannel}}</p>
     </div>
     <div class=" content">
       <ion-item collection-repeat="item in tradelist " class="item"

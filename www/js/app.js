@@ -595,7 +595,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
       //交易列表
       .state('transactionlist', {
-        url: '/transactionlist',
+        url: '/transactionlist/:channel',
         cache: false,
         templateUrl: 'templates/wallet/transactionlist.html',
         controller: 'TransactionlistCtrl'

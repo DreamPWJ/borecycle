@@ -39,11 +39,6 @@ angular.module('starter.controllers', [])
         //调出分享面板
         CommonService.customModal($scope, 'templates/modal/share.html',2);
         CommonService.customModal($scope, 'templates/modal/dl_modal.html');
-        $scope.invitecode;//邀请码
-        //获取邀请码
-          AccountService.getInvitecode(localStorage.getItem("userid")).success(function (data) {
-            $scope.invitecode = data.data;
-          });
         //发起分享
         $scope.shareCode=function () {
           //判断是否是WebView或微信，如果是则显示广告
@@ -56,6 +51,10 @@ angular.module('starter.controllers', [])
             $scope.modal.show();
           }
         }
+        $scope.invitecode;//邀请码
+        //获取邀请码
+        AccountService.getInvitecode(localStorage.getItem("userid")).success(function (data) {
+          $scope.invitecode = data.data;
         if($scope.invitecode) {
           if (WeiXinService.isWeiXin()) { //如果是微信
             CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/invitedown/' + $scope.invitecode.id, '');
@@ -76,6 +75,7 @@ angular.module('starter.controllers', [])
             }
           }
         }
+        });
 
       }
       //判断是否是WebView或微信，如果是则显示广告
@@ -3666,10 +3666,17 @@ angular.module('starter.controllers', [])
   })
 
   //交易记录
-  .controller('TransactionlistCtrl', function ($scope, $rootScope, $state, $ionicScrollDelegate, $ionicHistory, $ionicPopup, CommonService, AccountService, MyWalletService) {
+  .controller('TransactionlistCtrl', function ($scope, $rootScope, $stateParams,$state, $ionicScrollDelegate, $ionicHistory, $ionicPopup, CommonService, AccountService, MyWalletService) {
     //是否登录
     if (!CommonService.isLogin()) {
       return;
+    }
+    $scope.channel="";
+    $scope.strchannel="交易记录";
+    if($stateParams.channel!="0")
+    {
+      $scope.channel=$stateParams.channel;
+      $scope.strchannel="信息费收入";
     }
     $scope.tradelist = [];
     $scope.page = 0;
@@ -3684,6 +3691,7 @@ angular.module('starter.controllers', [])
         page: $scope.page,//页码
         size: 20,//条数
         userid: localStorage.getItem("userid"),//用户id
+        channel: $scope.channel=="0"?"":$scope.channel,
       }
       MyWalletService.get_tradelist($scope.params).success(function (data) {
         $scope.isNotData = false;
