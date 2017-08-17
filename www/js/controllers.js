@@ -3603,10 +3603,6 @@ angular.module('starter.controllers', [])
       return;
     }
     $scope.isAll = false;//是否全部提现
-    //判断是否存在默认银行对象
-    // if ($rootScope.defaultBank) {
-    //   $rootScope.defaultBank;//默认银行对象
-    // }
     $scope.subaccount = {};
     MyWalletService.get(localStorage.getItem("userid")).success(function (data) {
       $scope.subaccount = data.data;
@@ -3623,8 +3619,16 @@ angular.module('starter.controllers', [])
       });
     }
     $scope.allCash = function () {
-      $scope.isAll = true;
-      $scope.cashinfo.amount = $scope.subaccount.cashamount;
+      $scope.isAll?$scope.isAll=false:$scope.isAll=true;
+      if($scope.isAll){
+        $scope.cashinfo.amount = $scope.subaccount.cashamount;
+      }else {
+        $scope.cashinfo.amount = "";
+      }
+
+    }
+    $scope.ammountValid=function () {
+      $scope.isAll=$scope.cashinfo.amount == $scope.subaccount.cashamount;
     }
     $scope.addcash = function () {
       if (!$rootScope.defaultBank) {
@@ -3652,7 +3656,7 @@ angular.module('starter.controllers', [])
     }
     //选择或添加银行卡
     $scope.selectCard = function () {
-      if (!$rootScope.defaultBank) {
+      if (!$rootScope.defaultBank||$rootScope.defaultBank.bankname==undefined) {
         $rootScope.defaultBank={};
         $state.go('addcard');
         return;

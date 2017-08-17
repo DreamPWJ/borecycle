@@ -6,7 +6,7 @@
     <h1 class="title"><img id="logo" src="img/logo.png" alt=""/> 提现</h1>
   </ion-nav-title>
   <form name="formaddcash">
-    <ion-content overflow-scroll="false" class="has-button-footer stable-bg " has-bouncing="true">
+    <ion-content overflow-scroll="false" class="has-button-footer stable-bg " id="bankcash" has-bouncing="true">
       <p></p>
       <div class="card">
         <label class="item item-icon-right" ng-click="selectCard()">
@@ -25,18 +25,18 @@
         </label>
         <label class="item item-input ">
           <span class="input-label">提现金额 : </span>
-          <input type="number" placeholder="请输入提现金额(大于3元)" ng-model="cashinfo.amount" check-form
+          <input type="number" placeholder="请输入提现金额(大于3元)" ng-model="cashinfo.amount" check-form ng-keyup="ammountValid()"
                  ng-change="checkForm(cashinfo.amount,'提现金额不能超过可用金额','maxvaule','提现',true,subaccount.cashamount)"
                  ng-maxlength="10" required/>
         </label>
-        <p class="text-right padding-right padding-top" ng-class="isAll?'calm':'grey'" ng-click="allCash()">
-          <i ng-class="isAll?'ion-ios-checkmark':'ion-ios-circle-outline'" class=""></i>
-          全部提现
-        </p>
-        <p class="text-right padding-right padding-top" ng-class="true?'assertive':'assertive'">
-          (注:提现金额小于100时额外扣除3元手续费)
+        <p class="padding-horizontal padding-top"><span>&nbsp;</span>
+          <span class="calm" ng-show="cashinfo.amount" style="font-size: 0.8rem">{{cashinfo.amount<100?"手续费：3元，从提现金额中扣除":"免手续费"}}</span>
+          <i ng-class="isAll?'ion-ios-checkmark calm':'ion-ios-circle-outline grey'" ng-click="allCash()" class="f-right">&nbsp;全部提现</i>
         </p>
       </div>
+      <p class="text-right padding-right" ng-class="true?'assertive':'assertive'">
+        （注:提现金额大于100免手续费）
+      </p>
     </ion-content>
     <div class="padding light-bg  bottom-0" keyboard-attach>
       <a ng-disabled="!(formaddcash.$valid&&verify&&defaultBank)" class="button button-positive full-image "

@@ -868,3 +868,6 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
   text-align: left;
   text-indent: 2em;
 }
+#bankcash .card{
+  margin-bottom: 10px;
+}
