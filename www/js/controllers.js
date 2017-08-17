@@ -3918,7 +3918,7 @@ angular.module('starter.controllers', [])
       }
       MyWalletService.addbank($scope.datas).success(function (data) {
         if (data.code == 1001) {
-          CommonService.showAlert('', '<p>恭喜您！</p><p>银行卡' + $scope.buttonText + '成功！</p>', '');
+          CommonService.showAlert('', '<p>恭喜您！</p><p>银行卡' + $scope.buttonText + '成功！</p>', 'close','');
           if ($rootScope.defaultBank) {
             $rootScope.defaultBank = $scope.datas;
             $rootScope.defaultBank.id = data.date;
