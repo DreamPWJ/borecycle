@@ -92,16 +92,10 @@ angular.module('starter.controllers', [])
             localStorage.setItem("adv",1);
             var adv_show = function () {
               $scope.modal3.show().then(function () {
-                console.log(document.querySelector("#adv-img"));
-                console.log(document.querySelector("#adv-img").offsetHeight);
-                console.log(document.querySelector("#adv-img").offsetTop);
                 //动态计算按钮高度及top值
                 $scope.btnstyle={
                   'top':(document.querySelector("#adv-img").offsetHeight+document.querySelector("#adv-img").offsetTop+10)+'px'
                 };
-                // $scope.btnmargin={
-                //   'margin-top':((angular.element(document).find('img')[2].offsetHeight*0.188-47)/2)+'px'
-                // };
                 CommonService.customModal($scope, 'templates/modal/share.html',1);
                 //调用分享面板
                 $scope.shareActionSheet = function (type) {
