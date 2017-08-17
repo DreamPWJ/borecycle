@@ -3604,9 +3604,9 @@ angular.module('starter.controllers', [])
     }
     $scope.isAll = false;//是否全部提现
     //判断是否存在默认银行对象
-    if (!$rootScope.defaultBank) {
-      $rootScope.defaultBank;//默认银行对象
-    }
+    // if ($rootScope.defaultBank) {
+    //   $rootScope.defaultBank;//默认银行对象
+    // }
     $scope.subaccount = {};
     MyWalletService.get(localStorage.getItem("userid")).success(function (data) {
       $scope.subaccount = data.data;
@@ -3653,7 +3653,6 @@ angular.module('starter.controllers', [])
     //选择或添加银行卡
     $scope.selectCard = function () {
       if (!$rootScope.defaultBank) {
-        $rootScope.defaultBank = {};
         $state.go('addcard');
         return;
       } else {
