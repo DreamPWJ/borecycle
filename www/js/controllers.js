@@ -3826,7 +3826,7 @@ angular.module('starter.controllers', [])
       MyWalletService.cash($scope.datas).success(function (data) {
         if (data.code == 1001) {
           $rootScope.defaultBank = null;
-          CommonService.showAlert('', '<p>恭喜您！</p><p>操作成功，工作日24小时之内到账，请注意查收！</p>', 'wallet');
+          CommonService.showAlert('收收提示', '<p>恭喜您！操作成功，工作日24小时之内到账，请注意查收！</p>', 'wallet');
         } else {
           CommonService.platformPrompt(data.message, 'close');
         }
