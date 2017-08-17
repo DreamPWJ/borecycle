@@ -30,7 +30,7 @@
                  ng-maxlength="10" required/>
         </label>
         <p class="padding-horizontal padding-top"><span>&nbsp;</span>
-          <span class="calm" ng-show="cashinfo.amount" style="font-size: 0.8rem">{{cashinfo.amount<100?"手续费：3元，从提现金额中扣除":"免手续费"}}</span>
+          <span class="calm" ng-show="cashinfo.amount" style="font-size: 0.8rem">{{cashinfo.amount<100?"自动扣除3元手续费":"免手续费"}}</span>
           <i ng-class="isAll?'ion-ios-checkmark calm':'ion-ios-circle-outline grey'" ng-click="allCash()" class="f-right">&nbsp;全部提现</i>
         </p>
       </div>
