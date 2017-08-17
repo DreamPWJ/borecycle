@@ -19,7 +19,7 @@ angular.module('starter.controllers', [])
   })
 
   //APP首页面
-  .controller('MainCtrl', function ($scope, $rootScope,$state,$document, CommonService, MainService, OrderService, BoRecycle, $location, $ionicHistory, $interval, NewsService, AccountService, $ionicPlatform, WeiXinService) {
+  .controller('MainCtrl', function ($scope, $rootScope,$state,$document, CommonService, MainService, OrderService, BoRecycle, $location, $ionicHistory, $interval, NewsService, AccountService, $ionicPlatform, WeiXinService,AddressService) {
     //授权之后执行的方法
     $scope.afterAuth = function () {
       //首页统计货量
@@ -35,6 +35,40 @@ angular.module('starter.controllers', [])
       $scope.isrole=true;
       //当为信息提供者时
       if (localStorage.getItem("usertype") == 1) {
+        $scope.isinvitecode="0";
+        //获取当前位置 定位
+        $scope.location = function () {
+          CommonService.getLocation(function () {
+            //当前位置 定位
+            AccountService.getCurrentCity({
+              key: BoRecycle.gaoDeKey,
+              location: Number($scope.handlongitude || localStorage.getItem("longitude")).toFixed(6) + "," + Number($scope.handlatitude || localStorage.getItem("latitude")).toFixed(6),
+              radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
+              extensions: 'all',//返回结果控制
+              batch: false, //batch=true为批量查询。batch=false为单点查询
+              roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
+            }).success(function (data) {
+              var addressComponent = data.regeocode.addressComponent;
+              $scope.city = addressComponent.city;
+            }).then(function () {
+              AddressService.getAddressBySSX({
+                ssx: $scope.city,
+                level:2
+              }).success(function (data) {
+                if (data.code == 1001) {
+                  $scope.isinvitecode = data.data.isinvitecode;
+                } else {
+                  $scope.isinvitecode = "0";
+                }
+              })
+            })
+          })
+
+        }
+        //页面加载完成自动定位
+        $scope.$on('$ionicView.afterEnter', function () {
+          $scope.location();//自动定位
+        })
         $scope.isrole = false;
         //调出分享面板
         CommonService.customModal($scope, 'templates/modal/share.html',2);
@@ -57,28 +91,28 @@ angular.module('starter.controllers', [])
         }
         $scope.invitecode;//邀请码
         //获取邀请码
-        AccountService.getInvitecode(localStorage.getItem("userid")).success(function (data) {
+        AccountService.getInvitecode({userid:localStorage.getItem("userid"),isinvitecode: $scope.isinvitecode}).success(function (data) {
           $scope.invitecode = data.data;
-        if($scope.invitecode) {
-          if (WeiXinService.isWeiXin()) { //如果是微信
-            CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/invitedown/' + $scope.invitecode.id, '');
-          } else {
-            //调用分享面板
-            $scope.shareActionSheet = function (type) {
-              CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/invitedown/' + $scope.invitecode.id, '', type);
+          if($scope.invitecode) {
+            if (WeiXinService.isWeiXin()) { //如果是微信
+              CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/invitedown/' + $scope.invitecode.id, '');
+            } else {
+              //调用分享面板
+              $scope.shareActionSheet = function (type) {
+                CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/invitedown/' + $scope.invitecode.id, '', type);
+              }
             }
           }
-        }
-        else {
-          if (WeiXinService.isWeiXin()) { //如果是微信
-            CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/download', '');
-          } else {
-            //调用分享面板
-            $scope.shareActionSheet = function (type) {
-              CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/download', '', type);
+          else {
+            if (WeiXinService.isWeiXin()) { //如果是微信
+              CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/download', '');
+            } else {
+              //调用分享面板
+              $scope.shareActionSheet = function (type) {
+                CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/download', '', type);
+              }
             }
           }
-        }
         });
 
       }
@@ -366,7 +400,7 @@ angular.module('starter.controllers', [])
   })
 
   //用户密码登录页面
-  .controller('LoginCtrl', function ($scope, $state, $rootScope, $interval, CommonService, MainService, AccountService) {
+  .controller('LoginCtrl', function ($scope, $state, $rootScope, $interval, CommonService, MainService, AccountService,AddressService) {
     $rootScope.commonService = CommonService;
     //删除记住用户信息
     localStorage.removeItem("userid");
@@ -389,8 +423,42 @@ angular.module('starter.controllers', [])
     }
 
     $scope.user = {};//提前定义用户对象
+    $scope.user.isinvitecode="0";
     $scope.agreedeal = true;//同意用户协议
     $scope.paraclass = true;
+    //获取当前位置 定位
+    $scope.location = function () {
+      CommonService.getLocation(function () {
+        //当前位置 定位
+        AccountService.getCurrentCity({
+          key: BoRecycle.gaoDeKey,
+          location: Number($scope.handlongitude || localStorage.getItem("longitude")).toFixed(6) + "," + Number($scope.handlatitude || localStorage.getItem("latitude")).toFixed(6),
+          radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
+          extensions: 'all',//返回结果控制
+          batch: false, //batch=true为批量查询。batch=false为单点查询
+          roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
+        }).success(function (data) {
+          var addressComponent = data.regeocode.addressComponent;
+          $scope.city = addressComponent.city;
+        }).then(function () {
+          AddressService.getAddressBySSX({
+            ssx: $scope.city,
+            level:2
+          }).success(function (data) {
+            if (data.code == 1001) {
+              $scope.user.isinvitecode = data.data.isinvitecode;
+            } else {
+              $scope.user.isinvitecode = "0";
+            }
+          })
+        })
+      })
+
+    }
+    //页面加载完成自动定位
+    $scope.$on('$ionicView.afterEnter', function () {
+      $scope.location();//自动定位
+    })
     //从上一个登陆页面传递账号
     if ($rootScope.account_login) {
       $scope.user.account = $rootScope.account_login;
@@ -412,13 +480,18 @@ angular.module('starter.controllers', [])
           CommonService.showConfirm('收收提示', datas.message, '立即注册', '返回登陆', 'register', 'login', '', '', '');
         }
         else {
-          AccountService.getIsInvite({account: account}).success(function (data) {
-            if (data.code == 1001) {
-              $scope.isInvite = false;
-            } else {
-              $scope.isInvite = true;
-            }
-          });
+          if($scope.user.isinvitecode=="0") {
+            AccountService.getIsInvite({account: account}).success(function (data) {
+              if (data.code == 1001) {
+                $scope.isInvite = false;
+              } else {
+                $scope.isInvite = true;
+              }
+            });
+          }
+          else {
+            $scope.isInvite = false;
+          }
         }
       });
     }
@@ -482,7 +555,7 @@ angular.module('starter.controllers', [])
   })
 
   //手机验证登录页面
-  .controller('MobileLoginCtrl', function ($scope, $state, $rootScope, $interval, $ionicGesture, CommonService, MainService, AccountService) {
+  .controller('MobileLoginCtrl', function ($scope, $state, $rootScope, $interval, $ionicGesture, CommonService, MainService, AccountService,AddressService) {
     $rootScope.commonService = CommonService;
     //删除记住用户信息
     localStorage.removeItem("userid");
@@ -505,10 +578,44 @@ angular.module('starter.controllers', [])
     }
 
     $scope.user = {};//提前定义用户对象
+    $scope.user.isinvitecode="0";
     $scope.agreedeal = true;//同意用户协议
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable
     $scope.isKeyup = false;//是否执行Keyup事件
+    //获取当前位置 定位
+    $scope.location = function () {
+      CommonService.getLocation(function () {
+        //当前位置 定位
+        AccountService.getCurrentCity({
+          key: BoRecycle.gaoDeKey,
+          location: Number($scope.handlongitude || localStorage.getItem("longitude")).toFixed(6) + "," + Number($scope.handlatitude || localStorage.getItem("latitude")).toFixed(6),
+          radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
+          extensions: 'all',//返回结果控制
+          batch: false, //batch=true为批量查询。batch=false为单点查询
+          roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
+        }).success(function (data) {
+          var addressComponent = data.regeocode.addressComponent;
+          $scope.city = addressComponent.city;
+        }).then(function () {
+          AddressService.getAddressBySSX({
+            ssx: $scope.city,
+            level:2
+          }).success(function (data) {
+            if (data.code == 1001) {
+              $scope.user.isinvitecode = data.data.isinvitecode;
+            } else {
+              $scope.user.isinvitecode = "0";
+            }
+          })
+        })
+      })
+
+    }
+    //页面加载完成自动定位
+    $scope.$on('$ionicView.afterEnter', function () {
+      $scope.location();//自动定位
+    })
     //从上一个登陆页面传递账号
     if ($rootScope.account_login) {
       $scope.user.mobile = $rootScope.account_login;
@@ -555,13 +662,18 @@ angular.module('starter.controllers', [])
           CommonService.showConfirm('收收提示', datas.message, '立即注册', '返回登陆', 'register', 'mobilelogin', '', '', '');
         }
         else {
-          AccountService.getIsInvite({account: account}).success(function (data) {
-            if (data.code == 1001) {
-              $scope.isInvite = false;
-            } else {
-              $scope.isInvite = true;
-            }
-          });
+          if($scope.user.isinvitecode=="0") {
+            AccountService.getIsInvite({account: account}).success(function (data) {
+              if (data.code == 1001) {
+                $scope.isInvite = false;
+              } else {
+                $scope.isInvite = true;
+              }
+            });
+          }
+          else {
+            $scope.isInvite = false;
+          }
         }
       });
     }
@@ -630,10 +742,11 @@ angular.module('starter.controllers', [])
   })
 
   //注册页面
-  .controller('RegisterCtrl', function ($scope, $rootScope, $state, CommonService, MainService, AccountService) {
+  .controller('RegisterCtrl', function ($scope, $rootScope, $state, CommonService, MainService, AccountService,AddressService) {
     $scope.user = {//定义用户对象
       usertype: 1 //用户类型
     };
+    $scope.user.isinvitecode="0";
     $scope.agreedeal = true;//同意用户协议
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable;
@@ -644,7 +757,38 @@ angular.module('starter.controllers', [])
       $rootScope.noExists = null;
       $scope.paraclass = true;
     }
-
+    //获取当前位置 定位
+    $scope.location = function () {
+      CommonService.getLocation(function () {
+        //当前位置 定位
+        AccountService.getCurrentCity({
+          key: BoRecycle.gaoDeKey,
+          location: Number($scope.handlongitude || localStorage.getItem("longitude")).toFixed(6) + "," + Number($scope.handlatitude || localStorage.getItem("latitude")).toFixed(6),
+          radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
+          extensions: 'all',//返回结果控制
+          batch: false, //batch=true为批量查询。batch=false为单点查询
+          roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
+        }).success(function (data) {
+          var addressComponent = data.regeocode.addressComponent;
+          $scope.city = addressComponent.city;
+        }).then(function () {
+          AddressService.getAddressBySSX({
+            ssx: $scope.city,
+            level:2
+          }).success(function (data) {
+            if (data.code == 1001) {
+              $scope.user.isinvitecode = data.data.isinvitecode;
+            } else {
+              $scope.user.isinvitecode = "0";
+            }
+          })
+        })
+      })
+    }
+    //页面加载完成自动定位
+    $scope.$on('$ionicView.afterEnter', function () {
+      $scope.location();//自动定位
+    });
     //如果没有授权先授权 或者超过两个小时
     if (!localStorage.getItem("token") || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
       //接口授权
@@ -995,8 +1139,8 @@ angular.module('starter.controllers', [])
 
     // 选择打开附近地址
     $scope.getAddressPois = function (item) {
-     // $scope.user.addrdetail = item.name;
-     // $scope.modal1.hide();
+      // $scope.user.addrdetail = item.name;
+      // $scope.modal1.hide();
       $scope.addrinfo.addressname= item.name;
     }
     $scope.searchaddrquery = function (addressname) {
@@ -1539,7 +1683,7 @@ angular.module('starter.controllers', [])
       $scope.yymodal=json;
       $scope.datas={
         N:10,
-      //  ORAddTime:oraddtime
+        //  ORAddTime:oraddtime
         ORAddTime:$filter('date')(new Date(),'yyyy-MM-dd')
       }
       OrderService.getappoint($scope.datas).success(function (data) {
@@ -2260,7 +2404,7 @@ angular.module('starter.controllers', [])
   })
 
   //我的设置页面
-  .controller('AccountCtrl', function ($scope, $rootScope, BoRecycle, CommonService, AccountService, OrderService, WeiXinService) {
+  .controller('AccountCtrl', function ($scope, $rootScope, BoRecycle, CommonService, AccountService, OrderService, WeiXinService,AddressService) {
     //是否登录
     if (!CommonService.isLogin(true)) {
       return;
@@ -2269,6 +2413,40 @@ angular.module('starter.controllers', [])
     if (ionic.Platform.isWebView()) {
       $scope.isWebView = true;
     }
+    $scope.isinvitecode="0";
+    //获取当前位置 定位
+    $scope.location = function () {
+      CommonService.getLocation(function () {
+        //当前位置 定位
+        AccountService.getCurrentCity({
+          key: BoRecycle.gaoDeKey,
+          location: Number($scope.handlongitude || localStorage.getItem("longitude")).toFixed(6) + "," + Number($scope.handlatitude || localStorage.getItem("latitude")).toFixed(6),
+          radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
+          extensions: 'all',//返回结果控制
+          batch: false, //batch=true为批量查询。batch=false为单点查询
+          roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
+        }).success(function (data) {
+          var addressComponent = data.regeocode.addressComponent;
+          $scope.city = addressComponent.city;
+        }).then(function () {
+          AddressService.getAddressBySSX({
+            ssx: $scope.city,
+            level:2
+          }).success(function (data) {
+            if (data.code == 1001) {
+              $scope.isinvitecode = data.data.isinvitecode;
+            } else {
+              $scope.isinvitecode = "0";
+            }
+          })
+        })
+      })
+
+    }
+    //页面加载完成自动定位
+    $scope.$on('$ionicView.afterEnter', function () {
+      $scope.location();//自动定位
+    })
     //调出分享面板
     CommonService.customModal($scope, 'templates/modal/share.html');
 
@@ -2286,23 +2464,23 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt(data.message, 'close');
       }
     }).then(function () {
-        if (WeiXinService.isWeiXin()) { //如果是微信
-          $scope.isWeiXin = true;
-          if($scope.usertype==1){
-            CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/download', '');
-          }else{
-            CommonService.shareActionSheet("告别风吹日晒的蹲点回收，为回收人员增加真实货源", "下载“收收”在家接单轻松回收，告别蹲点回收，几千万回收人员的必备工具", BoRecycle.mobApi + '/#/download', '');
-          }
-          //CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract, BoRecycle.mobApi + '/#/download', '');
+      if (WeiXinService.isWeiXin()) { //如果是微信
+        $scope.isWeiXin = true;
+        if($scope.usertype==1){
+          CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/download', '');
+        }else{
+          CommonService.shareActionSheet("告别风吹日晒的蹲点回收，为回收人员增加真实货源", "下载“收收”在家接单轻松回收，告别蹲点回收，几千万回收人员的必备工具", BoRecycle.mobApi + '/#/download', '');
         }
-        //调用分享面板
-        $scope.shareActionSheet = function (type) {
-          if ($scope.usertype == 1) {
-            CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/download', '', type);
-          } else {
-            CommonService.shareActionSheet("告别风吹日晒的蹲点回收，为回收人员增加真实货源", "下载“收收”在家接单轻松回收，告别蹲点回收，几千万回收人员的必备工具", BoRecycle.mobApi + '/#/download', '', type);
-          }
+        //CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract, BoRecycle.mobApi + '/#/download', '');
+      }
+      //调用分享面板
+      $scope.shareActionSheet = function (type) {
+        if ($scope.usertype == 1) {
+          CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/download', '', type);
+        } else {
+          CommonService.shareActionSheet("告别风吹日晒的蹲点回收，为回收人员增加真实货源", "下载“收收”在家接单轻松回收，告别蹲点回收，几千万回收人员的必备工具", BoRecycle.mobApi + '/#/download', '', type);
         }
+      }
     });
 
 
@@ -2589,10 +2767,10 @@ angular.module('starter.controllers', [])
 
     // 选择打开附近地址
     $scope.getAddressPois = function (item) {
-     // $scope.addrinfo.addr = item.name;
+      // $scope.addrinfo.addr = item.name;
       $scope.longitude = item.location.split(",")[0];//经度
       $scope.latitude = item.location.split(",")[1];//纬度
-     // $scope.modal1.hide();
+      // $scope.modal1.hide();
       $scope.addrinfo.addressname= item.name;
     }
     $scope.searchaddrquery = function (addressname) {
@@ -3114,10 +3292,10 @@ angular.module('starter.controllers', [])
 
 // 选择打开附近地址
     $scope.getAddressPois = function (item) {
-     // $scope.dengji.addrdetail = item.name;
+      // $scope.dengji.addrdetail = item.name;
       $scope.longitude = item.location.split(",")[0];//经度
       $scope.latitude = item.location.split(",")[1];//纬度
-     // $scope.modal1.hide();
+      // $scope.modal1.hide();
       $scope.addrinfo.addressname= item.name;
     }
     $scope.searchaddrquery = function (addressname) {
@@ -3236,7 +3414,7 @@ angular.module('starter.controllers', [])
       //添加登记信息/货源信息(添加登记货源时明细不能为空，添加登记信息时明细为空)
       OrderService.addDengJi([$scope.dengji]).success(function (data) {
         if (data.code == 1001) {
-         CommonService.platformPrompt("登记信息提交成功", 'myorder');
+          CommonService.platformPrompt("登记信息提交成功", 'myorder');
         } else {
           CommonService.platformPrompt(data.message, 'close');
         }
@@ -3648,7 +3826,7 @@ angular.module('starter.controllers', [])
       MyWalletService.cash($scope.datas).success(function (data) {
         if (data.code == 1001) {
           $rootScope.defaultBank = null;
-          CommonService.showAlert('收收提示', '<p>恭喜您！操作成功，工作日24小时之内到账，请注意查收！</p>', 'wallet');
+          CommonService.showAlert('', '<p>恭喜您！</p><p>操作成功，工作日24小时之内到账，请注意查收！</p>', 'wallet');
         } else {
           CommonService.platformPrompt(data.message, 'close');
         }
@@ -4027,7 +4205,7 @@ angular.module('starter.controllers', [])
   })
 
   //生成邀请码
-  .controller('tuiguangCtrl', function ($scope, $rootScope,$state, AccountService, CommonService,BoRecycle,WeiXinService) {
+  .controller('tuiguangCtrl', function ($scope, $rootScope,$state, AccountService, CommonService,BoRecycle,WeiXinService,AddressService) {
     //是否登录
     if (!CommonService.isLogin()) {
       return;
@@ -4036,29 +4214,63 @@ angular.module('starter.controllers', [])
     if (ionic.Platform.isWebView()||WeiXinService.isWeiXin()) {
       $scope.isWebView = true;
     }
+    $scope.isinvitecode="0";
+    //获取当前位置 定位
+    $scope.location = function () {
+      CommonService.getLocation(function () {
+        //当前位置 定位
+        AccountService.getCurrentCity({
+          key: BoRecycle.gaoDeKey,
+          location: Number($scope.handlongitude || localStorage.getItem("longitude")).toFixed(6) + "," + Number($scope.handlatitude || localStorage.getItem("latitude")).toFixed(6),
+          radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
+          extensions: 'all',//返回结果控制
+          batch: false, //batch=true为批量查询。batch=false为单点查询
+          roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
+        }).success(function (data) {
+          var addressComponent = data.regeocode.addressComponent;
+          $scope.city = addressComponent.city;
+        }).then(function () {
+          AddressService.getAddressBySSX({
+            ssx: $scope.city,
+            level:2
+          }).success(function (data) {
+            if (data.code == 1001) {
+              $scope.isinvitecode = data.data.isinvitecode;
+            } else {
+              $scope.isinvitecode = "0";
+            }
+          })
+        })
+      })
+
+    }
+    //页面加载完成自动定位
+    $scope.$on('$ionicView.afterEnter', function () {
+      $scope.location();//自动定位
+    })
     //调出分享面板
     CommonService.customModal($scope, 'templates/modal/share.html');
-if(!localStorage.getItem("user")) {
-  AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
-    if (data.code == 1001) {
-      localStorage.setItem("user", JSON.stringify(data.data));
-      var services = data.data.services;
-      //用户会员类型  0 无 1信息提供者  2回收者
-      localStorage.setItem("usertype", (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
+    if(!localStorage.getItem("user")) {
+      AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
+        if (data.code == 1001) {
+          localStorage.setItem("user", JSON.stringify(data.data));
+          var services = data.data.services;
+          //用户会员类型  0 无 1信息提供者  2回收者
+          localStorage.setItem("usertype", (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
+        }
+      });
     }
-  });
-}
-  if (!localStorage.getItem("user") || JSON.parse(localStorage.getItem("user")).promoter != 1) {
-    $scope.userdata.promoter = 1;
-    CommonService.platformPrompt("很抱歉，您不是收收的推广用户！", 'close');
-    $state.go("tab.account");
-    return;
-  }
+    if (!localStorage.getItem("user") || (JSON.parse(localStorage.getItem("user")).promoter != 1 && $scope.isinvitecode=="0")) {
+      $scope.userdata.promoter = 1;
+      CommonService.platformPrompt("很抱歉，您不是收收的推广用户！", 'close');
+      $state.go("tab.account");
+      return;
+    }
 
     $scope.invitecode;//邀请码
     //获取邀请码
     $scope.getCode = function () {
-      AccountService.getInvitecode(localStorage.getItem("userid")).success(function (data) {
+      AccountService.getInvitecode({userid:localStorage.getItem("userid"),isinvitecode:$scope.isinvitecode}).success(function (data) {
         $scope.invitecode = data.data;
         if(localStorage.getItem("usertype")){
           $scope.usertype=localStorage.getItem("usertype");

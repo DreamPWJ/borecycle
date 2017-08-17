@@ -43,19 +43,19 @@
         <label class="item item-input">
           <span class="input-label icon ion-ios-unlocked-outline"> 邀请码</span>
           <input type="text" ng-model="user.invitecode" check-form
-                 placeholder="请输入邀请码" required maxlength="6"/>
+                 placeholder="{{isinvitecode=='0'?'请输入邀请码':'非必填项'}}" ng-required="isinvitecode"/>
         </label>
         <ion-item class="border-bottom light-bg usertype row item item-input">
           <span class="input-label border-left">用户类型 </span>
           <div>
-          <label ng-click="user.usertype=1" for="xinxi">
-            <input type="checkbox" id="xinxi" ng-checked="user.usertype==1">
-            <span>信息提供者</span>
-          </label>
-          <label ng-click="user.usertype=2" for="huishou">
-            <input type="checkbox" id="huishou" ng-checked="user.usertype==2">
-            <span>回收商</span>
-          </label>
+            <label ng-click="user.usertype=1" for="xinxi">
+              <input type="checkbox" id="xinxi" ng-checked="user.usertype==1">
+              <span>信息提供者</span>
+            </label>
+            <label ng-click="user.usertype=2" for="huishou">
+              <input type="checkbox" id="huishou" ng-checked="user.usertype==2">
+              <span>回收商</span>
+            </label>
           </div>
         </ion-item>
         <div class=" services padding light-bg  text-wrap" ng-if="user.usertype==2">
