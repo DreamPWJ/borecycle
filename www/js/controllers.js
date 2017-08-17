@@ -3653,6 +3653,7 @@ angular.module('starter.controllers', [])
     //选择或添加银行卡
     $scope.selectCard = function () {
       if (!$rootScope.defaultBank) {
+        $rootScope.defaultBank={};
         $state.go('addcard');
         return;
       } else {

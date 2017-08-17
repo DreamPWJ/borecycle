@@ -15,7 +15,7 @@
                     <!--ng-change="changeBk(myBk)" required>-->
               <!--<option value="">请选择银行卡</option>-->
           <!--</select>-->
-          <span class="calm" style="font-weight: bold">{{defaultBank?defaultBank.bankname+"（"+defaultBank.accountno.substring(defaultBank.accountno.length-4)+")":"请添加银行"}}</span>
+          <span class="calm" style="font-weight: bold">{{defaultBank&&defaultBank.bankname?defaultBank.bankname+"（"+defaultBank.accountno.substring(defaultBank.accountno.length-4)+")":"请添加银行"}}</span>
           <i class="icon" ng-class="defaultBank?'ion-ios-arrow-forward':'ion-ios-plus-empty'"></i>
        </span>
         </label>
