@@ -19,7 +19,7 @@ angular.module('starter.controllers', [])
   })
 
   //APP首页面
-  .controller('MainCtrl', function ($scope, $rootScope,$document, CommonService, MainService, OrderService, BoRecycle, $location, $ionicHistory, $interval, NewsService, AccountService, $ionicPlatform, WeiXinService) {
+  .controller('MainCtrl', function ($scope, $rootScope,$state,$document, CommonService, MainService, OrderService, BoRecycle, $location, $ionicHistory, $interval, NewsService, AccountService, $ionicPlatform, WeiXinService) {
     //授权之后执行的方法
     $scope.afterAuth = function () {
       //首页统计货量
@@ -43,7 +43,12 @@ angular.module('starter.controllers', [])
         $scope.shareCode=function () {
           //判断是否是WebView或微信，如果是则显示广告
           if (!WeiXinService.isWeiXin()) {
-            $scope.modal2.show();
+            if (!ionic.Platform.isWebView()) {
+              $state.go('download');
+            }
+            else {
+              $scope.modal2.show();
+            }
           }
           else {
             $scope.share_arrow = "./img/share_arrow.png";
