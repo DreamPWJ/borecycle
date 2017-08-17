@@ -47,7 +47,6 @@ angular.module('starter.controllers', [])
           }
           else {
             $scope.share_arrow = "./img/share_arrow.png";
-            $scope.dl_word = "./img/dl-word.png";
             $scope.modal.show();
           }
         }

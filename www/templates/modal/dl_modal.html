@@ -5,15 +5,11 @@
       <p class="col-50"></p>
       <img ng-if="share_arrow" ng-src="{{share_arrow}}" class="col-50 f-right" alt="收收">
     </div>
-    <!--<div class="row">-->
       <img ng-if="dl_word" ng-src="{{dl_word}}" style="width: 90%;margin-left: 5%;" alt="收收">
     <div class="card padding-horizontal">
       <h2>1、点击右上角按钮<i class="icon iconfont icon-more"></i></h2>
 
-      <h2>2、选择“在浏览器打开”</h2>
+      <h2>{{dl_word?"2、选择“在浏览器打开”":"2、选择“发送给朋友”"}} </h2>
     </div>
   </ion-content>
-<!--  <ion-footer-bar >
-    <button ng-click="modal.hide()" class="button button-positive full-image">取消</button>
-  </ion-footer-bar>-->
 </ion-modal-view>
