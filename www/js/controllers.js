@@ -400,7 +400,7 @@ angular.module('starter.controllers', [])
   })
 
   //用户密码登录页面
-  .controller('LoginCtrl', function ($scope, $state, $rootScope, $interval, CommonService, MainService, AccountService,AddressService) {
+  .controller('LoginCtrl', function ($scope, $state, $rootScope, $interval, CommonService, MainService, AccountService,AddressService,BoRecycle) {
     $rootScope.commonService = CommonService;
     //删除记住用户信息
     localStorage.removeItem("userid");
@@ -438,13 +438,16 @@ angular.module('starter.controllers', [])
           batch: false, //batch=true为批量查询。batch=false为单点查询
           roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
         }).success(function (data) {
+          alert(data);
           var addressComponent = data.regeocode.addressComponent;
           $scope.city = addressComponent.city;
+          alert($scope.city);
         }).then(function () {
           AddressService.getAddressBySSX({
             ssx: $scope.city,
             level:2
           }).success(function (data) {
+            alert(data);
             if (data.code == 1001) {
               $scope.user.isinvitecode = data.data.isinvitecode;
             } else {
@@ -458,7 +461,9 @@ angular.module('starter.controllers', [])
     //页面加载完成自动定位
     $scope.$on('$ionicView.afterEnter', function () {
       $scope.location();//自动定位
-    })
+      alert("cc");
+    });
+    alert($scope.user.isinvitecode);
     //从上一个登陆页面传递账号
     if ($rootScope.account_login) {
       $scope.user.account = $rootScope.account_login;
@@ -555,7 +560,7 @@ angular.module('starter.controllers', [])
   })
 
   //手机验证登录页面
-  .controller('MobileLoginCtrl', function ($scope, $state, $rootScope, $interval, $ionicGesture, CommonService, MainService, AccountService,AddressService) {
+  .controller('MobileLoginCtrl', function ($scope, $state, $rootScope, $interval, $ionicGesture, CommonService, MainService, AccountService,AddressService,BoRecycle) {
     $rootScope.commonService = CommonService;
     //删除记住用户信息
     localStorage.removeItem("userid");
@@ -742,7 +747,7 @@ angular.module('starter.controllers', [])
   })
 
   //注册页面
-  .controller('RegisterCtrl', function ($scope, $rootScope, $state, CommonService, MainService, AccountService,AddressService) {
+  .controller('RegisterCtrl', function ($scope, $rootScope, $state, CommonService, MainService, AccountService,AddressService,BoRecycle) {
     $scope.user = {//定义用户对象
       usertype: 1 //用户类型
     };
