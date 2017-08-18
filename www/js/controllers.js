@@ -749,6 +749,7 @@ angular.module('starter.controllers', [])
       usertype: 1 //用户类型
     };
     $scope.user.isinvitecode="0";
+    $scope.isInvite = true;
     $scope.agreedeal = true;//同意用户协议
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable;
@@ -780,6 +781,10 @@ angular.module('starter.controllers', [])
           }).success(function (data) {
             if (data.code == 1001) {
               $scope.user.isinvitecode = data.data.isinvitecode;
+              if( $scope.user.isinvitecode=="1")
+              {
+                $scope.isInvite = false;
+              }
             } else {
               $scope.user.isinvitecode = "0";
             }
