@@ -4255,60 +4255,27 @@ angular.module('starter.controllers', [])
         CommonService.platformPrompt("很抱歉，您不是收收的推广用户！", 'close');
         $state.go("tab.account");
         return;
-      }},2000);
-      //调出分享面板
-      CommonService.customModal($scope, 'templates/modal/share.html');
-      if(!localStorage.getItem("user")) {
-        AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
-          if (data.code == 1001) {
-            localStorage.setItem("user", JSON.stringify(data.data));
-            var services = data.data.services;
-            //用户会员类型  0 无 1信息提供者  2回收者
-            localStorage.setItem("usertype", (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
-          }
-        });
       }
-
-      $scope.invitecode;//邀请码
-      //获取邀请码
-      $scope.getCode = function () {
-        AccountService.getInvitecode({userid:localStorage.getItem("userid"),isinvitecode:$scope.isinvitecode}).success(function (data) {
-          $scope.invitecode = data.data;
-          if(localStorage.getItem("usertype")){
-            $scope.usertype=localStorage.getItem("usertype");
-            if (WeiXinService.isWeiXin()) { //如果是微信
-              $scope.isWeiXin = true;
-              if($scope.usertype==1){
-                CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/invitedown/'+$scope.invitecode.id, '');
-              }else{
-                CommonService.shareActionSheet("告别风吹日晒的蹲点回收，为回收人员增加真实货源", "下载“收收”在家接单轻松回收，告别蹲点回收，几千万回收人员的必备工具", BoRecycle.mobApi + '/#/invitedown/'+$scope.invitecode.id, '');
-              }
-              //CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract, BoRecycle.mobApi + '/#/download', '');
-            }else {
-              //调用分享面板
-              $scope.shareActionSheet = function (type) {
-                if ($scope.usertype == 1) {
-                  CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/invitedown/' + $scope.invitecode.id, '', type);
-                } else {
-                  CommonService.shareActionSheet("告别风吹日晒的蹲点回收，为回收人员增加真实货源", "下载“收收”在家接单轻松回收，告别蹲点回收，几千万回收人员的必备工具", BoRecycle.mobApi + '/#/invitedown/' + $scope.invitecode.id, '', type);
-                }
-              }
+        //调出分享面板
+        CommonService.customModal($scope, 'templates/modal/share.html');
+        if(!localStorage.getItem("user")) {
+          AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
+            if (data.code == 1001) {
+              localStorage.setItem("user", JSON.stringify(data.data));
+              var services = data.data.services;
+              //用户会员类型  0 无 1信息提供者  2回收者
+              localStorage.setItem("usertype", (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
             }
-          }else{
-//根据会员ID获取会员账号基本信息
-            AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
-              if (data.code == 1001) {
-                $rootScope.userdata = data.data;
-                localStorage.setItem("user", JSON.stringify(data.data));
-                var services = data.data.services;
-                //用户会员类型  0 无 1信息提供者  2回收者
-                var usertype = (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2;
-                localStorage.setItem("usertype", usertype);
-                $scope.usertype = usertype;
-              } else {
-                CommonService.platformPrompt(data.message, 'close');
-              }
-            }).then(function () {
+          });
+        }
+
+        $scope.invitecode;//邀请码
+        //获取邀请码
+        $scope.getCode = function () {
+          AccountService.getInvitecode({userid:localStorage.getItem("userid"),isinvitecode:$scope.isinvitecode}).success(function (data) {
+            $scope.invitecode = data.data;
+            if(localStorage.getItem("usertype")){
+              $scope.usertype=localStorage.getItem("usertype");
               if (WeiXinService.isWeiXin()) { //如果是微信
                 $scope.isWeiXin = true;
                 if($scope.usertype==1){
@@ -4327,22 +4294,56 @@ angular.module('starter.controllers', [])
                   }
                 }
               }
-            });
-          }
-        }).error(function (err) {
-          $scope.invitecode = "迷失在沙漠中，请重新生成！";
-        });
-      }
-      //发起分享
-      $scope.shareCode=function () {
-        if($scope.invitecode){
-          $scope.modal.show();
-        }else {
-          CommonService.platformPrompt("请重新生成邀请码！", 'close');
-          return;
+            }else{
+//根据会员ID获取会员账号基本信息
+              AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
+                if (data.code == 1001) {
+                  $rootScope.userdata = data.data;
+                  localStorage.setItem("user", JSON.stringify(data.data));
+                  var services = data.data.services;
+                  //用户会员类型  0 无 1信息提供者  2回收者
+                  var usertype = (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2;
+                  localStorage.setItem("usertype", usertype);
+                  $scope.usertype = usertype;
+                } else {
+                  CommonService.platformPrompt(data.message, 'close');
+                }
+              }).then(function () {
+                if (WeiXinService.isWeiXin()) { //如果是微信
+                  $scope.isWeiXin = true;
+                  if($scope.usertype==1){
+                    CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/invitedown/'+$scope.invitecode.id, '');
+                  }else{
+                    CommonService.shareActionSheet("告别风吹日晒的蹲点回收，为回收人员增加真实货源", "下载“收收”在家接单轻松回收，告别蹲点回收，几千万回收人员的必备工具", BoRecycle.mobApi + '/#/invitedown/'+$scope.invitecode.id, '');
+                  }
+                  //CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract, BoRecycle.mobApi + '/#/download', '');
+                }else {
+                  //调用分享面板
+                  $scope.shareActionSheet = function (type) {
+                    if ($scope.usertype == 1) {
+                      CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/invitedown/' + $scope.invitecode.id, '', type);
+                    } else {
+                      CommonService.shareActionSheet("告别风吹日晒的蹲点回收，为回收人员增加真实货源", "下载“收收”在家接单轻松回收，告别蹲点回收，几千万回收人员的必备工具", BoRecycle.mobApi + '/#/invitedown/' + $scope.invitecode.id, '', type);
+                    }
+                  }
+                }
+              });
+            }
+          }).error(function (err) {
+            $scope.invitecode = "迷失在沙漠中，请重新生成！";
+          });
         }
-      }
-      $scope.getCode();
+        //发起分享
+        $scope.shareCode=function () {
+          if($scope.invitecode){
+            $scope.modal.show();
+          }else {
+            CommonService.platformPrompt("请重新生成邀请码！", 'close');
+            return;
+          }
+        }
+        $scope.getCode();
+      },2000);
     })
   })
 
