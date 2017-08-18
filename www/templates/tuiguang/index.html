@@ -12,7 +12,7 @@
     {{invitecode.code}}
   </ion-content>
   <div class="padding light-bg  bottom-0" keyboard-attach>
-    <a  class="button button-positive full-image icon ion-ios-loop-strong"
+    <a  class="button button-positive full-image icon ion-ios-loop-strong"  ng-disabled="userdata.promoter==1 || isinvitecode==1"
        ng-click="getCode()">获取邀请码</a>
   </div>
 </ion-view>

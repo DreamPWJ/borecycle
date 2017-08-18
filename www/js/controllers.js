@@ -19,7 +19,7 @@ angular.module('starter.controllers', [])
   })
 
   //APP首页面
-  .controller('MainCtrl', function ($scope, $rootScope,$state,$document, CommonService, MainService, OrderService, BoRecycle, $location, $ionicHistory, $interval, NewsService, AccountService, $ionicPlatform, WeiXinService,AddressService) {
+  .controller('MainCtrl', function ($scope, $rootScope,$state,$document, CommonService, MainService, OrderService, BoRecycle, $location, $ionicHistory, $interval, NewsService, AccountService, $ionicPlatform, WeiXinService,AddressService,$timeout) {
     //授权之后执行的方法
     $scope.afterAuth = function () {
       //首页统计货量
@@ -30,7 +30,6 @@ angular.module('starter.controllers', [])
         } else {
           CommonService.platformPrompt("获取统计货量数据失败", 'close');
         }
-
       });
       $scope.isrole=true;
       //当为信息提供者时
@@ -68,50 +67,55 @@ angular.module('starter.controllers', [])
         $scope.$on('$ionicView.afterEnter', function () {
           $scope.isrole = false;
           $scope.location();//自动定位
-          //调出分享面板
-          CommonService.customModal($scope, 'templates/modal/share.html',2);
-          CommonService.customModal($scope, 'templates/modal/dl_modal.html');
-          //发起分享
-          $scope.shareCode=function () {
-            //判断是否是WebView或微信，如果是则显示广告
-            if (!WeiXinService.isWeiXin()) {
-              if (!ionic.Platform.isWebView()) {
-                $state.go('download');
+          $timeout(function () {
+            //调出分享面板
+            CommonService.customModal($scope, 'templates/modal/share.html', 2);
+            CommonService.customModal($scope, 'templates/modal/dl_modal.html');
+            //发起分享
+            $scope.shareCode = function () {
+              //判断是否是WebView或微信，如果是则显示广告
+              if (!WeiXinService.isWeiXin()) {
+                if (!ionic.Platform.isWebView()) {
+                  $state.go('download');
+                }
+                else {
+                  $scope.modal2.show();
+                }
               }
               else {
-                $scope.modal2.show();
+                $scope.share_arrow = "./img/share_arrow.png";
+                $scope.modal.show();
               }
             }
-            else {
-              $scope.share_arrow = "./img/share_arrow.png";
-              $scope.modal.show();
-            }
-          }
-          $scope.invitecode;//邀请码
-          //获取邀请码
-          AccountService.getInvitecode({userid:localStorage.getItem("userid"),isinvitecode: $scope.isinvitecode}).success(function (data) {
-            $scope.invitecode = data.data;
-            if($scope.invitecode) {
-              if (WeiXinService.isWeiXin()) { //如果是微信
-                CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/invitedown/' + $scope.invitecode.id, '');
-              } else {
-                //调用分享面板
-                $scope.shareActionSheet = function (type) {
-                  CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/invitedown/' + $scope.invitecode.id, '', type);
+            $scope.invitecode;//邀请码
+            //获取邀请码
+            AccountService.getInvitecode({
+              userid: localStorage.getItem("userid"),
+              isinvitecode: $scope.isinvitecode
+            }).success(function (data) {
+              $scope.invitecode = data.data;
+              if ($scope.invitecode) {
+                if (WeiXinService.isWeiXin()) { //如果是微信
+                  CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/invitedown/' + $scope.invitecode.id, '');
+                } else {
+                  //调用分享面板
+                  $scope.shareActionSheet = function (type) {
+                    CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/invitedown/' + $scope.invitecode.id, '', type);
+                  }
                 }
               }
-            }
-            else {
-              if (WeiXinService.isWeiXin()) { //如果是微信
-                CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/download', '');
-              } else {
-                //调用分享面板
-                $scope.shareActionSheet = function (type) {
-                  CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/download', '', type);
+              else {
+                if (WeiXinService.isWeiXin()) { //如果是微信
+                  CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/download', '');
+                } else {
+                  //调用分享面板
+                  $scope.shareActionSheet = function (type) {
+                    CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/download', '', type);
+                  }
                 }
               }
-            }
-          });
+            });
+          },2000);
         })
       }
       //判断是否是WebView或微信，如果是则显示广告
@@ -4203,7 +4207,7 @@ angular.module('starter.controllers', [])
   })
 
   //生成邀请码
-  .controller('tuiguangCtrl', function ($scope, $rootScope,$state, AccountService, CommonService,BoRecycle,WeiXinService,AddressService) {
+  .controller('tuiguangCtrl', function ($scope, $rootScope,$state, AccountService, CommonService,BoRecycle,WeiXinService,AddressService,$timeout) {
     //是否登录
     if (!CommonService.isLogin()) {
       return;
@@ -4245,12 +4249,13 @@ angular.module('starter.controllers', [])
     //页面加载完成自动定位
     $scope.$on('$ionicView.afterEnter', function () {
       $scope.location();//自动定位
+      $timeout(function () {
       if (!localStorage.getItem("user") || (JSON.parse(localStorage.getItem("user")).promoter != 1 && $scope.isinvitecode=="0")) {
         $scope.userdata.promoter = 1;
         CommonService.platformPrompt("很抱歉，您不是收收的推广用户！", 'close');
         $state.go("tab.account");
         return;
-      }
+      }},2000);
     })
     //调出分享面板
     CommonService.customModal($scope, 'templates/modal/share.html');
