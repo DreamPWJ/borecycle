@@ -25,7 +25,6 @@
 
     //从API请求获取支付信息
     NSString *signedString = [command argumentAtIndex:0];
-
     if (signedString != nil) {
 
         [[AlipaySDK defaultService] payOrder:signedString fromScheme:[NSString stringWithFormat:@"a%@", self.partner] callback:^(NSDictionary *resultDic) {
@@ -34,7 +33,7 @@
             } else {
                 [self failWithCallbackID:self.currentCallbackId messageAsDictionary:resultDic];
             }
-            
+
             NSLog(@"reslut = %@",resultDic);
         }];
 
@@ -44,7 +43,7 @@
 - (void)handleOpenURL:(NSNotification *)notification
 {
     NSURL* url = [notification object];
-    
+
     if ([url isKindOfClass:[NSURL class]] && [url.scheme isEqualToString:[NSString stringWithFormat:@"a%@", self.partner]])
     {
         [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
