@@ -2426,6 +2426,7 @@ angular.module('starter.controllers', [])
       $scope.isWebView = true;
     }
     $rootScope.isinvitecode="0";
+    $rootScope.areaname="沈阳";
     //获取当前位置 定位
     $scope.location = function () {
       CommonService.getLocation(function () {
@@ -2440,6 +2441,7 @@ angular.module('starter.controllers', [])
         }).success(function (data) {
           var addressComponent = data.regeocode.addressComponent;
           $scope.city = addressComponent.city;
+          $rootScope.areaname=addressComponent.city;
         }).then(function () {
           AddressService.getAddressBySSX({
             ssx: $scope.city,
@@ -3410,7 +3412,7 @@ angular.module('starter.controllers', [])
       $scope.dengji.latitude = $scope.latitude || localStorage.getItem("latitude") || $scope.addrareacountyone.Lat || 0;//纬度 默认为0 地址表里有经纬度值 如果没值现在的地区取经纬度
       $scope.dengji.category = $scope.recyclingCategoryName.join(",");//货物品类 多个用逗号隔开
       $scope.dengji.manufactor = manufactor.join(",");//单选
-      $scope.dengji.addrcode = $scope.addrareacountyone.ID;
+      $scope.dengji.addrcode = $scope.addrareacountyone.Code;
       $scope.dengji.delivery = 1; //交货方式 1 上门回收(默认) 2 送货上门 登记信息直接用1
       $scope.dengji.details = [];//添加登记货源时明细
 
@@ -4333,7 +4335,8 @@ angular.module('starter.controllers', [])
       return;
     }
     $scope.ut = localStorage.getItem("usertype");
-    NewsService.getInfo_fee().success(function (data) {
+
+    NewsService.getInfo_fee({areaname: $rootScope.areaname}).success(function (data) {
       $scope.infeels = data.data;
     });
   })
