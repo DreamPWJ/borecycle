@@ -19,7 +19,7 @@ angular.module('starter.controllers', [])
   })
 
   //APP首页面
-  .controller('MainCtrl', function ($scope, $rootScope,$state,$document, CommonService, MainService, OrderService, BoRecycle, $location, $ionicHistory, $interval, NewsService, AccountService, $ionicPlatform, WeiXinService,AddressService) {
+  .controller('MainCtrl', function ($scope, $rootScope,$state,$document, CommonService, MainService, OrderService, BoRecycle, $location, $ionicHistory, $interval, NewsService, AccountService, $ionicPlatform, WeiXinService,AddressService,$timeout) {
     //授权之后执行的方法
     $scope.afterAuth = function () {
       //首页统计货量
@@ -30,7 +30,6 @@ angular.module('starter.controllers', [])
         } else {
           CommonService.platformPrompt("获取统计货量数据失败", 'close');
         }
-
       });
       $scope.isrole=true;
       //当为信息提供者时
@@ -63,58 +62,61 @@ angular.module('starter.controllers', [])
               })
             })
           })
-
         }
         //页面加载完成自动定位
         $scope.$on('$ionicView.afterEnter', function () {
+          $scope.isrole = false;
           $scope.location();//自动定位
+          $timeout(function () {
+            //调出分享面板
+            CommonService.customModal($scope, 'templates/modal/share.html', 2);
+            CommonService.customModal($scope, 'templates/modal/dl_modal.html');
+            //发起分享
+            $scope.shareCode = function () {
+              //判断是否是WebView或微信，如果是则显示广告
+              if (!WeiXinService.isWeiXin()) {
+                if (!ionic.Platform.isWebView()) {
+                  $state.go('download');
+                }
+                else {
+                  $scope.modal2.show();
+                }
+              }
+              else {
+                $scope.share_arrow = "./img/share_arrow.png";
+                $scope.modal.show();
+              }
+            }
+            $scope.invitecode;//邀请码
+            //获取邀请码
+            AccountService.getInvitecode({
+              userid: localStorage.getItem("userid"),
+              isinvitecode: $scope.isinvitecode
+            }).success(function (data) {
+              $scope.invitecode = data.data;
+              if ($scope.invitecode) {
+                if (WeiXinService.isWeiXin()) { //如果是微信
+                  CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/invitedown/' + $scope.invitecode.id, '');
+                } else {
+                  //调用分享面板
+                  $scope.shareActionSheet = function (type) {
+                    CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/invitedown/' + $scope.invitecode.id, '', type);
+                  }
+                }
+              }
+              else {
+                if (WeiXinService.isWeiXin()) { //如果是微信
+                  CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/download', '');
+                } else {
+                  //调用分享面板
+                  $scope.shareActionSheet = function (type) {
+                    CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/download', '', type);
+                  }
+                }
+              }
+            });
+          },2000);
         })
-        $scope.isrole = false;
-        //调出分享面板
-        CommonService.customModal($scope, 'templates/modal/share.html',2);
-        CommonService.customModal($scope, 'templates/modal/dl_modal.html');
-        //发起分享
-        $scope.shareCode=function () {
-          //判断是否是WebView或微信，如果是则显示广告
-          if (!WeiXinService.isWeiXin()) {
-            if (!ionic.Platform.isWebView()) {
-              $state.go('download');
-            }
-            else {
-              $scope.modal2.show();
-            }
-          }
-          else {
-            $scope.share_arrow = "./img/share_arrow.png";
-            $scope.modal.show();
-          }
-        }
-        $scope.invitecode;//邀请码
-        //获取邀请码
-        AccountService.getInvitecode({userid:localStorage.getItem("userid"),isinvitecode: $scope.isinvitecode}).success(function (data) {
-          $scope.invitecode = data.data;
-          if($scope.invitecode) {
-            if (WeiXinService.isWeiXin()) { //如果是微信
-              CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/invitedown/' + $scope.invitecode.id, '');
-            } else {
-              //调用分享面板
-              $scope.shareActionSheet = function (type) {
-                CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/invitedown/' + $scope.invitecode.id, '', type);
-              }
-            }
-          }
-          else {
-            if (WeiXinService.isWeiXin()) { //如果是微信
-              CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/download', '');
-            } else {
-              //调用分享面板
-              $scope.shareActionSheet = function (type) {
-                CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/download', '', type);
-              }
-            }
-          }
-        });
-
       }
       //判断是否是WebView或微信，如果是则显示广告
       if (ionic.Platform.isWebView()) {
@@ -400,7 +402,7 @@ angular.module('starter.controllers', [])
   })
 
   //用户密码登录页面
-  .controller('LoginCtrl', function ($scope, $state, $rootScope, $interval, CommonService, MainService, AccountService,AddressService) {
+  .controller('LoginCtrl', function ($scope, $state, $rootScope, $interval, CommonService, MainService, AccountService,AddressService,BoRecycle) {
     $rootScope.commonService = CommonService;
     //删除记住用户信息
     localStorage.removeItem("userid");
@@ -458,7 +460,7 @@ angular.module('starter.controllers', [])
     //页面加载完成自动定位
     $scope.$on('$ionicView.afterEnter', function () {
       $scope.location();//自动定位
-    })
+    });
     //从上一个登陆页面传递账号
     if ($rootScope.account_login) {
       $scope.user.account = $rootScope.account_login;
@@ -555,7 +557,7 @@ angular.module('starter.controllers', [])
   })
 
   //手机验证登录页面
-  .controller('MobileLoginCtrl', function ($scope, $state, $rootScope, $interval, $ionicGesture, CommonService, MainService, AccountService,AddressService) {
+  .controller('MobileLoginCtrl', function ($scope, $state, $rootScope, $interval, $ionicGesture, CommonService, MainService, AccountService,AddressService,BoRecycle) {
     $rootScope.commonService = CommonService;
     //删除记住用户信息
     localStorage.removeItem("userid");
@@ -742,11 +744,12 @@ angular.module('starter.controllers', [])
   })
 
   //注册页面
-  .controller('RegisterCtrl', function ($scope, $rootScope, $state, CommonService, MainService, AccountService,AddressService) {
+  .controller('RegisterCtrl', function ($scope, $rootScope, $state, CommonService, MainService, AccountService,AddressService,BoRecycle) {
     $scope.user = {//定义用户对象
       usertype: 1 //用户类型
     };
     $scope.user.isinvitecode="0";
+    $scope.isInvite = true;
     $scope.agreedeal = true;//同意用户协议
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable;
@@ -778,6 +781,10 @@ angular.module('starter.controllers', [])
           }).success(function (data) {
             if (data.code == 1001) {
               $scope.user.isinvitecode = data.data.isinvitecode;
+              if( $scope.user.isinvitecode=="1")
+              {
+                $scope.isInvite = false;
+              }
             } else {
               $scope.user.isinvitecode = "0";
             }
@@ -2413,7 +2420,7 @@ angular.module('starter.controllers', [])
     if (ionic.Platform.isWebView()) {
       $scope.isWebView = true;
     }
-    $scope.isinvitecode="0";
+    $rootScope.isinvitecode="0";
     //获取当前位置 定位
     $scope.location = function () {
       CommonService.getLocation(function () {
@@ -2434,9 +2441,9 @@ angular.module('starter.controllers', [])
             level:2
           }).success(function (data) {
             if (data.code == 1001) {
-              $scope.isinvitecode = data.data.isinvitecode;
+              $rootScope.isinvitecode = data.data.isinvitecode;
             } else {
-              $scope.isinvitecode = "0";
+              $rootScope.isinvitecode = "0";
             }
           })
         })
@@ -4206,7 +4213,7 @@ angular.module('starter.controllers', [])
   })
 
   //生成邀请码
-  .controller('tuiguangCtrl', function ($scope, $rootScope,$state, AccountService, CommonService,BoRecycle,WeiXinService,AddressService) {
+  .controller('tuiguangCtrl', function ($scope, $rootScope,$state, AccountService, CommonService,BoRecycle,WeiXinService) {
     //是否登录
     if (!CommonService.isLogin()) {
       return;
@@ -4215,40 +4222,12 @@ angular.module('starter.controllers', [])
     if (ionic.Platform.isWebView()||WeiXinService.isWeiXin()) {
       $scope.isWebView = true;
     }
-    $scope.isinvitecode="0";
-    //获取当前位置 定位
-    $scope.location = function () {
-      CommonService.getLocation(function () {
-        //当前位置 定位
-        AccountService.getCurrentCity({
-          key: BoRecycle.gaoDeKey,
-          location: Number($scope.handlongitude || localStorage.getItem("longitude")).toFixed(6) + "," + Number($scope.handlatitude || localStorage.getItem("latitude")).toFixed(6),
-          radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
-          extensions: 'all',//返回结果控制
-          batch: false, //batch=true为批量查询。batch=false为单点查询
-          roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
-        }).success(function (data) {
-          var addressComponent = data.regeocode.addressComponent;
-          $scope.city = addressComponent.city;
-        }).then(function () {
-          AddressService.getAddressBySSX({
-            ssx: $scope.city,
-            level:2
-          }).success(function (data) {
-            if (data.code == 1001) {
-              $scope.isinvitecode = data.data.isinvitecode;
-            } else {
-              $scope.isinvitecode = "0";
-            }
-          })
-        })
-      })
-
+    if (!localStorage.getItem("user") || (JSON.parse(localStorage.getItem("user")).promoter != 1 && $rootScope.isinvitecode=="0")) {
+      $scope.userdata.promoter = 1;
+      CommonService.platformPrompt("很抱歉，您不是收收的推广用户！", 'close');
+      $state.go("tab.account");
+      return;
     }
-    //页面加载完成自动定位
-    $scope.$on('$ionicView.afterEnter', function () {
-      $scope.location();//自动定位
-    })
     //调出分享面板
     CommonService.customModal($scope, 'templates/modal/share.html');
     if(!localStorage.getItem("user")) {
@@ -4261,17 +4240,11 @@ angular.module('starter.controllers', [])
         }
       });
     }
-    if (!localStorage.getItem("user") || (JSON.parse(localStorage.getItem("user")).promoter != 1 && $scope.isinvitecode=="0")) {
-      $scope.userdata.promoter = 1;
-      CommonService.platformPrompt("很抱歉，您不是收收的推广用户！", 'close');
-      $state.go("tab.account");
-      return;
-    }
 
     $scope.invitecode;//邀请码
     //获取邀请码
     $scope.getCode = function () {
-      AccountService.getInvitecode({userid:localStorage.getItem("userid"),isinvitecode:$scope.isinvitecode}).success(function (data) {
+      AccountService.getInvitecode({userid:localStorage.getItem("userid"),isinvitecode:$rootScope.isinvitecode}).success(function (data) {
         $scope.invitecode = data.data;
         if(localStorage.getItem("usertype")){
           $scope.usertype=localStorage.getItem("usertype");
@@ -4282,7 +4255,6 @@ angular.module('starter.controllers', [])
             }else{
               CommonService.shareActionSheet("告别风吹日晒的蹲点回收，为回收人员增加真实货源", "下载“收收”在家接单轻松回收，告别蹲点回收，几千万回收人员的必备工具", BoRecycle.mobApi + '/#/invitedown/'+$scope.invitecode.id, '');
             }
-
             //CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract, BoRecycle.mobApi + '/#/download', '');
           }else {
             //调用分享面板

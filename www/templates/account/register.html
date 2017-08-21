@@ -43,7 +43,7 @@
         <label class="item item-input">
           <span class="input-label icon ion-ios-unlocked-outline"> 邀请码</span>
           <input type="text" ng-model="user.invitecode" check-form
-                 placeholder="{{isinvitecode=='0'?'请输入邀请码':'非必填项'}}" ng-required="isinvitecode"/>
+                 placeholder="{{user.isinvitecode=='0'?'请输入邀请码':'非必填项'}}" ng-required="isInvite" />
         </label>
         <ion-item class="border-bottom light-bg usertype row item item-input">
           <span class="input-label border-left">用户类型 </span>
