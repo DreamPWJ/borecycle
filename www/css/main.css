@@ -384,6 +384,18 @@
   font-size: 1rem;
 }
 
+.show-img {
+  position: relative;
+}
+
+i.delete-img {
+  position: absolute;
+  top: 6px;
+  right: 10%;
+  font-size: 1.5rem !important;
+  z-index: 10000;
+}
+
 @-webkit-keyframes tooltipmessage {
   0% {
     -webkit-transform: translate(0, -1em);

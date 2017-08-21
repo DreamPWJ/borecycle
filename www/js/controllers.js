@@ -1287,6 +1287,11 @@ angular.module('starter.controllers', [])
 
       })
     }
+    //删除图片
+    $scope.deleteImg=function () {
+      $scope.imageList = [];
+      $scope.ImgsPicAddr = [];//图片信息数组
+    }
     $scope.bigImage = false;    //初始默认大图是隐藏的
     $scope.hideBigImage = function () {
       $scope.bigImage = false;
@@ -3089,6 +3094,11 @@ angular.module('starter.controllers', [])
 
 
     }
+    //删除图片
+    $scope.deleteImg=function () {
+      $scope.imageList = [];
+      $scope.ImgsPicAddr = [];//图片信息数组
+    }
     $scope.bigImage = false;    //初始默认大图是隐藏的
     $scope.hideBigImage = function () {
       $scope.bigImage = false;
@@ -4597,6 +4607,11 @@ angular.module('starter.controllers', [])
           CommonService.platformPrompt(data.message, 'close');
         }
       });
+    }
+    //删除图片
+    $scope.deleteImg=function () {
+      $scope.imageList = [];
+      $scope.ImgsPicAddr = [];//图片信息数组
     }
     $scope.bigImage = false;    //初始默认大图是隐藏的
     $scope.hideBigImage = function () {

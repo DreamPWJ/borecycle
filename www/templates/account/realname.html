@@ -41,9 +41,10 @@
           <input type="text" placeholder="请参考示例 误传请重新传" class="col-60 " style="background-color: #FFFFFF" readonly>
           <i ng-click="uploadActionSheet()" class="icon iconfont icon-add positive"></i>
         </div>
-        <div class="row  row-wrap row-horizontal-around">
+        <div class="row show-img row-wrap row-horizontal-around">
           <img ng-repeat="item in imageList" ng-click="shouBigImage(item)" ng-src="{{item}}" alt="实名认证图片"
                style="height: 12rem" class="col-80 padding">
+          <i ng-click="deleteImg()" ng-if="imageList.length>0" class="delete-img iconfont icon-roundclosefill assertive"></i>
           <img ng-if="realname&&status==2" ng-click="shouBigImage(realname.frontpic)"
                ng-src="{{realname.frontpic}}" alt="实名认证图片" style="height: 12rem" class="col-80 padding">
         </div>
