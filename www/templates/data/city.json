@@ -1,2240 +1,2611 @@
-﻿[
-  {
-    "id": 110100,
-    "name": "北京市",
-    "pinyin": "Beijing",
-    "index": "B"
-  },
+﻿[{
+  "id": 110100,
+  "name": "北京市",
+  "pinyin": "Beijing",
+  "code": "001001",
+  "index": "B"
+},
   {
     "id": 120100,
     "name": "天津市",
     "pinyin": "Tianjin",
+    "code": "002001",
     "index": "T"
   },
   {
     "id": 130100,
     "name": "石家庄市",
     "pinyin": "Shijiazhuang",
+    "code": "003001",
     "index": "S"
   },
   {
     "id": 130200,
     "name": "唐山市",
     "pinyin": "Tangshan",
+    "code": "003002",
     "index": "T"
   },
   {
     "id": 130300,
     "name": "秦皇岛市",
     "pinyin": "Qinhuangdao",
+    "code": "003003",
     "index": "Q"
   },
   {
     "id": 130400,
     "name": "邯郸市",
     "pinyin": "Handan",
+    "code": "003004",
     "index": "H"
   },
   {
     "id": 130500,
     "name": "邢台市",
     "pinyin": "Xingtai",
+    "code": "003005",
     "index": "X"
   },
   {
     "id": 130600,
     "name": "保定市",
     "pinyin": "Baoding",
+    "code": "003006",
     "index": "B"
   },
   {
     "id": 130700,
     "name": "张家口市",
     "pinyin": "Zhangjiakou",
+    "code": "003007",
     "index": "Z"
   },
   {
     "id": 130800,
     "name": "承德市",
     "pinyin": "Chengde",
+    "code": "003008",
     "index": "C"
   },
   {
     "id": 130900,
     "name": "沧州市",
     "pinyin": "Cangzhou",
+    "code": "003009",
     "index": "C"
   },
   {
     "id": 131000,
     "name": "廊坊市",
     "pinyin": "Langfang",
+    "code": "003010",
     "index": "L"
   },
   {
     "id": 131100,
     "name": "衡水市",
     "pinyin": "Hengshui",
+    "code": "003011",
     "index": "H"
   },
   {
     "id": 140100,
     "name": "太原市",
     "pinyin": "Taiyuan",
+    "code": "004001",
     "index": "T"
   },
   {
     "id": 140200,
     "name": "大同市",
     "pinyin": "Datong",
+    "code": "004002",
     "index": "D"
   },
   {
     "id": 140300,
     "name": "阳泉市",
     "pinyin": "Yangquan",
+    "code": "004003",
     "index": "Y"
   },
   {
     "id": 140400,
     "name": "长治市",
     "pinyin": "Changzhi",
+    "code": "004004",
     "index": "C"
   },
   {
     "id": 140500,
     "name": "晋城市",
     "pinyin": "Jincheng",
+    "code": "004005",
     "index": "J"
   },
   {
     "id": 140600,
     "name": "朔州市",
     "pinyin": "Shuozhou",
+    "code": "004006",
     "index": "S"
   },
   {
     "id": 140700,
     "name": "晋中市",
     "pinyin": "Jinzhong",
+    "code": "004007",
     "index": "J"
   },
   {
     "id": 140800,
     "name": "运城市",
     "pinyin": "Yuncheng",
+    "code": "004008",
     "index": "Y"
   },
   {
     "id": 140900,
     "name": "忻州市",
     "pinyin": "Xinzhou",
+    "code": "004009",
     "index": "X"
   },
   {
     "id": 141000,
     "name": "临汾市",
     "pinyin": "Linfen",
+    "code": "004010",
     "index": "L"
   },
   {
     "id": 141100,
     "name": "吕梁市",
     "pinyin": "Lvliang",
+    "code": "004011",
     "index": "L"
   },
   {
     "id": 150100,
     "name": "呼和浩特市",
     "pinyin": "Hohhot",
+    "code": "005001",
     "index": "H"
   },
   {
     "id": 150200,
     "name": "包头市",
     "pinyin": "Baotou",
+    "code": "005002",
     "index": "B"
   },
   {
     "id": 150300,
     "name": "乌海市",
     "pinyin": "Wuhai",
+    "code": "005003",
     "index": "W"
   },
   {
     "id": 150400,
     "name": "赤峰市",
     "pinyin": "Chifeng",
+    "code": "005004",
     "index": "C"
   },
   {
     "id": 150500,
     "name": "通辽市",
     "pinyin": "Tongliao",
+    "code": "005005",
     "index": "T"
   },
   {
     "id": 150600,
     "name": "鄂尔多斯市",
     "pinyin": "Ordos",
+    "code": "005006",
     "index": "O"
   },
   {
     "id": 150700,
     "name": "呼伦贝尔市",
     "pinyin": "Hulunber",
+    "code": "005007",
     "index": "H"
   },
   {
     "id": 150800,
     "name": "巴彦淖尔市",
     "pinyin": "Bayan Nur",
+    "code": "005008",
     "index": "B"
   },
   {
     "id": 150900,
     "name": "乌兰察布市",
     "pinyin": "Ulanqab",
+    "code": "005009",
     "index": "U"
   },
   {
     "id": 152200,
     "name": "兴安盟",
     "pinyin": "Hinggan",
+    "code": "005010",
     "index": "H"
   },
   {
     "id": 152500,
     "name": "锡林郭勒盟",
     "pinyin": "Xilin Gol",
+    "code": "005011",
     "index": "X"
   },
   {
     "id": 152900,
     "name": "阿拉善盟",
     "pinyin": "Alxa",
+    "code": "005012",
     "index": "A"
   },
   {
     "id": 210100,
     "name": "沈阳市",
     "pinyin": "Shenyang",
+    "code": "006001",
     "index": "S"
   },
   {
     "id": 210200,
     "name": "大连市",
     "pinyin": "Dalian",
+    "code": "006002",
     "index": "D"
   },
   {
     "id": 210300,
     "name": "鞍山市",
     "pinyin": "Anshan",
+    "code": "006003",
     "index": "A"
   },
   {
     "id": 210400,
     "name": "抚顺市",
     "pinyin": "Fushun",
+    "code": "006004",
     "index": "F"
   },
   {
     "id": 210500,
     "name": "本溪市",
     "pinyin": "Benxi",
+    "code": "006005",
     "index": "B"
   },
   {
     "id": 210600,
     "name": "丹东市",
     "pinyin": "Dandong",
+    "code": "006006",
     "index": "D"
   },
   {
     "id": 210700,
     "name": "锦州市",
     "pinyin": "Jinzhou",
+    "code": "006007",
     "index": "J"
   },
   {
     "id": 210800,
     "name": "营口市",
     "pinyin": "Yingkou",
+    "code": "006008",
     "index": "Y"
   },
   {
     "id": 210900,
     "name": "阜新市",
     "pinyin": "Fuxin",
+    "code": "006009",
     "index": "F"
   },
   {
     "id": 211000,
     "name": "辽阳市",
     "pinyin": "Liaoyang",
+    "code": "006010",
     "index": "L"
   },
   {
     "id": 211100,
     "name": "盘锦市",
     "pinyin": "Panjin",
+    "code": "006011",
     "index": "P"
   },
   {
     "id": 211200,
     "name": "铁岭市",
     "pinyin": "Tieling",
+    "code": "006012",
     "index": "T"
   },
   {
     "id": 211300,
     "name": "朝阳市",
     "pinyin": "Chaoyang",
+    "code": "006013",
     "index": "C"
   },
   {
     "id": 211400,
     "name": "葫芦岛市",
     "pinyin": "Huludao",
+    "code": "006014",
     "index": "H"
   },
   {
     "id": 211500,
     "name": "金普新区",
     "pinyin": "Jinpuxinqu",
+    "code": "006015",
     "index": "J"
   },
   {
     "id": 220100,
     "name": "长春市",
     "pinyin": "Changchun",
+    "code": "007001",
     "index": "C"
   },
   {
     "id": 220200,
     "name": "吉林市",
     "pinyin": "Jilin",
+    "code": "007002",
     "index": "J"
   },
   {
     "id": 220300,
     "name": "四平市",
     "pinyin": "Siping",
+    "code": "007003",
     "index": "S"
   },
   {
     "id": 220400,
     "name": "辽源市",
     "pinyin": "Liaoyuan",
+    "code": "007004",
     "index": "L"
   },
   {
     "id": 220500,
     "name": "通化市",
     "pinyin": "Tonghua",
+    "code": "007005",
     "index": "T"
   },
   {
     "id": 220600,
     "name": "白山市",
     "pinyin": "Baishan",
+    "code": "007006",
     "index": "B"
   },
   {
     "id": 220700,
     "name": "松原市",
     "pinyin": "Songyuan",
+    "code": "007007",
     "index": "S"
   },
   {
     "id": 220800,
     "name": "白城市",
     "pinyin": "Baicheng",
+    "code": "007008",
     "index": "B"
   },
   {
     "id": 222400,
     "name": "延边朝鲜族自治州",
     "pinyin": "Yanbian",
+    "code": "007009",
     "index": "Y"
   },
   {
     "id": 230100,
     "name": "哈尔滨市",
     "pinyin": "Harbin",
+    "code": "008001",
     "index": "H"
   },
   {
     "id": 230200,
     "name": "齐齐哈尔市",
     "pinyin": "Qiqihar",
+    "code": "008002",
     "index": "Q"
   },
   {
     "id": 230300,
     "name": "鸡西市",
     "pinyin": "Jixi",
+    "code": "008003",
     "index": "J"
   },
   {
     "id": 230400,
     "name": "鹤岗市",
     "pinyin": "Hegang",
+    "code": "008004",
     "index": "H"
   },
   {
     "id": 230500,
     "name": "双鸭山市",
     "pinyin": "Shuangyashan",
+    "code": "008005",
     "index": "S"
   },
   {
     "id": 230600,
     "name": "大庆市",
     "pinyin": "Daqing",
+    "code": "008006",
     "index": "D"
   },
   {
     "id": 230700,
     "name": "伊春市",
     "pinyin": "Yichun",
+    "code": "008007",
     "index": "Y"
   },
   {
     "id": 230800,
     "name": "佳木斯市",
     "pinyin": "Jiamusi",
+    "code": "008008",
     "index": "J"
   },
   {
     "id": 230900,
     "name": "七台河市",
     "pinyin": "Qitaihe",
+    "code": "008009",
     "index": "Q"
   },
   {
     "id": 231000,
     "name": "牡丹江市",
     "pinyin": "Mudanjiang",
+    "code": "008010",
     "index": "M"
   },
   {
     "id": 231100,
     "name": "黑河市",
     "pinyin": "Heihe",
+    "code": "008011",
     "index": "H"
   },
   {
     "id": 231200,
     "name": "绥化市",
     "pinyin": "Suihua",
+    "code": "008012",
     "index": "S"
   },
   {
     "id": 232700,
     "name": "大兴安岭地区",
     "pinyin": "DaXingAnLing",
+    "code": "008013",
     "index": "D"
   },
   {
     "id": 310100,
     "name": "上海市",
     "pinyin": "Shanghai",
+    "code": "009001",
     "index": "S"
   },
   {
     "id": 320100,
     "name": "南京市",
     "pinyin": "Nanjing",
+    "code": "010001",
     "index": "N"
   },
   {
     "id": 320200,
     "name": "无锡市",
     "pinyin": "Wuxi",
+    "code": "010002",
     "index": "W"
   },
   {
     "id": 320300,
     "name": "徐州市",
     "pinyin": "Xuzhou",
+    "code": "010003",
     "index": "X"
   },
   {
     "id": 320400,
     "name": "常州市",
     "pinyin": "Changzhou",
+    "code": "010004",
     "index": "C"
   },
   {
     "id": 320500,
     "name": "苏州市",
     "pinyin": "Suzhou",
+    "code": "010005",
     "index": "S"
   },
   {
     "id": 320600,
     "name": "南通市",
     "pinyin": "Nantong",
+    "code": "010006",
     "index": "N"
   },
   {
     "id": 320700,
     "name": "连云港市",
     "pinyin": "Lianyungang",
+    "code": "010007",
     "index": "L"
   },
   {
     "id": 320800,
     "name": "淮安市",
     "pinyin": "Huai'an",
+    "code": "010008",
     "index": "H"
   },
   {
     "id": 320900,
     "name": "盐城市",
     "pinyin": "Yancheng",
+    "code": "010009",
     "index": "Y"
   },
   {
     "id": 321000,
     "name": "扬州市",
     "pinyin": "Yangzhou",
+    "code": "010010",
     "index": "Y"
   },
   {
     "id": 321100,
     "name": "镇江市",
     "pinyin": "Zhenjiang",
+    "code": "010011",
     "index": "Z"
   },
   {
     "id": 321200,
     "name": "泰州市",
     "pinyin": "Taizhou",
+    "code": "010012",
     "index": "T"
   },
   {
     "id": 321300,
     "name": "宿迁市",
     "pinyin": "Suqian",
+    "code": "010013",
     "index": "S"
   },
   {
     "id": 330100,
     "name": "杭州市",
     "pinyin": "Hangzhou",
+    "code": "011001",
     "index": "H"
   },
   {
     "id": 330200,
     "name": "宁波市",
     "pinyin": "Ningbo",
+    "code": "011002",
     "index": "N"
   },
   {
     "id": 330300,
     "name": "温州市",
     "pinyin": "Wenzhou",
+    "code": "011003",
     "index": "W"
   },
   {
     "id": 330400,
     "name": "嘉兴市",
     "pinyin": "Jiaxing",
+    "code": "011004",
     "index": "J"
   },
   {
     "id": 330500,
     "name": "湖州市",
     "pinyin": "Huzhou",
+    "code": "011005",
     "index": "H"
   },
   {
     "id": 330600,
     "name": "绍兴市",
     "pinyin": "Shaoxing",
+    "code": "011006",
     "index": "S"
   },
   {
     "id": 330700,
     "name": "金华市",
     "pinyin": "Jinhua",
+    "code": "011007",
     "index": "J"
   },
   {
     "id": 330800,
     "name": "衢州市",
     "pinyin": "Quzhou",
+    "code": "011008",
     "index": "Q"
   },
   {
     "id": 330900,
     "name": "舟山市",
     "pinyin": "Zhoushan",
+    "code": "011009",
     "index": "Z"
   },
   {
     "id": 331000,
     "name": "台州市",
     "pinyin": "Taizhou",
+    "code": "011010",
     "index": "T"
   },
   {
     "id": 331100,
     "name": "丽水市",
     "pinyin": "Lishui",
+    "code": "011011",
     "index": "L"
   },
   {
     "id": 331200,
     "name": "舟山群岛新区",
     "pinyin": "Zhoushan",
+    "code": "011012",
     "index": "Z"
   },
   {
     "id": 340100,
     "name": "合肥市",
     "pinyin": "Hefei",
+    "code": "012001",
     "index": "H"
   },
   {
     "id": 340200,
     "name": "芜湖市",
     "pinyin": "Wuhu",
+    "code": "012002",
     "index": "W"
   },
   {
     "id": 340300,
     "name": "蚌埠市",
     "pinyin": "Bengbu",
+    "code": "012003",
     "index": "B"
   },
   {
     "id": 340400,
     "name": "淮南市",
     "pinyin": "Huainan",
+    "code": "012004",
     "index": "H"
   },
   {
     "id": 340500,
     "name": "马鞍山市",
     "pinyin": "Ma'anshan",
+    "code": "012005",
     "index": "M"
   },
   {
     "id": 340600,
     "name": "淮北市",
     "pinyin": "Huaibei",
+    "code": "012006",
     "index": "H"
   },
   {
     "id": 340700,
     "name": "铜陵市",
     "pinyin": "Tongling",
+    "code": "012007",
     "index": "T"
   },
   {
     "id": 340800,
     "name": "安庆市",
     "pinyin": "Anqing",
+    "code": "012008",
     "index": "A"
   },
   {
     "id": 341000,
     "name": "黄山市",
     "pinyin": "Huangshan",
+    "code": "012009",
     "index": "H"
   },
   {
     "id": 341100,
     "name": "滁州市",
     "pinyin": "Chuzhou",
+    "code": "012010",
     "index": "C"
   },
   {
     "id": 341200,
     "name": "阜阳市",
     "pinyin": "Fuyang",
+    "code": "012011",
     "index": "F"
   },
   {
     "id": 341300,
     "name": "宿州市",
     "pinyin": "Suzhou",
+    "code": "012012",
     "index": "S"
   },
   {
     "id": 341500,
     "name": "六安市",
     "pinyin": "Lu'an",
+    "code": "012013",
     "index": "L"
   },
   {
     "id": 341600,
     "name": "亳州市",
     "pinyin": "Bozhou",
+    "code": "012014",
     "index": "B"
   },
   {
     "id": 341700,
     "name": "池州市",
     "pinyin": "Chizhou",
+    "code": "012015",
     "index": "C"
   },
   {
     "id": 341800,
     "name": "宣城市",
     "pinyin": "Xuancheng",
+    "code": "012016",
     "index": "X"
   },
   {
     "id": 350100,
     "name": "福州市",
     "pinyin": "Fuzhou",
+    "code": "013001",
     "index": "F"
   },
   {
     "id": 350200,
     "name": "厦门市",
     "pinyin": "Xiamen",
+    "code": "013002",
     "index": "X"
   },
   {
     "id": 350300,
     "name": "莆田市",
     "pinyin": "Putian",
+    "code": "013003",
     "index": "P"
   },
   {
     "id": 350400,
     "name": "三明市",
     "pinyin": "Sanming",
+    "code": "013004",
     "index": "S"
   },
   {
     "id": 350500,
     "name": "泉州市",
     "pinyin": "Quanzhou",
+    "code": "013005",
     "index": "Q"
   },
   {
     "id": 350600,
     "name": "漳州市",
     "pinyin": "Zhangzhou",
+    "code": "013006",
     "index": "Z"
   },
   {
     "id": 350700,
     "name": "南平市",
     "pinyin": "Nanping",
+    "code": "013007",
     "index": "N"
   },
   {
     "id": 350800,
     "name": "龙岩市",
     "pinyin": "Longyan",
+    "code": "013008",
     "index": "L"
   },
   {
     "id": 350900,
     "name": "宁德市",
     "pinyin": "Ningde",
+    "code": "013009",
     "index": "N"
   },
   {
     "id": 360100,
     "name": "南昌市",
     "pinyin": "Nanchang",
+    "code": "014001",
     "index": "N"
   },
   {
     "id": 360200,
     "name": "景德镇市",
     "pinyin": "Jingdezhen",
+    "code": "014002",
     "index": "J"
   },
   {
     "id": 360300,
     "name": "萍乡市",
     "pinyin": "Pingxiang",
+    "code": "014003",
     "index": "P"
   },
   {
     "id": 360400,
     "name": "九江市",
     "pinyin": "Jiujiang",
+    "code": "014004",
     "index": "J"
   },
   {
     "id": 360500,
     "name": "新余市",
     "pinyin": "Xinyu",
+    "code": "014005",
     "index": "X"
   },
   {
     "id": 360600,
     "name": "鹰潭市",
     "pinyin": "Yingtan",
+    "code": "014006",
     "index": "Y"
   },
   {
     "id": 360700,
     "name": "赣州市",
     "pinyin": "Ganzhou",
+    "code": "014007",
     "index": "G"
   },
   {
     "id": 360800,
     "name": "吉安市",
     "pinyin": "Ji'an",
+    "code": "014008",
     "index": "J"
   },
   {
     "id": 360900,
     "name": "宜春市",
     "pinyin": "Yichun",
+    "code": "014009",
     "index": "Y"
   },
   {
     "id": 361000,
     "name": "抚州市",
     "pinyin": "Fuzhou",
+    "code": "014010",
     "index": "F"
   },
   {
     "id": 361100,
     "name": "上饶市",
     "pinyin": "Shangrao",
+    "code": "014011",
     "index": "S"
   },
   {
     "id": 370100,
     "name": "济南市",
     "pinyin": "Jinan",
+    "code": "015001",
     "index": "J"
   },
   {
     "id": 370200,
     "name": "青岛市",
     "pinyin": "Qingdao",
+    "code": "015002",
     "index": "Q"
   },
   {
     "id": 370300,
     "name": "淄博市",
     "pinyin": "Zibo",
+    "code": "015003",
     "index": "Z"
   },
   {
     "id": 370400,
     "name": "枣庄市",
     "pinyin": "Zaozhuang",
+    "code": "015004",
     "index": "Z"
   },
   {
     "id": 370500,
     "name": "东营市",
     "pinyin": "Dongying",
+    "code": "015005",
     "index": "D"
   },
   {
     "id": 370600,
     "name": "烟台市",
     "pinyin": "Yantai",
+    "code": "015006",
     "index": "Y"
   },
   {
     "id": 370700,
     "name": "潍坊市",
     "pinyin": "Weifang",
+    "code": "015007",
     "index": "W"
   },
   {
     "id": 370800,
     "name": "济宁市",
     "pinyin": "Jining",
+    "code": "015008",
     "index": "J"
   },
   {
     "id": 370900,
     "name": "泰安市",
     "pinyin": "Tai'an",
+    "code": "015009",
     "index": "T"
   },
   {
     "id": 371000,
     "name": "威海市",
     "pinyin": "Weihai",
+    "code": "015010",
     "index": "W"
   },
   {
     "id": 371100,
     "name": "日照市",
     "pinyin": "Rizhao",
+    "code": "015011",
     "index": "R"
   },
   {
     "id": 371200,
     "name": "莱芜市",
     "pinyin": "Laiwu",
+    "code": "015012",
     "index": "L"
   },
   {
     "id": 371300,
     "name": "临沂市",
     "pinyin": "Linyi",
+    "code": "015013",
     "index": "L"
   },
   {
     "id": 371400,
     "name": "德州市",
     "pinyin": "Dezhou",
+    "code": "015014",
     "index": "D"
   },
   {
     "id": 371500,
     "name": "聊城市",
     "pinyin": "Liaocheng",
+    "code": "015015",
     "index": "L"
   },
   {
     "id": 371600,
     "name": "滨州市",
     "pinyin": "Binzhou",
+    "code": "015016",
     "index": "B"
   },
   {
     "id": 371700,
     "name": "菏泽市",
     "pinyin": "Heze",
+    "code": "015017",
     "index": "H"
   },
   {
     "id": 410100,
     "name": "郑州市",
     "pinyin": "Zhengzhou",
+    "code": "016001",
     "index": "Z"
   },
   {
     "id": 410200,
     "name": "开封市",
     "pinyin": "Kaifeng",
+    "code": "016002",
     "index": "K"
   },
   {
     "id": 410300,
     "name": "洛阳市",
     "pinyin": "Luoyang",
+    "code": "016003",
     "index": "L"
   },
   {
     "id": 410400,
     "name": "平顶山市",
     "pinyin": "Pingdingshan",
+    "code": "016004",
     "index": "P"
   },
   {
     "id": 410500,
     "name": "安阳市",
     "pinyin": "Anyang",
+    "code": "016005",
     "index": "A"
   },
   {
     "id": 410600,
     "name": "鹤壁市",
     "pinyin": "Hebi",
+    "code": "016006",
     "index": "H"
   },
   {
     "id": 410700,
     "name": "新乡市",
     "pinyin": "Xinxiang",
+    "code": "016007",
     "index": "X"
   },
   {
     "id": 410800,
     "name": "焦作市",
     "pinyin": "Jiaozuo",
+    "code": "016008",
     "index": "J"
   },
   {
     "id": 410900,
     "name": "濮阳市",
     "pinyin": "Puyang",
+    "code": "016009",
     "index": "P"
   },
   {
     "id": 411000,
     "name": "许昌市",
     "pinyin": "Xuchang",
+    "code": "016010",
     "index": "X"
   },
   {
     "id": 411100,
     "name": "漯河市",
     "pinyin": "Luohe",
+    "code": "016011",
     "index": "L"
   },
   {
     "id": 411200,
     "name": "三门峡市",
     "pinyin": "Sanmenxia",
+    "code": "016012",
     "index": "S"
   },
   {
     "id": 411300,
     "name": "南阳市",
     "pinyin": "Nanyang",
+    "code": "016013",
     "index": "N"
   },
   {
     "id": 411400,
     "name": "商丘市",
     "pinyin": "Shangqiu",
+    "code": "016014",
     "index": "S"
   },
   {
     "id": 411500,
     "name": "信阳市",
     "pinyin": "Xinyang",
+    "code": "016015",
     "index": "X"
   },
   {
     "id": 411600,
     "name": "周口市",
     "pinyin": "Zhoukou",
+    "code": "016016",
     "index": "Z"
   },
   {
     "id": 411700,
     "name": "驻马店市",
     "pinyin": "Zhumadian",
+    "code": "016017",
     "index": "Z"
   },
   {
     "id": 419000,
     "name": "直辖县级",
     "pinyin": "",
+    "code": "016018",
     "index": ""
   },
   {
     "id": 420100,
     "name": "武汉市",
     "pinyin": "Wuhan",
+    "code": "017001",
     "index": "W"
   },
   {
     "id": 420200,
     "name": "黄石市",
     "pinyin": "Huangshi",
+    "code": "017002",
     "index": "H"
   },
   {
     "id": 420300,
     "name": "十堰市",
     "pinyin": "Shiyan",
+    "code": "017003",
     "index": "S"
   },
   {
     "id": 420500,
     "name": "宜昌市",
     "pinyin": "Yichang",
+    "code": "017004",
     "index": "Y"
   },
   {
     "id": 420600,
     "name": "襄阳市",
     "pinyin": "Xiangyang",
+    "code": "017005",
     "index": "X"
   },
   {
     "id": 420700,
     "name": "鄂州市",
     "pinyin": "Ezhou",
+    "code": "017006",
     "index": "E"
   },
   {
     "id": 420800,
     "name": "荆门市",
     "pinyin": "Jingmen",
+    "code": "017007",
     "index": "J"
   },
   {
     "id": 420900,
     "name": "孝感市",
     "pinyin": "Xiaogan",
+    "code": "017008",
     "index": "X"
   },
   {
     "id": 421000,
     "name": "荆州市",
     "pinyin": "Jingzhou",
+    "code": "017009",
     "index": "J"
   },
   {
     "id": 421100,
     "name": "黄冈市",
     "pinyin": "Huanggang",
+    "code": "017010",
     "index": "H"
   },
   {
     "id": 421200,
     "name": "咸宁市",
     "pinyin": "Xianning",
+    "code": "017011",
     "index": "X"
   },
   {
     "id": 421300,
     "name": "随州市",
     "pinyin": "Suizhou",
+    "code": "017012",
     "index": "S"
   },
   {
     "id": 422800,
     "name": "恩施土家族苗族自治州",
     "pinyin": "Enshi",
+    "code": "017013",
     "index": "E"
   },
   {
     "id": 429000,
     "name": "直辖县级",
     "pinyin": "",
+    "code": "017014",
     "index": ""
   },
   {
     "id": 430100,
     "name": "长沙市",
     "pinyin": "Changsha",
+    "code": "018001",
     "index": "C"
   },
   {
     "id": 430200,
     "name": "株洲市",
     "pinyin": "Zhuzhou",
+    "code": "018002",
     "index": "Z"
   },
   {
     "id": 430300,
     "name": "湘潭市",
     "pinyin": "Xiangtan",
+    "code": "018003",
     "index": "X"
   },
   {
     "id": 430400,
     "name": "衡阳市",
     "pinyin": "Hengyang",
+    "code": "018004",
     "index": "H"
   },
   {
     "id": 430500,
     "name": "邵阳市",
     "pinyin": "Shaoyang",
+    "code": "018005",
     "index": "S"
   },
   {
     "id": 430600,
     "name": "岳阳市",
     "pinyin": "Yueyang",
+    "code": "018006",
     "index": "Y"
   },
   {
     "id": 430700,
     "name": "常德市",
     "pinyin": "Changde",
+    "code": "018007",
     "index": "C"
   },
   {
     "id": 430800,
     "name": "张家界市",
     "pinyin": "Zhangjiajie",
+    "code": "018008",
     "index": "Z"
   },
   {
     "id": 430900,
     "name": "益阳市",
     "pinyin": "Yiyang",
+    "code": "018009",
     "index": "Y"
   },
   {
     "id": 431000,
     "name": "郴州市",
     "pinyin": "Chenzhou",
+    "code": "018010",
     "index": "C"
   },
   {
     "id": 431100,
     "name": "永州市",
     "pinyin": "Yongzhou",
+    "code": "018011",
     "index": "Y"
   },
   {
     "id": 431200,
     "name": "怀化市",
     "pinyin": "Huaihua",
+    "code": "018012",
     "index": "H"
   },
   {
     "id": 431300,
     "name": "娄底市",
     "pinyin": "Loudi",
+    "code": "018013",
     "index": "L"
   },
   {
     "id": 433100,
     "name": "湘西土家族苗族自治州",
     "pinyin": "Xiangxi",
+    "code": "018014",
     "index": "X"
   },
   {
     "id": 440100,
     "name": "广州市",
     "pinyin": "Guangzhou",
+    "code": "019001",
     "index": "G"
   },
   {
     "id": 440200,
     "name": "韶关市",
     "pinyin": "Shaoguan",
+    "code": "019002",
     "index": "S"
   },
   {
     "id": 440300,
     "name": "深圳市",
     "pinyin": "Shenzhen",
+    "code": "019003",
     "index": "S"
   },
   {
     "id": 440400,
     "name": "珠海市",
     "pinyin": "Zhuhai",
+    "code": "019004",
     "index": "Z"
   },
   {
     "id": 440500,
     "name": "汕头市",
     "pinyin": "Shantou",
+    "code": "019005",
     "index": "S"
   },
   {
     "id": 440600,
     "name": "佛山市",
     "pinyin": "Foshan",
+    "code": "019006",
     "index": "F"
   },
   {
     "id": 440700,
     "name": "江门市",
     "pinyin": "Jiangmen",
+    "code": "019007",
     "index": "J"
   },
   {
     "id": 440800,
     "name": "湛江市",
     "pinyin": "Zhanjiang",
+    "code": "019008",
     "index": "Z"
   },
   {
     "id": 440900,
     "name": "茂名市",
     "pinyin": "Maoming",
+    "code": "019009",
     "index": "M"
   },
   {
     "id": 441200,
     "name": "肇庆市",
     "pinyin": "Zhaoqing",
+    "code": "019010",
     "index": "Z"
   },
   {
     "id": 441300,
     "name": "惠州市",
     "pinyin": "Huizhou",
+    "code": "019011",
     "index": "H"
   },
   {
     "id": 441400,
     "name": "梅州市",
     "pinyin": "Meizhou",
+    "code": "019012",
     "index": "M"
   },
   {
     "id": 441500,
     "name": "汕尾市",
     "pinyin": "Shanwei",
+    "code": "019013",
     "index": "S"
   },
   {
     "id": 441600,
     "name": "河源市",
     "pinyin": "Heyuan",
+    "code": "019014",
     "index": "H"
   },
   {
     "id": 441700,
     "name": "阳江市",
     "pinyin": "Yangjiang",
+    "code": "019015",
     "index": "Y"
   },
   {
     "id": 441800,
     "name": "清远市",
     "pinyin": "Qingyuan",
+    "code": "019016",
     "index": "Q"
   },
   {
     "id": 441900,
     "name": "东莞市",
     "pinyin": "Dongguan",
+    "code": "019017",
     "index": "D"
   },
   {
     "id": 442000,
     "name": "中山市",
     "pinyin": "Zhongshan",
+    "code": "019018",
     "index": "Z"
   },
   {
     "id": 445100,
     "name": "潮州市",
     "pinyin": "Chaozhou",
+    "code": "019019",
     "index": "C"
   },
   {
     "id": 445200,
     "name": "揭阳市",
     "pinyin": "Jieyang",
+    "code": "019020",
     "index": "J"
   },
   {
     "id": 445300,
     "name": "云浮市",
     "pinyin": "Yunfu",
+    "code": "019021",
     "index": "Y"
   },
   {
     "id": 450100,
     "name": "南宁市",
     "pinyin": "Nanning",
+    "code": "020001",
     "index": "N"
   },
   {
     "id": 450200,
     "name": "柳州市",
     "pinyin": "Liuzhou",
+    "code": "020002",
     "index": "L"
   },
   {
     "id": 450300,
     "name": "桂林市",
     "pinyin": "Guilin",
+    "code": "020003",
     "index": "G"
   },
   {
     "id": 450400,
     "name": "梧州市",
     "pinyin": "Wuzhou",
+    "code": "020004",
     "index": "W"
   },
   {
     "id": 450500,
     "name": "北海市",
     "pinyin": "Beihai",
+    "code": "020005",
     "index": "B"
   },
   {
     "id": 450600,
     "name": "防城港市",
     "pinyin": "Fangchenggang",
+    "code": "020006",
     "index": "F"
   },
   {
     "id": 450700,
     "name": "钦州市",
     "pinyin": "Qinzhou",
+    "code": "020007",
     "index": "Q"
   },
   {
     "id": 450800,
     "name": "贵港市",
     "pinyin": "Guigang",
+    "code": "020008",
     "index": "G"
   },
   {
     "id": 450900,
     "name": "玉林市",
     "pinyin": "Yulin",
+    "code": "020009",
     "index": "Y"
   },
   {
     "id": 451000,
     "name": "百色市",
     "pinyin": "Baise",
+    "code": "020010",
     "index": "B"
   },
   {
     "id": 451100,
     "name": "贺州市",
     "pinyin": "Hezhou",
+    "code": "020011",
     "index": "H"
   },
   {
     "id": 451200,
     "name": "河池市",
     "pinyin": "Hechi",
+    "code": "020012",
     "index": "H"
   },
   {
     "id": 451300,
     "name": "来宾市",
     "pinyin": "Laibin",
+    "code": "020013",
     "index": "L"
   },
   {
     "id": 451400,
     "name": "崇左市",
     "pinyin": "Chongzuo",
+    "code": "020014",
     "index": "C"
   },
   {
     "id": 460100,
     "name": "海口市",
     "pinyin": "Haikou",
+    "code": "021001",
     "index": "H"
   },
   {
     "id": 460200,
     "name": "三亚市",
     "pinyin": "Sanya",
+    "code": "021002",
     "index": "S"
   },
   {
     "id": 460300,
     "name": "三沙市",
     "pinyin": "Sansha",
+    "code": "021003",
     "index": "S"
   },
   {
     "id": 469000,
     "name": "直辖县级",
     "pinyin": "",
+    "code": "021004",
     "index": ""
   },
   {
     "id": 500100,
     "name": "重庆市",
     "pinyin": "Chongqing",
+    "code": "022001",
     "index": "C"
   },
   {
     "id": 500300,
     "name": "两江新区",
     "pinyin": "Liangjiangxinqu",
+    "code": "022002",
     "index": "L"
   },
   {
     "id": 510100,
     "name": "成都市",
     "pinyin": "Chengdu",
+    "code": "023001",
     "index": "C"
   },
   {
     "id": 510300,
     "name": "自贡市",
     "pinyin": "Zigong",
+    "code": "023002",
     "index": "Z"
   },
   {
     "id": 510400,
     "name": "攀枝花市",
     "pinyin": "Panzhihua",
+    "code": "023003",
     "index": "P"
   },
   {
     "id": 510500,
     "name": "泸州市",
     "pinyin": "Luzhou",
+    "code": "023004",
     "index": "L"
   },
   {
     "id": 510600,
     "name": "德阳市",
     "pinyin": "Deyang",
+    "code": "023005",
     "index": "D"
   },
   {
     "id": 510700,
     "name": "绵阳市",
     "pinyin": "Mianyang",
+    "code": "023006",
     "index": "M"
   },
   {
     "id": 510800,
     "name": "广元市",
     "pinyin": "Guangyuan",
+    "code": "023007",
     "index": "G"
   },
   {
     "id": 510900,
     "name": "遂宁市",
     "pinyin": "Suining",
+    "code": "023008",
     "index": "S"
   },
   {
     "id": 511000,
     "name": "内江市",
     "pinyin": "Neijiang",
+    "code": "023009",
     "index": "N"
   },
   {
     "id": 511100,
     "name": "乐山市",
     "pinyin": "Leshan",
+    "code": "023010",
     "index": "L"
   },
   {
     "id": 511300,
     "name": "南充市",
     "pinyin": "Nanchong",
+    "code": "023011",
     "index": "N"
   },
   {
     "id": 511400,
     "name": "眉山市",
     "pinyin": "Meishan",
+    "code": "023012",
     "index": "M"
   },
   {
     "id": 511500,
     "name": "宜宾市",
     "pinyin": "Yibin",
+    "code": "023013",
     "index": "Y"
   },
   {
     "id": 511600,
     "name": "广安市",
     "pinyin": "Guang'an",
+    "code": "023014",
     "index": "G"
   },
   {
     "id": 511700,
     "name": "达州市",
     "pinyin": "Dazhou",
+    "code": "023015",
     "index": "D"
   },
   {
     "id": 511800,
     "name": "雅安市",
     "pinyin": "Ya'an",
+    "code": "023016",
     "index": "Y"
   },
   {
     "id": 511900,
     "name": "巴中市",
     "pinyin": "Bazhong",
+    "code": "023017",
     "index": "B"
   },
   {
     "id": 512000,
     "name": "资阳市",
     "pinyin": "Ziyang",
+    "code": "023018",
     "index": "Z"
   },
   {
     "id": 513200,
     "name": "阿坝藏族羌族自治州",
     "pinyin": "Aba",
+    "code": "023019",
     "index": "A"
   },
   {
     "id": 513300,
     "name": "甘孜藏族自治州",
     "pinyin": "Garze",
+    "code": "023020",
     "index": "G"
   },
   {
     "id": 513400,
     "name": "凉山彝族自治州",
     "pinyin": "Liangshan",
+    "code": "023021",
     "index": "L"
   },
   {
     "id": 520100,
     "name": "贵阳市",
     "pinyin": "Guiyang",
+    "code": "024001",
     "index": "G"
   },
   {
     "id": 520200,
     "name": "六盘水市",
     "pinyin": "Liupanshui",
+    "code": "024002",
     "index": "L"
   },
   {
     "id": 520300,
     "name": "遵义市",
     "pinyin": "Zunyi",
+    "code": "024003",
     "index": "Z"
   },
   {
     "id": 520400,
     "name": "安顺市",
     "pinyin": "Anshun",
+    "code": "024004",
     "index": "A"
   },
   {
     "id": 520500,
     "name": "毕节市",
     "pinyin": "Bijie",
+    "code": "024005",
     "index": "B"
   },
   {
     "id": 520600,
     "name": "铜仁市",
     "pinyin": "Tongren",
+    "code": "024006",
     "index": "T"
   },
   {
     "id": 522300,
     "name": "黔西南布依族苗族自治州",
     "pinyin": "Qianxinan",
+    "code": "024007",
     "index": "Q"
   },
   {
     "id": 522600,
     "name": "黔东南苗族侗族自治州",
     "pinyin": "Qiandongnan",
+    "code": "024008",
     "index": "Q"
   },
   {
     "id": 522700,
     "name": "黔南布依族苗族自治州",
     "pinyin": "Qiannan",
+    "code": "024009",
     "index": "Q"
   },
   {
     "id": 530100,
     "name": "昆明市",
     "pinyin": "Kunming",
+    "code": "025001",
     "index": "K"
   },
   {
     "id": 530300,
     "name": "曲靖市",
     "pinyin": "Qujing",
+    "code": "025002",
     "index": "Q"
   },
   {
     "id": 530400,
     "name": "玉溪市",
     "pinyin": "Yuxi",
+    "code": "025003",
     "index": "Y"
   },
   {
     "id": 530500,
     "name": "保山市",
     "pinyin": "Baoshan",
+    "code": "025004",
     "index": "B"
   },
   {
     "id": 530600,
     "name": "昭通市",
     "pinyin": "Zhaotong",
+    "code": "025005",
     "index": "Z"
   },
   {
     "id": 530700,
     "name": "丽江市",
     "pinyin": "Lijiang",
+    "code": "025006",
     "index": "L"
   },
   {
     "id": 530800,
     "name": "普洱市",
     "pinyin": "Pu'er",
+    "code": "025007",
     "index": "P"
   },
   {
     "id": 530900,
     "name": "临沧市",
     "pinyin": "Lincang",
+    "code": "025008",
     "index": "L"
   },
   {
     "id": 532300,
     "name": "楚雄彝族自治州",
     "pinyin": "Chuxiong",
+    "code": "025009",
     "index": "C"
   },
   {
     "id": 532500,
     "name": "红河哈尼族彝族自治州",
     "pinyin": "Honghe",
+    "code": "025010",
     "index": "H"
   },
   {
     "id": 532600,
     "name": "文山壮族苗族自治州",
     "pinyin": "Wenshan",
+    "code": "025011",
     "index": "W"
   },
   {
     "id": 532800,
     "name": "西双版纳傣族自治州",
     "pinyin": "Xishuangbanna",
+    "code": "025012",
     "index": "X"
   },
   {
     "id": 532900,
     "name": "大理白族自治州",
     "pinyin": "Dali",
+    "code": "025013",
     "index": "D"
   },
   {
     "id": 533100,
     "name": "德宏傣族景颇族自治州",
     "pinyin": "Dehong",
+    "code": "025014",
     "index": "D"
   },
   {
     "id": 533300,
     "name": "怒江傈僳族自治州",
     "pinyin": "Nujiang",
+    "code": "025015",
     "index": "N"
   },
   {
     "id": 533400,
     "name": "迪庆藏族自治州",
     "pinyin": "Deqen",
+    "code": "025016",
     "index": "D"
   },
   {
     "id": 540100,
     "name": "拉萨市",
     "pinyin": "Lhasa",
+    "code": "026001",
     "index": "L"
   },
   {
     "id": 540200,
     "name": "日喀则市",
     "pinyin": "Rikaze",
+    "code": "026002",
     "index": "R"
   },
   {
     "id": 540300,
     "name": "昌都市",
     "pinyin": "Qamdo",
+    "code": "026003",
     "index": "Q"
   },
   {
     "id": 542200,
     "name": "山南地区",
     "pinyin": "Shannan",
+    "code": "026004",
     "index": "S"
   },
   {
     "id": 542400,
     "name": "那曲地区",
     "pinyin": "Nagqu",
+    "code": "026005",
     "index": "N"
   },
   {
     "id": 542500,
     "name": "阿里地区",
     "pinyin": "Ngari",
+    "code": "026006",
     "index": "N"
   },
   {
     "id": 542600,
     "name": "林芝地区",
     "pinyin": "Nyingchi",
+    "code": "026007",
     "index": "N"
   },
   {
     "id": 610100,
     "name": "西安市",
     "pinyin": "Xi'an",
+    "code": "027001",
     "index": "X"
   },
   {
     "id": 610200,
     "name": "铜川市",
     "pinyin": "Tongchuan",
+    "code": "027002",
     "index": "T"
   },
   {
     "id": 610300,
     "name": "宝鸡市",
     "pinyin": "Baoji",
+    "code": "027003",
     "index": "B"
   },
   {
     "id": 610400,
     "name": "咸阳市",
     "pinyin": "Xianyang",
+    "code": "027004",
     "index": "X"
   },
   {
     "id": 610500,
     "name": "渭南市",
     "pinyin": "Weinan",
+    "code": "027005",
     "index": "W"
   },
   {
     "id": 610600,
     "name": "延安市",
     "pinyin": "Yan'an",
+    "code": "027006",
     "index": "Y"
   },
   {
     "id": 610700,
     "name": "汉中市",
     "pinyin": "Hanzhong",
+    "code": "027007",
     "index": "H"
   },
   {
     "id": 610800,
     "name": "榆林市",
     "pinyin": "Yulin",
+    "code": "027008",
     "index": "Y"
   },
   {
     "id": 610900,
     "name": "安康市",
     "pinyin": "Ankang",
+    "code": "027009",
     "index": "A"
   },
   {
     "id": 611000,
     "name": "商洛市",
     "pinyin": "Shangluo",
+    "code": "027010",
     "index": "S"
   },
   {
     "id": 611100,
     "name": "西咸新区",
     "pinyin": "Xixian",
+    "code": "027011",
     "index": "X"
   },
   {
     "id": 620100,
     "name": "兰州市",
     "pinyin": "Lanzhou",
+    "code": "028001",
     "index": "L"
   },
   {
     "id": 620200,
     "name": "嘉峪关市",
     "pinyin": "Jiayuguan",
+    "code": "028002",
     "index": "J"
   },
   {
     "id": 620300,
     "name": "金昌市",
     "pinyin": "Jinchang",
+    "code": "028003",
     "index": "J"
   },
   {
     "id": 620400,
     "name": "白银市",
     "pinyin": "Baiyin",
+    "code": "028004",
     "index": "B"
   },
   {
     "id": 620500,
     "name": "天水市",
     "pinyin": "Tianshui",
+    "code": "028005",
     "index": "T"
   },
   {
     "id": 620600,
     "name": "武威市",
     "pinyin": "Wuwei",
+    "code": "028006",
     "index": "W"
   },
   {
     "id": 620700,
     "name": "张掖市",
     "pinyin": "Zhangye",
+    "code": "028007",
     "index": "Z"
   },
   {
     "id": 620800,
     "name": "平凉市",
     "pinyin": "Pingliang",
+    "code": "028008",
     "index": "P"
   },
   {
     "id": 620900,
     "name": "酒泉市",
     "pinyin": "Jiuquan",
+    "code": "028009",
     "index": "J"
   },
   {
     "id": 621000,
     "name": "庆阳市",
     "pinyin": "Qingyang",
+    "code": "028010",
     "index": "Q"
   },
   {
     "id": 621100,
     "name": "定西市",
     "pinyin": "Dingxi",
+    "code": "028011",
     "index": "D"
   },
   {
     "id": 621200,
     "name": "陇南市",
     "pinyin": "Longnan",
+    "code": "028012",
     "index": "L"
   },
   {
     "id": 622900,
     "name": "临夏回族自治州",
     "pinyin": "Linxia",
+    "code": "028013",
     "index": "L"
   },
   {
     "id": 623000,
     "name": "甘南藏族自治州",
     "pinyin": "Gannan",
+    "code": "028014",
     "index": "G"
   },
   {
     "id": 630100,
     "name": "西宁市",
     "pinyin": "Xining",
+    "code": "029001",
     "index": "X"
   },
   {
     "id": 630200,
     "name": "海东市",
     "pinyin": "Haidong",
+    "code": "029002",
     "index": "H"
   },
   {
     "id": 632200,
     "name": "海北藏族自治州",
     "pinyin": "Haibei",
+    "code": "029003",
     "index": "H"
   },
   {
     "id": 632300,
     "name": "黄南藏族自治州",
     "pinyin": "Huangnan",
+    "code": "029004",
     "index": "H"
   },
   {
     "id": 632500,
     "name": "海南藏族自治州",
     "pinyin": "Hainan",
+    "code": "029005",
     "index": "H"
   },
   {
     "id": 632600,
     "name": "果洛藏族自治州",
     "pinyin": "Golog",
+    "code": "029006",
     "index": "G"
   },
   {
     "id": 632700,
     "name": "玉树藏族自治州",
     "pinyin": "Yushu",
+    "code": "029007",
     "index": "Y"
   },
   {
     "id": 632800,
     "name": "海西蒙古族藏族自治州",
     "pinyin": "Haixi",
+    "code": "029008",
     "index": "H"
   },
   {
     "id": 640100,
     "name": "银川市",
     "pinyin": "Yinchuan",
+    "code": "030001",
     "index": "Y"
   },
   {
     "id": 640200,
     "name": "石嘴山市",
     "pinyin": "Shizuishan",
+    "code": "030002",
     "index": "S"
   },
   {
     "id": 640300,
     "name": "吴忠市",
     "pinyin": "Wuzhong",
+    "code": "030003",
     "index": "W"
   },
   {
     "id": 640400,
     "name": "固原市",
     "pinyin": "Guyuan",
+    "code": "030004",
     "index": "G"
   },
   {
     "id": 640500,
     "name": "中卫市",
     "pinyin": "Zhongwei",
+    "code": "030005",
     "index": "Z"
   },
   {
     "id": 650100,
     "name": "乌鲁木齐市",
     "pinyin": "Urumqi",
+    "code": "031001",
     "index": "U"
   },
   {
     "id": 650200,
     "name": "克拉玛依市",
     "pinyin": "Karamay",
+    "code": "031002",
     "index": "K"
   },
   {
     "id": 652100,
     "name": "吐鲁番地区",
     "pinyin": "Turpan",
+    "code": "031003",
     "index": "T"
   },
   {
     "id": 652200,
     "name": "哈密地区",
     "pinyin": "Hami",
+    "code": "031004",
     "index": "H"
   },
   {
     "id": 652300,
     "name": "昌吉回族自治州",
     "pinyin": "Changji",
+    "code": "031005",
     "index": "C"
   },
   {
     "id": 652700,
     "name": "博尔塔拉蒙古自治州",
     "pinyin": "Bortala",
+    "code": "031006",
     "index": "B"
   },
   {
     "id": 652800,
     "name": "巴音郭楞蒙古自治州",
     "pinyin": "Bayingol",
+    "code": "031007",
     "index": "B"
   },
   {
     "id": 652900,
     "name": "阿克苏地区",
     "pinyin": "Aksu",
+    "code": "031008",
     "index": "A"
   },
   {
     "id": 653000,
     "name": "克孜勒苏柯尔克孜自治州",
     "pinyin": "Kizilsu",
+    "code": "031009",
     "index": "K"
   },
   {
     "id": 653100,
     "name": "喀什地区",
     "pinyin": "Kashgar",
+    "code": "031010",
     "index": "K"
   },
   {
     "id": 653200,
     "name": "和田地区",
     "pinyin": "Hotan",
+    "code": "031011",
     "index": "H"
   },
   {
     "id": 654000,
     "name": "伊犁哈萨克自治州",
     "pinyin": "Ili",
+    "code": "031012",
     "index": "I"
   },
   {
     "id": 654200,
     "name": "塔城地区",
     "pinyin": "Qoqek",
+    "code": "031013",
     "index": "Q"
   },
   {
     "id": 654300,
     "name": "阿勒泰地区",
     "pinyin": "Altay",
+    "code": "031014",
     "index": "A"
   },
   {
     "id": 659000,
     "name": "直辖县级",
     "pinyin": "",
+    "code": "031015",
     "index": ""
   },
   {
     "id": 710100,
     "name": "台北市",
     "pinyin": "Taipei",
+    "code": "032001",
     "index": "T"
   },
   {
     "id": 710200,
     "name": "高雄市",
     "pinyin": "Kaohsiung",
+    "code": "032002",
     "index": "K"
   },
   {
     "id": 710300,
     "name": "基隆市",
     "pinyin": "Keelung",
+    "code": "032003",
     "index": "K"
   },
   {
     "id": 710400,
     "name": "台中市",
     "pinyin": "Taichung",
+    "code": "032004",
     "index": "T"
   },
   {
     "id": 710500,
     "name": "台南市",
     "pinyin": "Tainan",
+    "code": "032005",
     "index": "T"
   },
   {
     "id": 710600,
     "name": "新竹市",
     "pinyin": "Hsinchu",
+    "code": "032006",
     "index": "H"
   },
   {
     "id": 710700,
     "name": "嘉义市",
     "pinyin": "Chiayi",
+    "code": "032007",
     "index": "C"
   },
   {
     "id": 710800,
     "name": "新北市",
     "pinyin": "New Taipei",
+    "code": "032008",
     "index": "N"
   },
   {
     "id": 712200,
     "name": "宜兰县",
     "pinyin": "Yilan",
+    "code": "032009",
     "index": "Y"
   },
   {
     "id": 712300,
     "name": "桃园县",
     "pinyin": "Taoyuan",
+    "code": "032010",
     "index": "T"
   },
   {
     "id": 712400,
     "name": "新竹县",
     "pinyin": "Hsinchu",
+    "code": "032011",
     "index": "H"
   },
   {
     "id": 712500,
     "name": "苗栗县",
     "pinyin": "Miaoli",
+    "code": "032012",
     "index": "M"
   },
   {
     "id": 712700,
     "name": "彰化县",
     "pinyin": "Changhua",
+    "code": "032013",
     "index": "C"
   },
   {
     "id": 712800,
     "name": "南投县",
     "pinyin": "Nantou",
+    "code": "032014",
     "index": "N"
   },
   {
     "id": 712900,
     "name": "云林县",
     "pinyin": "Yunlin",
+    "code": "032015",
     "index": "Y"
   },
   {
     "id": 713000,
     "name": "嘉义县",
     "pinyin": "Chiayi",
+    "code": "032016",
     "index": "C"
   },
   {
     "id": 713300,
     "name": "屏东县",
     "pinyin": "Pingtung",
+    "code": "032017",
     "index": "P"
   },
   {
     "id": 713400,
     "name": "台东县",
     "pinyin": "Taitung",
+    "code": "032018",
     "index": "T"
   },
   {
     "id": 713500,
     "name": "花莲县",
     "pinyin": "Hualien",
+    "code": "032019",
     "index": "H"
   },
   {
     "id": 713600,
     "name": "澎湖县",
     "pinyin": "Penghu",
+    "code": "032020",
     "index": "P"
   },
   {
     "id": 713700,
     "name": "金门县",
     "pinyin": "Jinmen",
+    "code": "032021",
     "index": "J"
   },
   {
     "id": 713800,
     "name": "连江县",
     "pinyin": "Lienchiang",
+    "code": "032022",
     "index": "L"
   },
   {
     "id": 810100,
     "name": "香港岛",
     "pinyin": "Hong Kong Island",
+    "code": "033001",
     "index": "H"
   },
   {
     "id": 810200,
     "name": "九龙",
     "pinyin": "Kowloon",
+    "code": "033002",
     "index": "K"
   },
   {
     "id": 810300,
     "name": "新界",
     "pinyin": "New Territories",
+    "code": "033003",
     "index": "N"
   },
   {
     "id": 820100,
     "name": "澳门半岛",
     "pinyin": "MacauPeninsula",
+    "code": "034001",
     "index": "M"
   },
   {
     "id": 820200,
     "name": "氹仔岛",
     "pinyin": "Taipa",
+    "code": "034002",
     "index": "T"
   },
   {
     "id": 820300,
     "name": "路环岛",
     "pinyin": "Coloane",
+    "code": "034003",
     "index": "C"
-  }
-]
+  }]

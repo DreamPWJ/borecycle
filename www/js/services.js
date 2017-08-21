@@ -1697,36 +1697,42 @@ angular.module('starter.services', [])
               "id": 110100,
               "name": "北京",
               "pinyin": "beijing",
+              "code": "001001",
               "index": "B"
             },
             {
               "id": 310100,
               "name": "上海",
               "pinyin": "shanghai",
+              "code": "009001",
               "index": "S"
             },
             {
               "id": 440100,
               "name": "广州",
               "pinyin": "guangzhou",
+              "code": "019001",
               "index": "G"
             },
             {
               "id": 440300,
               "name": "深圳",
               "pinyin": "shenzhen",
+              "code": "019003",
               "index": "S"
             },
             {
               "id": 500100,
               "name": "重庆",
               "pinyin": "chongqing",
+              "code": "022001",
               "index": "C"
             },
             {
               "id": 420100,
               "name": "武汉",
               "pinyin": "wuhan",
+              "code": "017001",
               "index": "W"
             }
           ]
@@ -1755,7 +1761,7 @@ angular.module('starter.services', [])
 
           $scope.citySelected = function (c) {
             /*      $scope.currentCity = c;*/
-            $scope.modifyAddressSubmit(c.id);
+            $scope.modifyAddressSubmit(c.id,c.code);
             // 缓存当前城市
             window.localStorage[cache_currentCity] = angular.toJson(c);
             $scope.modal.hide();
