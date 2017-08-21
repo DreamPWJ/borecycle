@@ -4157,6 +4157,7 @@ angular.module('starter.controllers', [])
         if ($scope.pay.choice == "A") {//支付宝支付
           PayService.aliPayRecharge($scope.appdatas).success(function (data) {
             if (data.code == 1001) {
+              console.log(data.data);return;
               PayService.aliPay(data.data);
             } else {
               CommonService.platformPrompt(data.message, 'close');

@@ -5,7 +5,7 @@ import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
-
+import java.util.Map;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -20,18 +20,17 @@ public class AliPay extends CordovaPlugin {
 	private static String TAG = "AliPay";
 
 	private Handler mHandler = new Handler() {
+	  @SuppressWarnings("unused")
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case SDK_PAY_FLAG: {
-				PayResult payResult = new PayResult((String) msg.obj);
-				/**
-				 * 同步返回的结果必须放置到服务端进行验证（验证的规则请看https://doc.open.alipay.com/doc2/
-				 * detail.htm?spm=0.0.0.0.xdvAU6&treeId=59&articleId=103665&
-				 * docType=1) 建议商户依赖异步通知
-				 */
-				String resultInfo = payResult.getResult();// 同步返回需要验证的信息
-
-				String resultStatus = payResult.getResultStatus();
+			  @SuppressWarnings("unchecked")
+				PayResult payResult = new PayResult((Map<String, String>) msg.obj);
+        /**
+        对于支付结果，请商户依赖服务端的异步通知结果。同步通知结果，仅作为支付结束的通知。
+        */
+        String resultInfo = payResult.getResult();// 同步返回需要验证的信息
+        String resultStatus = payResult.getResultStatus();
 				if (TextUtils.equals(resultStatus, "9000")) {
 					Toast.makeText(cordova.getActivity(), "支付成功",
 							Toast.LENGTH_SHORT).show();
@@ -70,16 +69,25 @@ public class AliPay extends CordovaPlugin {
 			cordova.getThreadPool().execute(new Runnable() {
 				@Override
 				public void run() {
-					Log.i(TAG, " 构造PayTask 对象 ");
-					PayTask alipay = new PayTask(cordova.getActivity());
-					Log.i(TAG, " 调用支付接口，获取支付结果 ");
-					String result = alipay.pay(payInfo, true);
+					//Log.i(TAG, " 构造PayTask 对象 ");
+					//PayTask alipay = new PayTask(cordova.getActivity());
+					//Log.i(TAG, " 调用支付接口，获取支付结果 ");
+					//String result = alipay.pay(payInfo, true);
 
 					// 更新主ui的Toast
-					Message msg = new Message();
-					msg.what = SDK_PAY_FLAG;
-					msg.obj = result;
-					mHandler.sendMessage(msg);
+					//Message msg = new Message();
+					//msg.what = SDK_PAY_FLAG;
+					//msg.obj = result;
+					//mHandler.sendMessage(msg);
+
+          PayTask alipay = new PayTask(cordova.getActivity());
+					Map<String, String> result = alipay.payV2(payInfo, true);
+          Log.i(TAG, " 构造PayTask 对象 ");
+
+          Message msg = new Message();
+          msg.what = SDK_PAY_FLAG;
+          msg.obj = result;
+          mHandler.sendMessage(msg);
 
 					PayResult payResult = new PayResult(result);
 					if (TextUtils.equals(payResult.getResultStatus(), "9000")) {
