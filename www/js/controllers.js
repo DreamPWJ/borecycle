@@ -4154,6 +4154,10 @@ angular.module('starter.controllers', [])
       choice: "B",//选择支付方式默认
       money: ""
     }
+    $scope.isWeiXin=false;
+    if (WeiXinService.isWeiXin()) { //微信公众号支付
+      $scope.isWeiXin=true;
+    }
     $scope.confirmPayment = function () { //充值
       if (WeiXinService.isWeiXin()) { //微信公众号支付
         $scope.isWeiXin = true;
