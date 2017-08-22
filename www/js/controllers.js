@@ -2443,7 +2443,6 @@ angular.module('starter.controllers', [])
           var addressComponent = data.regeocode.addressComponent;
           $scope.city = addressComponent.city;
           $rootScope.areaname=addressComponent.city;
-          alert($rootScope.areaname);
         }).then(function () {
           AddressService.getAddressBySSX({
             ssx: $scope.city,
@@ -4340,7 +4339,6 @@ angular.module('starter.controllers', [])
       return;
     }
     $scope.ut = localStorage.getItem("usertype");
-    alert($rootScope.areaname);
     NewsService.getInfo_fee({areaname: $rootScope.areaname}).success(function (data) {
       $scope.infeels = data.data;
     });
