@@ -2034,7 +2034,7 @@ angular.module('starter.controllers', [])
         lat: localStorage.getItem("latitude") || "",//当前纬度（获取距离）(可为空)
         ORNO: "",//接单单号(可为空)
         ORuserid: localStorage.getItem("userid"),//接单人(不能为空)
-        expiry: 72 //小时 取预警数据 订单预警数据（72小时截至马上过期的（expiry=3表示取3小时内））
+        expiry: 24 //小时 取预警数据 订单预警数据（72小时截至马上过期的（expiry=3表示取3小时内））
       }
 
       OrderService.getOrderReceiptList($scope.params, $scope.datas).success(function (data) {
@@ -2228,7 +2228,7 @@ angular.module('starter.controllers', [])
       }
     })
     //获得余额
-    OrderService.getOrderSum({userid: localStorage.getItem("userid"), expiry: 72}).success(function (data) {
+    OrderService.getOrderSum({userid: localStorage.getItem("userid"), expiry: 24}).success(function (data) {
       if (data.code == 1001) {
         $scope.orderSum = data.data;
       } else {
@@ -2500,7 +2500,7 @@ angular.module('starter.controllers', [])
 
 
 //获得我的里面待处理和预警订单数 银行卡以及余额
-    OrderService.getOrderSum({userid: localStorage.getItem("userid"), expiry: 72}).success(function (data) {
+    OrderService.getOrderSum({userid: localStorage.getItem("userid"), expiry: 24}).success(function (data) {
       if (data.code == 1001) {
         $scope.orderSum = data.data;
       } else {
@@ -3762,7 +3762,7 @@ angular.module('starter.controllers', [])
     }
     $scope.ut = localStorage.getItem("usertype");
     //获得我的里面待处理和预警订单数 银行卡以及余额
-    OrderService.getOrderSum({userid: localStorage.getItem("userid"), expiry: 72}).success(function (data) {
+    OrderService.getOrderSum({userid: localStorage.getItem("userid"), expiry: 24}).success(function (data) {
       if (data.code == 1001) {
         $scope.trzaccount=data.data.trzaccount;
       }
