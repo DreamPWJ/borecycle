@@ -4734,18 +4734,9 @@ angular.module('starter.controllers', [])
       }
 
       $scope.datas = {
-        DJNo: "",//登记单号(可为空)
-        Type: "1",//类型1.登记信息 2.登记货源(可为空)
-        ORuserid: "",//接单人
         userid: localStorage.getItem("userid"),//用户userid
-        Category: "",//货物品类 多个用逗号隔开(可为空)
-        HYType: "0",//货物类别 0.未区分 1废料 2二手(可为空) 上门回收(2)接登记信息（0）的单;货场(3)接废料（1）二手商家（4）接二手的(2)
-        State: "2,3,4,5" ,//状态 0.已关闭 1.审核不通过 2.未审核 3.审核通过（待接单） 4.已接单 (待收货) 5.已收货（待付款） 6.已付款（待评价） 7.已评价 (可为空)
-        longt: "", //当前经度（获取距离）(可为空)
-        lat: "",//当前纬度（获取距离）(可为空)
-        expiry: ""//小时 取预警数据 订单预警数据（72小时截至马上过期的（expiry=3表示取3小时内）
       }
-      OrderService.getDengJiList($scope.params, $scope.datas).success(function (data) {
+      OrderService.getlistyj($scope.params, $scope.datas).success(function (data) {
           $scope.isNotunfinishedData = false;
           if (data.data == null || data.data.data_list.length == 0) {
             $scope.isNotunfinishedData = true;
