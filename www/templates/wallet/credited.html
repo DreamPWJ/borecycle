@@ -17,11 +17,11 @@
         </div>
         <ion-list>
           <a ng-href="#/myorderdetails/{{item.djno}}" class="item " style="padding-right: 10px;" ng-repeat="item in unfinishedorderList ">
-            <h2 class="positive">货主 : {{item.name}} {{item.motel}} 状态 :
+            <h2 class="positive">{{item.name}}： {{item.motel}} 状态 :
               <span class="{{item.state>=4?'balanced':(item.state>=6?'energized':'')}} "> {{item.strstate}}</span></h2>
             <p class="text-wrap" style="margin-right: 4rem;">交易品类 : {{item.category}}
              </p>
-            <p class="text-wrap " >下单时间 : {{item.addtime | date :'yyyy-MM-dd'}}<span class="assertive">&nbsp;&nbsp;预计信息费 : {{item.yjinfomoney }} </span></p>
+            <p class="text-wrap " ><span class="assertive">预计信息费 : {{item.yjinfomoney }} 元</span>&nbsp;&nbsp;登记时间 : {{item.addtime | date :'yyyy-MM-dd'}}</p>
 
           </a>
 
