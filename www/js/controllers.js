@@ -2427,7 +2427,6 @@ angular.module('starter.controllers', [])
       $scope.isWebView = true;
     }
     $rootScope.isinvitecode="0";
-    $rootScope.areaname="沈阳";
     //获取当前位置 定位
     $scope.location = function () {
       CommonService.getLocation(function () {
@@ -4347,9 +4346,36 @@ angular.module('starter.controllers', [])
       return;
     }
     $scope.ut = localStorage.getItem("usertype");
-    NewsService.getInfo_fee({areaname: $rootScope.areaname}).success(function (data) {
-      $scope.infeels = data.data;
-    });
+    if(!$rootScope.areaname){
+      $scope.location = function () {
+        CommonService.getLocation(function () {
+          //当前位置 定位
+          AccountService.getCurrentCity({
+            key: BoRecycle.gaoDeKey,
+            location: Number($scope.handlongitude || localStorage.getItem("longitude")).toFixed(6) + "," + Number($scope.handlatitude || localStorage.getItem("latitude")).toFixed(6),
+            radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
+            extensions: 'all',//返回结果控制
+            batch: false, //batch=true为批量查询。batch=false为单点查询
+            roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
+          }).success(function (data) {
+            var addressComponent = data.regeocode.addressComponent;
+            $rootScope.areaname=addressComponent.city;
+          }).then(function () {
+            if($rootScope.areaname){
+              NewsService.getInfo_fee({areaname: $rootScope.areaname}).success(function (data) {
+                $scope.infeels = data.data;
+              });
+            }
+
+          });
+        });
+
+      }
+    }else {
+      NewsService.getInfo_fee({areaname: $rootScope.areaname}).success(function (data) {
+        $scope.infeels = data.data;
+      });
+    }
   })
 
   //下载页面
