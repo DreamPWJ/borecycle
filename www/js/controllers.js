@@ -546,7 +546,7 @@ angular.module('starter.controllers', [])
           }).error(function () {
             CommonService.platformPrompt("获取登录接口授权token失败", 'close');
             return;
-          })
+          });
         }
         $rootScope.loginAuth = $interval(function () {
           authLogin();
@@ -4502,7 +4502,7 @@ angular.module('starter.controllers', [])
 
   })
   //微信授权回调页
-  .controller('wechatCtrl', function ($scope, $rootScope,$location,$stateParams,$state, CommonService, BoRecycle, AccountService, WeiXinService) {
+  .controller('wechatCtrl', function ($scope, $rootScope,$location,$stateParams,$state, CommonService,MainService, BoRecycle, AccountService, WeiXinService) {
     //判断来源，如果来源不为空，则返回来源页面
     $scope.returnUrl=function () {
       if(localStorage.getItem("returnUrl")){
@@ -4538,7 +4538,24 @@ angular.module('starter.controllers', [])
 
                     }
                   });
-                  $scope.returnUrl();
+                  MainService.authLogin(
+                    {
+                      grant_type: 'password',
+                      username: $scope.userdata.userid,
+                      password: $scope.userdata.usersecret
+                    }).success(function (data) {
+                    if (data.access_token) {
+                      localStorage.setItem("token", data.access_token);//登录接口授权token
+                      localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
+                    }
+
+                  }).then(function () {
+                    $scope.returnUrl();
+                  }).error(function () {
+                    CommonService.platformPrompt("获取登录接口授权token失败", 'close');
+                    return;
+                  })
+
                 }else {
                   $state.go("mobilelogin");
                 }
