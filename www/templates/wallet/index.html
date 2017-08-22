@@ -7,7 +7,7 @@
   </ion-nav-title>
 
   <ion-content overflow-scroll="false" class="stable-bg " id="walletindex" has-bouncing="true">
-    <div class="positive-bg second-list padding-top padding-bottom">
+    <div class="positive-bg second-list padding-top">
       <div class="padding-bottom"></div>
       <div class="padding-bottom"></div>
       <div class="row col-25 f-right padding-top">
@@ -19,20 +19,21 @@
       <div class="row col-75 col-offset-5 padding-bottom ">
         <div class="light " style="font-size: 30px;">{{totalamount|currency:"￥"}}</div>
       </div>
-      <p></p>
-      <div class="text-center positive-bg padding-top">
-        <div class="row row-no-padding padding-bottom" style="color:#fff;">
+      <p></p><div class="padding-bottom"></div>
+      <div class="text-center light-bg padding-top">
+        <div class="row row-no-padding padding-bottom">
           <div class="col" style="border-right-style:dashed;border-right-width: 1px;border-right-color: #cdcdcd;">
             <div style="font-size: 0.8rem;">可用余额</div>
             <div style="font-size: 1.5rem;padding-bottom: 5px;">{{kyamount|number:2}}</div>
           </div>
           <div class="col">
-            <div style="font-size: 0.8rem;">冻结金额</div>
+            <div style="font-size: 0.8rem;">待入账金额</div>
             <div style="font-size: 1.5rem;padding-bottom: 5px;">{{djamount|number:2}}</div>
           </div>
         </div>
       </div>
     </div>
+    <p></p>
     <div class="light-bg">
       <a nav-direction=forward ng-href="#/pay/recharge" class="item item-icon-left item-icon-right ">
         <i class="icon iconfont icon-chongzhi" style="color: #11c1f3"></i>

@@ -2461,7 +2461,7 @@ angular.module('starter.controllers', [])
     //页面加载完成自动定位
     $scope.$on('$ionicView.afterEnter', function () {
       $scope.location();//自动定位
-    })
+    });
     //调出分享面板
     CommonService.customModal($scope, 'templates/modal/share.html');
 
