@@ -4535,59 +4535,106 @@ angular.module('starter.controllers', [])
 
   })
   //微信授权回调页
-  .controller('wechatCtrl', function ($scope, $rootScope,$location,$stateParams,$state, CommonService, BoRecycle, AccountService, WeiXinService) {
+  .controller('wechatCtrl', function ($scope, $rootScope,$location,$stateParams,$state, CommonService, BoRecycle, AccountService, WeiXinService,MainService) {
+    //判断来源，如果来源不为空，则返回来源页面
+    $scope.returnUrl=function () {
+      if(localStorage.getItem("returnUrl")){
+        $location.url(localStorage.getItem("returnUrl"));
+      }else {
+        $state.go("tab.main");
+      }
+    }
+
     //是否是微信 初次获取签名 获取微信签名 获取微信登录授权
-    if (WeiXinService.isWeiXin()) {
-      if (!localStorage.getItem("openid")) { //微信登录授权
-        if ($stateParams.code) {
-          var wxcode = $stateParams.code;
-          //获取微信openid获取会员账号，如果没有则添加
-          WeiXinService.getWCOpenId({
-            code: wxcode,
-            UserLogID: localStorage.getItem("userid") || ""
-          }).success(function (data) {
-            if (data.code == 1001) {
-              localStorage.setItem("openid", data.data.OpenId);
-              if (data.data.UserLogID != null && data.data.usersecret != null) {
-                localStorage.setItem("userid", data.data.UserLogID);
-                localStorage.setItem("usersecret", data.data.usersecret);
-                //根据会员ID获取会员账号基本信息
-                AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
-                  if (data.code == 1001) {
-                    localStorage.setItem("user", JSON.stringify(data.data));
-                    var services = data.data.services;
-                    //用户会员类型  0 无 1信息提供者  2回收者
-                    localStorage.setItem("usertype", (services == null || services.length == 0 ) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
-                    $scope.getMainData();
-                  }
-                })
+    $scope.wxSQ=function () {
+      if (WeiXinService.isWeiXin()) {
+        if (!localStorage.getItem("openid")) { //微信登录授权
+          if ($stateParams.code) {
+            var wxcode = $stateParams.code;
+            //获取微信openid获取会员账号，如果没有则添加
+            WeiXinService.getWCOpenId({
+              code: wxcode,
+              UserLogID: localStorage.getItem("userid") || ""
+            }).success(function (data) {
+              if (data.code == 1001) {
+                localStorage.setItem("openid", data.data.OpenId);
+                if (data.data.UserLogID != null && data.data.usersecret != null) {
+                  localStorage.setItem("userid", data.data.UserLogID);
+                  localStorage.setItem("usersecret", data.data.usersecret);
+                  //根据会员ID获取会员账号基本信息
+                  AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
+                    if (data.code == 1001) {
+                      localStorage.setItem("user", JSON.stringify(data.data));
+                      var services = data.data.services;
+                      //用户会员类型  0 无 1信息提供者  2回收者
+                      localStorage.setItem("usertype", (services == null || services.length == 0 ) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
+
+                    }
+                  });
+                  MainService.authLogin(
+                    {
+                      grant_type: 'password',
+                      username: $scope.userdata.userid,
+                      password: $scope.userdata.usersecret
+                    }).success(function (data) {
+                    if (data.access_token) {
+                      localStorage.setItem("token", data.access_token);//登录接口授权token
+                      localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
+                    }
+
+                  }).then(function () {
+                    $scope.returnUrl();
+                  }).error(function () {
+                    CommonService.platformPrompt("获取登录接口授权token失败", 'close');
+                    return;
+                  })
+
+                }else {
+                  $state.go("mobilelogin");
+                }
+              } else {
+                CommonService.platformPrompt("获取微信OpenID失败", 'close');
               }
-            } else {
-              CommonService.platformPrompt("获取微信OpenID失败", 'close');
-            }
-          });
+            });
+          } else {
+            CommonService.windowOpen('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx39ba5b2a2f59ef2c&redirect_uri=' + encodeURIComponent("http://m.boolv.com/WeChat") + '&response_type=code&scope=snsapi_base&state=shoushou#wechat_redirect')
+            return;
+          }
+        }
+        // 获取微信签名
+        $scope.wxparams = {
+          url: location.href.split('#')[0] //当前网页的URL，不包含#及其后面部分
+        }
+        WeiXinService.getWCSignature($scope.wxparams).success(function (data) {
+          if (data.code == 1001) {
+            localStorage.setItem("timestamp", data.data.timestamp);//生成签名的时间戳
+            localStorage.setItem("noncestr", data.data.noncestr);//生成签名的随机串
+            localStorage.setItem("signature", data.data.signature);//生成签名
+            //通过config接口注入权限验证配置
+            WeiXinService.weichatConfig(data.data.timestamp, data.data.noncestr, data.data.signature);
+          } else {
+            CommonService.platformPrompt("获取微信签名失败", 'close');
+          }
+        });
+      }else{
+        $state.go("tab.main");
+      }
+    }
+
+    if (!localStorage.getItem("token") || localStorage.getItem("token") == "undefined" || ((new Date().getTime() - new Date(localStorage.getItem("expires_in")).getTime()) / 1000) > 7199) {
+      MainService.authLogin({grant_type: 'client_credentials'}).success(function (data) {
+        if (data.access_token) {
+          localStorage.setItem("token", data.access_token);//公共接口授权token
+          localStorage.setItem("expires_in", new Date());//公共接口授权token 有效时间
         } else {
-          CommonService.windowOpen('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx39ba5b2a2f59ef2c&redirect_uri=' + encodeURIComponent("http://m.boolv.com/WeChat") + '&response_type=code&scope=snsapi_base&state=shoushou#wechat_redirect')
+          CommonService.platformPrompt("获取公众接口授权token失败", 'close');
           return;
         }
-      }
-      // 获取微信签名
-      $scope.wxparams = {
-        url: location.href.split('#')[0] //当前网页的URL，不包含#及其后面部分
-      }
-      WeiXinService.getWCSignature($scope.wxparams).success(function (data) {
-        if (data.code == 1001) {
-          localStorage.setItem("timestamp", data.data.timestamp);//生成签名的时间戳
-          localStorage.setItem("noncestr", data.data.noncestr);//生成签名的随机串
-          localStorage.setItem("signature", data.data.signature);//生成签名
-          //通过config接口注入权限验证配置
-          WeiXinService.weichatConfig(data.data.timestamp, data.data.noncestr, data.data.signature);
-        } else {
-          CommonService.platformPrompt("获取微信签名失败", 'close');
-        }
+      }).then(function () {
+        $scope.wxSQ();
       });
     }else{
-      $state.go("tab.main");
+      $scope.wxSQ();
     }
   })
   //二要素实名认证
