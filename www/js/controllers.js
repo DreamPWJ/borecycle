@@ -34,6 +34,7 @@ angular.module('starter.controllers', [])
       $scope.isrole=true;
       //当为信息提供者时
       if (localStorage.getItem("usertype") == 1) {
+        $scope.isrole = false;
         $scope.isinvitecode="0";
         //获取当前位置 定位
         $scope.location = function () {
@@ -65,7 +66,6 @@ angular.module('starter.controllers', [])
         }
         //页面加载完成自动定位
         $scope.$on('$ionicView.afterEnter', function () {
-          $scope.isrole = false;
           $scope.location();//自动定位
           $timeout(function () {
             //调出分享面板
