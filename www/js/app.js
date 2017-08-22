@@ -662,6 +662,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/wechat.html',
         controller: 'wechatCtrl'
       })
+      //待入账页
+      .state('credited', {
+        url: '/credited',
+        cache: true,
+        templateUrl: 'templates/wallet/credited.html',
+        controller: 'creditedCtrl'
+      })
     // if none of the above states are matched, use this as the fallback
     //动态判断是否显示初始化页面
     if (localStorage.getItem('isStart')||!ionic.Platform.isWebView()) {
