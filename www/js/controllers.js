@@ -2504,6 +2504,7 @@ angular.module('starter.controllers', [])
     OrderService.getOrderSum({userid: localStorage.getItem("userid"), expiry: 24}).success(function (data) {
       if (data.code == 1001) {
         $scope.orderSum = data.data;
+        $rootScope.trzaccount=data.data.trzaccount;
       } else {
         CommonService.platformPrompt(data.message, 'close');
       }
