@@ -49,7 +49,12 @@ angular.module('starter.controllers', [])
               roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
             }).success(function (data) {
               var addressComponent = data.regeocode.addressComponent;
-              $scope.city = addressComponent.city;
+              if(addressComponent.city.length>0){
+                $scope.city = addressComponent.city;
+              }
+              else {
+                $scope.city = addressComponent.province;
+              }
             }).then(function () {
               AddressService.getAddressBySSX({
                 ssx: $scope.city,
@@ -441,7 +446,12 @@ angular.module('starter.controllers', [])
           roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
         }).success(function (data) {
           var addressComponent = data.regeocode.addressComponent;
-          $scope.city = addressComponent.city;
+          if(addressComponent.city.length>0){
+            $scope.city = addressComponent.city;
+          }
+          else {
+            $scope.city = addressComponent.province;
+          }
         }).then(function () {
           AddressService.getAddressBySSX({
             ssx: $scope.city,
@@ -598,7 +608,12 @@ angular.module('starter.controllers', [])
           roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
         }).success(function (data) {
           var addressComponent = data.regeocode.addressComponent;
-          $scope.city = addressComponent.city;
+          if(addressComponent.city.length>0){
+            $scope.city = addressComponent.city;
+          }
+          else {
+            $scope.city = addressComponent.province;
+          }
         }).then(function () {
           AddressService.getAddressBySSX({
             ssx: $scope.city,
@@ -773,7 +788,12 @@ angular.module('starter.controllers', [])
           roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
         }).success(function (data) {
           var addressComponent = data.regeocode.addressComponent;
-          $scope.city = addressComponent.city;
+          if(addressComponent.city.length>0){
+            $scope.city = addressComponent.city;
+          }
+          else {
+            $scope.city = addressComponent.province;
+          }
         }).then(function () {
           AddressService.getAddressBySSX({
             ssx: $scope.city,
@@ -1181,7 +1201,12 @@ angular.module('starter.controllers', [])
         }).success(function (data) {
           var addressComponent = data.regeocode.addressComponent;
           $scope.addresspois = data.regeocode.pois;
-          $scope.city = addressComponent.city;
+          if(addressComponent.city.length>0){
+            $scope.city = addressComponent.city;
+          }
+          else {
+            $scope.city = addressComponent.province;
+          }
           $scope.ssx = addressComponent.province + addressComponent.city + ($scope.user.usertype == 2 ? "" : addressComponent.district);//省市县
           $scope.user.addrdetail = addressComponent.township + addressComponent.streetNumber.street;
         }).then(function () {
@@ -2440,8 +2465,13 @@ angular.module('starter.controllers', [])
           roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
         }).success(function (data) {
           var addressComponent = data.regeocode.addressComponent;
-          $scope.city = addressComponent.city;
-          $rootScope.areaname=addressComponent.city;
+          if(addressComponent.city.length>0){
+            $scope.city = addressComponent.city;
+          }
+          else {
+            $scope.city = addressComponent.province;
+          }
+          $rootScope.areaname=$scope.city;
         }).then(function () {
           AddressService.getAddressBySSX({
             ssx: $scope.city,
@@ -2819,7 +2849,12 @@ angular.module('starter.controllers', [])
         }).success(function (data) {
           var addressComponent = data.regeocode.addressComponent;
           $scope.addresspois = data.regeocode.pois;
-          $scope.city = addressComponent.city;
+          if(addressComponent.city.length>0){
+            $scope.city = addressComponent.city;
+          }
+          else {
+            $scope.city = addressComponent.province;
+          }
           $scope.ssx = addressComponent.province + addressComponent.city + addressComponent.district;//省市县
           $scope.addrinfo.addr = addressComponent.township + addressComponent.streetNumber.street;
         }).then(function () {
@@ -3350,7 +3385,12 @@ angular.module('starter.controllers', [])
         }).success(function (data) {
           var addressComponent = data.regeocode.addressComponent;
           $scope.addresspois = data.regeocode.pois;
-          $scope.city = addressComponent.city;
+          if(addressComponent.city.length>0){
+            $scope.city = addressComponent.city;
+          }
+          else {
+            $scope.city = addressComponent.province;
+          }
           $scope.ssx = addressComponent.province + addressComponent.city + addressComponent.district;//省市县
           if (param == 0) {
             $scope.dengji.addrdetail = addressComponent.township + addressComponent.streetNumber.street;

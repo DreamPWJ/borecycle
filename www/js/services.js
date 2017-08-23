@@ -2995,7 +2995,7 @@ angular.module('starter.services', [])
           if (response.status == 401) {
             $injector.get('CommonService').platformPrompt("访问授权失败");
           } else if (response.status == 404) {
-            $injector.get('CommonService').platformPrompt("访问连接404");
+            $injector.get('CommonService').platformPrompt("访问连接404，链接地址："+response.config.url.toString());
           } else if (response.status == -1) {
             $injector.get('CommonService').platformPrompt("网络请求超时");
           }
