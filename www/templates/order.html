@@ -32,7 +32,7 @@
                 <p class="text-wrap ">{{item.name}} {{item.motel | hidepartinfo : 'phone'}} 距离:{{item.distance}}
                   <span> 状态 : {{item.strstate}}</span></p>
               </a>
-              <p ng-if="item.state<=4||item.state==5 || item.orstate==2 || item.orstate==3"
+              <p ng-if="item.state<=4||item.state==5 || item.orstate==2 || item.orstate==3 || item.orstate==0"
                  class="row row-no-padding pending row-center row-horizontal-around light-bg ">
                 <!--<span-->
                 <!--ng-if="item.state<=4" class="energized" ng-click="relation(item.motel)"><i-->
@@ -40,7 +40,7 @@
                 <span
                   ng-if="item.state<=4 && item.isappoint==1" class="energized" ng-click="Appoint(item.type,item.djno,item.userid,item.orno,item.oraddtime)"><i
                   class="iconfont icon-phone"></i> 预约</span>
-                <span ng-if="item.state==4" class="balanced"
+                <span ng-if="(item.state==4 || (item.state==8 && item.orstate==0))" class="balanced"
                       ng-click="recycle(item.orno,item.djno,item.type,item.userid,item.totalprice,item.name,item.category,item.hytype)"><i
                   class="iconfont icon-huishou"></i> 已回收</span>
                 <span ng-if="item.state==5" class="balanced"
