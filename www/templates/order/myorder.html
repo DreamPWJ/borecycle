@@ -52,7 +52,7 @@
         <ion-list>
           <a ng-href="#/myorderdetails/{{item.djno}}" class="item "  style="padding-right: 10px;" ng-repeat="item in orderList ">
             <h2 class="positive">货主 : {{item.name}} {{item.motel}} 状态
-              :<span class="{{item.state>=4?'balanced':(item.state>=6?'energized':'')}} "> {{item.strstate}}</span></h2>
+              :<span class="{{(item.state>=4&&item.state<8)?'balanced':((item.state>=6&&item.state)<8?'energized':'assertive')}} "> {{item.strstate}}</span></h2>
             <p class="text-wrap" style="margin-right: 4rem;">交易品类 : {{item.category}} <span
               class=" {{item.hytype==1?'bhytype':(item.hytype==2?'ehytype':'')}} ">{{item.hytype==1?'废品':(item.hytype==2?'二手':'')}}</span>
               <span class="close assertive item-note right-1" ng-click="closeOrder(item.djno)"
