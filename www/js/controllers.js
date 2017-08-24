@@ -3430,11 +3430,11 @@ angular.module('starter.controllers', [])
       if ($scope.dengji.acttype == 1) {//当用户选择“以旧换新”时，先判断用户有没有“完善信息”和“实名认证”，如果没有则必须先“完善信息”和“实名认证”
         var user = JSON.parse(localStorage.getItem("user"));
         if (user.services == null || user.services.length == 0) { //没有完善信息
-          CommonService.showConfirm('登记提示', '尊敬的用户,您好！选择以旧换新类型必须先完善资料后才能操作！', '完善资料', '暂不完善', 'organizingdata', 'close');
+          CommonService.showConfirm('登记提示', '尊敬的用户,您好！选择以旧换新类型必须先完善资料后才能操作！', '完善资料', '暂不完善','organizingdata', '', '', {type: 2}, '');
           return;
         }
         if (user.certstate.substr(3, 1) != 2) { //没有实名认证
-          CommonService.showConfirm('登记提示', '尊敬的用户,您好！选择以旧换新类型必须先实名认证后才能操作！', '实名认证', '暂不认证', 'organizingdata', 'close');
+          CommonService.showConfirm('登记提示', '尊敬的用户,您好！选择以旧换新类型必须先实名认证后才能操作！', '实名认证', '暂不认证', 'tworealname', '', '', {status: 0}, '');
           return;
         }
       }
