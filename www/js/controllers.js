@@ -3792,10 +3792,6 @@ angular.module('starter.controllers', [])
 
   //我的钱包
   .controller('WalletCtrl', function ($scope,$state, $rootScope, CommonService, MyWalletService,OrderService) {
-    $scope.totalamount = 0.00;//总金额
-    $scope.kyamount = 0.00;//可用金额
-    $scope.djamount = 0.00;//冻结金额
-    $scope.trzaccount=0.00;
     //是否登录
     if (!CommonService.isLogin(true)) {
       return;
@@ -3804,20 +3800,8 @@ angular.module('starter.controllers', [])
     //获得我的里面待处理和预警订单数 银行卡以及余额
     OrderService.getOrderSum({userid: localStorage.getItem("userid"), expiry: 24}).success(function (data) {
       if (data.code == 1001) {
-        $scope.trzaccount=data.data.trzaccount;
+        $scope.tj=data.data;
       }
-    });
-    //总金额
-    MyWalletService.get(localStorage.getItem("userid")).success(function (data) {
-      $scope.totalamount = data.data.totalamount;
-      $scope.kyamount = data.data.cashamount;//可用金额
-      $scope.djamount = data.data.freezeamount;//冻结金额
-    });
-
-    //银行卡数
-    $scope.total = 0;
-    MyWalletService.bankget_count(localStorage.getItem("userid")).success(function (data) {
-      $scope.total = data.data;
     });
     //根据会员ID获取会员账号基本信息
     if(!localStorage.getItem("user")) {

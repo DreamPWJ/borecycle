@@ -17,18 +17,18 @@
         <div class="light  padding-bottom padding-left">账户总余额</div>
       </div>
       <div class="row col-75 col-offset-5 padding-bottom ">
-        <div class="light " style="font-size: 30px;">{{totalamount|currency:"￥"}}</div>
+        <div class="light " style="font-size: 30px;">{{tj.totalamount|currency:"￥"}}</div>
       </div>
       <p></p><div class="padding-bottom"></div>
       <div class="text-center light-bg padding-top">
         <div class="row row-no-padding padding-bottom">
           <div class="col" style="border-right-style:dashed;border-right-width: 1px;border-right-color: #cdcdcd;">
             <div style="font-size: 0.8rem;">可用余额</div>
-            <div style="font-size: 1.5rem;padding-bottom: 5px;">{{kyamount|number:2}}</div>
+            <div style="font-size: 1.5rem;padding-bottom: 5px;">{{tj.account|number:2}}</div>
           </div>
           <div class="col"  ui-sref="credited">
             <div style="font-size: 0.8rem;">待入账金额</div>
-            <div style="font-size: 1.5rem;padding-bottom: 5px;">{{trzaccount|number:2}}</div>
+            <div style="font-size: 1.5rem;padding-bottom: 5px;">{{tj.trzaccount|number:2}}</div>
           </div>
         </div>
       </div>
@@ -49,7 +49,7 @@
     <div class="list padding-top">
       <a nav-direction=forward ng-href="#/bankcard" class="item item-icon-left item-icon-right no-border">
         <i class="icon iconfont icon-yinxingqia" style="color:#FFD700"></i>
-        <h2>银行卡<span class="item-note dark">{{total}}张</span></h2>
+        <h2>银行卡<span class="item-note dark">{{tj.banknum}}张</span></h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
       <a nav-direction=forward ng-href="#/transactionlist/0" class="item item-icon-left item-icon-right">

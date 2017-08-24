@@ -126,7 +126,7 @@
             ng-click="jieDan(orderDetail.djno,orderDetail.userid,orderDetail.type,orderDetail.hytype)">
       接单
     </button>
-    <button ng-if="orderDetail.state==4||orderDetail.state==8" class="button  button-balanced  icon iconfont icon-huishou col-30 nowrap "
+    <button ng-if="(orderDetail.state==4 || (orderDetail.state==8 && orderDetail.orstate==0))" class="button  button-balanced  icon iconfont icon-huishou col-30 nowrap "
             ng-click="recycle(orderDetail.orno,orderDetail.djno,orderDetail.type,orderDetail.userid,orderDetail.totalprice,orderDetail.name,orderDetail.category,orderDetail.hytype)">
       已回收
     </button>
