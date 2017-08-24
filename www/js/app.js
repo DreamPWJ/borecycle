@@ -7,7 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.config', 'starter.directive', 'starter.filter', 'ngCordova', 'ionic-native-transitions'])
 
-  .run(function ($ionicPlatform, $rootScope, $location, $ionicHistory, $cordovaToast, $cordovaNetwork, CommonService, MainService, $state) {
+  .run(function ($ionicPlatform, $rootScope, $location, $ionicHistory, $cordovaToast, $cordovaNetwork,$ionicGesture, CommonService, MainService, $state) {
     $ionicPlatform.ready(function () {
       localStorage.setItem("isStart", true);//记录首页启动轮播展示图已经展示
 
@@ -152,7 +152,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
       //调试模式，这样报错会在应用中弹出一个遮罩层显示错误信息
       //window.plugins.jPushPlugin.setDebugMode(true);
-
       //判断网络状态以及横屏事件
       document.addEventListener("deviceready", function () {
         // listen for Online event
@@ -167,8 +166,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         $rootScope.$on('$cordovaNetwork:offline', function (event, networkState) {
           var offlineState = networkState;
           //提醒用户的网络异常
-          CommonService.platformPrompt("网络异常 无法连接收收服务器", 'close');
-        })
+          CommonService.platformPrompt("网络异常 请刷新重试", 'close');
+        });
         //添加JS 屏幕监听事件 禁止APP 横屏
         if (screenOrientation) {
           screenOrientation.setOrientation('portrait');

@@ -1,11 +1,11 @@
 angular.module('starter.controllers', [])
   .config(function ($httpProvider) { //统一配置设置
+
     //服务注册到$httpProvider.interceptors中  用于接口授权
     $httpProvider.interceptors.push('MyInterceptor');
     /* $httpProvider.defaults.headers.common['Authorization'] = localStorage.getItem('token');*/
     /*    $http.defaults.cache = true/false;*/
   })
-
   //Tabs Ctrl
   .controller('TabsCtrl', function ($scope) {
     /*    $scope.isLogin = localStorage.getItem("userid") ? true : false;*///是否登录
@@ -17,7 +17,6 @@ angular.module('starter.controllers', [])
      });*/
 
   })
-
   //APP首页面
   .controller('MainCtrl', function ($scope, $rootScope,$state,$document, CommonService, MainService, OrderService, BoRecycle, $location, $ionicHistory, $interval, NewsService, AccountService, $ionicPlatform, WeiXinService,AddressService,$timeout) {
     //授权之后执行的方法
@@ -49,8 +48,11 @@ angular.module('starter.controllers', [])
               roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
             }).success(function (data) {
               var addressComponent = data.regeocode.addressComponent;
-              if(addressComponent.city.length>0){
+              if (addressComponent.city.length > 0) {
                 $scope.city = addressComponent.city;
+              }
+              else if (addressComponent.district.lastIndexOf("市") == addressComponent.district.length-1) {
+                $scope.city = addressComponent.district;
               }
               else {
                 $scope.city = addressComponent.province;
@@ -284,10 +286,8 @@ angular.module('starter.controllers', [])
         }, 7199000);
         authLogin();
       }
-
       $scope.$broadcast('scroll.refreshComplete');
     }
-
 //执行方法
     $scope.getMainData();
 
@@ -297,8 +297,7 @@ angular.module('starter.controllers', [])
 //在首页中清除导航历史退栈
     $scope.$on('$ionicView.afterEnter', function () {
       $ionicHistory.clearHistory();
-    })
-
+    });
   })
 
   //APP初次启动轮播引导图片
@@ -448,6 +447,9 @@ angular.module('starter.controllers', [])
           var addressComponent = data.regeocode.addressComponent;
           if(addressComponent.city.length>0){
             $scope.city = addressComponent.city;
+          }
+          else if (addressComponent.district.lastIndexOf("市") == addressComponent.district.length-1) {
+            $scope.city = addressComponent.district;
           }
           else {
             $scope.city = addressComponent.province;
@@ -610,6 +612,9 @@ angular.module('starter.controllers', [])
           var addressComponent = data.regeocode.addressComponent;
           if(addressComponent.city.length>0){
             $scope.city = addressComponent.city;
+          }
+          else if (addressComponent.district.lastIndexOf("市") == addressComponent.district.length-1) {
+            $scope.city = addressComponent.district;
           }
           else {
             $scope.city = addressComponent.province;
@@ -790,6 +795,9 @@ angular.module('starter.controllers', [])
           var addressComponent = data.regeocode.addressComponent;
           if(addressComponent.city.length>0){
             $scope.city = addressComponent.city;
+          }
+          else if (addressComponent.district.lastIndexOf("市") == addressComponent.district.length-1) {
+            $scope.city = addressComponent.district;
           }
           else {
             $scope.city = addressComponent.province;
@@ -1203,6 +1211,9 @@ angular.module('starter.controllers', [])
           $scope.addresspois = data.regeocode.pois;
           if(addressComponent.city.length>0){
             $scope.city = addressComponent.city;
+          }
+          else if (addressComponent.district.lastIndexOf("市") == addressComponent.district.length-1) {
+            $scope.city = addressComponent.district;
           }
           else {
             $scope.city = addressComponent.province;
@@ -2468,6 +2479,9 @@ angular.module('starter.controllers', [])
           if(addressComponent.city.length>0){
             $scope.city = addressComponent.city;
           }
+          else if (addressComponent.district.lastIndexOf("市") == addressComponent.district.length-1) {
+            $scope.city = addressComponent.district;
+          }
           else {
             $scope.city = addressComponent.province;
           }
@@ -2586,30 +2600,30 @@ angular.module('starter.controllers', [])
     })
 
     //获取当前位置 定位
-    $scope.cityName = "深圳市"
-    $scope.location = function () {
-      CommonService.getLocation(function () {
-        //当前位置 定位
-        AccountService.getCurrentCity({
-          key: BoRecycle.gaoDeKey,
-          location: Number(localStorage.getItem("longitude")).toFixed(6) + "," + Number(localStorage.getItem("latitude")).toFixed(6),
-          radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
-          extensions: 'all',//返回结果控制
-          batch: false, //batch=true为批量查询。batch=false为单点查询
-          roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
-        }).success(function (data) {
-          var addressComponent = data.regeocode.addressComponent;
-          $scope.cityName = addressComponent.city ? addressComponent.city : addressComponent.province;
-
-        })
-
-      })
-
-    }
-    //页面加载完成自动定位
-    $scope.$on('$ionicView.afterEnter', function () {
-      $scope.location();//自动定位
-    })
+    // $scope.cityName = "深圳市"
+    // $scope.location = function () {
+    //   CommonService.getLocation(function () {
+    //     //当前位置 定位
+    //     AccountService.getCurrentCity({
+    //       key: BoRecycle.gaoDeKey,
+    //       location: Number(localStorage.getItem("longitude")).toFixed(6) + "," + Number(localStorage.getItem("latitude")).toFixed(6),
+    //       radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
+    //       extensions: 'all',//返回结果控制
+    //       batch: false, //batch=true为批量查询。batch=false为单点查询
+    //       roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
+    //     }).success(function (data) {
+    //       var addressComponent = data.regeocode.addressComponent;
+    //       $scope.cityName = addressComponent.city ? addressComponent.city : addressComponent.province;
+    //
+    //     })
+    //
+    //   })
+    //
+    // }
+    // //页面加载完成自动定位
+    // $scope.$on('$ionicView.afterEnter', function () {
+    //   $scope.location();//自动定位
+    // })
     //modal打开 加载数据
     $scope.$on('modal.shown', function () {
       if ($scope.modalName == 'citymodal') {
@@ -2851,6 +2865,9 @@ angular.module('starter.controllers', [])
           $scope.addresspois = data.regeocode.pois;
           if(addressComponent.city.length>0){
             $scope.city = addressComponent.city;
+          }
+          else if (addressComponent.district.lastIndexOf("市") == addressComponent.district.length-1) {
+            $scope.city = addressComponent.district;
           }
           else {
             $scope.city = addressComponent.province;
@@ -3387,6 +3404,9 @@ angular.module('starter.controllers', [])
           $scope.addresspois = data.regeocode.pois;
           if(addressComponent.city.length>0){
             $scope.city = addressComponent.city;
+          }
+          else if (addressComponent.district.lastIndexOf("市") == addressComponent.district.length-1) {
+            $scope.city = addressComponent.district;
           }
           else {
             $scope.city = addressComponent.province;
@@ -4387,7 +4407,15 @@ angular.module('starter.controllers', [])
             roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
           }).success(function (data) {
             var addressComponent = data.regeocode.addressComponent;
-            $rootScope.areaname=addressComponent.city;
+            if(addressComponent.city.length>0){
+              $rootScope.areaname=addressComponent.city;
+            }else if (addressComponent.district.lastIndexOf("市") == addressComponent.district.length-1) {
+              $rootScope.areaname = addressComponent.district;
+            }
+            else {
+              $rootScope.areaname = addressComponent.province;
+            }
+
           }).then(function () {
             if($rootScope.areaname){
               NewsService.getInfo_fee({areaname: $rootScope.areaname}).success(function (data) {
