@@ -291,7 +291,7 @@ angular.module('starter.controllers', [])
               localStorage.setItem("token", data.access_token);//登录接口授权token
               localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
             } else {
-              CommonService.platformPrompt("获取登录接口授权token失败", 'close');
+              CommonService.platformPrompt("登陆过期，请重新登陆！", 'mobilelogin');
               return;
             }
           }).then(function () {
@@ -573,7 +573,7 @@ angular.module('starter.controllers', [])
             }
 
           }).error(function () {
-            CommonService.platformPrompt("获取登录接口授权token失败", 'close');
+            CommonService.platformPrompt("登陆过期，请重新登陆！", 'mobilelogin');
             return;
           })
         }
@@ -758,7 +758,7 @@ angular.module('starter.controllers', [])
             }
 
           }).error(function () {
-            CommonService.platformPrompt("获取登录接口授权token失败", 'close');
+            CommonService.platformPrompt("登陆过期，请重新登陆！", 'mobilelogin');
             return;
           })
         }
@@ -934,7 +934,7 @@ angular.module('starter.controllers', [])
               }
 
             }).error(function () {
-              CommonService.platformPrompt("获取登录接口授权token失败", 'close');
+              CommonService.platformPrompt("登陆过期，请重新登陆！", 'mobilelogin');
               return;
             })
           });
@@ -1399,7 +1399,7 @@ angular.module('starter.controllers', [])
               localStorage.setItem("token", data.access_token);//登录接口授权token
               localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
             } else {
-              CommonService.platformPrompt("获取登录接口授权token失败", 'close');
+              CommonService.platformPrompt("登陆过期，请重新登陆！", 'mobilelogin');
               return;
             }
           })
@@ -1618,7 +1618,7 @@ angular.module('starter.controllers', [])
               localStorage.setItem("token", data.access_token);//登录接口授权token
               localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
             } else {
-              CommonService.platformPrompt("获取登录接口授权token失败", 'close');
+              CommonService.platformPrompt("登陆过期，请重新登陆！", 'mobilelogin');
               return;
             }
           })
@@ -3244,7 +3244,7 @@ angular.module('starter.controllers', [])
               localStorage.setItem("token", data.access_token);//登录接口授权token
               localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
             } else {
-              CommonService.platformPrompt("获取登录接口授权token失败", 'close');
+              CommonService.platformPrompt("登陆过期，请重新登陆！", 'mobilelogin');
               return;
             }
           })
@@ -3490,7 +3490,7 @@ angular.module('starter.controllers', [])
               localStorage.setItem("token", data.access_token);//登录接口授权token
               localStorage.setItem("expires_in", new Date());//登录接口授权token 有效时间
             } else {
-              CommonService.platformPrompt("获取登录接口授权token失败", 'close');
+              CommonService.platformPrompt("登陆过期，请重新登陆！", 'mobilelogin');
               return;
             }
           })
@@ -4607,7 +4607,7 @@ angular.module('starter.controllers', [])
                   }).then(function () {
                     $scope.returnUrl();
                   }).error(function () {
-                    CommonService.platformPrompt("获取登录接口授权token失败", 'close');
+                    CommonService.platformPrompt("登陆过期，请重新登陆！", 'mobilelogin');
                     return;
                   })
 
