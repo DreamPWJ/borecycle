@@ -7,7 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.config', 'starter.directive', 'starter.filter', 'ngCordova', 'ionic-native-transitions'])
 
-  .run(function ($ionicPlatform, $rootScope, $location, $ionicHistory, $cordovaToast, $cordovaNetwork,$ionicGesture, CommonService, MainService, $state) {
+  .run(function ($ionicPlatform, $rootScope, $location, $ionicHistory, $cordovaToast, $cordovaNetwork, $ionicGesture, CommonService, MainService, $state) {
     $ionicPlatform.ready(function () {
       localStorage.setItem("isStart", true);//记录首页启动轮播展示图已经展示
 
@@ -129,17 +129,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       var onOpenNotification = function (data) {
         try {
           var blno = ""; //订单号
-          var BLType="";//查看类型
+          var BLType = "";//查看类型
           if (device.platform == "Android") {
             blno = data.extras.BLNo; //订单号
-            BLType= data.extras.BLType; //订单号
+            BLType = data.extras.BLType; //订单号
           } else {
             blno = data.BLNo; //订单号
-            BLType= data.BLType; //查看类型
+            BLType = data.BLType; //查看类型
           }
-          if(BLType==2)
-          {
-            $state.go("orderdetails", {no: blno,type:1,hytype:0})
+          if (BLType == 2) {
+            $state.go("orderdetails", {no: blno, type: 1, hytype: 0})
           }
           else {
             $state.go("myorderdetails", {no: blno})
@@ -475,11 +474,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'RealNameCtrl'
       })
       //二要素实名认证
-      .state('tworealname',{
-        url:'/tworealname/:status',
-        cache:false,
-        templateUrl:'templates/account/tworealname.html',
-        controller:'tworealnameCtrl'
+      .state('tworealname', {
+        url: '/tworealname/:status',
+        cache: false,
+        templateUrl: 'templates/account/tworealname.html',
+        controller: 'tworealnameCtrl'
       })
       //帮助与反馈
       .state('helpfeedback', {
@@ -670,7 +669,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       })
     // if none of the above states are matched, use this as the fallback
     //动态判断是否显示初始化页面
-    if (localStorage.getItem('isStart')||!ionic.Platform.isWebView()) {
+    if (localStorage.getItem('isStart') || !ionic.Platform.isWebView()) {
       $urlRouterProvider.otherwise('/tab/main');
     } else {
       $urlRouterProvider.otherwise('start');

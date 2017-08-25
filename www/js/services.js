@@ -1,6 +1,6 @@
 angular.module('starter.services', [])
 //service在使用this指针，而factory直接返回一个对象
-  .service('CommonService', function ($ionicPopup, $ionicPopover, $rootScope,$location, $http, BoRecycle, $state, $ionicModal, $cordovaCamera, $cordovaImagePicker, $ionicPlatform, $ionicActionSheet, $ionicHistory, $timeout, $cordovaToast, $cordovaGeolocation, $cordovaBarcodeScanner, $ionicViewSwitcher, $interval, AccountService, WeiXinService) {
+  .service('CommonService', function ($ionicPopup, $ionicPopover, $rootScope, $location, $http, BoRecycle, $state, $ionicModal, $cordovaCamera, $cordovaImagePicker, $ionicPlatform, $ionicActionSheet, $ionicHistory, $timeout, $cordovaToast, $cordovaGeolocation, $cordovaBarcodeScanner, $ionicViewSwitcher, $interval, AccountService, WeiXinService) {
     return {
       platformPrompt: function (msg, stateurl, stateparams) {
         CommonService = this;
@@ -401,7 +401,7 @@ angular.module('starter.services', [])
           //通过ready接口处理成功验证
           wx.ready(function () {
             WeiXinService.wxgetLocation(callback); //获取地理位置接口
-          })
+          });
           return;
         }
 
@@ -411,6 +411,7 @@ angular.module('starter.services', [])
             window.cordova.plugins.settings.open("location", function () {
               },
               function () {
+                localStorage.setItem("locationSet", 0);
                 CommonService.platformPrompt('打开定位设置失败', 'close');
               }
             );
@@ -419,16 +420,19 @@ angular.module('starter.services', [])
         if (ionic.Platform.isWebView() && $ionicPlatform.is('android')) {//android系统APP 高德定位提高定位精度和成功率
           GaoDe.getCurrentPosition(function (success) {
             if (success.status == '定位失败') {
+              localStorage.setItem("locationSet", 0);
               positionshowConfirm();
               return;
             }
             localStorage.setItem("latitude", success.latitude);
             localStorage.setItem("longitude", success.longitude);
+            localStorage.setItem("locationSet", 1);
             callback.call(this);
           }, function (error) {
             if (ionic.Platform.isWebView()) {
               positionshowConfirm();
             } else {
+              localStorage.setItem("locationSet", 0);
               CommonService.platformPrompt("高德获取定位失败", 'close');
             }
 
@@ -439,12 +443,14 @@ angular.module('starter.services', [])
             .then(function (position) {
               localStorage.setItem("latitude", position.coords.latitude);
               localStorage.setItem("longitude", position.coords.longitude);
+              localStorage.setItem("locationSet", 1);
               callback.call(this);
             }, function (err) {
 
               if (ionic.Platform.isWebView()) {
                 positionshowConfirm();
               } else {
+                localStorage.setItem("locationSet", 0);
                 CommonService.platformPrompt("获取定位失败", 'close');
               }
 
@@ -452,9 +458,30 @@ angular.module('starter.services', [])
         }
 
       },
+      getLocationInfo:function ($scope,param) {
+        var location={};
+        location.province=param.province;
+        if (param.city.length > 0) {
+          $scope.city = param.city;
+          location.city = param.city;
+          location.district = param.district;
+        }
+        else if (param.district.lastIndexOf("市") == param.district.length - 1) {
+          $scope.city = param.district;
+          location.city = param.district;
+          location.district = param.township;
+        }
+        else {
+          $scope.city = param.province;
+          location.city = param.province;
+          location.district = param.district;
+        }
+        localStorage.setItem("location", JSON.stringify(location));//定位信息缓存
+        localStorage.setItem("location_exp", new Date());//定位信息缓存的有效时间
+      },
       isLogin: function (flag) {//判断是否登录
         CommonService = this;
-        localStorage.setItem("returnUrl",$location.url());
+        localStorage.setItem("returnUrl", $location.url());
         if (!localStorage.getItem("userid")) {
           if (flag) {
             //是否是微信 获取微信登录授权
@@ -1761,7 +1788,7 @@ angular.module('starter.services', [])
 
           $scope.citySelected = function (c) {
             /*      $scope.currentCity = c;*/
-            $scope.modifyAddressSubmit(c.id,c.code);
+            $scope.modifyAddressSubmit(c.id, c.code);
             // 缓存当前城市
             window.localStorage[cache_currentCity] = angular.toJson(c);
             $scope.modal.hide();
@@ -1853,7 +1880,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
-          url: BoRecycle.api + "/api/orderreceipt/getappoint?N="+params.N+"&ORAddTime=" + params.ORAddTime
+          url: BoRecycle.api + "/api/orderreceipt/getappoint?N=" + params.N + "&ORAddTime=" + params.ORAddTime
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -2977,7 +3004,7 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'GET',
           url: 'templates/data/bank.json',
-        cache:true
+          cache: true
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -2993,11 +3020,11 @@ angular.module('starter.services', [])
       request: function (config) {//通过实现 request 方法拦截请求: 该方法会在 $http 发送请求道后台之前执行
         if (config.url.toString().indexOf('http') === 0) {
           config.timeout = 10000; //默认超时时间10s
-            //http请求Loading加载动画
-            $injector.get('$ionicLoading').show({
-              template: '<p><ion-spinner icon="spiral" class="spinner-light"></ion-spinner></p>',
-              noBackdrop: true
-            });
+          //http请求Loading加载动画
+          $injector.get('$ionicLoading').show({
+            template: '<p><ion-spinner icon="ios"></ion-spinner></p>',
+            noBackdrop: false
+          });
           //授权
           config.headers = config.headers || {};
           var token = localStorage.getItem('token');
@@ -3025,7 +3052,7 @@ angular.module('starter.services', [])
           if (response.status == 401) {
             $injector.get('CommonService').platformPrompt("访问授权失败");
           } else if (response.status == 404) {
-            $injector.get('CommonService').platformPrompt("访问连接404，地址："+response.config.url.toString());
+            $injector.get('CommonService').platformPrompt("访问连接404，地址：" + response.config.url.toString());
           } else if (response.status == -1) {
             $injector.get('CommonService').platformPrompt("网络请求超时");
           }

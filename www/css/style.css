@@ -209,12 +209,20 @@ a {
   width: 4.5rem;
   height: 4.5rem;
   padding: 20px 5px;
-  /*  background-color: rgba(0, 0, 0, 0);*/
+  background-color: rgba(0, 0, 0, 0);
 }
 
 .loading-container .loading span {
   display: inline-block;
   margin-top: 0.2rem;
+}
+
+.backdrop {
+  background-color: rgba(0, 0, 0, .1);
+}
+
+.loading-container .loading .spinner-ios {
+  stroke: #11c1f3;
 }
 
 .item-image:not(img) {
@@ -834,10 +842,12 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
 #appoint-sure .bar-footer.has-tabs, #appoint-sure .has-tabs {
   bottom: 70px;
 }
+
 #adv-modal.modal {
   background-color: rgba(0, 0, 0, 0);
 }
-#adv-modal img{
+
+#adv-modal img {
   max-width: 90%;
   overflow: auto;
   margin: auto;
@@ -848,12 +858,14 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
   right: 0;
   z-index: 100;
 }
-#adv-modal div.div-btn{
+
+#adv-modal div.div-btn {
   width: 100%;
   position: absolute;
   z-index: 101;
 }
-#adv-modal div button{
+
+#adv-modal div button {
   border-radius: 25px;
   background: none;
   width: 50%;
@@ -861,13 +873,16 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
   color: #fff;
   font-weight: 500;
 }
-#adv-modal .icon{
+
+#adv-modal .icon {
   font-size: 2.5rem;
 }
+
 .popup-body {
   text-align: left;
   text-indent: 2em;
 }
-#bankcash .card{
+
+#bankcash .card {
   margin-bottom: 10px;
 }
