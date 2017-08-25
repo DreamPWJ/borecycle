@@ -4265,7 +4265,14 @@ angular.module('starter.controllers', [])
           name: JSON.parse(localStorage.getItem("user")).username//用户名
         }
         if ($scope.pay.choice == "A") {//支付宝支付
+          PayService.alipaywapRecharge($scope.h5datas).success(function (data) {
+            if (data.code == 1001) {
+              CommonService.windowOpen(data.data.show_url);//支付跳转
+            } else {
+              CommonService.platformPrompt(data.message, 'close');
+            }
 
+          })
         } else if ($scope.pay.choice == "B") {//微信支付
           PayService.wxpayH5($scope.h5datas).success(function (data) {
             if (data.code == 1001) {
