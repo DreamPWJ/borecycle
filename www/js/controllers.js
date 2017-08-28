@@ -114,6 +114,7 @@ angular.module('starter.controllers', [])
                     } else {
                       $scope.isinvitecode = "0";
                     }
+                    localStorage.setItem("location_id", data.data.ID);//地区编码缓存
                     localStorage.setItem("isinvitecode", $scope.isinvitecode);//地区开放状态缓存
                     localStorage.setItem("isinvitecode_exp", new Date());//地区开放状态缓存的有效时间
                   }).then(function () {
@@ -476,6 +477,7 @@ angular.module('starter.controllers', [])
               } else {
                 $scope.user.isinvitecode = "0";
               }
+              localStorage.setItem("location_id", data.data.ID);//地区编码缓存
               localStorage.setItem("isinvitecode", $scope.user.isinvitecode);//地区开放状态缓存
               localStorage.setItem("isinvitecode_exp", new Date());//地区开放状态缓存的有效时间
             });
@@ -638,6 +640,7 @@ angular.module('starter.controllers', [])
               } else {
                 $scope.user.isinvitecode = "0";
               }
+              localStorage.setItem("location_id", data.data.ID);//地区编码缓存
               localStorage.setItem("isinvitecode", $scope.user.isinvitecode);//地区开放状态缓存
               localStorage.setItem("isinvitecode_exp", new Date());//地区开放状态缓存的有效时间
             });
@@ -822,6 +825,7 @@ angular.module('starter.controllers', [])
               } else {
                 $scope.user.isinvitecode = "0";
               }
+              localStorage.setItem("location_id", data.data.ID);//地区编码缓存
               localStorage.setItem("isinvitecode", $scope.user.isinvitecode);//地区开放状态缓存
               localStorage.setItem("isinvitecode_exp", new Date());//地区开放状态缓存的有效时间
             });
@@ -829,6 +833,7 @@ angular.module('starter.controllers', [])
         });
       }else{
         $scope.user.isinvitecode =localStorage.getItem("isinvitecode");
+        $scope.user.areacode=localStorage.getItem("location_id");
         if ($scope.user.isinvitecode == "1") {
           $scope.isInvite = false;
         }
@@ -2490,6 +2495,7 @@ angular.module('starter.controllers', [])
               } else {
                 $scope.isinvitecode = "0";
               }
+              localStorage.setItem("location_id", data.data.ID);//地区编码缓存
               localStorage.setItem("isinvitecode", $scope.isinvitecode);//地区开放状态缓存
               localStorage.setItem("isinvitecode_exp", new Date());//地区开放状态缓存的有效时间
             })
@@ -4250,10 +4256,12 @@ angular.module('starter.controllers', [])
           userid: localStorage.getItem("userid"),//用户userid
           name: JSON.parse(localStorage.getItem("user")).username//用户名
         }
+        console.log($scope.h5datas);
         if ($scope.pay.choice == "A") {//支付宝支付
           PayService.alipaywapRecharge($scope.h5datas).success(function (data) {
+            console.log(data);
             if (data.code == 1001) {
-              CommonService.windowOpen(data.data.data);//支付跳转
+              CommonService.windowOpen(data.data);//支付跳转
             } else {
               CommonService.platformPrompt(data.message, 'close');
             }
