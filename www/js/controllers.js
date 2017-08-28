@@ -814,6 +814,7 @@ angular.module('starter.controllers', [])
               level: 2
             }).success(function (data) {
               if (data.code == 1001) {
+                $scope.user.areacode=data.data.ID;
                 $scope.user.isinvitecode = data.data.isinvitecode;
                 if ($scope.user.isinvitecode == "1") {
                   $scope.isInvite = false;
@@ -3705,7 +3706,7 @@ angular.module('starter.controllers', [])
       if ($scope.cancelorder.reason==3 && $scope.cancelorder.remark==undefined) {
         $rootScope.commonService.toolTip('请补充说明！', '');
         return;
-      } 
+      }
       CommonService.showConfirm('取消提示', '您是否要取消此订单?"是"点击"确定",否则请点击"取消"', '确定', '取消', '', 'close', function () {
         OrderService.newCancelOrderReceipt($scope.datas).success(function (data) {
           if (data.code == 1001) {
