@@ -469,10 +469,11 @@ angular.module('starter.services', [])
         else if (param.district.lastIndexOf("市") == param.district.length - 1) {
           $scope.city = param.district;
           location.city = param.district;
-          location.district = param.township;
+          location.district = "";
         }
         else {
           $scope.city = param.province;
+          location.province="";
           location.city = param.province;
           location.district = param.district;
         }

@@ -58,7 +58,7 @@ angular.module('starter.controllers', [])
               $scope.modal.show();
             }
           }
-          var invite=function () {
+          var invite = function () {
             //获取邀请码
             AccountService.getInvitecode({
               userid: localStorage.getItem("userid"),
@@ -88,12 +88,12 @@ angular.module('starter.controllers', [])
             });
           }
 
-          if(!localStorage.getItem("isinvitecode")||((new Date().getTime() - new Date(localStorage.getItem("isinvitecode_exp")).getTime()) / 1000) > 600){
+          if (!localStorage.getItem("isinvitecode") || ((new Date().getTime() - new Date(localStorage.getItem("isinvitecode_exp")).getTime()) / 1000) > 600) {
             //当前位置 定位
             CommonService.getLocation(function () {
               //定位成功才获取城市位置信息
               if (localStorage.getItem("locationSet") == 1) {
-                CommonService.platformPrompt("定位成功！");
+                //CommonService.platformPrompt("定位成功！");
                 AccountService.getCurrentCity({
                   key: BoRecycle.gaoDeKey,
                   location: Number($scope.handlongitude || localStorage.getItem("longitude")).toFixed(6) + "," + Number($scope.handlatitude || localStorage.getItem("latitude")).toFixed(6),
@@ -103,7 +103,7 @@ angular.module('starter.controllers', [])
                   roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
                 }).success(function (data) {
                   var addressComponent = data.regeocode.addressComponent;
-                  CommonService.getLocationInfo($scope,addressComponent);//解析定位数据
+                  CommonService.getLocationInfo($scope, addressComponent);//解析定位数据
                 }).then(function () {
                   AddressService.getAddressBySSX({
                     ssx: $scope.city,
@@ -120,7 +120,7 @@ angular.module('starter.controllers', [])
                     invite();
                   });
                 });
-              }else{
+              } else {
                 if (WeiXinService.isWeiXin()) { //如果是微信
                   CommonService.shareActionSheet("提供回收信息赚现金，首次下单额外奖励15元", "人人提供信息得信息费，信息越多赚钱越多，邀请使用成功登记回收信息得现金奖励", BoRecycle.mobApi + '/#/download', '');
                 } else {
@@ -131,16 +131,17 @@ angular.module('starter.controllers', [])
                 }
               }
             });
-          }else{
-            $scope.isinvitecode=localStorage.getItem("isinvitecode");
+          } else {
+            $scope.isinvitecode = localStorage.getItem("isinvitecode");
             invite();
           }
 
         }
         //页面加载完成自动定位
-        // $scope.$on('$ionicView.afterEnter', function () {
-        // });
-        $scope.location();//自动定位
+        $scope.$on('$ionicView.afterEnter', function () {
+          $scope.location();//自动定位
+        });
+
 
       }
       //判断是否是WebView或微信，如果是则显示广告
@@ -452,7 +453,7 @@ angular.module('starter.controllers', [])
     $scope.paraclass = true;
     //获取当前位置 定位
     $scope.location = function () {
-      if(!localStorage.getItem("isinvitecode")||((new Date().getTime() - new Date(localStorage.getItem("isinvitecode_exp")).getTime()) / 1000) > 600){
+      if (!localStorage.getItem("isinvitecode") || ((new Date().getTime() - new Date(localStorage.getItem("isinvitecode_exp")).getTime()) / 1000) > 120){
         CommonService.getLocation(function () {
           //当前位置 定位
           AccountService.getCurrentCity({
@@ -464,7 +465,7 @@ angular.module('starter.controllers', [])
             roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
           }).success(function (data) {
             var addressComponent = data.regeocode.addressComponent;
-            CommonService.getLocationInfo($scope,addressComponent);//解析定位数据
+            CommonService.getLocationInfo($scope, addressComponent);//解析定位数据
           }).then(function () {
             AddressService.getAddressBySSX({
               ssx: $scope.city,
@@ -483,8 +484,6 @@ angular.module('starter.controllers', [])
       }else{
         $scope.user.isinvitecode=localStorage.getItem("isinvitecode");
       }
-
-
     }
     //页面加载完成自动定位
     $scope.$on('$ionicView.afterEnter', function () {
@@ -616,32 +615,37 @@ angular.module('starter.controllers', [])
     $scope.isKeyup = false;//是否执行Keyup事件
     //获取当前位置 定位
     $scope.location = function () {
-      CommonService.getLocation(function () {
-        //当前位置 定位
-        AccountService.getCurrentCity({
-          key: BoRecycle.gaoDeKey,
-          location: Number($scope.handlongitude || localStorage.getItem("longitude")).toFixed(6) + "," + Number($scope.handlatitude || localStorage.getItem("latitude")).toFixed(6),
-          radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
-          extensions: 'all',//返回结果控制
-          batch: false, //batch=true为批量查询。batch=false为单点查询
-          roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
-        }).success(function (data) {
-          var addressComponent = data.regeocode.addressComponent;
-          CommonService.getLocationInfo($scope,addressComponent);//解析定位数据
-        }).then(function () {
-          AddressService.getAddressBySSX({
-            ssx: $scope.city,
-            level: 2
+      if (!localStorage.getItem("isinvitecode") || ((new Date().getTime() - new Date(localStorage.getItem("isinvitecode_exp")).getTime()) / 1000) > 120) {
+        CommonService.getLocation(function () {
+          //当前位置 定位
+          AccountService.getCurrentCity({
+            key: BoRecycle.gaoDeKey,
+            location: Number($scope.handlongitude || localStorage.getItem("longitude")).toFixed(6) + "," + Number($scope.handlatitude || localStorage.getItem("latitude")).toFixed(6),
+            radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
+            extensions: 'all',//返回结果控制
+            batch: false, //batch=true为批量查询。batch=false为单点查询
+            roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
           }).success(function (data) {
-            if (data.code == 1001) {
-              $scope.user.isinvitecode = data.data.isinvitecode;
-            } else {
-              $scope.user.isinvitecode = "0";
-            }
-          })
-        })
-      })
-
+            var addressComponent = data.regeocode.addressComponent;
+            CommonService.getLocationInfo($scope, addressComponent);//解析定位数据
+          }).then(function () {
+            AddressService.getAddressBySSX({
+              ssx: $scope.city,
+              level: 2
+            }).success(function (data) {
+              if (data.code == 1001) {
+                $scope.user.isinvitecode = data.data.isinvitecode;
+              } else {
+                $scope.user.isinvitecode = "0";
+              }
+              localStorage.setItem("isinvitecode", $scope.user.isinvitecode);//地区开放状态缓存
+              localStorage.setItem("isinvitecode_exp", new Date());//地区开放状态缓存的有效时间
+            });
+          });
+        });
+      }else{
+        $scope.user.isinvitecode =localStorage.getItem("isinvitecode");
+      }
     }
     //页面加载完成自动定位
     $scope.$on('$ionicView.afterEnter', function () {
@@ -791,34 +795,44 @@ angular.module('starter.controllers', [])
     }
     //获取当前位置 定位
     $scope.location = function () {
-      CommonService.getLocation(function () {
-        //当前位置 定位
-        AccountService.getCurrentCity({
-          key: BoRecycle.gaoDeKey,
-          location: Number($scope.handlongitude || localStorage.getItem("longitude")).toFixed(6) + "," + Number($scope.handlatitude || localStorage.getItem("latitude")).toFixed(6),
-          radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
-          extensions: 'all',//返回结果控制
-          batch: false, //batch=true为批量查询。batch=false为单点查询
-          roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
-        }).success(function (data) {
-          var addressComponent = data.regeocode.addressComponent;
-          CommonService.getLocationInfo($scope,addressComponent);//解析定位数据
-        }).then(function () {
-          AddressService.getAddressBySSX({
-            ssx: $scope.city,
-            level: 2
+      if (!localStorage.getItem("isinvitecode") || ((new Date().getTime() - new Date(localStorage.getItem("isinvitecode_exp")).getTime()) / 1000) > 120){
+        CommonService.getLocation(function () {
+          //当前位置 定位
+          AccountService.getCurrentCity({
+            key: BoRecycle.gaoDeKey,
+            location: Number($scope.handlongitude || localStorage.getItem("longitude")).toFixed(6) + "," + Number($scope.handlatitude || localStorage.getItem("latitude")).toFixed(6),
+            radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
+            extensions: 'all',//返回结果控制
+            batch: false, //batch=true为批量查询。batch=false为单点查询
+            roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
           }).success(function (data) {
-            if (data.code == 1001) {
-              $scope.user.isinvitecode = data.data.isinvitecode;
-              if ($scope.user.isinvitecode == "1") {
-                $scope.isInvite = false;
+            var addressComponent = data.regeocode.addressComponent;
+            CommonService.getLocationInfo($scope, addressComponent);//解析定位数据
+          }).then(function () {
+            AddressService.getAddressBySSX({
+              ssx: $scope.city,
+              level: 2
+            }).success(function (data) {
+              if (data.code == 1001) {
+                $scope.user.isinvitecode = data.data.isinvitecode;
+                if ($scope.user.isinvitecode == "1") {
+                  $scope.isInvite = false;
+                }
+              } else {
+                $scope.user.isinvitecode = "0";
               }
-            } else {
-              $scope.user.isinvitecode = "0";
-            }
-          })
-        })
-      })
+              localStorage.setItem("isinvitecode", $scope.user.isinvitecode);//地区开放状态缓存
+              localStorage.setItem("isinvitecode_exp", new Date());//地区开放状态缓存的有效时间
+            });
+          });
+        });
+      }else{
+        $scope.user.isinvitecode =localStorage.getItem("isinvitecode");
+        if ($scope.user.isinvitecode == "1") {
+          $scope.isInvite = false;
+        }
+      }
+
     }
     //页面加载完成自动定位
     $scope.$on('$ionicView.afterEnter', function () {
@@ -1208,7 +1222,7 @@ angular.module('starter.controllers', [])
           roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
         }).success(function (data) {
           var addressComponent = data.regeocode.addressComponent;
-          CommonService.getLocationInfo($scope,addressComponent);//解析定位数据
+          CommonService.getLocationInfo($scope, addressComponent);//解析定位数据
           $scope.ssx = addressComponent.province + addressComponent.city + ($scope.user.usertype == 2 ? "" : addressComponent.district);//省市县
           $scope.user.addrdetail = addressComponent.township + addressComponent.streetNumber.street;
         }).then(function () {
@@ -1410,7 +1424,7 @@ angular.module('starter.controllers', [])
     //获取当前位置 定位
     $scope.location = function () {
       CommonService.getLocation(function () {
-      })
+      });
     }
     //页面加载完成自动定位
     $scope.$on('$ionicView.afterEnter', function () {
@@ -2454,32 +2468,38 @@ angular.module('starter.controllers', [])
     $rootScope.isinvitecode = "0";
     //获取当前位置 定位
     $scope.location = function () {
-      CommonService.getLocation(function () {
-        //当前位置 定位
-        AccountService.getCurrentCity({
-          key: BoRecycle.gaoDeKey,
-          location: Number($scope.handlongitude || localStorage.getItem("longitude")).toFixed(6) + "," + Number($scope.handlatitude || localStorage.getItem("latitude")).toFixed(6),
-          radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
-          extensions: 'all',//返回结果控制
-          batch: false, //batch=true为批量查询。batch=false为单点查询
-          roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
-        }).success(function (data) {
-          var addressComponent = data.regeocode.addressComponent;
-          CommonService.getLocationInfo($scope,addressComponent);//解析定位数据
-          $rootScope.areaname = $scope.city;
-        }).then(function () {
-          AddressService.getAddressBySSX({
-            ssx: $scope.city,
-            level: 2
+      if (!localStorage.getItem("isinvitecode") || ((new Date().getTime() - new Date(localStorage.getItem("isinvitecode_exp")).getTime()) / 1000) > 120){
+        CommonService.getLocation(function () {
+          //当前位置 定位
+          AccountService.getCurrentCity({
+            key: BoRecycle.gaoDeKey,
+            location: Number($scope.handlongitude || localStorage.getItem("longitude")).toFixed(6) + "," + Number($scope.handlatitude || localStorage.getItem("latitude")).toFixed(6),
+            radius: 3000,//	查询POI的半径范围。取值范围：0~3000,单位：米
+            extensions: 'all',//返回结果控制
+            batch: false, //batch=true为批量查询。batch=false为单点查询
+            roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
           }).success(function (data) {
-            if (data.code == 1001) {
-              $rootScope.isinvitecode = data.data.isinvitecode;
-            } else {
-              $rootScope.isinvitecode = "0";
-            }
+            var addressComponent = data.regeocode.addressComponent;
+            CommonService.getLocationInfo($scope, addressComponent);//解析定位数据
+          }).then(function () {
+            AddressService.getAddressBySSX({
+              ssx: $scope.city,
+              level: 2
+            }).success(function (data) {
+              if (data.code == 1001) {
+                $scope.isinvitecode = data.data.isinvitecode;
+              } else {
+                $scope.isinvitecode = "0";
+              }
+              localStorage.setItem("isinvitecode", $scope.isinvitecode);//地区开放状态缓存
+              localStorage.setItem("isinvitecode_exp", new Date());//地区开放状态缓存的有效时间
+            })
           })
-        })
-      })
+        });
+      }
+      else{
+        $scope.isinvitecode =localStorage.getItem("isinvitecode");
+      }
 
     }
     //页面加载完成自动定位
@@ -2843,7 +2863,7 @@ angular.module('starter.controllers', [])
         }).success(function (data) {
           var addressComponent = data.regeocode.addressComponent;
           $scope.addresspois = data.regeocode.pois;
-          CommonService.getLocationInfo($scope,addressComponent);//解析定位数据
+          CommonService.getLocationInfo($scope, addressComponent);//解析定位数据
           $scope.ssx = addressComponent.province + addressComponent.city + addressComponent.district;//省市县
           $scope.addrinfo.addr = addressComponent.township + addressComponent.streetNumber.street;
         }).then(function () {
@@ -3374,7 +3394,7 @@ angular.module('starter.controllers', [])
         }).success(function (data) {
           var addressComponent = data.regeocode.addressComponent;
           $scope.addresspois = data.regeocode.pois;
-          CommonService.getLocationInfo($scope,addressComponent);//解析定位数据
+          CommonService.getLocationInfo($scope, addressComponent);//解析定位数据
           $scope.ssx = addressComponent.province + addressComponent.city + addressComponent.district;//省市县
           if (param == 0) {
             $scope.dengji.addrdetail = addressComponent.township + addressComponent.streetNumber.street;
@@ -4262,7 +4282,7 @@ angular.module('starter.controllers', [])
     if (ionic.Platform.isWebView() || WeiXinService.isWeiXin()) {
       $scope.isWebView = true;
     }
-    if (!localStorage.getItem("user") || (JSON.parse(localStorage.getItem("user")).promoter != 1 && $rootScope.isinvitecode == "0")) {
+    if (!localStorage.getItem("user") || (JSON.parse(localStorage.getItem("user")).promoter != 1 && (!localStorage.getItem("isinvitecode")||localStorage.getItem("isinvitecode") == "0"))) {
       $scope.userdata.promoter = 1;
       CommonService.platformPrompt("很抱歉，您不是收收的推广用户！", 'close');
       $state.go("tab.account");
@@ -4310,7 +4330,7 @@ angular.module('starter.controllers', [])
             }
           }
         } else {
-//根据会员ID获取会员账号基本信息
+///根据会员ID获取会员账号基本信息
           AccountService.getUser({userid: localStorage.getItem("userid")}).success(function (data) {
             if (data.code == 1001) {
               $rootScope.userdata = data.data;
@@ -4367,7 +4387,7 @@ angular.module('starter.controllers', [])
       return;
     }
     $scope.ut = localStorage.getItem("usertype");
-    if (!$rootScope.areaname) {
+    if (!localStorage.getItem("location")||((new Date().getTime() - new Date(localStorage.getItem("location_exp")).getTime()) / 1000) > 600) {
       $scope.location = function () {
         CommonService.getLocation(function () {
           //当前位置 定位
@@ -4380,11 +4400,11 @@ angular.module('starter.controllers', [])
             roadlevel: 0 //可选值：1，当roadlevel=1时，过滤非主干道路，仅输出主干道路数据
           }).success(function (data) {
             var addressComponent = data.regeocode.addressComponent;
-            CommonService.getLocationInfo($scope,addressComponent);//解析定位数据
-
+            CommonService.getLocationInfo($scope, addressComponent);//解析定位数据
+            $scope.areaname=$scope.city;
           }).then(function () {
             if ($rootScope.areaname) {
-              NewsService.getInfo_fee({areaname: $rootScope.areaname}).success(function (data) {
+              NewsService.getInfo_fee({areaname: $scope.areaname}).success(function (data) {
                 $scope.infeels = data.data;
               });
             }
@@ -4394,7 +4414,9 @@ angular.module('starter.controllers', [])
 
       }
     } else {
-      NewsService.getInfo_fee({areaname: $rootScope.areaname}).success(function (data) {
+      var addr=JSON.parse(localStorage.getItem("location"));
+      $scope.areaname=addr.city;
+      NewsService.getInfo_fee({areaname: $scope.areaname}).success(function (data) {
         $scope.infeels = data.data;
       });
     }
