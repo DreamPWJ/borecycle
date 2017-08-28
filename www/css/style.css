@@ -418,6 +418,9 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
   background-color: #1296db;
 }
 
+#helpContent{
+  text-align: center;
+}
 #helpContent > p {
   padding: 0 20px;
 }
@@ -885,4 +888,7 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
 
 #bankcash .card {
   margin-bottom: 10px;
+}
+#helpContent .help-img img{
+  width: 30%;
 }
