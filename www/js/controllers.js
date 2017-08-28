@@ -798,7 +798,7 @@ angular.module('starter.controllers', [])
     }
     //获取当前位置 定位
     $scope.location = function () {
-      if (!localStorage.getItem("isinvitecode") || ((new Date().getTime() - new Date(localStorage.getItem("isinvitecode_exp")).getTime()) / 1000) > 120){
+      if (!localStorage.getItem("isinvitecode") ||!localStorage.getItem("location_id")|| ((new Date().getTime() - new Date(localStorage.getItem("isinvitecode_exp")).getTime()) / 1000) > 120){
         CommonService.getLocation(function () {
           //当前位置 定位
           AccountService.getCurrentCity({
