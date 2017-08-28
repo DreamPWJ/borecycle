@@ -1789,7 +1789,7 @@ angular.module('starter.services', [])
 
           $scope.citySelected = function (c) {
             /*      $scope.currentCity = c;*/
-            $scope.modifyAddressSubmit(c.id, c.code);
+            $scope.modifyAddressSubmit(c.id);
             // 缓存当前城市
             window.localStorage[cache_currentCity] = angular.toJson(c);
             $scope.modal.hide();

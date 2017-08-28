@@ -37,9 +37,9 @@
         <h2>性别 <span class="item-note">{{userinfo.sex==0?'保密':(userinfo.sex==1?'男':'女')}}</span></h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
-      <a class="item  ">
-        <h2>所在地区 <span class="item-note">{{userinfo.addr}}</span></h2>
-      </a>
+      <!--<a class="item  ">-->
+        <!--<h2>所在地区 <span class="item-note">{{userinfo.addr}}</span></h2>-->
+      <!--</a>-->
       <a ng-if="usertype==2&&isOrganizingData" ng-href="#/modifycategory" class="item item-icon-right">
         <h2 class="text-wrap">回收品类 <span class="item-note">{{userinfo.userext.prodname}}</span></h2>
         <i class="icon ion-ios-arrow-right"></i>

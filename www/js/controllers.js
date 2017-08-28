@@ -1281,7 +1281,6 @@ angular.module('starter.controllers', [])
       $scope.user.userid = localStorage.getItem("userid");//用户id
       $scope.user.grps = $scope.recyclingCategory.join(",");
       $scope.user.addrcode = $scope.addrareacountyone.ID;
-      $scope.user.areacode = $scope.addrareacountyone.Code;
       $scope.user.img = $scope.ImgsPicAddr[0] || ""; //证件照地址
       $scope.user.recoveryqty = 0;//回收量默认为0
       AccountService.setUserInfo($scope.user).success(function (data) {
@@ -2465,7 +2464,6 @@ angular.module('starter.controllers', [])
     if (ionic.Platform.isWebView()) {
       $scope.isWebView = true;
     }
-    $rootScope.isinvitecode = "0";
     //获取当前位置 定位
     $scope.location = function () {
       if (!localStorage.getItem("isinvitecode") || ((new Date().getTime() - new Date(localStorage.getItem("isinvitecode_exp")).getTime()) / 1000) > 120){
@@ -2640,7 +2638,7 @@ angular.module('starter.controllers', [])
 
     //修改回收区域
     $scope.user = {};//用户信息
-    $scope.modifyAddressSubmit = function (id, code) {
+    $scope.modifyAddressSubmit = function (id) {
       var user = JSON.parse(localStorage.getItem("user"));//用户信息
 
       $scope.user.username = user.userext.name;//用户名
@@ -2650,7 +2648,6 @@ angular.module('starter.controllers', [])
       $scope.user.recoveryqty = user.userext.recovery;//月回收量
       $scope.user.grps = user.userext.prodgroup;
       $scope.user.addrcode = id;
-      $scope.user.areacode = code;
       AccountService.setUserInfo($scope.user).success(function (data) {
         if (data.code == 1001) {
           CommonService.platformPrompt("修改回收区域成功", '');
@@ -2901,7 +2898,6 @@ angular.module('starter.controllers', [])
       $scope.addrinfo.addrid = $scope.addressiteminfo ? $scope.addressiteminfo.ID : null;//传入地址id 则是修改地址
       $scope.addrinfo.userid = localStorage.getItem("userid");//用户id
       $scope.addrinfo.addrcode = $scope.addrareacountyone ? $scope.addrareacountyone.ID : $scope.addressiteminfo.AddrCode;	//地区id
-      $scope.addrinfo.areacode = $scope.addrareacountyone ? $scope.addrareacountyone.Code : $scope.addressiteminfo.AreaCode;	//地区id
       $scope.addrinfo.is_default = $scope.addrinfoother.isstatus ? 1 : 0;	//是否默认0-否，1-是
       $scope.addrinfo.lat = $scope.addrareacountyone ? $scope.latitude || localStorage.getItem("latitude") || $scope.addrareacountyone.Lat : $scope.latitude || localStorage.getItem("latitude") || $scope.addressiteminfo.Lat;	//纬度
       $scope.addrinfo.lng = $scope.addrareacountyone ? $scope.longitude || localStorage.getItem("longitude") || $scope.addrareacountyone.Lng : $scope.longitude || localStorage.getItem("longitude") || $scope.addressiteminfo.Lng; 	//经度
@@ -3458,7 +3454,7 @@ angular.module('starter.controllers', [])
       $scope.dengji.latitude = $scope.latitude || localStorage.getItem("latitude") || $scope.addrareacountyone.Lat || 0;//纬度 默认为0 地址表里有经纬度值 如果没值现在的地区取经纬度
       $scope.dengji.category = $scope.recyclingCategoryName.join(",");//货物品类 多个用逗号隔开
       $scope.dengji.manufactor = manufactor.join(",");//单选
-      $scope.dengji.addrcode = $scope.addrareacountyone.Code;
+      $scope.dengji.addrcode = $scope.addrareacountyone.ID;
       $scope.dengji.delivery = 1; //交货方式 1 上门回收(默认) 2 送货上门 登记信息直接用1
       $scope.dengji.details = [];//添加登记货源时明细
 
@@ -3627,7 +3623,7 @@ angular.module('starter.controllers', [])
         items.latitude = localStorage.getItem("latitude") || $scope.address.Lat || 0;//纬度 默认为0 地址表里有经纬度值 如果没值现在的地区取经纬度
         items.category = i == 0 ? $scope.wasteCategoryName.join(",") : $scope.secondCategoryName.join(",");//货物品类 多个用逗号隔开
         items.manufactor = "";//单选 登记货源是空
-        items.addrcode = $scope.address.AreaCode;//地址code
+        items.addrcode = $scope.address.AddrCode;//地址code
         items.delivery = $scope.goods.delivery; //交货方式 1 上门回收(默认) 2 送货上门 登记信息直接用1
         items.addrdetail = $scope.address.AddrDetail;//详细地址
         items.hytype = i == 0 ? 1 : 2;//货物类别 0.未区分 1废料 2二手 (登记信息时为0)
@@ -3769,7 +3765,6 @@ angular.module('starter.controllers', [])
       $scope.user.recoveryqty = user.userext.recovery;//月回收量
       $scope.user.grps = $scope.recyclingCategory.join(",");
       $scope.user.addrcode = user.userext.addrcode;
-      $scope.user.areacode = user.userext.ext1;
 
       AccountService.setUserInfo($scope.user).success(function (data) {
         if (data.code == 1001) {
@@ -4306,7 +4301,7 @@ angular.module('starter.controllers', [])
     $scope.getCode = function () {
       AccountService.getInvitecode({
         userid: localStorage.getItem("userid"),
-        isinvitecode: $rootScope.isinvitecode
+        isinvitecode: localStorage.getItem("isinvitecode")
       }).success(function (data) {
         $scope.invitecode = data.data;
         if (localStorage.getItem("usertype")) {
