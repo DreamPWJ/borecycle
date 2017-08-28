@@ -3688,9 +3688,8 @@ angular.module('starter.controllers', [])
 
   //取消订单
   .controller('CancelOrderCtrl', function ($scope, $rootScope, $stateParams, CommonService, OrderService) {
-    $scope.cancelorder = {
-      reason: 1//取消原因 默认联系不上
-    }
+    $rootScope.commonService = CommonService;
+    $scope.cancelorder = {};
     $scope.cancelOrder = function () {
       $scope.datas = {
         no: $stateParams.no,//订单号
@@ -3699,6 +3698,14 @@ angular.module('starter.controllers', [])
         reason: $scope.cancelorder.reason,//取消原因 1.	联系不上 2.	交易没谈拢 3.	其他
         remark: $scope.cancelorder.remark  //补充说明
       }
+      if ($scope.cancelorder.reason==undefined) {
+        $rootScope.commonService.toolTip('请选择取消原因！', '');
+        return;
+      }
+      if ($scope.cancelorder.reason==3 && $scope.cancelorder.remark==undefined) {
+        $rootScope.commonService.toolTip('请补充说明！', '');
+        return;
+      } 
       CommonService.showConfirm('取消提示', '您是否要取消此订单?"是"点击"确定",否则请点击"取消"', '确定', '取消', '', 'close', function () {
         OrderService.newCancelOrderReceipt($scope.datas).success(function (data) {
           if (data.code == 1001) {
