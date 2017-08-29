@@ -1166,7 +1166,7 @@ angular.module('starter.services', [])
         confirmPopup.then(function (res) {
           if (res) {
             $ionicLoading.show({
-              template: "0%",
+              template: "<span>0%</span>",
               noBackdrop: true
             });
             var url = appurl; //可以从服务端获取更新APP的路径
@@ -1205,7 +1205,7 @@ angular.module('starter.services', [])
                 $timeout(function () {
                   var downloadProgress = (progress.loaded / progress.total) * 100;
                   $ionicLoading.show({
-                    template: Math.floor(downloadProgress) + "%",
+                    template: "<span>"+Math.floor(downloadProgress) + "%</span>",
                     noBackdrop: true
                   });
                   if (downloadProgress > 99) {
