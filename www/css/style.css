@@ -215,7 +215,13 @@ a {
 .loading-container .loading span {
   display: inline-block;
   margin-top: 0.2rem;
-  color: #0c60ee;
+  color: #fff;
+  width: 60px;
+  height: 60px;
+  text-align: center;
+  line-height: 60px;
+  border-radius: 50%;
+  background-color: #5b5b5b;
 }
 
 .backdrop {
@@ -891,5 +897,8 @@ input[disabled], input[readonly]:not(.cloned-text-input), select[disabled], sele
   margin-bottom: 10px;
 }
 #helpContent .help-img img{
-  width: 30%;
+   width: 30%;
+ }
+#helpContent .help-img-50 img{
+  width: 50%;
 }
