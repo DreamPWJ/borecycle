@@ -145,6 +145,23 @@ angular.module('starter.controllers', [])
 
 
       }
+      else if(localStorage.getItem("usertype") == 2)
+      {
+        OrderService.getOrderSum({userid: localStorage.getItem("userid"), expiry: 24}).success(function (data) {
+          if (data.code == 1001) {
+           // 是否有两个未未完成的订单，有则提示并进入未完成订单
+           if(data.data.dclnum>=2)
+           {
+             CommonService.showConfirm('收收提示', '尊敬的用户您好!您还有未处理的订单!', '处理订单', '暂不处理', 'order', '', '', {state: 2}, '');
+           }
+            // 是否有预警订单，有则提示并直接进入预警页面
+            if(data.data.yjnum>0)
+            {
+              CommonService.showConfirm('收收提示', '尊敬的用户您好!您有预警订单未处理!', '处理订单', '暂不处理', 'orderwarning');
+            }
+          }
+        });
+      }
       //判断是否是WebView或微信，如果是则显示广告
       if (ionic.Platform.isWebView()) {
         $scope.isWebView = true;
@@ -1597,7 +1614,7 @@ angular.module('starter.controllers', [])
       }
       OrderService.addOrderReceipt($scope.jiedandata).success(function (data) {
         if (data.code == 1001) {
-          CommonService.showConfirm('接单提示', '尊敬的用户,您好！恭喜您,接单成功！订单有效期为72小时,请您务必在72小时之内上门回收！', '查看订单', '继续接单', 'orderdetails', 'jiedan', '',
+          CommonService.showConfirm('接单提示', '尊敬的用户,您好！恭喜您,接单成功！订单有效期为7*24小时,请您务必在7*24小时之内上门回收！', '查看订单', '继续接单', 'orderdetails', 'jiedan', '',
             {
               no: data.data,
               type: 2,
@@ -3709,7 +3726,7 @@ angular.module('starter.controllers', [])
         $rootScope.commonService.toolTip('请选择取消原因！', '');
         return;
       }
-      if ($scope.cancelorder.reason==3 && $scope.cancelorder.remark==undefined) {
+      if ($scope.cancelorder.reason==8 && $scope.cancelorder.remark==undefined) {
         $rootScope.commonService.toolTip('请补充说明！', '');
         return;
       }
