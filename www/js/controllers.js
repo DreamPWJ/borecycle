@@ -1921,7 +1921,7 @@ angular.module('starter.controllers', [])
 
       $scope.params = {
         page: $scope.tabIndex == 0 ? $scope.unfinishedpage : $scope.page,//页码
-        size: 20//条数
+        size: 10//条数
       }
 
       $scope.datas = {
