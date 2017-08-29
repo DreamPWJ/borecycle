@@ -205,7 +205,7 @@ a {
 }
 
 /*loading加载框背景*/
-.loading-container .loading {
+.loading-container .loading{
   width: 4.5rem;
   height: 4.5rem;
   padding: 20px 5px;
@@ -215,13 +215,14 @@ a {
 .loading-container .loading span {
   display: inline-block;
   margin-top: 0.2rem;
+  color: #0c60ee;
 }
 
 .backdrop {
   background-color: rgba(0, 0, 0, .1);
 }
 
-.loading-container .loading .spinner-ios {
+.loading-container .loading p .spinner-ios {
   stroke: #11c1f3;
 }
 
