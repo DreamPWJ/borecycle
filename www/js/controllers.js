@@ -149,16 +149,16 @@ angular.module('starter.controllers', [])
       {
         OrderService.getOrderSum({userid: localStorage.getItem("userid"), expiry: 24}).success(function (data) {
           if (data.code == 1001) {
-           // 是否有两个未未完成的订单，有则提示并进入未完成订单
-           if(data.data.dclnum>=2)
-           {
-             CommonService.showConfirm('收收提示', '尊敬的用户您好!您还有未处理的订单!', '处理订单', '暂不处理', 'order', '', '', {state: 2}, '');
-           }
             // 是否有预警订单，有则提示并直接进入预警页面
             if(data.data.yjnum>0)
             {
-              CommonService.showConfirm('收收提示', '尊敬的用户您好!您有预警订单未处理!', '处理订单', '暂不处理', 'orderwarning');
+              CommonService.showAlert('收收提示', '<p>尊敬的用户您好,您有预警订单未处理！</p>', 'orderwarning');
             }
+           // 是否有两个未未完成的订单，有则提示并进入未完成订单
+           if(data.data.dclnum>=2)
+           {
+             CommonService.showAlert('收收提示', '<p>尊敬的用户您好,您还有未处理的订单！</p>', 'order',{state: 2});
+           }
           }
         });
       }
