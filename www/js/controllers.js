@@ -152,12 +152,12 @@ angular.module('starter.controllers', [])
             // 是否有预警订单，有则提示并直接进入预警页面
             if(data.data.yjnum>0)
             {
-              CommonService.showAlert('收收提示', '<p>尊敬的用户您好,您有预警订单未处理！</p>', 'orderwarning');
+              CommonService.showAlert('收收提示', '<p>尊敬的用户您好,您有预警订单未处理，请先处理完成后再接单！</p>', 'orderwarning');
             }
            // 是否有两个未未完成的订单，有则提示并进入未完成订单
            if(data.data.dclnum>=2)
            {
-             CommonService.showAlert('收收提示', '<p>尊敬的用户您好,您还有未处理的订单！</p>', 'order',{state: 2});
+             CommonService.showAlert('收收提示', '<p>尊敬的用户您好,您还有未处理的订单，请先处理完成后再接单！</p>', 'order',{state: 2});
            }
           }
         });
@@ -2137,6 +2137,11 @@ angular.module('starter.controllers', [])
     //去付款
     $scope.topay = function (type, djno, orno, fromuser, touser, amount, name, informationmoney) {
       OrderService.topay(type, djno, orno, fromuser, touser, amount, name, informationmoney);
+    }
+
+    //在回收订单中 取消订单
+    $scope.cancelOrder = function (orno) {
+      $state.go("cancelorder", {no: orno, type: 1});//订单类型 1.回收单 2.登记单
     }
   })
 
