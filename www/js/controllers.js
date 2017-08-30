@@ -145,23 +145,6 @@ angular.module('starter.controllers', [])
 
 
       }
-      else if(localStorage.getItem("usertype") == 2)
-      {
-        OrderService.getOrderSum({userid: localStorage.getItem("userid"), expiry: 24}).success(function (data) {
-          if (data.code == 1001) {
-            // 是否有预警订单，有则提示并直接进入预警页面
-            if(data.data.yjnum>0)
-            {
-              CommonService.showAlert('收收提示', '<p>尊敬的用户您好,您有预警订单未处理，请先处理完成后再接单！</p>', 'orderwarning');
-            }
-           // 是否有两个未未完成的订单，有则提示并进入未完成订单
-           if(data.data.dclnum>=2)
-           {
-             CommonService.showAlert('收收提示', '<p>尊敬的用户您好,您还有未处理的订单，请先处理完成后再接单！</p>', 'order',{state: 2});
-           }
-          }
-        });
-      }
       //判断是否是WebView或微信，如果是则显示广告
       if (ionic.Platform.isWebView()) {
         $scope.isWebView = true;
@@ -1470,6 +1453,25 @@ angular.module('starter.controllers', [])
     if (!user.userext) {
       CommonService.showConfirm('收收提示', '尊敬的用户您好!完善资料并且升级成为回收商才能接单!', '升级回收商', '暂不升级', 'organizingdata', '', '', {type: 2}, '');
       return;
+    }
+    if(localStorage.getItem("usertype") == 2)
+    {
+      OrderService.getOrderSum({userid: localStorage.getItem("userid"), expiry: 24}).success(function (data) {
+        if (data.code == 1001) {
+          // 是否有预警订单，有则提示并直接进入预警页面
+          if(data.data.yjnum>0)
+          {
+            CommonService.showAlert('收收提示', '<p>尊敬的用户您好,您有预警订单未处理，请先处理完成后再接单！</p>', 'orderwarning');
+            return;
+          }
+          // 是否有两个未未完成的订单，有则提示并进入未完成订单
+          if(data.data.dclnum>=2)
+          {
+            CommonService.showAlert('收收提示', '<p>尊敬的用户您好,您还有未处理的订单，请先处理完成后再接单！</p>', 'order',{state: 2});
+            return;
+          }
+        }
+      });
     }
     $scope.tabIndex = $rootScope.hytype;//当前tabs页
     //如果取信息单，当会员不是上门回收者时取货场，否则到二手商家

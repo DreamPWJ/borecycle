@@ -12,22 +12,39 @@
   <ion-content overflow-scroll="false" id="main" style="background: #f0f0f0;" has-bouncing="true">
     <ion-refresher on-refresh="getMainData()" pulling-text="下拉更新"></ion-refresher>
     <div class="topbj light text-center">
-      <div class="total ">
-        <p class="num">{{cargoQuantity.num}}</p>
-        <p>总回收量(台)</p>
-      </div>
-      <div class="row sub-total row-no-padding">
-        <span class="col">
+      <img src="../img/main/banner1.jpg" />
+      <!--<div class="total ">-->
+        <!--<p class="num">{{cargoQuantity.num}}</p>-->
+        <!--<p>总回收量(台)</p>-->
+      <!--</div>-->
+      <!--<div class="row sub-total row-no-padding">-->
+        <!--<span class="col">-->
+          <!--<p>{{cargoQuantity?cargoQuantity.informatenum :0| number}}</p>-->
+          <!--<p>信息总量(单)</p>-->
+        <!--</span>-->
+        <!--<span class="col">-->
+          <!--<p>{{cargoQuantity?cargoQuantity.goodsnum:0 | number}}</p>-->
+          <!--<p>总货源量(单)</p>-->
+        <!--</span>-->
+      <!--</div>-->
+    </div>
+    <div style="margin-top: -9rem;position: absolute;z-index: 100">
+      <div class="card sum-bj">
+        <div class="row text-center light padding-top">
+          <span class="col">
           <p>{{cargoQuantity?cargoQuantity.informatenum :0| number}}</p>
           <p>信息总量(单)</p>
         </span>
-        <span class="col">
+          <span class="col">
+          <p style="font-weight: 400;font-size: 1.5rem;">{{cargoQuantity?cargoQuantity.informatenum :0| number}}</p>
+          <p>总回收量(台)</p>
+        </span>
+          <span class="col">
           <p>{{cargoQuantity?cargoQuantity.goodsnum:0 | number}}</p>
           <p>总货源量(单)</p>
         </span>
+        </div>
       </div>
-    </div>
-    <div style="margin-top: -3rem;">
       <div class="card" ng-if="isrole">
         <div class="row  light-bg row-center main-list">
           <a class="col border-rb" nav-direction=forward ng-href="#/information">
