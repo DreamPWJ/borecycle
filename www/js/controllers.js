@@ -1804,7 +1804,6 @@ angular.module('starter.controllers', [])
       }
       OrderService.addappoint($scope.appointtime).success(function (data) {
         if (data.code == 1001) {
-          $scope.getOrderList(0)
           CommonService.platformPrompt("预约成功", "close");
           $scope.modal.hide();
           $scope.getOrderList(0);//产品加载刷新
