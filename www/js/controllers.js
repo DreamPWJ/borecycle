@@ -1454,7 +1454,7 @@ angular.module('starter.controllers', [])
       CommonService.showConfirm('收收提示', '尊敬的用户您好!完善资料并且升级成为回收商才能接单!', '升级回收商', '暂不升级', 'organizingdata', '', '', {type: 2}, '');
       return;
     }
-    if(localStorage.getItem("usertype") == 2)
+    if(user.services.indexOf('2') != -1)
     {
       OrderService.getOrderSum({userid: localStorage.getItem("userid"), expiry: 24}).success(function (data) {
         if (data.code == 1001) {
