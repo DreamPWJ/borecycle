@@ -143,12 +143,15 @@
 }
 #main .topbj img{
   max-width: 100%;
+  max-height: 19rem;
 }
 .platform-ios.platform-cordova #main .topbj {
   padding-top: 1rem;
   height: 18rem;
 }
-
+.platform-ios.platform-cordova #main .topbj img{
+  max-height: 18rem;
+}
 #main .total {
   margin: auto;
   width: 9rem;
