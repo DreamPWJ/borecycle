@@ -275,6 +275,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //参考价页面
       .state('referenceprice', {
         url: '/referenceprice',
+        cache: true,
         templateUrl: 'templates/referenceprice.html',
         controller: 'ReferencePriceCtrl'
 
@@ -371,7 +372,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //通知消息列表
       .state('tab.news', {
         url: '/news',
-        cache: false,
+        cache: true,
         nativeTransitions: null,
         views: {
           'tab-news': {
@@ -384,7 +385,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //我的账号
       .state('tab.account', {
         url: '/account',
-        cache: false,
+        cache: true,
         nativeTransitions: null,
         views: {
           'tab-account': {
@@ -578,7 +579,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //我的钱包
       .state('wallet', {
         url: '/wallet',
-        cache: false,
+        cache: true,
         templateUrl: 'templates/wallet/index.html',
         controller: 'WalletCtrl'
       })
