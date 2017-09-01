@@ -1465,7 +1465,7 @@ angular.module('starter.controllers', [])
             return;
           }
           // 是否有两个未未完成的订单，有则提示并进入未完成订单
-          if(data.data.dclnum>=2)
+          if(data.data.dclnumindex>=2)
           {
             CommonService.showAlert('收收提示', '<p>尊敬的用户您好,您还有未处理的订单，请先处理完成后再接单！</p>', 'order',{state: 2});
             return;
