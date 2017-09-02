@@ -385,7 +385,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //我的账号
       .state('tab.account', {
         url: '/account',
-        cache: true,
+        cache: false,
         nativeTransitions: null,
         views: {
           'tab-account': {
