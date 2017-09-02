@@ -1860,7 +1860,7 @@ angular.module('starter.controllers', [])
 
     //获取评论内容
     $scope.getComment = function () {
-      if ($scope.orderDetail.oruserid != null && $scope.orderDetail.oruserid != localStorage.getItem("userid")) {
+      if ($scope.orderDetail.oruserid != null && $scope.orderDetail.oruserid != localStorage.getItem("userid") && $scope.orderDetail.orstate!=0) {
         CommonService.platformPrompt("该单已被其他回收商抢走！", 'tab.main');
         return;
       }
