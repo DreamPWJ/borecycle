@@ -579,7 +579,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //我的钱包
       .state('wallet', {
         url: '/wallet',
-        cache: true,
+        cache: false,
         templateUrl: 'templates/wallet/index.html',
         controller: 'WalletCtrl'
       })
