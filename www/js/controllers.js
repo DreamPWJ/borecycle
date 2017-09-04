@@ -545,7 +545,7 @@ angular.module('starter.controllers', [])
                 //用户会员类型  0 无 1信息提供者  2回收者
                 localStorage.setItem("usertype", (services == null || services.length == 0 ) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
                 if (services == null || services.length == 0) {//旧会员 完善信息
-                  CommonService.showConfirm('收收提示', '尊敬的用户,您好！旧会员需完善资料后才能进行更多的操作！', '完善资料', '暂不完善', 'organizingdata', 'close');
+                  CommonService.showConfirm('收收提示', '尊敬的用户,您好！固废直卖会员需完善资料后才能进行更多的操作!', '完善资料', '暂不完善', 'organizingdata', '', '', {type: 0}, '');
                 }
               } else {
                 CommonService.platformPrompt(data.message, 'close');
@@ -737,7 +737,8 @@ angular.module('starter.controllers', [])
                 //用户会员类型  0 无 1信息提供者  2回收者
                 localStorage.setItem("usertype", (services == null || services.length == 0) ? 0 : (services.length == 1 && services.indexOf('1') != -1) ? 1 : 2);
                 if (services == null || services.length == 0) {//旧会员 完善信息
-                  CommonService.showConfirm('收收提示', '尊敬的用户,您好！旧会员需完善资料后才能进行更多的操作！', '完善资料', '暂不完善', 'organizingdata', 'close');
+               //   CommonService.showConfirm('收收提示', '尊敬的用户,您好！旧会员需完善资料后才能进行更多的操作！', '完善资料', '暂不完善', 'organizingdata', 'close');
+                  CommonService.showConfirm('收收提示', '尊敬的用户,您好！固废直卖会员需完善资料后才能进行更多的操作!', '完善资料', '暂不完善', 'organizingdata', '', '', {type: 0}, '');
                 }
               } else {
                 CommonService.platformPrompt(data.message, 'close');
